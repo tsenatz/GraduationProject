@@ -30,3 +30,11 @@ body {
   min-height: calc(100vh - 64px);
   background-color: #ffffff;
 }
+
+@media (max-width: 960px) {
+  .main-content {
+    margin-left: 0;
+    margin-bottom: 60px;
+    min-height: calc(100vh - 124px);
+  }
+}

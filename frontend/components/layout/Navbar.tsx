@@ -1,38 +1,159 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
-import { Home, User } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { Home, User, Menu, X, ChevronRight } from "lucide-react";
 import styles from "./Navbar.module.css";
 
+const navLinksLeft = [
+  { href: "/buy", label: "Buy" },
+  { href: "/rent", label: "Rent" },
+  { href: "/sell", label: "Sell" },
+  { href: "/mortgage", label: "Get a mortgage" },
+  { href: "/agents", label: "Find an agent" },
+];
+
+const navLinksRight = [
+  { href: "/manage-rentals", label: "Manage rentals" },
+  { href: "/advertise", label: "Advertise" },
+  { href: "/get-help", label: "Get help" },
+];
+
 export default function Navbar() {
+  const pathname = usePathname();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Helper for dynamic breadcrumbs on mobile
+  const getBreadcrumbLabel = () => {
+    if (pathname === "/") return null;
+    const allLinks = [...navLinksLeft, ...navLinksRight, { href: "/profile", label: "Profile" }];
+    const match = allLinks.find((link) => link.href === pathname);
+    if (match) return match.label;
+    const segments = pathname.split("/").filter(Boolean);
+    if (segments.length === 0) return null;
+    return segments[0].charAt(0).toUpperCase() + segments[0].slice(1).replace(/-/g, " ");
+  };
+
+  const currentBreadcrumb = getBreadcrumbLabel();
+
   return (
     <header className={styles.navbar}>
       <div className={styles.navbarContainer}>
-        {/* Left Navigation Items - aligned to flex-end towards the logo */}
-        <nav className={styles.navSectionLeft}>
-          <Link href="/buy" className={styles.navLink}>Buy</Link>
-          <Link href="/rent" className={styles.navLink}>Rent</Link>
-          <Link href="/sell" className={styles.navLink}>Sell</Link>
-          <Link href="/mortgage" className={styles.navLink}>Get a mortgage</Link>
-          <Link href="/agents" className={styles.navLink}>Find an agent</Link>
+        {/* Mobile Header Left Toggle Button */}
+        <div className={styles.mobileToggleWrapper}>
+          <button
+            type="button"
+            className={styles.mobileMenuBtn}
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-navigation-drawer"
+          >
+            {isMenuOpen ? (
+              <X className={styles.menuIcon} aria-hidden="true" />
+            ) : (
+              <Menu className={styles.menuIcon} aria-hidden="true" />
+            )}
+          </button>
+        </div>
+
+        {/* Desktop Left Navigation Items */}
+        <nav className={styles.navSectionLeft} aria-label="Main primary navigation">
+          {navLinksLeft.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`${styles.navLink} ${isActive ? styles.active : ""}`}
+                aria-current={isActive ? "page" : undefined}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Center Brand */}
         <div className={styles.brandContainer}>
-          <Link href="/" className={styles.brand}>
-            <Home className={styles.brandIcon} />
+          <Link href="/" className={styles.brand} aria-label="ERNS Home">
+            <Home className={styles.brandIcon} aria-hidden="true" />
             <span className={styles.brandText}>ERNS</span>
           </Link>
         </div>
 
-        {/* Right Navigation Items - aligned to flex-start outwards */}
-        <nav className={styles.navSectionRight}>
-          <Link href="/manage-rentals" className={styles.navLink}>Manage rentals</Link>
-          <Link href="/advertise" className={styles.navLink}>Advertise</Link>
-          <Link href="/get-help" className={styles.navLink}>Get help</Link>
-          <Link href="/profile" className={styles.avatarBtn} aria-label="Profile">
-            <User className={styles.avatarIcon} />
+        {/* Desktop Right Navigation Items & Mobile Right Profile */}
+        <nav className={styles.navSectionRight} aria-label="Main secondary navigation">
+          {navLinksRight.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`${styles.navLink} ${isActive ? styles.active : ""}`}
+                aria-current={isActive ? "page" : undefined}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+          <Link
+            href="/profile"
+            className={`${styles.avatarBtn} ${pathname === "/profile" ? styles.avatarActive : ""}`}
+            aria-label="User Profile"
+            aria-current={pathname === "/profile" ? "page" : undefined}
+          >
+            <User className={styles.avatarIcon} aria-hidden="true" />
           </Link>
         </nav>
       </div>
+
+      {/* Mobile Breadcrumbs Container (Underneath Logo) */}
+      {currentBreadcrumb && (
+        <div className={styles.mobileBreadcrumbWrapper}>
+          <nav aria-label="Breadcrumb" className={styles.breadcrumbNav}>
+            <ol className={styles.breadcrumbList}>
+              <li className={styles.breadcrumbItem}>
+                <Link href="/" className={styles.breadcrumbLink} aria-label="Home">
+                  Home
+                </Link>
+              </li>
+              <li className={styles.breadcrumbSeparator} aria-hidden="true">
+                <ChevronRight className={styles.chevronIcon} />
+              </li>
+              <li className={styles.breadcrumbCurrent} aria-current="page">
+                {currentBreadcrumb}
+              </li>
+            </ol>
+          </nav>
+        </div>
+      )}
+
+      {/* Mobile Drawer Overlay / Navigation Menu */}
+      {isMenuOpen && (
+        <div id="mobile-navigation-drawer" className={styles.mobileDrawer}>
+          <nav aria-label="Mobile drawer navigation" className={styles.mobileDrawerNav}>
+            <ul className={styles.mobileDrawerList}>
+              {[...navLinksLeft, ...navLinksRight].map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <li key={link.href} className={styles.mobileDrawerItem}>
+                    <Link
+                      href={link.href}
+                      className={`${styles.mobileDrawerLink} ${isActive ? styles.active : ""}`}
+                      aria-current={isActive ? "page" : undefined}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
