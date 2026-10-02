@@ -4,7 +4,7 @@ import { Services } from '@/components/home/Services';
 
 export default function Home() {
   return (
-    <main style={{ paddingLeft: '64px', minHeight: '150vh' }}>
+    <main style={{ minHeight: '150vh' }}>
       <Hero />
       <Recommendations />
       <Services />

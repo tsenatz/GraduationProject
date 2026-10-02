@@ -1,10 +1,10 @@
 .heroContainer {
   position: relative;
   width: 100%;
-  height: 70vh;
+  height: 75vh;
   /* Adjust as needed */
   min-height: 500px;
-  background-image: url('/Modern%20Home%20at%20Golden%20Hour.png');
+  background-image: url('/hero_bg.png');
   background-size: cover;
   background-position: right center;
   background-repeat: no-repeat;
@@ -13,8 +13,6 @@
   justify-content: center;
   align-items: flex-start;
   padding: 0 10%;
-  margin-top: 80px;
-  /* Offset for the sticky navbar */
 }
 
 /* Optional overlay to make text more readable */
