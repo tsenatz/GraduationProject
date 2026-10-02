@@ -1,0 +1,146 @@
+.footer {
+  background-color: #1a1a1a;
+  color: #f5f5f5;
+  padding: 4rem 0 1.5rem;
+  margin-top: 4rem;
+  border-top: 1px solid #333;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  }
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+}
+
+.brandName {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.brandIcon {
+  color: var(--primary-color, #006aff);
+}
+
+.description {
+  color: #a0a0a0;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.socials {
+  display: flex;
+  gap: 1rem;
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #333;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.socialLink:hover {
+  background-color: var(--primary-color, #006aff);
+  transform: translateY(-3px);
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -0.5rem;
+  width: 2rem;
+  height: 2px;
+  background-color: var(--primary-color, #006aff);
+}
+
+.links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.links a {
+  color: #a0a0a0;
+  transition: color 0.3s ease;
+}
+
+.links a:hover {
+  color: var(--primary-color, #006aff);
+}
+
+.contactInfo {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contactInfo li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  color: #a0a0a0;
+  line-height: 1.5;
+}
+
+.contactIcon {
+  color: var(--primary-color, #006aff);
+  margin-top: 0.125rem;
+  flex-shrink: 0;
+}
+
+.bottom {
+  border-top: 1px solid #333;
+  padding-top: 1.5rem;
+  text-align: center;
+  color: #888;
+  font-size: 0.875rem;
+}
