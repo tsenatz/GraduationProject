@@ -1,0 +1,77 @@
+.sidebar {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  bottom: 0;
+  width: 64px;
+  background-color: #ffffff;
+  border-right: 1px solid #e6e6e6;
+  padding: 1.25rem 0.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 900;
+  overflow-y: auto;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.navList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.navItem {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.navLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.5rem 0.2rem;
+  color: #2a2a2a;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.navLink:hover {
+  background-color: #f2f4f7;
+  color: #006aff;
+}
+
+.icon {
+  width: 22px;
+  height: 22px;
+  stroke-width: 2px;
+  color: #2a2a2a;
+  transition: color 0.15s ease;
+}
+
+.navLink:hover .icon {
+  color: #006aff;
+}
+
+.label {
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 4px;
+  color: #2a2a2a;
+  text-align: center;
+  line-height: 1.2;
+  transition: color 0.15s ease;
+}
+
+.navLink:hover .label {
+  color: #006aff;
+}
