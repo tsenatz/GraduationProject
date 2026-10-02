@@ -77,9 +77,9 @@ export default function Navbar() {
 
         {/* Center Brand */}
         <div className={styles.brandContainer}>
-          <Link href="/" className={styles.brand} aria-label="ERNS Home">
+          <Link href="/" className={styles.brand} aria-label="Erns Home">
             <Home className={styles.brandIcon} aria-hidden="true" />
-            <span className={styles.brandText}>ERNS</span>
+            <span className={styles.brandText}>Erns</span>
           </Link>
         </div>
 

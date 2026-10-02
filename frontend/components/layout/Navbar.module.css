@@ -114,7 +114,7 @@
 .navLink {
   color: #2a2a2a;
   text-decoration: none;
-  font-size: 0.9375rem;
+  font-size: 1.125rem;
   font-weight: 600;
   white-space: nowrap;
   transition: color 0.15s ease;
@@ -189,7 +189,7 @@
   padding: 0;
   margin: 0;
   gap: 0.35rem;
-  font-size: 0.8rem;
+  font-size: 0.875rem;
   font-weight: 400;
 }
 
@@ -262,7 +262,7 @@
   padding: 0 1rem;
   color: #2a2a2a;
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 1.125rem;
   font-weight: 500;
   border-radius: 8px;
   transition: background-color 0.15s ease, color 0.15s ease;
