@@ -1,6 +1,6 @@
-import { Hero } from '../components/hero';
-import { Recommendations } from '../components/Recommendations';
-import { Services } from '../components/Services';
+import { Hero } from '@/components/home/Hero';
+import { Recommendations } from '@/components/home/Recommendations';
+import { Services } from '@/components/home/Services';
 
 export default function Home() {
   return (
