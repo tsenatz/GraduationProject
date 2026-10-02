@@ -1,0 +1,88 @@
+.heroContainer {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  /* Adjust as needed */
+  min-height: 500px;
+  background-image: url('/Modern%20Home%20at%20Golden%20Hour.png');
+  background-size: cover;
+  background-position: right center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0 10%;
+  margin-top: 80px;
+  /* Offset for the sticky navbar */
+}
+
+/* Optional overlay to make text more readable */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
+  z-index: 1;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  text-align: left;
+  width: 100%;
+  max-width: 800px;
+}
+
+.title {
+  color: white;
+  font-size: 4.2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 1rem;
+  line-height: 1.05;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-bottom: 2.5rem;
+  max-width: 600px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  line-height: 1.5;
+}
+
+.searchWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 700px;
+  margin: 0;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 1.4rem 1.75rem;
+  padding-right: 4.5rem;
+  font-size: 1.15rem;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  outline: none;
+}
+
+.searchInput:focus {
+  box-shadow: 0 0 0 3px rgba(0, 106, 255, 0.4);
+}
+
+.searchIcon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--primary-color);
+  cursor: pointer;
+}
