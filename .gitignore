@@ -32,9 +32,12 @@ yarn-error.log*
 # vercel
 .vercel
 
-# IDEs and Editors
+# IDEs and Editors / Local Customizations
 .idea/
 .vscode/
+.agents/
+.gemini/
+.antigravity/
 *.swp
 *.swo
 Thumbs.db
