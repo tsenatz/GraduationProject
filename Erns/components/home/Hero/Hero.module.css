@@ -2,7 +2,6 @@
   position: relative;
   width: 100%;
   height: 75vh;
-  /* Adjust as needed */
   min-height: 500px;
   background-image: url('/hero_bg.png');
   background-size: cover;
@@ -13,16 +12,16 @@
   justify-content: center;
   align-items: flex-start;
   padding: 0 10%;
+  background-color: var(--color-bg-warm, #E2D4B9);
 }
 
-/* Optional overlay to make text more readable */
 .overlay {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
+  background: linear-gradient(to bottom, rgba(48, 54, 14, 0.45), rgba(48, 54, 14, 0.75));
   z-index: 1;
 }
 
@@ -35,22 +34,22 @@
 }
 
 .title {
-  color: white;
+  color: var(--color-surface, #FFFFFF);
   font-size: 4.2rem;
   font-weight: 800;
   letter-spacing: -0.03em;
   margin-bottom: 1rem;
   line-height: 1.05;
-  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 4px 16px rgba(48, 54, 14, 0.5);
 }
 
 .subtitle {
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--color-bg-warm, #E2D4B9);
   font-size: 1.2rem;
   font-weight: 400;
   margin-bottom: 2.5rem;
   max-width: 600px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 2px 8px rgba(48, 54, 14, 0.5);
   line-height: 1.5;
 }
 
@@ -61,26 +60,33 @@
   margin: 0;
 }
 
+/* White search panel card for clean contrast */
 .searchInput {
   width: 100%;
-  padding: 1.4rem 1.75rem;
-  padding-right: 4.5rem;
+  padding: 1.35rem 4.5rem 1.35rem 1.75rem;
   font-size: 1.15rem;
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(120, 127, 86, 0.3);
+  border-radius: 14px;
+  background-color: var(--color-surface, #FFFFFF);
+  color: var(--color-primary, #30360E);
+  box-shadow: 0 10px 30px rgba(48, 54, 14, 0.25);
   outline: none;
 }
 
+.searchInput::placeholder {
+  color: var(--color-accent, #787F56);
+}
+
 .searchInput:focus {
-  box-shadow: 0 0 0 3px rgba(0, 106, 255, 0.4);
+  box-shadow: 0 0 0 3px rgba(120, 127, 86, 0.4);
+  border-color: var(--color-primary, #30360E);
 }
 
 .searchIcon {
   position: absolute;
-  right: 1rem;
+  right: 1.25rem;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--primary-color);
+  color: var(--color-primary, #30360E);
   cursor: pointer;
 }

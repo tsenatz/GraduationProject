@@ -1,11 +1,22 @@
 :root {
-  --primary-color: #006aff; /* ERNS blue, similar to zillow */
-  --primary-hover: #0056d6;
-  --bg-color: #ffffff;
-  --text-main: #2a2a33;
-  --text-muted: #5e6873;
-  --border-color: #e8e9ea;
+  /* CORE BRAND TOKENS */
+  --color-primary: #30360E; /* Deep Green — Primary buttons, main headings, active states, key icons */
+  --color-accent:  #787F56; /* Olive — Secondary buttons, supporting text, borders, accents */
+  --color-bg-warm: #E2D4B9; /* Clay Beige — Warm section backgrounds, hero backdrops, alternating bands */
+  --color-surface: #FFFFFF; /* White — Property cards, content cards, inputs, modals, clean surfaces */
+
+  /* DERIVED SYSTEM TOKENS */
+  --primary-color: var(--color-primary);
+  --accent-color:  var(--color-accent);
+  --bg-warm:        var(--color-bg-warm);
+  --bg-color:       #FAF8F5; /* Soft ultra-light warm neutral page canvas */
+  --surface-white:  var(--color-surface);
+
+  --text-main:   var(--color-primary);
+  --text-muted:  var(--color-accent);
+  --border-color: rgba(120, 127, 86, 0.25);
 }
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -25,6 +36,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: var(--bg-color);
 }
 
 .body-container {
@@ -37,7 +49,7 @@ body {
   flex: 1;
   margin-left: 80px;
   min-height: calc(100vh - 64px);
-  background-color: #ffffff;
+  background-color: var(--bg-color);
 }
 
 @media (max-width: 960px) {

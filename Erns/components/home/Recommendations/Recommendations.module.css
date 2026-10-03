@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 5rem 10%;
-  background-color: var(--bg-color);
+  background-color: var(--color-bg-warm, #E2D4B9);
   min-height: 500px;
 }
 
@@ -13,16 +13,16 @@
 }
 
 .title {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 800;
-  color: var(--text-main);
+  color: var(--color-primary, #30360E);
   margin-bottom: 1rem;
 }
 
 .subtitle {
   font-size: 1.1rem;
-  color: var(--text-muted);
-  line-height: 1.5;
+  color: var(--color-accent, #787F56);
+  line-height: 1.6;
 }
 
 .graphicSection {
@@ -34,7 +34,7 @@
   align-items: center;
 }
 
-/* Stacked cards effect */
+/* Stacked cards effect - White cards on Clay Beige background */
 .cardStack {
   position: relative;
   width: 500px;
@@ -45,10 +45,10 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--border-color);
+  background: var(--color-surface, #FFFFFF);
+  border-radius: 16px;
+  box-shadow: 0 12px 36px rgba(48, 54, 14, 0.12);
+  border: 1px solid rgba(120, 127, 86, 0.25);
   overflow: hidden;
   transition: transform 0.3s ease;
 }
@@ -56,13 +56,15 @@
 .card1 {
   z-index: 1;
   transform: translate(30px, 30px) scale(0.9);
-  background: #f8fafc;
+  background: var(--color-surface, #FFFFFF);
+  opacity: 0.85;
 }
 
 .card2 {
   z-index: 2;
   transform: translate(15px, 15px) scale(0.95);
-  background: #f1f5f9;
+  background: var(--color-surface, #FFFFFF);
+  opacity: 0.95;
 }
 
 .card3 {
@@ -73,7 +75,7 @@
 .cardImage {
   width: 100%;
   height: 100%;
-  background-color: #e2e8f0;
+  background-color: var(--color-surface, #FFFFFF);
   background-image: url('/recommendations.png');
   background-size: cover;
   background-position: center;
@@ -87,20 +89,22 @@
   font-size: 1.5rem;
   font-weight: 800;
   margin-bottom: 0.25rem;
-  color: var(--text-main);
+  color: var(--color-primary, #30360E);
 }
 
 .details {
   font-size: 0.9rem;
-  color: var(--text-muted);
+  color: var(--color-accent, #787F56);
 }
 
+/* White badge card on Beige section */
 .badge {
   position: absolute;
-  background: white;
+  background: var(--color-surface, #FFFFFF);
+  border: 1px solid rgba(120, 127, 86, 0.3);
   padding: 0.75rem 1.25rem;
   border-radius: 50px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 6px 24px rgba(48, 54, 14, 0.15);
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -114,7 +118,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--color-surface, #FFFFFF);
 }
 
 .badge1 {
@@ -123,8 +127,7 @@
 }
 
 .badge1 .badgeIcon {
-  background-color: #0f766e;
-  /* Teal color like the image */
+  background-color: var(--color-primary, #30360E);
 }
 
 .badge2 {
@@ -133,8 +136,7 @@
 }
 
 .badge2 .badgeIcon {
-  background-color: #ea580c;
-  /* Orange color like the image */
+  background-color: var(--color-accent, #787F56);
 }
 
 .badgeText {
@@ -145,13 +147,13 @@
 .badgeTitle {
   font-weight: 700;
   font-size: 0.95rem;
-  color: var(--text-main);
+  color: var(--color-primary, #30360E);
 }
 
 .badgeSubtitle {
   font-size: 0.75rem;
-  color: var(--text-muted);
-  font-weight: 400;
+  color: var(--color-accent, #787F56);
+  font-weight: 500;
 }
 
 @media (max-width: 960px) {
