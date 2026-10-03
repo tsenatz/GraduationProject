@@ -135,39 +135,12 @@
   color: #006aff;
 }
 
-.avatarBtn {
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
-  min-height: 32px;
-  border-radius: 50%;
-  background-color: #00743f;
-  color: #ffffff;
+.mobileDrawerItemBtn {
+  width: 100%;
+  padding-top: 0.5rem;
+  margin-top: 0.25rem;
+  border-top: 1px solid #f0f0f0;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  flex-shrink: 0;
-  margin-left: 0.25rem;
-  transition: background-color 0.15s ease;
-}
-
-.avatarBtn:hover {
-  background-color: #005a31;
-}
-
-.avatarBtn:focus-visible {
-  outline: 2px solid #006aff;
-  outline-offset: 2px;
-}
-
-.avatarActive {
-  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #00743f;
-}
-
-.avatarIcon {
-  width: 17px;
-  height: 17px;
 }
 
 /* Mobile Breadcrumbs Container (Underneath Logo) */

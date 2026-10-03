@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, User, Menu, X, ChevronRight } from "lucide-react";
+import { Home, Menu, X, ChevronRight } from "lucide-react";
+import SignInButton from "@/components/auth/SignInButton";
 import styles from "./Navbar.module.css";
 
 const navLinksLeft = [
@@ -27,7 +28,7 @@ export default function Navbar() {
   // Helper for dynamic breadcrumbs on mobile
   const getBreadcrumbLabel = () => {
     if (pathname === "/") return null;
-    const allLinks = [...navLinksLeft, ...navLinksRight, { href: "/profile", label: "Profile" }];
+    const allLinks = [...navLinksLeft, ...navLinksRight, { href: "/login", label: "Login" }];
     const match = allLinks.find((link) => link.href === pathname);
     if (match) return match.label;
     const segments = pathname.split("/").filter(Boolean);
@@ -98,14 +99,7 @@ export default function Navbar() {
               </Link>
             );
           })}
-          <Link
-            href="/profile"
-            className={`${styles.avatarBtn} ${pathname === "/profile" ? styles.avatarActive : ""}`}
-            aria-label="User Profile"
-            aria-current={pathname === "/profile" ? "page" : undefined}
-          >
-            <User className={styles.avatarIcon} aria-hidden="true" />
-          </Link>
+          <SignInButton />
         </nav>
       </div>
 
@@ -150,6 +144,9 @@ export default function Navbar() {
                   </li>
                 );
               })}
+              <li className={styles.mobileDrawerItemBtn}>
+                <SignInButton onClick={() => setIsMenuOpen(false)} />
+              </li>
             </ul>
           </nav>
         </div>
