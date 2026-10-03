@@ -1,10 +1,10 @@
 .footer {
-  background-color: #1a1a1a;
-  color: #f5f5f5;
+  background-color: var(--color-primary, #30360E);
+  color: var(--color-surface, #FFFFFF);
   padding: 4rem 0 1.5rem;
   margin-top: 4rem;
-  border-top: 1px solid #333;
-  margin-left: 80px; /* Offset for the left sidebar */
+  border-top: 1px solid rgba(226, 212, 185, 0.2);
+  margin-left: 80px;
 }
 
 .container {
@@ -43,16 +43,17 @@
   gap: 0.5rem;
   font-size: 1.5rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-surface, #FFFFFF);
   margin-bottom: 1rem;
 }
 
 .brandIcon {
-  color: var(--primary-color, #006aff);
+  color: var(--color-bg-warm, #E2D4B9);
 }
 
 .description {
-  color: #a0a0a0;
+  color: var(--color-bg-warm, #E2D4B9);
+  opacity: 0.85;
   line-height: 1.6;
   margin-bottom: 1.5rem;
 }
@@ -69,20 +70,21 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #333;
-  color: #fff;
+  background-color: var(--color-accent, #787F56);
+  color: var(--color-surface, #FFFFFF);
   transition: all 0.3s ease;
 }
 
 .socialLink:hover {
-  background-color: var(--primary-color, #006aff);
+  background-color: var(--color-bg-warm, #E2D4B9);
+  color: var(--color-primary, #30360E);
   transform: translateY(-3px);
 }
 
 .title {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--color-surface, #FFFFFF);
   margin-bottom: 1.5rem;
   position: relative;
 }
@@ -94,7 +96,7 @@
   bottom: -0.5rem;
   width: 2rem;
   height: 2px;
-  background-color: var(--primary-color, #006aff);
+  background-color: var(--color-accent, #787F56);
 }
 
 .links {
@@ -107,12 +109,14 @@
 }
 
 .links a {
-  color: #a0a0a0;
-  transition: color 0.3s ease;
+  color: var(--color-bg-warm, #E2D4B9);
+  opacity: 0.85;
+  transition: opacity 0.3s ease, color 0.3s ease;
 }
 
 .links a:hover {
-  color: var(--primary-color, #006aff);
+  opacity: 1;
+  color: var(--color-surface, #FFFFFF);
 }
 
 .contactInfo {
@@ -128,21 +132,23 @@
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
-  color: #a0a0a0;
+  color: var(--color-bg-warm, #E2D4B9);
+  opacity: 0.85;
   line-height: 1.5;
 }
 
 .contactIcon {
-  color: var(--primary-color, #006aff);
+  color: var(--color-accent, #787F56);
   margin-top: 0.125rem;
   flex-shrink: 0;
 }
 
 .bottom {
-  border-top: 1px solid #333;
+  border-top: 1px solid rgba(226, 212, 185, 0.2);
   padding-top: 1.5rem;
   text-align: center;
-  color: #888;
+  color: var(--color-bg-warm, #E2D4B9);
+  opacity: 0.7;
   font-size: 0.875rem;
 }
 

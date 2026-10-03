@@ -2,46 +2,41 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.45rem;
-  padding: 0.45rem 1.15rem;
+  padding: 0.5rem 1.25rem;
   border-radius: 9999px;
-  background-color: #006aff;
-  color: #ffffff;
+  background-color: var(--color-primary, #30360E);
+  color: var(--color-surface, #FFFFFF);
   font-size: 0.95rem;
   font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
   border: 1px solid transparent;
-  box-shadow: 0 2px 4px rgba(0, 106, 255, 0.18);
+  box-shadow: 0 3px 8px rgba(48, 54, 14, 0.25);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
 }
 
 .signInBtn:hover {
-  background-color: #0056cc;
-  box-shadow: 0 4px 10px rgba(0, 106, 255, 0.28);
+  background-color: var(--color-accent, #787F56);
+  color: var(--color-surface, #FFFFFF);
+  box-shadow: 0 5px 12px rgba(48, 54, 14, 0.35);
   transform: translateY(-1px);
 }
 
 .signInBtn:active {
   transform: translateY(0);
-  box-shadow: 0 1px 2px rgba(0, 106, 255, 0.15);
+  box-shadow: 0 1px 2px rgba(48, 54, 14, 0.2);
 }
 
 .signInBtn:focus-visible {
-  outline: 2px solid #006aff;
+  outline: 2px solid var(--color-primary, #30360E);
   outline-offset: 2px;
 }
 
 .active {
-  background-color: #004cb3;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.icon {
-  width: 16px;
-  height: 16px;
-  stroke-width: 2.2;
+  background-color: var(--color-accent, #787F56);
+  color: var(--color-surface, #FFFFFF);
+  box-shadow: inset 0 2px 4px rgba(48, 54, 14, 0.3);
 }
 
 .label {
@@ -50,13 +45,7 @@
 
 @media (max-width: 480px) {
   .signInBtn {
-    padding: 0.4rem 0.85rem;
+    padding: 0.45rem 1rem;
     font-size: 0.875rem;
-    gap: 0.35rem;
-  }
-
-  .icon {
-    width: 14px;
-    height: 14px;
   }
 }

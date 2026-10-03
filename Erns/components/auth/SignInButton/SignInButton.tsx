@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LogIn } from "lucide-react";
 import styles from "./SignInButton.module.css";
 
 interface SignInButtonProps {
@@ -26,7 +25,6 @@ export default function SignInButton({
       aria-current={isActive ? "page" : undefined}
       onClick={onClick}
     >
-      <LogIn className={styles.icon} aria-hidden="true" />
       <span className={styles.label}>Sign in</span>
     </Link>
   );
