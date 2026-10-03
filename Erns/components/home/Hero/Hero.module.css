@@ -12,7 +12,7 @@
   justify-content: center;
   align-items: flex-start;
   padding: 0 10%;
-  background-color: var(--color-bg-warm, #E2D4B9);
+  background-color: var(--color-bg-warm, #e2d4b9);
 }
 
 .overlay {

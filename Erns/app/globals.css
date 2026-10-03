@@ -1,19 +1,24 @@
 :root {
   /* CORE BRAND TOKENS */
-  --color-primary: #30360E; /* Deep Green — Primary buttons, main headings, active states, key icons */
-  --color-accent:  #787F56; /* Olive — Secondary buttons, supporting text, borders, accents */
-  --color-bg-warm: #E2D4B9; /* Clay Beige — Warm section backgrounds, hero backdrops, alternating bands */
-  --color-surface: #FFFFFF; /* White — Property cards, content cards, inputs, modals, clean surfaces */
+  --color-primary: #30360E;
+  /* Deep Green — Primary buttons, main headings, active states, key icons */
+  --color-accent: #787F56;
+  /* Olive — Secondary buttons, supporting text, borders, accents */
+  --color-bg-warm: #E2D4B9;
+  /* Clay Beige — Warm section backgrounds, hero backdrops, alternating bands */
+  --color-surface: #FFFFFF;
+  /* White — Property cards, content cards, inputs, modals, clean surfaces */
 
   /* DERIVED SYSTEM TOKENS */
   --primary-color: var(--color-primary);
-  --accent-color:  var(--color-accent);
-  --bg-warm:        var(--color-bg-warm);
-  --bg-color:       #FAF8F5; /* Soft ultra-light warm neutral page canvas */
-  --surface-white:  var(--color-surface);
+  --accent-color: var(--color-accent);
+  --bg-warm: var(--color-bg-warm);
+  --bg-color: #FAF8F5;
+  /* Soft ultra-light warm neutral page canvas */
+  --surface-white: var(--color-surface);
 
-  --text-main:   var(--color-primary);
-  --text-muted:  var(--color-accent);
+  --text-main: var(--color-primary);
+  --text-muted: var(--color-accent);
   --border-color: rgba(120, 127, 86, 0.25);
 }
 
