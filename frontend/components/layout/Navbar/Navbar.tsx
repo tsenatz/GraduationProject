@@ -79,7 +79,7 @@ export default function Navbar() {
         <div className={styles.brandContainer}>
           <Link href="/" className={styles.brand} aria-label="Erns Home">
             <Home className={styles.brandIcon} aria-hidden="true" />
-            <span className={styles.brandText}>Erns</span>
+            <span className={styles.brandText}>ERNS</span>
           </Link>
         </div>
 
