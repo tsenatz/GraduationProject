@@ -44,3 +44,8 @@ next-env.d.ts
 .agents/
 .gemini/
 .antigravity/
+.claude/
+.windsurf/
+skills-lock.json
+
+/app/generated/prisma
