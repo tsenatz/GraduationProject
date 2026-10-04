@@ -4,39 +4,39 @@
   justify-content: center;
   padding: 0.5rem 1.25rem;
   border-radius: 9999px;
-  background-color: var(--color-primary, #30360E);
-  color: var(--color-surface, #FFFFFF);
+  background-color: var(--color-primary);
+  color: var(--color-surface);
   font-size: 0.95rem;
   font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
   border: 1px solid transparent;
-  box-shadow: 0 3px 8px rgba(48, 54, 14, 0.25);
+  box-shadow: 0 3px 8px rgba(var(--color-primary-rgb), 0.25);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
 }
 
 .signInBtn:hover {
-  background-color: var(--color-accent, #787F56);
-  color: var(--color-surface, #FFFFFF);
-  box-shadow: 0 5px 12px rgba(48, 54, 14, 0.35);
+  background-color: var(--color-accent);
+  color: var(--color-surface);
+  box-shadow: 0 5px 12px rgba(var(--color-primary-rgb), 0.35);
   transform: translateY(-1px);
 }
 
 .signInBtn:active {
   transform: translateY(0);
-  box-shadow: 0 1px 2px rgba(48, 54, 14, 0.2);
+  box-shadow: 0 1px 2px rgba(var(--color-primary-rgb), 0.2);
 }
 
 .signInBtn:focus-visible {
-  outline: 2px solid var(--color-primary, #30360E);
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
 .active {
-  background-color: var(--color-accent, #787F56);
-  color: var(--color-surface, #FFFFFF);
-  box-shadow: inset 0 2px 4px rgba(48, 54, 14, 0.3);
+  background-color: var(--color-accent);
+  color: var(--color-surface);
+  box-shadow: inset 0 2px 4px rgba(var(--color-primary-rgb), 0.3);
 }
 
 .label {

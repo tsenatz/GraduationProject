@@ -19,7 +19,16 @@
 
   --text-main: var(--color-primary);
   --text-muted: var(--color-accent);
-  --border-color: rgba(120, 127, 86, 0.25);
+  --border-color: rgba(var(--color-accent-rgb), 0.25);
+  --color-primary-transparent-40: #30360E66;
+  --color-primary-transparent-90: #30360EE6;
+  --color-accent-transparent-10: rgba(var(--color-accent-rgb), 0.1);
+  --color-white-transparent-40: rgba(255, 255, 255, 0.4);
+
+  /* RGB Variables for alpha transparency */
+  --color-primary-rgb: 48, 54, 14;
+  --color-accent-rgb: 120, 127, 86;
+  --color-bg-warm-rgb: 226, 212, 185;
 }
 
 * {
