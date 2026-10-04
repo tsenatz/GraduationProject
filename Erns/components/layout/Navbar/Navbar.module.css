@@ -4,9 +4,9 @@
   left: 0;
   right: 0;
   width: 100%;
-  background-color: var(--color-surface, #FFFFFF);
-  border-bottom: 1px solid rgba(120, 127, 86, 0.2);
-  box-shadow: 0 2px 10px rgba(48, 54, 14, 0.04);
+  background-color: var(--color-surface);
+  border-bottom: 1px solid rgba(var(--color-accent-rgb), 0.2);
+  box-shadow: 0 2px 10px rgba(var(--color-primary-rgb), 0.04);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -38,27 +38,27 @@
   min-width: 40px;
   min-height: 40px;
   background: transparent;
-  border: 1px solid var(--color-accent, #787F56);
+  border: 1px solid var(--color-accent);
   border-radius: 8px;
-  color: var(--color-primary, #30360E);
+  color: var(--color-primary);
   cursor: pointer;
   transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .mobileMenuBtn:hover {
-  background-color: rgba(120, 127, 86, 0.12);
-  border-color: var(--color-primary, #30360E);
+  background-color: rgba(var(--color-accent-rgb), 0.12);
+  border-color: var(--color-primary);
 }
 
 .mobileMenuBtn:focus-visible {
-  outline: 2px solid var(--color-primary, #30360E);
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
 .menuIcon {
   width: 20px;
   height: 20px;
-  color: var(--color-primary, #30360E);
+  color: var(--color-primary);
 }
 
 .navSectionLeft {
@@ -86,21 +86,21 @@
 }
 
 .brand:focus-visible {
-  outline: 2px solid var(--color-primary, #30360E);
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
 .brandIcon {
   width: 28px;
   height: 28px;
-  color: var(--color-primary, #30360E);
+  color: var(--color-primary);
   stroke-width: 2.5;
 }
 
 .brandText {
   font-size: 1.6rem;
   font-weight: 800;
-  color: var(--color-primary, #30360E);
+  color: var(--color-primary);
   letter-spacing: -0.5px;
   line-height: 1;
 }
@@ -114,7 +114,7 @@
 }
 
 .navLink {
-  color: var(--color-primary, #30360E);
+  color: var(--color-primary);
   text-decoration: none;
   font-size: 1.05rem;
   font-weight: 600;
@@ -125,25 +125,25 @@
 }
 
 .navLink:hover {
-  color: var(--color-accent, #787F56);
+  color: var(--color-accent);
 }
 
 .navLink:focus-visible {
-  outline: 2px solid var(--color-primary, #30360E);
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
 .navLink.active {
-  color: var(--color-primary, #30360E);
+  color: var(--color-primary);
   font-weight: 700;
-  border-bottom: 2px solid var(--color-primary, #30360E);
+  border-bottom: 2px solid var(--color-primary);
 }
 
 .mobileDrawerItemBtn {
   width: 100%;
   padding-top: 0.5rem;
   margin-top: 0.25rem;
-  border-top: 1px solid rgba(120, 127, 86, 0.2);
+  border-top: 1px solid rgba(var(--color-accent-rgb), 0.2);
   display: flex;
 }
 
@@ -171,24 +171,24 @@
 }
 
 .breadcrumbLink {
-  color: var(--color-accent, #787F56);
+  color: var(--color-accent);
   text-decoration: none;
   transition: color 0.15s ease;
 }
 
 .breadcrumbLink:hover {
-  color: var(--color-primary, #30360E);
+  color: var(--color-primary);
 }
 
 .breadcrumbLink:focus-visible {
-  outline: 2px solid var(--color-primary, #30360E);
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
 .breadcrumbSeparator {
   display: flex;
   align-items: center;
-  color: var(--color-accent, #787F56);
+  color: var(--color-accent);
 }
 
 .chevronIcon {
@@ -197,7 +197,7 @@
 }
 
 .breadcrumbCurrent {
-  color: var(--color-primary, #30360E);
+  color: var(--color-primary);
   font-weight: 600;
 }
 
@@ -207,9 +207,9 @@
   top: 64px;
   left: 0;
   right: 0;
-  background-color: var(--color-surface, #FFFFFF);
-  border-bottom: 1px solid rgba(120, 127, 86, 0.2);
-  box-shadow: 0 4px 16px rgba(48, 54, 14, 0.1);
+  background-color: var(--color-surface);
+  border-bottom: 1px solid rgba(var(--color-accent-rgb), 0.2);
+  box-shadow: 0 4px 16px rgba(var(--color-primary-rgb), 0.1);
   z-index: 999;
   padding: 1rem 1.5rem;
 }
@@ -237,7 +237,7 @@
   width: 100%;
   min-height: 44px;
   padding: 0 1rem;
-  color: var(--color-primary, #30360E);
+  color: var(--color-primary);
   text-decoration: none;
   font-size: 1.125rem;
   font-weight: 500;
@@ -246,18 +246,18 @@
 }
 
 .mobileDrawerLink:hover {
-  background-color: rgba(120, 127, 86, 0.12);
-  color: var(--color-primary, #30360E);
+  background-color: rgba(var(--color-accent-rgb), 0.12);
+  color: var(--color-primary);
 }
 
 .mobileDrawerLink:focus-visible {
-  outline: 2px solid var(--color-primary, #30360E);
+  outline: 2px solid var(--color-primary);
   outline-offset: -2px;
 }
 
 .mobileDrawerLink.active {
-  color: var(--color-primary, #30360E);
-  background-color: rgba(226, 212, 185, 0.35);
+  color: var(--color-primary);
+  background-color: rgba(var(--color-bg-warm-rgb), 0.35);
   font-weight: 700;
 }
 
@@ -298,8 +298,8 @@
     display: flex;
     width: 100%;
     padding: 4px 1rem 8px 1rem;
-    background-color: var(--color-bg-warm, #E2D4B9);
-    border-top: 1px solid rgba(120, 127, 86, 0.2);
+    background-color: var(--color-bg-warm);
+    border-top: 1px solid rgba(var(--color-accent-rgb), 0.2);
     justify-content: center;
     align-items: center;
   }

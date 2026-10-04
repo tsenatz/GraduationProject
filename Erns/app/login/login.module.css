@@ -1,0 +1,374 @@
+.container {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+  background-color: var(--surface-white);
+  margin: 0;
+}
+
+.imageSection {
+  flex: 1;
+  position: relative;
+  display: none;
+  overflow: hidden;
+}
+
+@media (min-width: 900px) {
+  .imageSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}
+
+.imageWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.imageWrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imageOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, var(--color-primary-transparent-40), var(--color-primary-transparent-90));
+  z-index: 2;
+}
+
+.logoArea {
+  position: relative;
+  z-index: 3;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: white;
+}
+
+.logoIcon {
+  background-color: white;
+  color: black;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoText {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+  letter-spacing: -0.02em;
+}
+
+.imageContent {
+  position: relative;
+  z-index: 3;
+  padding: 40px;
+  color: white;
+}
+
+.imageContent h1 {
+  font-size: 3.5rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.imageContent p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  max-width: 420px;
+  line-height: 1.6;
+}
+
+.textContent {
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 32px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-white-transparent-40);
+}
+
+.dot.active {
+  background-color: white;
+  width: 24px;
+  border-radius: 4px;
+}
+
+.formSection {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  position: relative;
+}
+
+.topTabs {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  display: flex;
+  background-color: var(--surface-white);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 4px;
+  z-index: 10;
+}
+
+.tab {
+  padding: 8px 24px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.tab:hover {
+  background-color: var(--color-accent-transparent-10);
+}
+
+.activeTab {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.activeTab:hover {
+  background-color: var(--color-primary);
+  opacity: 0.9;
+}
+
+.formWrapper {
+  width: 100%;
+  max-width: 400px;
+}
+
+.formHeader {
+  margin-bottom: 32px;
+}
+
+.formHeader h2 {
+  font-size: 2rem;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.formHeader p {
+  color: var(--color-accent);
+  font-size: 0.95rem;
+}
+
+.inputGroup {
+  margin-bottom: 24px;
+}
+
+.inputGroup label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+  color: var(--color-primary);
+  background-color: var(--surface-white);
+}
+
+.input:focus {
+  border-color: var(--color-primary);
+}
+
+.input::placeholder {
+  color: var(--color-accent);
+}
+
+.eyeIcon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-accent);
+  cursor: pointer;
+}
+
+.formOptions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.rememberMe {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--color-primary);
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.checkbox.checked {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+.forgotPassword {
+  font-size: 0.85rem;
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.forgotPassword:hover {
+  text-decoration: underline;
+}
+
+.loginBtn {
+  width: 100%;
+  padding: 16px;
+  background-color: var(--color-primary);
+  color: white;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 32px;
+  transition: background-color 0.2s ease;
+}
+
+.loginBtn:hover {
+  background-color: var(--color-accent);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.divider span {
+  color: var(--color-accent);
+  font-size: 0.85rem;
+  padding: 0 16px;
+  font-weight: 500;
+}
+
+.socialLogin {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.socialBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  background-color: var(--surface-white);
+  transition: background-color 0.2s ease;
+}
+
+.socialBtn:hover {
+  background-color: var(--color-bg-warm);
+}
+
+.socialIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.registerText {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--color-accent);
+}
+
+.registerLink {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 4px;
+  text-decoration: underline;
+}
+
+.registerLink:hover {
+  text-decoration: underline;
+}

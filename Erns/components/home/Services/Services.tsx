@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import styles from './Services.module.css';
 
 export function Services() {
@@ -7,10 +8,12 @@ export function Services() {
       <div className={styles.cardsWrapper}>
         {/* Buy a home */}
         <div className={styles.card}>
-          <img
+          <Image
             className={styles.cardImage}
             src="/buy-house.jpg"
             alt="Buy a house illustration"
+            width={280}
+            height={200}
           />
           <div className={styles.cardContent}>
             <h3 className={styles.cardTitle}>Buy a home</h3>
@@ -23,10 +26,12 @@ export function Services() {
 
         {/* Sell a home */}
         <div className={styles.card}>
-          <img
+          <Image
             className={styles.cardImage}
             src="/sell-house.jpg"
             alt="Sell a house illustration"
+            width={280}
+            height={200}
           />
           <div className={styles.cardContent}>
             <h3 className={styles.cardTitle}>Sell a home</h3>
@@ -39,10 +44,12 @@ export function Services() {
 
         {/* Rent a home */}
         <div className={styles.card}>
-          <img
+          <Image
             className={styles.cardImage}
             src="/rent-house.jpg"
             alt="Rent a house illustration"
+            width={280}
+            height={200}
           />
           <div className={styles.cardContent}>
             <h3 className={styles.cardTitle}>Rent a home</h3>

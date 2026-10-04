@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import styles from "./Recommendations.module.css";
 import { PiggyBank, MapPin } from "lucide-react";
 
@@ -40,7 +41,13 @@ export function Recommendations() {
           <div className={`${styles.card} ${styles.card1}`}></div>
           <div className={`${styles.card} ${styles.card2}`}></div>
           <div className={`${styles.card} ${styles.card3}`}>
-            <div className={styles.cardImage}></div>
+            <Image 
+              src="/recommendations.png" 
+              alt="Recommendations map preview" 
+              fill 
+              style={{ objectFit: 'cover' }}
+              className={styles.cardImage} 
+            />
           </div>
         </div>
       </div>
