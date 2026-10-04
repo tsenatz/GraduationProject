@@ -10,7 +10,8 @@
     "db:migrate": "npx prisma migrate dev",
     "db:push": "npx prisma db push",
     "db:generate": "npx prisma generate",
-    "db:studio": "npx prisma studio"
+    "db:studio": "npx prisma studio",
+    "db:reset": "prisma migrate reset && prisma migrate dev"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.2.0",
@@ -20,7 +21,8 @@
     "next": "16.3.7",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "ws": "^8.22.0"
+    "ws": "^8.22.0",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@types/node": "^20",
