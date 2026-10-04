@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import { Home, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { Home, Mail, Phone, MapPin } from 'lucide-react';
+import { FacebookIcon, TwitterIcon, InstagramIcon, LinkedinIcon } from '@/components/icons/SocialIcons';
 import styles from './Footer.module.css';
 
 const Footer = () => {
@@ -18,16 +19,16 @@ const Footer = () => {
             </p>
             <div className={styles.socials}>
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Facebook">
-                <Facebook size={20} />
+                <FacebookIcon className={styles.socialIcon} />
               </a>
               <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Twitter">
-                <Twitter size={20} />
+                <TwitterIcon className={styles.socialIcon} />
               </a>
               <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Instagram">
-                <Instagram size={20} />
+                <InstagramIcon className={styles.socialIcon} />
               </a>
               <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="LinkedIn">
-                <Linkedin size={20} />
+                <LinkedinIcon className={styles.socialIcon} />
               </a>
             </div>
           </div>
