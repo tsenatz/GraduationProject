@@ -10,7 +10,7 @@ import styles from "./signup.module.css";
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -179,27 +179,6 @@ export default function SignupPage() {
               </div>
             </div>
 
-            <div className={styles.inputGroup}>
-              <label htmlFor="role">I am a...</label>
-              <div className={styles.inputWrapper}>
-                <select 
-                  id="role" 
-                  name="role" 
-                  value={formData.role}
-                  onChange={handleChange}
-                  className={styles.select}
-                  required
-                >
-                  <option value="buyer">Prospective Buyer</option>
-                  <option value="leaser">Prospective Tenant (Leaser)</option>
-                  <option value="agent">Real Estate Agent</option>
-                  <option value="property_manager">Property Manager</option>
-                  <option value="individual_seller">Private Seller</option>
-                </select>
-                <ChevronDown size={20} className={styles.chevronIcon} />
-              </div>
-            </div>
-
             <div className={styles.row}>
               <div className={styles.inputGroup}>
                 <label htmlFor="password">Create Password</label>
@@ -282,7 +261,7 @@ export default function SignupPage() {
           </div>
 
           <div className={styles.registerText}>
-            Already have an account? 
+            Already have an account?
             <Link href="/login" className={styles.registerLink}>
               Log in
             </Link>
