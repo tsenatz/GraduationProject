@@ -64,12 +64,12 @@ export default function LoginPage() {
         </div>
         <div className={styles.imageOverlay} />
 
-        <div className={styles.logoArea}>
+        <Link href="/" className={styles.logoArea}>
           <div className={styles.logoIcon}>
             <Home size={20} strokeWidth={2.5} />
           </div>
           <span className={styles.logoText}>ERNS</span>
-        </div>
+        </Link>
 
         <div className={styles.imageContent}>
           <div className={styles.textContent} key={currentSlide}>
