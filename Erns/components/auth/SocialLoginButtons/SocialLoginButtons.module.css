@@ -1,0 +1,32 @@
+.socialLogin {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.socialBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  background-color: var(--surface-white);
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.socialBtn:hover {
+  background-color: var(--color-bg-warm);
+}
+
+.socialIcon {
+  width: 20px;
+  height: 20px;
+}
