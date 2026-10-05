@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 import { AuthPageLayout } from "@/components/auth/AuthPageLayout";
 import { AuthImagePanel } from "@/components/auth/AuthImagePanel";
 import { AuthTabs } from "@/components/auth/AuthTabs";
 import { FormInput } from "@/components/auth/FormInput";
 import { SocialLoginButtons } from "@/components/auth/SocialLoginButtons";
+import { registerUser } from "@/lib/actions/auth";
 
 import styles from "./signup.module.css";
 
@@ -49,17 +51,36 @@ export default function SignupPage() {
     password: "",
     confirmPassword: "",
   });
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
+    if (error) setError(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Signup form submitted: ", formData);
+    setError(null);
+    setIsLoading(true);
+
+    try {
+      const res = await registerUser(formData);
+      if (res.error) {
+        setError(res.error);
+        setIsLoading(false);
+        return;
+      }
+
+      // Redirect user to verify email page
+      window.location.href = `/verify-email?email=${encodeURIComponent(formData.email)}`;
+    } catch {
+      setError("An unexpected error occurred. Please try again.");
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -77,6 +98,22 @@ export default function SignupPage() {
               <h2>Join ERNS Today!</h2>
               <p>Create your account to get started</p>
             </div>
+
+            {error && (
+              <div
+                style={{
+                  padding: "0.75rem 1rem",
+                  backgroundColor: "#fef2f2",
+                  color: "#b91c1c",
+                  borderRadius: "8px",
+                  fontSize: "0.875rem",
+                  marginBottom: "1rem",
+                  border: "1px solid #fecaca",
+                }}
+              >
+                {error}
+              </div>
+            )}
 
             <form onSubmit={handleSubmit}>
               <div className={styles.row}>
@@ -134,8 +171,13 @@ export default function SignupPage() {
                 />
               </div>
 
-              <button type="submit" className={styles.loginBtn}>
-                Create Account
+              <button
+                type="submit"
+                className={styles.loginBtn}
+                disabled={isLoading}
+                style={{ opacity: isLoading ? 0.7 : 1, cursor: isLoading ? "not-allowed" : "pointer" }}
+              >
+                {isLoading ? "Creating Account..." : "Create Account"}
               </button>
             </form>
 
