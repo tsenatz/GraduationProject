@@ -1,64 +1,40 @@
-import React from 'react';
-import Image from 'next/image';
-import styles from './Services.module.css';
+import { ServiceCard } from "@/components/home/ServiceCard";
+import styles from "./Services.module.css";
+
+const SERVICE_ITEMS = [
+  {
+    imageSrc: "/buy-house.jpg",
+    imageAlt: "Buy a house illustration",
+    title: "Buy a home",
+    description:
+      "A real estate agent can provide you with a clear breakdown of costs so that you can avoid surprise expenses.",
+    buttonLabel: "Find a local agent",
+  },
+  {
+    imageSrc: "/sell-house.jpg",
+    imageAlt: "Sell a house illustration",
+    title: "Sell a home",
+    description:
+      "No matter what path you take to sell your home, we can help you navigate a successful sale.",
+    buttonLabel: "See your options",
+  },
+  {
+    imageSrc: "/rent-house.jpg",
+    imageAlt: "Rent a house illustration",
+    title: "Rent a home",
+    description:
+      "We're creating a seamless online experience – from shopping on the largest rental network, to applying, to paying rent.",
+    buttonLabel: "Find rentals",
+  },
+];
 
 export function Services() {
   return (
     <section className={styles.container}>
       <div className={styles.cardsWrapper}>
-        {/* Buy a home */}
-        <div className={styles.card}>
-          <Image
-            className={styles.cardImage}
-            src="/buy-house.jpg"
-            alt="Buy a house illustration"
-            width={280}
-            height={200}
-          />
-          <div className={styles.cardContent}>
-            <h3 className={styles.cardTitle}>Buy a home</h3>
-            <p className={styles.cardDescription}>
-              A real estate agent can provide you with a clear breakdown of costs so that you can avoid surprise expenses.
-            </p>
-            <button className={styles.cardButton}>Find a local agent</button>
-          </div>
-        </div>
-
-        {/* Sell a home */}
-        <div className={styles.card}>
-          <Image
-            className={styles.cardImage}
-            src="/sell-house.jpg"
-            alt="Sell a house illustration"
-            width={280}
-            height={200}
-          />
-          <div className={styles.cardContent}>
-            <h3 className={styles.cardTitle}>Sell a home</h3>
-            <p className={styles.cardDescription}>
-              No matter what path you take to sell your home, we can help you navigate a successful sale.
-            </p>
-            <button className={styles.cardButton}>See your options</button>
-          </div>
-        </div>
-
-        {/* Rent a home */}
-        <div className={styles.card}>
-          <Image
-            className={styles.cardImage}
-            src="/rent-house.jpg"
-            alt="Rent a house illustration"
-            width={280}
-            height={200}
-          />
-          <div className={styles.cardContent}>
-            <h3 className={styles.cardTitle}>Rent a home</h3>
-            <p className={styles.cardDescription}>
-              We're creating a seamless online experience – from shopping on the largest rental network, to applying, to paying rent.
-            </p>
-            <button className={styles.cardButton}>Find rentals</button>
-          </div>
-        </div>
+        {SERVICE_ITEMS.map((item) => (
+          <ServiceCard key={item.title} {...item} />
+        ))}
       </div>
     </section>
   );
