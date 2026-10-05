@@ -7,19 +7,7 @@ import { Home, Menu, X, ChevronRight } from "lucide-react";
 import SignInButton from "@/components/auth/SignInButton";
 import styles from "./Navbar.module.css";
 
-const navLinksLeft = [
-  { href: "/buy", label: "Buy" },
-  { href: "/rent", label: "Rent" },
-  { href: "/sell", label: "Sell" },
-  { href: "/mortgage", label: "Get a mortgage" },
-  { href: "/agents", label: "Find an agent" },
-];
-
-const navLinksRight = [
-  { href: "/manage-rentals", label: "Manage rentals" },
-  { href: "/advertise", label: "Advertise" },
-  { href: "/get-help", label: "Get help" },
-];
+import { NAV_LINKS_LEFT, NAV_LINKS_RIGHT } from "./navLinks";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -28,7 +16,7 @@ export default function Navbar() {
   // Helper for dynamic breadcrumbs on mobile
   const getBreadcrumbLabel = () => {
     if (pathname === "/") return null;
-    const allLinks = [...navLinksLeft, ...navLinksRight, { href: "/login", label: "Login" }];
+    const allLinks = [...NAV_LINKS_LEFT, ...NAV_LINKS_RIGHT, { href: "/login", label: "Login" }];
     const match = allLinks.find((link) => link.href === pathname);
     if (match) return match.label;
     const segments = pathname.split("/").filter(Boolean);
@@ -61,7 +49,7 @@ export default function Navbar() {
 
         {/* Desktop Left Navigation Items */}
         <nav className={styles.navSectionLeft} aria-label="Main primary navigation">
-          {navLinksLeft.map((link) => {
+          {NAV_LINKS_LEFT.map((link) => {
             const isActive = pathname === link.href;
             return (
               <Link
@@ -86,7 +74,7 @@ export default function Navbar() {
 
         {/* Desktop Right Navigation Items & Mobile Right Profile */}
         <nav className={styles.navSectionRight} aria-label="Main secondary navigation">
-          {navLinksRight.map((link) => {
+          {NAV_LINKS_RIGHT.map((link) => {
             const isActive = pathname === link.href;
             return (
               <Link
@@ -129,7 +117,7 @@ export default function Navbar() {
         <div id="mobile-navigation-drawer" className={styles.mobileDrawer}>
           <nav aria-label="Mobile drawer navigation" className={styles.mobileDrawerNav}>
             <ul className={styles.mobileDrawerList}>
-              {[...navLinksLeft, ...navLinksRight].map((link) => {
+              {[...NAV_LINKS_LEFT, ...NAV_LINKS_RIGHT].map((link) => {
                 const isActive = pathname === link.href;
                 return (
                   <li key={link.href} className={styles.mobileDrawerItem}>
