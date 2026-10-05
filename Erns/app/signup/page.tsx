@@ -75,12 +75,8 @@ export default function SignupPage() {
         return;
       }
 
-      // Automatically sign in upon successful registration
-      await signIn("credentials", {
-        email: formData.email,
-        password: formData.password,
-        redirectTo: "/",
-      });
+      // Redirect user to verify email page
+      window.location.href = `/verify-email?email=${encodeURIComponent(formData.email)}`;
     } catch {
       setError("An unexpected error occurred. Please try again.");
       setIsLoading(false);
