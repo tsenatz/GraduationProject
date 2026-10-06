@@ -28,7 +28,7 @@ export const AgentCard: React.FC<AgentCardProps> = ({
 
   const salesText = t.salesHighlight
     ? t.salesHighlight.replace("{count}", agent.salesCountLast12Months.toString())
-    : `${agent.salesCountLast12Months} sales in 12 mo`;
+    : `${agent.salesCountLast12Months} sales (12 mo)`;
 
   const listingsText = t.listingsHighlight
     ? t.listingsHighlight.replace("{count}", agent.activeListingsCount.toString())
@@ -36,8 +36,8 @@ export const AgentCard: React.FC<AgentCardProps> = ({
 
   return (
     <article className={styles.card}>
-      {/* Left + Middle Content */}
-      <div className={styles.mainInfo}>
+      {/* Top Header: Avatar + Verified Badge */}
+      <div className={styles.topSection}>
         <div
           className={styles.avatarWrapper}
           onClick={() => onViewProfileClick(agent)}
@@ -57,78 +57,76 @@ export const AgentCard: React.FC<AgentCardProps> = ({
           />
         </div>
 
-        <div className={styles.detailsCol}>
-          <div className={styles.nameRow}>
-            <button
-              type="button"
-              className={styles.nameButton}
-              onClick={() => onViewProfileClick(agent)}
-            >
-              <h3 className={styles.name}>{displayName}</h3>
-            </button>
+        <div className={styles.nameSection}>
+          <button
+            type="button"
+            className={styles.nameButton}
+            onClick={() => onViewProfileClick(agent)}
+          >
+            <h3 className={styles.name}>{displayName}</h3>
+          </button>
 
-            {agent.isVerified && (
-              <span className={styles.verifiedBadge}>
-                <CheckCircle2 size={12} />
-                <span>{t.verifiedBadge}</span>
-              </span>
-            )}
+          {agent.isVerified && (
+            <span className={styles.verifiedBadge}>
+              <CheckCircle2 size={12} />
+              <span>{t.verifiedBadge}</span>
+            </span>
+          )}
+        </div>
+
+        <p className={styles.agencyLocation}>
+          <span className={styles.agencyName}>{displayAgency}</span>
+          <span className={styles.areasText}>{displayAreas}</span>
+        </p>
+      </div>
+
+      {/* Middle Section: Ratings & Key Highlight Chips */}
+      <div className={styles.middleSection}>
+        <div className={styles.ratingRow}>
+          <div className={styles.stars}>
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                size={14}
+                fill={i < Math.floor(agent.rating) ? "#f59e0b" : "none"}
+                color="#f59e0b"
+              />
+            ))}
           </div>
+          <span className={styles.ratingNumber}>
+            {agent.rating.toFixed(1)}
+          </span>
+          <button
+            type="button"
+            className={styles.reviewCountBtn}
+            onClick={() => onViewProfileClick(agent)}
+            title="View reviews and full ratings"
+          >
+            ({agent.reviewCount} {t.reviews})
+          </button>
+        </div>
 
-          <p className={styles.agencyLocation}>
-            <span>{displayAgency}</span>
-            <span className={styles.bulletSeparator}>•</span>
-            <span>{displayAreas}</span>
-          </p>
-
-          <div className={styles.metaRow}>
-            <div className={styles.ratingGroup}>
-              <div className={styles.stars}>
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    size={14}
-                    fill={i < Math.floor(agent.rating) ? "#f59e0b" : "none"}
-                    color="#f59e0b"
-                  />
-                ))}
-              </div>
-              <span className={styles.ratingNumber}>
-                {agent.rating.toFixed(1)}
-              </span>
-              <button
-                type="button"
-                className={styles.reviewCountBtn}
-                onClick={() => onViewProfileClick(agent)}
-                title="View reviews and ratings breakdown"
-              >
-                ({agent.reviewCount} {t.reviews})
-              </button>
-            </div>
-
-            <div className={styles.highlightsGroup}>
-              <span className={styles.highlightPill}>
-                <TrendingUp size={12} color="var(--color-primary)" />
-                {salesText}
-              </span>
-              <span className={styles.highlightPill}>
-                <Home size={12} color="var(--color-primary)" />
-                {listingsText}
-              </span>
-            </div>
-          </div>
+        <div className={styles.chipsRow}>
+          <span className={styles.chip}>
+            <TrendingUp size={12} color="var(--color-primary)" />
+            <span>{salesText}</span>
+          </span>
+          <span className={styles.chip}>
+            <Home size={12} color="var(--color-primary)" />
+            <span>{listingsText}</span>
+          </span>
         </div>
       </div>
 
-      {/* Right Action Buttons */}
-      <div className={styles.actionsCol}>
+      {/* Bottom Actions: View More & Contact Agent Side by Side */}
+      <div className={styles.actionsRow}>
         <button
           type="button"
           className={styles.viewMoreBtn}
           onClick={() => onViewProfileClick(agent)}
         >
           <span>{t.btnViewMore || "View More"}</span>
-          <ExternalLink size={14} />
+          <ExternalLink size={13} />
         </button>
 
         <button
@@ -136,7 +134,7 @@ export const AgentCard: React.FC<AgentCardProps> = ({
           className={styles.contactBtn}
           onClick={() => onContactClick(agent)}
         >
-          <Mail size={15} />
+          <Mail size={14} />
           <span>{t.btnContact}</span>
         </button>
       </div>

@@ -1,69 +1,64 @@
-/* Compact Agent Card - Human-crafted style matching teammate RentalManager & Onboarding tokens */
+/* Square Agent Card - Clean box layout for multi-column directory grid */
 
 .card {
   background-color: #ffffff;
   border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: 14px;
-  padding: 1.25rem 1.5rem;
+  border-radius: 16px;
+  padding: 1.5rem 1.25rem 1.25rem;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: space-between;
-  gap: 1.5rem;
+  gap: 1.15rem;
   box-shadow: 0 2px 8px rgba(10, 25, 49, 0.03);
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   box-sizing: border-box;
+  text-align: center;
+  position: relative;
 }
 
 .card:hover {
-  border-color: rgba(10, 25, 49, 0.16);
-  box-shadow: 0 6px 18px rgba(10, 25, 49, 0.06);
+  border-color: rgba(10, 25, 49, 0.18);
+  box-shadow: 0 8px 24px rgba(10, 25, 49, 0.06);
+  transform: translateY(-2px);
 }
 
-/* Left & Center Main Content Area */
-.mainInfo {
+/* Top Section: Avatar, Name, Verified, Agency */
+.topSection {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 1.25rem;
-  flex: 1;
-  min-width: 0;
+  gap: 0.65rem;
 }
 
 .avatarWrapper {
   position: relative;
-  width: 68px;
-  height: 68px;
+  width: 76px;
+  height: 76px;
   border-radius: 50%;
   overflow: hidden;
-  border: 2px solid rgba(15, 23, 42, 0.08);
+  border: 2.5px solid rgba(15, 23, 42, 0.08);
   flex-shrink: 0;
   background-color: #f1f5f9;
   cursor: pointer;
+  box-shadow: 0 2px 6px rgba(10, 25, 49, 0.04);
 }
 
 .avatarImg {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.2s ease;
+  transition: transform 0.25s ease;
 }
 
 .card:hover .avatarImg {
-  transform: scale(1.04);
+  transform: scale(1.06);
 }
 
-.detailsCol {
+.nameSection {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  flex: 1;
-  min-width: 0;
-}
-
-.nameRow {
-  display: flex;
   align-items: center;
-  gap: 0.65rem;
-  flex-wrap: wrap;
+  gap: 0.35rem;
 }
 
 .nameButton {
@@ -71,11 +66,10 @@
   border: none;
   padding: 0;
   cursor: pointer;
-  text-align: left;
 }
 
 .name {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 800;
   color: var(--color-primary, #0a1931);
   margin: 0;
@@ -92,7 +86,7 @@
   color: var(--color-primary, #0a1931);
   font-size: 0.72rem;
   font-weight: 700;
-  padding: 0.18rem 0.5rem;
+  padding: 0.18rem 0.55rem;
   border-radius: 6px;
   display: inline-flex;
   align-items: center;
@@ -101,33 +95,41 @@
 }
 
 .agencyLocation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  margin: 0;
+}
+
+.agencyName {
   font-size: 0.88rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.areasText {
+  font-size: 0.8rem;
   color: #64748b;
   font-weight: 500;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.bulletSeparator {
-  color: #cbd5e1;
+/* Middle Section: Ratings & Highlight Chips */
+.middleSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.5rem;
+  background-color: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.04);
 }
 
-.metaRow {
+.ratingRow {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-top: 0.15rem;
-}
-
-.ratingGroup {
-  display: flex;
-  align-items: center;
+  justify-content: center;
   gap: 0.4rem;
 }
 
@@ -148,7 +150,7 @@
   background: none;
   border: none;
   padding: 0;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   color: #64748b;
   font-weight: 500;
   cursor: pointer;
@@ -160,45 +162,46 @@
   color: var(--color-accent, #4a7fa7);
 }
 
-/* Compact Highlight Pills */
-.highlightsGroup {
+.chipsRow {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  gap: 0.4rem;
   flex-wrap: wrap;
 }
 
-.highlightPill {
+.chip {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  background-color: rgba(10, 25, 49, 0.04);
+  gap: 0.3rem;
+  background-color: #ffffff;
   color: var(--color-primary, #0a1931);
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 700;
   padding: 0.22rem 0.55rem;
   border-radius: 6px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
 }
 
-/* Right Actions Column (Teammate Button Styling) */
-.actionsCol {
+/* Bottom Actions: Teammate Pill Buttons Side-by-Side */
+.actionsRow {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  flex-shrink: 0;
+  gap: 0.55rem;
+  width: 100%;
 }
 
-/* Outlined Pill: View Profile / View More */
 .viewMoreBtn {
+  flex: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.45rem;
+  gap: 0.35rem;
   border: 1.5px solid var(--color-primary, #0a1931);
   color: var(--color-primary, #0a1931);
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   font-weight: 700;
-  padding: 0.55rem 1.15rem;
+  padding: 0.55rem 0.75rem;
   border-radius: 20px;
   background: transparent;
   cursor: pointer;
@@ -208,20 +211,19 @@
 
 .viewMoreBtn:hover {
   background-color: rgba(10, 25, 49, 0.04);
-  color: var(--color-primary, #0a1931);
 }
 
-/* Primary Pill: Contact Agent */
 .contactBtn {
+  flex: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.45rem;
+  gap: 0.35rem;
   background-color: var(--color-primary, #0a1931);
   color: #ffffff;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   font-weight: 700;
-  padding: 0.55rem 1.25rem;
+  padding: 0.55rem 0.85rem;
   border-radius: 20px;
   border: none;
   cursor: pointer;
@@ -232,50 +234,4 @@
 .contactBtn:hover {
   background-color: #061122;
   transform: translateY(-1px);
-}
-
-/* Responsive Breakpoints */
-@media (max-width: 860px) {
-  .card {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1.15rem;
-    padding: 1.25rem;
-  }
-
-  .mainInfo {
-    align-items: flex-start;
-  }
-
-  .actionsCol {
-    width: 100%;
-    justify-content: stretch;
-    padding-top: 0.5rem;
-    border-top: 1px solid rgba(15, 23, 42, 0.06);
-  }
-
-  .viewMoreBtn,
-  .contactBtn {
-    flex: 1;
-  }
-}
-
-@media (max-width: 480px) {
-  .avatarWrapper {
-    width: 56px;
-    height: 56px;
-  }
-
-  .name {
-    font-size: 1.08rem;
-  }
-
-  .actionsCol {
-    flex-direction: column;
-  }
-
-  .viewMoreBtn,
-  .contactBtn {
-    width: 100%;
-  }
 }
