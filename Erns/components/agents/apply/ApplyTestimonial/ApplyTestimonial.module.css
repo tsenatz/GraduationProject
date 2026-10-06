@@ -1,0 +1,114 @@
+.section {
+  padding: 56px 24px;
+  background-color: var(--bg-color, #f6fafd);
+  border-top: 1px solid #e2e8f0;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Zillow Standard Dark Spotlight Box */
+.card {
+  background: linear-gradient(135deg, #0a1931 0%, #0d2342 100%);
+  border-radius: 8px;
+  padding: 2.25rem 2rem;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(10, 25, 49, 0.12);
+}
+
+.quoteIcon {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  font-size: 5rem;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.05);
+  font-family: Georgia, serif;
+  user-select: none;
+}
+
+.quote {
+  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  line-height: 1.6;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+  color: #f1f5f9;
+}
+
+.authorRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 1.25rem;
+  position: relative;
+  z-index: 1;
+}
+
+.authorInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.15rem;
+}
+
+.agency {
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.metrics {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.metricBadge {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-bg-warm, #b3cfe5);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: 1.75rem 1.25rem;
+  }
+  .authorRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .metrics {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+}

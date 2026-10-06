@@ -1,0 +1,59 @@
+.section {
+  width: 100%;
+  padding: 36px 24px 56px;
+  background-color: var(--bg-color, #f6fafd);
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Zillow Standard Empty State Box */
+.emptyState {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 56px 24px;
+  text-align: center;
+  border: 1px dashed #cbd5e1;
+  color: #64748b;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+.emptyTitle {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-primary, #0a1931);
+  margin: 16px 0 8px;
+}
+
+.emptyDesc {
+  font-size: 0.95rem;
+  max-width: 440px;
+  margin: 0 auto 20px;
+  line-height: 1.6;
+}
+
+.resetBtn {
+  padding: 10px 22px;
+  min-height: 42px;
+  border-radius: 6px;
+  background: var(--color-primary, #0a1931);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.92rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.resetBtn:hover {
+  background: #173258;
+}
