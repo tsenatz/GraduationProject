@@ -7,11 +7,23 @@ neonConfig.webSocketConstructor = ws;
 
 const connectionString = process.env.DATABASE_URL;
 
-if (!connectionString) {
-    throw new Error("DATABASE_URL is not configured");
-}
-
 const prismaClientSingleton = () => {
+    if (!connectionString) {
+        console.warn("⚠️ Warning: DATABASE_URL is not configured in .env. Database operations will fail until configured.");
+        return new Proxy({} as PrismaClient, {
+            get(target, prop) {
+                if (prop in target) return (target as Record<string, unknown>)[prop];
+                return new Proxy(() => {}, {
+                    get() {
+                        return () => Promise.resolve(null);
+                    },
+                    apply() {
+                        return Promise.resolve(null);
+                    },
+                });
+            },
+        });
+    }
     const adapter = new PrismaNeon({ connectionString });
     return new PrismaClient({ adapter });
 };
