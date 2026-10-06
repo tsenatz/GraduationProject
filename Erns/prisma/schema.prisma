@@ -117,3 +117,32 @@ model Authenticator {
 
   @@id([userId, credentialID])
 }
+
+//model for property listings and their details
+model Property {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  price       Float
+  
+  // Property Details
+  beds        Int
+  baths       Float
+  sqft        Int
+  propertyType String  // e.g., "Single Family", "Condo", "Townhouse"
+  status      String   // e.g., "FOR_SALE", "FOR_RENT"
+  
+  // Location Data
+  address     String
+  city        String
+  state       String
+  zipCode     String
+  latitude    Float    // Crucial for map plotting
+  longitude   Float    // Crucial for map plotting
+  
+  // Images
+  images      String[] // Array of image URLs
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
