@@ -1,19 +1,10 @@
+import { RentalManagerOnboardingWizard } from "@/components/rentalmanager/onboarding";
 
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
+export const metadata = {
+  title: "Rental Manager Setup | ERNS Real Estate",
+  description: "Complete your rental manager profile and portfolio settings.",
+};
 
-export default async function RentalManagerPage() {
-    const session = await auth();
-
-    if (!session) {
-        redirect("/login");
-    }
-
-    return (
-        <>
-            <div>Rental Manager</div>
-
-        </>
-
-    );
+export default function RentalManagerSetupPage() {
+  return <RentalManagerOnboardingWizard />;
 }

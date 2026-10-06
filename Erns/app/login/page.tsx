@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
 import { Check } from "lucide-react";
 import { signIn } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 
 import { AuthPageLayout } from "@/components/auth/AuthPageLayout";
 import { AuthImagePanel } from "@/components/auth/AuthImagePanel";
@@ -43,7 +44,10 @@ const CAROUSEL_ITEMS = [
   },
 ];
 
-export default function LoginPage() {
+function LoginForm() {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(true);
@@ -66,7 +70,7 @@ export default function LoginPage() {
         setError("Invalid email or password. Please try again.");
         setIsLoading(false);
       } else {
-        window.location.href = "/";
+        window.location.href = callbackUrl;
       }
     } catch {
       setError("An unexpected error occurred. Please try again.");
@@ -75,103 +79,111 @@ export default function LoginPage() {
   };
 
   return (
+    <>
+      <AuthTabs activeTab="login" />
+
+      <div className={styles.formWrapper}>
+        <div className={styles.formHeader}>
+          <h2>Welcome Back to ERNS!</h2>
+          <p>Sign in your account</p>
+        </div>
+
+        {error && (
+          <div
+            style={{
+              padding: "0.75rem 1rem",
+              backgroundColor: "#fef2f2",
+              color: "#b91c1c",
+              borderRadius: "8px",
+              fontSize: "0.875rem",
+              marginBottom: "1rem",
+              border: "1px solid #fecaca",
+            }}
+          >
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit}>
+          <FormInput
+            id="email"
+            label="Your Email"
+            type="email"
+            placeholder="info.madhu786@gmail.com"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (error) setError(null);
+            }}
+            required
+          />
+
+          <FormInput
+            id="password"
+            label="Password"
+            type="password"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              if (error) setError(null);
+            }}
+            className={styles.passwordInput}
+            required
+          />
+
+          <div className={styles.formOptions}>
+            <div
+              className={styles.rememberMe}
+              onClick={() => setRememberMe(!rememberMe)}
+            >
+              <div className={`${styles.checkbox} ${rememberMe ? styles.checked : ""}`}>
+                {rememberMe && <Check size={12} strokeWidth={3} />}
+              </div>
+              <span>Remember Me</span>
+            </div>
+            <Link href="/forgot-password" className={styles.forgotPassword}>
+              Forgot Password?
+            </Link>
+          </div>
+
+          <button
+            type="submit"
+            className={styles.loginBtn}
+            disabled={isLoading}
+            style={{ opacity: isLoading ? 0.7 : 1, cursor: isLoading ? "not-allowed" : "pointer" }}
+          >
+            {isLoading ? "Signing in..." : "Login"}
+          </button>
+        </form>
+
+        <div className={styles.divider}>
+          <span>Instant Login</span>
+        </div>
+
+        <SocialLoginButtons />
+
+        <div className={styles.registerText}>
+          Don&apos;t have any account?
+          <Link href="/signup" className={styles.registerLink}>
+            Register
+          </Link>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default function LoginPage() {
+  return (
     <AuthPageLayout
       imagePanelSlot={
         <AuthImagePanel imageSrc="/signin.png" carouselItems={CAROUSEL_ITEMS} />
       }
       formSectionSlot={
-        <>
-          <AuthTabs activeTab="login" />
-
-          <div className={styles.formWrapper}>
-            <div className={styles.formHeader}>
-              <h2>Welcome Back to ERNS!</h2>
-              <p>Sign in your account</p>
-            </div>
-
-            {error && (
-              <div
-                style={{
-                  padding: "0.75rem 1rem",
-                  backgroundColor: "#fef2f2",
-                  color: "#b91c1c",
-                  borderRadius: "8px",
-                  fontSize: "0.875rem",
-                  marginBottom: "1rem",
-                  border: "1px solid #fecaca",
-                }}
-              >
-                {error}
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit}>
-              <FormInput
-                id="email"
-                label="Your Email"
-                type="email"
-                placeholder="info.madhu786@gmail.com"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  if (error) setError(null);
-                }}
-                required
-              />
-
-              <FormInput
-                id="password"
-                label="Password"
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                  if (error) setError(null);
-                }}
-                className={styles.passwordInput}
-                required
-              />
-
-              <div className={styles.formOptions}>
-                <div
-                  className={styles.rememberMe}
-                  onClick={() => setRememberMe(!rememberMe)}
-                >
-                  <div className={`${styles.checkbox} ${rememberMe ? styles.checked : ""}`}>
-                    {rememberMe && <Check size={12} strokeWidth={3} />}
-                  </div>
-                  <span>Remember Me</span>
-                </div>
-                <Link href="/forgot-password" className={styles.forgotPassword}>
-                  Forgot Password?
-                </Link>
-              </div>
-
-              <button
-                type="submit"
-                className={styles.loginBtn}
-                disabled={isLoading}
-                style={{ opacity: isLoading ? 0.7 : 1, cursor: isLoading ? "not-allowed" : "pointer" }}
-              >
-                {isLoading ? "Signing in..." : "Login"}
-              </button>
-            </form>
-
-            <div className={styles.divider}>
-              <span>Instant Login</span>
-            </div>
-
-            <SocialLoginButtons />
-
-            <div className={styles.registerText}>
-              Don&apos;t have any account?
-              <Link href="/signup" className={styles.registerLink}>
-                Register
-              </Link>
-            </div>
-          </div>
-        </>
+        <Suspense fallback={<div style={{ padding: "2rem" }}>Loading...</div>}>
+          <LoginForm />
+        </Suspense>
       }
     />
   );

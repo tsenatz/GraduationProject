@@ -1,0 +1,98 @@
+.stripContainer {
+  background-color: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 48px 24px;
+}
+
+.innerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.titleWrapper {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.title {
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: var(--color-primary, #0a1931);
+  margin: 0 0 6px;
+}
+
+.subtitle {
+  font-size: 0.98rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* Zillow Standard Box */
+.pillarCard {
+  background-color: var(--bg-color, #f6fafd);
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 22px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  transition: all 0.2s ease;
+}
+
+.pillarCard:hover {
+  background-color: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(10, 25, 49, 0.05);
+}
+
+.iconBox {
+  width: 42px;
+  height: 42px;
+  border-radius: 6px;
+  background-color: rgba(10, 25, 49, 0.06);
+  color: var(--color-primary, #0a1931);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pillarContent {
+  flex: 1;
+}
+
+.pillarTitle {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--color-primary, #0a1931);
+  margin: 0 0 4px;
+}
+
+.pillarDesc {
+  font-size: 0.9rem;
+  color: #475569;
+  line-height: 1.55;
+  margin: 0;
+}
+
+@media (max-width: 860px) {
+  .stripContainer {
+    padding: 36px 16px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .pillarCard {
+    padding: 18px 16px;
+  }
+}

@@ -7,12 +7,10 @@ export const NAV_LINKS_LEFT: NavLink[] = [
   { href: "/buy", label: "Buy" },
   { href: "/rent", label: "Rent" },
   { href: "/sell", label: "Sell" },
-  { href: "/mortgage", label: "Get a mortgage" },
   { href: "/agents", label: "Find an agent" },
 ];
 
 export const NAV_LINKS_RIGHT: NavLink[] = [
   { href: "/rentalmanager", label: "Manage rentals" },
-  { href: "/advertise", label: "Advertise" },
   { href: "/gethelp", label: "Get help" },
 ];
