@@ -63,7 +63,7 @@ export function RentalManagerOnboardingWizard() {
   };
 
   const handleGoToDashboard = () => {
-    router.push("/rentalmanager/dashboard");
+    router.push("/rentalmanager/properties");
   };
 
   // Human readable role & unit labels for summary view
@@ -85,7 +85,7 @@ export function RentalManagerOnboardingWizard() {
   return (
     <div className={styles.onboardingContainer}>
       {/* Top Header without Navbar/Sidebar/Footer */}
-      <OnboardingHeader onSkipAll={handleSkipAll} />
+      <OnboardingHeader onSkipAll={handleSkipAll} showSkip={!isCompleted} />
 
       <main className={styles.mainWrapper}>
         {!isCompleted ? (
