@@ -6,6 +6,7 @@ export * from "./AgentFilterBar";
 export * from "./AgentCard";
 export * from "./AgentList";
 export * from "./AgentContactModal";
+export * from "./AgentDetailModal";
 export * from "./WhyVerifiedAgent";
 export * from "./AgentDirectoryFAQ";
 export * from "./AgentDirectoryCTA";

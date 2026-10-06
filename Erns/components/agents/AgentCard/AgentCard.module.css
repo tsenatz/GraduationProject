@@ -1,278 +1,281 @@
-/* Zillow Standard Agent Card */
+/* Compact Agent Card - Human-crafted style matching teammate RentalManager & Onboarding tokens */
+
 .card {
-  background: #ffffff;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
-  padding: 28px 24px;
+  background-color: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  box-shadow: 0 2px 8px rgba(10, 25, 49, 0.03);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  box-sizing: border-box;
 }
 
 .card:hover {
-  border-color: #cbd5e1;
-  box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.08);
+  border-color: rgba(10, 25, 49, 0.16);
+  box-shadow: 0 6px 18px rgba(10, 25, 49, 0.06);
 }
 
-.headerRow {
+/* Left & Center Main Content Area */
+.mainInfo {
   display: flex;
-  gap: 18px;
-  align-items: flex-start;
+  align-items: center;
+  gap: 1.25rem;
+  flex: 1;
+  min-width: 0;
 }
 
 .avatarWrapper {
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 68px;
+  height: 68px;
   border-radius: 50%;
   overflow: hidden;
-  border: 2px solid #e2e8f0;
+  border: 2px solid rgba(15, 23, 42, 0.08);
   flex-shrink: 0;
+  background-color: #f1f5f9;
+  cursor: pointer;
 }
 
 .avatarImg {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.2s ease;
 }
 
-.agentInfo {
+.card:hover .avatarImg {
+  transform: scale(1.04);
+}
+
+.detailsCol {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
   flex: 1;
+  min-width: 0;
 }
 
 .nameRow {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.65rem;
   flex-wrap: wrap;
 }
 
+.nameButton {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
 .name {
-  font-size: 1.35rem;
+  font-size: 1.2rem;
   font-weight: 800;
   color: var(--color-primary, #0a1931);
   margin: 0;
+  letter-spacing: -0.01em;
+  transition: color 0.15s ease;
+}
+
+.nameButton:hover .name {
+  color: var(--color-accent, #4a7fa7);
 }
 
 .verifiedBadge {
+  background-color: var(--color-bg-warm, #b3cfe5);
+  color: var(--color-primary, #0a1931);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.18rem 0.5rem;
+  border-radius: 6px;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  background: rgba(16, 185, 129, 0.12);
-  color: #059669;
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 2px 7px;
-  border-radius: 4px;
+  gap: 0.25rem;
+  letter-spacing: 0.02em;
 }
 
-.agency {
-  font-size: 0.92rem;
-  font-weight: 600;
+.agencyLocation {
+  font-size: 0.88rem;
   color: #64748b;
-  margin: 3px 0 6px;
-}
-
-.ratingRow {
+  font-weight: 500;
+  margin: 0;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 0.4rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bulletSeparator {
+  color: #cbd5e1;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.15rem;
+}
+
+.ratingGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .stars {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 1px;
   color: #f59e0b;
 }
 
 .ratingNumber {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 800;
   color: var(--color-primary, #0a1931);
 }
 
-.reviewCount {
-  font-size: 0.85rem;
+.reviewCountBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.82rem;
   color: #64748b;
-  text-decoration: underline;
+  font-weight: 500;
   cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
-.actionsTop {
+.reviewCountBtn:hover {
+  color: var(--color-accent, #4a7fa7);
+}
+
+/* Compact Highlight Pills */
+.highlightsGroup {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
-/* Zillow Contact & Call Buttons */
+.highlightPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: rgba(10, 25, 49, 0.04);
+  color: var(--color-primary, #0a1931);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.22rem 0.55rem;
+  border-radius: 6px;
+}
+
+/* Right Actions Column (Teammate Button Styling) */
+.actionsCol {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+/* Outlined Pill: View Profile / View More */
+.viewMoreBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  border: 1.5px solid var(--color-primary, #0a1931);
+  color: var(--color-primary, #0a1931);
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 0.55rem 1.15rem;
+  border-radius: 20px;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.viewMoreBtn:hover {
+  background-color: rgba(10, 25, 49, 0.04);
+  color: var(--color-primary, #0a1931);
+}
+
+/* Primary Pill: Contact Agent */
 .contactBtn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 18px;
-  min-height: 40px;
-  border-radius: 6px;
-  background: var(--color-primary, #0a1931);
+  justify-content: center;
+  gap: 0.45rem;
+  background-color: var(--color-primary, #0a1931);
   color: #ffffff;
-  font-weight: 600;
-  font-size: 0.9rem;
-  border: 1px solid var(--color-primary, #0a1931);
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 0.55rem 1.25rem;
+  border-radius: 20px;
+  border: none;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
   white-space: nowrap;
 }
 
 .contactBtn:hover {
-  background: #173258;
-  border-color: #173258;
+  background-color: #061122;
+  transform: translateY(-1px);
 }
 
-.callBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  min-height: 40px;
-  border-radius: 6px;
-  background: #ffffff;
-  color: var(--color-primary, #0a1931);
-  font-weight: 600;
-  font-size: 0.9rem;
-  border: 1px solid #cbd5e1;
-  text-decoration: none;
-  transition: all 0.2s ease;
+/* Responsive Breakpoints */
+@media (max-width: 860px) {
+  .card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.15rem;
+    padding: 1.25rem;
+  }
+
+  .mainInfo {
+    align-items: flex-start;
+  }
+
+  .actionsCol {
+    width: 100%;
+    justify-content: stretch;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(15, 23, 42, 0.06);
+  }
+
+  .viewMoreBtn,
+  .contactBtn {
+    flex: 1;
+  }
 }
 
-.callBtn:hover {
-  background: #f8fafc;
-  border-color: #94a3b8;
-}
+@media (max-width: 480px) {
+  .avatarWrapper {
+    width: 56px;
+    height: 56px;
+  }
 
-/* 4-Category Ratings (Zillow Signature) */
-.categoriesGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  background: var(--bg-color, #f6fafd);
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  padding: 12px 16px;
-}
+  .name {
+    font-size: 1.08rem;
+  }
 
-.categoryItem {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.categoryLabel {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #64748b;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-}
-
-.categoryScore {
-  font-size: 0.98rem;
-  font-weight: 800;
-  color: var(--color-primary, #0a1931);
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-/* Stats Ribbon */
-.statsRow {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  border-top: 1px solid #f1f5f9;
-  border-bottom: 1px solid #f1f5f9;
-  padding: 12px 0;
-}
-
-.statItem {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.statValue {
-  font-size: 0.98rem;
-  font-weight: 800;
-  color: var(--color-primary, #0a1931);
-}
-
-.statLabel {
-  font-size: 0.78rem;
-  color: #64748b;
-  font-weight: 500;
-}
-
-.bio {
-  font-size: 0.92rem;
-  line-height: 1.6;
-  color: #475569;
-  margin: 0;
-}
-
-/* Review Snippet */
-.reviewSnippet {
-  background: #f8fafc;
-  border-left: 3px solid var(--color-accent, #4a7fa7);
-  padding: 12px 16px;
-  border-radius: 0 6px 6px 0;
-}
-
-.reviewQuote {
-  font-size: 0.9rem;
-  line-height: 1.5;
-  color: #334155;
-  font-style: italic;
-  margin: 0 0 4px;
-}
-
-.reviewMeta {
-  font-size: 0.78rem;
-  color: #64748b;
-  font-weight: 600;
-}
-
-@media (max-width: 900px) {
-  .headerRow {
+  .actionsCol {
     flex-direction: column;
   }
 
-  .actionsTop {
+  .viewMoreBtn,
+  .contactBtn {
     width: 100%;
-  }
-
-  .contactBtn,
-  .callBtn {
-    flex: 1;
-    justify-content: center;
-  }
-
-  .categoriesGrid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-
-  .statsRow {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-}
-
-@media (max-width: 640px) {
-  .card {
-    padding: 20px 16px;
-  }
-
-  .categoriesGrid {
-    grid-template-columns: 1fr;
   }
 }
