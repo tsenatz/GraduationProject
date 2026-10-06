@@ -13,14 +13,15 @@ export default async function RentalManagerPage({ searchParams }: RentalManagerP
     redirect("/login?callbackUrl=/rentalmanager");
   }
 
-  // 2. Check if phone verification is complete
+  // 2. Phone Verification Guard (Bypassed for development)
+  // To re-enable in production, uncomment the block below:
+  /*
   const params = searchParams ? await searchParams : undefined;
   const isVerified = params?.verified === "true";
-
-  // If not yet verified, redirect to phone verification step
   if (!isVerified) {
     redirect("/verify-phone?callbackUrl=/rentalmanager?verified=true");
   }
+  */
 
   return (
     <main style={{ padding: "3rem 1.5rem", maxWidth: "1200px", margin: "0 auto" }}>
