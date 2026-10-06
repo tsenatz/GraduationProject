@@ -1,109 +1,149 @@
 "use client";
 
-import Link from "next/link";
-import { UserCheck, ArrowLeft, ShieldCheck, PhoneCall } from "lucide-react";
-import { useLanguage } from "@/components/providers/LanguageProvider";
+import React, { useState, useMemo } from "react";
+import {
+  AgentDirectoryHero,
+  AgentFilterBar,
+  AgentList,
+  AgentContactModal,
+  WhyVerifiedAgent,
+  AgentDirectoryFAQ,
+  AgentDirectoryCTA,
+  MOCK_AGENTS,
+  Agent,
+  AgentFilterState,
+} from "@/components/agents";
 
-export default function FindAgentPlaceholderPage() {
-  const { isAmharic } = useLanguage();
+export default function FindListingAgentPage() {
+  const [filters, setFilters] = useState<AgentFilterState>({
+    searchQuery: "",
+    selectedSubCity: "",
+    specialty: "listing-agent",
+    minRating: 0,
+    selectedLanguage: "",
+    sortBy: "rating",
+  });
+
+  const [selectedAgentForContact, setSelectedAgentForContact] =
+    useState<Agent | null>(null);
+
+  const handleFilterChange = (key: keyof AgentFilterState, value: any) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleClearFilters = () => {
+    setFilters({
+      searchQuery: "",
+      selectedSubCity: "",
+      specialty: "listing-agent",
+      minRating: 0,
+      selectedLanguage: "",
+      sortBy: "rating",
+    });
+  };
+
+  // Filter and sort agents client-side
+  const filteredAgents = useMemo(() => {
+    return MOCK_AGENTS.filter((agent) => {
+      // Specialty filter
+      if (filters.specialty && agent.specialty !== filters.specialty) {
+        return false;
+      }
+
+      // Search query filter (matches agent name, agency, sub-cities, or bio)
+      if (filters.searchQuery.trim()) {
+        const query = filters.searchQuery.toLowerCase();
+        const matchesName =
+          agent.name.toLowerCase().includes(query) ||
+          agent.nameAm.includes(query);
+        const matchesAgency =
+          agent.agency.toLowerCase().includes(query) ||
+          agent.agencyAm.includes(query);
+        const matchesSubCity =
+          agent.subCities.some((sc) => sc.toLowerCase().includes(query)) ||
+          agent.subCitiesAm.some((sc) => sc.includes(query));
+
+        if (!matchesName && !matchesAgency && !matchesSubCity) {
+          return false;
+        }
+      }
+
+      // Sub-city dropdown filter
+      if (filters.selectedSubCity) {
+        const hasSubCity =
+          agent.subCities.includes(filters.selectedSubCity) ||
+          agent.subCitiesAm.includes(filters.selectedSubCity);
+        if (!hasSubCity) return false;
+      }
+
+      // Rating filter
+      if (filters.minRating > 0 && agent.rating < filters.minRating) {
+        return false;
+      }
+
+      // Language filter
+      if (filters.selectedLanguage) {
+        const hasLanguage =
+          agent.languages.includes(filters.selectedLanguage) ||
+          agent.languagesAm.includes(filters.selectedLanguage);
+        if (!hasLanguage) return false;
+      }
+
+      return true;
+    }).sort((a, b) => {
+      if (filters.sortBy === "rating") {
+        return b.rating - a.rating || b.reviewCount - a.reviewCount;
+      }
+      if (filters.sortBy === "sales") {
+        return b.salesCountLast12Months - a.salesCountLast12Months;
+      }
+      if (filters.sortBy === "listings") {
+        return b.activeListingsCount - a.activeListingsCount;
+      }
+      return 0;
+    });
+  }, [filters]);
 
   return (
-    <div
+    <main
       style={{
-        maxWidth: "760px",
-        margin: "60px auto",
-        padding: "48px 24px",
-        textAlign: "center",
-        backgroundColor: "var(--color-surface)",
-        borderRadius: "16px",
-        border: "1px solid rgba(var(--color-accent-rgb), 0.2)",
-        boxShadow: "0 8px 30px rgba(10, 25, 49, 0.06)",
+        width: "100%",
+        minHeight: "100vh",
+        backgroundColor: "var(--bg-color, #f6fafd)",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
-      <div
-        style={{
-          width: "64px",
-          height: "64px",
-          borderRadius: "16px",
-          backgroundColor: "rgba(var(--color-primary-rgb), 0.08)",
-          color: "var(--color-primary)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          margin: "0 auto 20px",
-        }}
-      >
-        <UserCheck size={32} />
-      </div>
+      <AgentDirectoryHero
+        searchQuery={filters.searchQuery}
+        onSearchChange={(q) => handleFilterChange("searchQuery", q)}
+        activeSpecialty={filters.specialty}
+        onSpecialtyChange={(spec) => handleFilterChange("specialty", spec)}
+      />
 
-      <span
-        style={{
-          fontSize: "0.8rem",
-          fontWeight: 700,
-          textTransform: "uppercase",
-          letterSpacing: "0.05em",
-          color: "var(--color-accent)",
-        }}
-      >
-        {isAmharic ? "በቅርቡ" : "Coming Soon"}
-      </span>
+      <AgentFilterBar
+        filters={filters}
+        onFilterChange={handleFilterChange}
+        onClearFilters={handleClearFilters}
+        resultsCount={filteredAgents.length}
+      />
 
-      <h1
-        style={{
-          fontSize: "2rem",
-          fontWeight: 800,
-          color: "var(--color-primary)",
-          margin: "12px 0 16px",
-        }}
-      >
-        {isAmharic
-          ? "የተረጋገጡ ወኪሎች እና ደላሎች ማውጫ"
-          : "Find a Verified Agent Directory"}
-      </h1>
+      <AgentList
+        agents={filteredAgents}
+        onContactClick={(agent) => setSelectedAgentForContact(agent)}
+        onResetFilters={handleClearFilters}
+      />
 
-      <p style={{ color: "#475569", lineHeight: 1.6, maxWidth: "560px", margin: "0 auto 32px", fontSize: "1rem" }}>
-        {isAmharic
-          ? "በአዲስ አበባ የተረጋገጡ ወኪሎችን የማገናኘት መድረክ በማዘጋጀት ላይ እንገኛለን። በቅርቡ ወኪሎችን መምረጥ፣ የሽያጭ ታሪካቸውን መገምገም እና ቀጥተኛ ምክክር ማግኘት ይችላሉ።"
-          : "We are building our accredited agent matching network in Addis Ababa. You will soon be able to browse verified agents, review transaction histories, and request direct consultations."}
-      </p>
+      <WhyVerifiedAgent />
+      <AgentDirectoryFAQ />
+      <AgentDirectoryCTA />
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "24px",
-          marginBottom: "36px",
-          flexWrap: "wrap",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "var(--color-primary)", fontSize: "0.92rem", fontWeight: 600 }}>
-          <ShieldCheck size={18} color="var(--color-accent)" />
-          <span>{isAmharic ? "የመንግስት መታወቂያ የተረጋገጠ" : "Government ID Verified"}</span>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "var(--color-primary)", fontSize: "0.92rem", fontWeight: 600 }}>
-          <PhoneCall size={18} color="var(--color-accent)" />
-          <span>{isAmharic ? "ቀጥተኛ ስልክ እና ዋትስአፕ" : "Direct Phone & WhatsApp"}</span>
-        </div>
-      </div>
-
-      <Link
-        href="/sell"
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "8px",
-          padding: "12px 24px",
-          backgroundColor: "var(--color-primary)",
-          color: "#ffffff",
-          borderRadius: "8px",
-          fontWeight: 600,
-          fontSize: "0.95rem",
-          textDecoration: "none",
-        }}
-      >
-        <ArrowLeft size={16} />
-        <span>{isAmharic ? "ወደ ኋላ ተመለስ" : "Back to Selling Options"}</span>
-      </Link>
-    </div>
+      {selectedAgentForContact && (
+        <AgentContactModal
+          agent={selectedAgentForContact}
+          onClose={() => setSelectedAgentForContact(null)}
+        />
+      )}
+    </main>
   );
 }
