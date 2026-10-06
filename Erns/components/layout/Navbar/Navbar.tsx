@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, Menu, X, ChevronRight } from "lucide-react";
 import SignInButton from "@/components/auth/SignInButton";
+import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import styles from "./Navbar.module.css";
 
 import { NAV_LINKS_LEFT, NAV_LINKS_RIGHT } from "./navLinks";
@@ -87,6 +88,7 @@ export default function Navbar() {
               </Link>
             );
           })}
+          <LanguageSwitcher />
           <SignInButton />
         </nav>
       </div>
@@ -132,6 +134,9 @@ export default function Navbar() {
                   </li>
                 );
               })}
+              <li className={styles.mobileDrawerItem}>
+                <LanguageSwitcher isMobileDrawer />
+              </li>
               <li className={styles.mobileDrawerItemBtn}>
                 <SignInButton onClick={() => setIsMenuOpen(false)} />
               </li>
