@@ -50,7 +50,7 @@ export const AgentFilterBar: React.FC<AgentFilterBarProps> = ({
     Boolean(filters.selectedLanguage);
 
   return (
-    <div className={styles.filterSection}>
+    <div id="agent-directory-results" className={styles.filterSection}>
       <div className={styles.container}>
         <div className={styles.controlsRow}>
           <div className={styles.dropdownGroup}>
@@ -108,9 +108,44 @@ export const AgentFilterBar: React.FC<AgentFilterBarProps> = ({
         </div>
 
         <div className={styles.metaRow}>
-          <span className={styles.resultsCount}>
-            {t.resultsCount.replace("{count}", resultsCount.toString())}
-          </span>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+            <span className={styles.resultsCount}>
+              {t.resultsCount.replace("{count}", resultsCount.toString())}
+            </span>
+            {Boolean(filters.searchQuery.trim()) && (
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  backgroundColor: "rgba(74, 127, 167, 0.12)",
+                  color: "var(--color-primary)",
+                  padding: "4px 10px",
+                  borderRadius: "6px",
+                  fontSize: "0.85rem",
+                  fontWeight: 600,
+                }}
+              >
+                <span>&ldquo;{filters.searchQuery.trim()}&rdquo;</span>
+                <button
+                  type="button"
+                  onClick={() => onFilterChange("searchQuery", "")}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    color: "#64748b",
+                    padding: 0,
+                    fontSize: "0.85rem",
+                    lineHeight: 1,
+                  }}
+                  title="Clear search"
+                >
+                  ✕
+                </button>
+              </span>
+            )}
+          </div>
           {hasActiveFilters && (
             <button
               type="button"

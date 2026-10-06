@@ -24,6 +24,10 @@ export const AgentDirectoryHero: React.FC<AgentDirectoryHeroProps> = ({
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const resultsElement = document.getElementById("agent-directory-results");
+    if (resultsElement) {
+      resultsElement.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (

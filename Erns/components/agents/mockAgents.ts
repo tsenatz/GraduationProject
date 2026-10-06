@@ -11,6 +11,7 @@ export const MOCK_AGENTS: Agent[] = [
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
     isVerified: true,
     specialty: "listing-agent",
+    specialties: ["listing-agent", "relocation", "commercial"],
     rating: 5.0,
     reviewCount: 62,
     categoryRatings: {
@@ -54,6 +55,7 @@ export const MOCK_AGENTS: Agent[] = [
       "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
     isVerified: true,
     specialty: "listing-agent",
+    specialties: ["listing-agent", "buyers-agent", "relocation"],
     rating: 4.9,
     reviewCount: 48,
     categoryRatings: {
@@ -97,6 +99,7 @@ export const MOCK_AGENTS: Agent[] = [
       "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
     isVerified: true,
     specialty: "listing-agent",
+    specialties: ["listing-agent", "buyers-agent"],
     rating: 4.9,
     reviewCount: 41,
     categoryRatings: {
@@ -140,6 +143,7 @@ export const MOCK_AGENTS: Agent[] = [
       "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80",
     isVerified: true,
     specialty: "listing-agent",
+    specialties: ["listing-agent", "buyers-agent", "commercial"],
     rating: 5.0,
     reviewCount: 55,
     categoryRatings: {
@@ -183,6 +187,7 @@ export const MOCK_AGENTS: Agent[] = [
       "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80",
     isVerified: true,
     specialty: "listing-agent",
+    specialties: ["listing-agent", "commercial"],
     rating: 4.8,
     reviewCount: 36,
     categoryRatings: {
@@ -226,6 +231,7 @@ export const MOCK_AGENTS: Agent[] = [
       "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=400&q=80",
     isVerified: true,
     specialty: "listing-agent",
+    specialties: ["listing-agent", "relocation", "buyers-agent"],
     rating: 5.0,
     reviewCount: 59,
     categoryRatings: {

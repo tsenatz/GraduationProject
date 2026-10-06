@@ -46,24 +46,40 @@ export default function FindListingAgentPage() {
   const filteredAgents = useMemo(() => {
     return MOCK_AGENTS.filter((agent) => {
       // Specialty filter
-      if (filters.specialty && agent.specialty !== filters.specialty) {
-        return false;
+      const rawQuery = filters.searchQuery.trim().toLowerCase();
+      if (filters.specialty) {
+        const hasSpecialty =
+          agent.specialties?.includes(filters.specialty) ||
+          agent.specialty === filters.specialty;
+        // If a direct search query is typed, don't block by specialty tab
+        if (!hasSpecialty && !rawQuery) {
+          return false;
+        }
       }
 
-      // Search query filter (matches agent name, agency, sub-cities, or bio)
-      if (filters.searchQuery.trim()) {
-        const query = filters.searchQuery.toLowerCase();
-        const matchesName =
-          agent.name.toLowerCase().includes(query) ||
-          agent.nameAm.includes(query);
-        const matchesAgency =
-          agent.agency.toLowerCase().includes(query) ||
-          agent.agencyAm.includes(query);
-        const matchesSubCity =
-          agent.subCities.some((sc) => sc.toLowerCase().includes(query)) ||
-          agent.subCitiesAm.some((sc) => sc.includes(query));
+      // Search query filter (matches agent name, agency, sub-cities, bio, languages)
+      if (rawQuery) {
+        const terms = rawQuery.split(/\s+/).filter(Boolean);
+        const searchableText = [
+          agent.name,
+          agent.nameAm,
+          agent.agency,
+          agent.agencyAm,
+          agent.bio,
+          agent.bioAm,
+          ...agent.subCities,
+          ...agent.subCitiesAm,
+          ...agent.languages,
+          ...agent.languagesAm,
+        ]
+          .join(" ")
+          .toLowerCase();
 
-        if (!matchesName && !matchesAgency && !matchesSubCity) {
+        const allTermsMatch = terms.every((term) =>
+          searchableText.includes(term)
+        );
+
+        if (!allTermsMatch) {
           return false;
         }
       }

@@ -24,6 +24,7 @@ export interface Agent {
   photoUrl: string;
   isVerified: boolean;
   specialty: "listing-agent" | "buyers-agent" | "relocation" | "commercial";
+  specialties: string[];
   rating: number;
   reviewCount: number;
   categoryRatings: AgentCategoryRatings;
