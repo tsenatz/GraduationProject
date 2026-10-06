@@ -1,0 +1,198 @@
+.hero {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(
+    180deg,
+    var(--color-primary, #0a1931) 0%,
+    #0f2547 60%,
+    var(--color-primary, #0a1931) 100%
+  );
+  color: #ffffff;
+  padding: 60px 24px 40px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.glow {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 220px;
+  background: radial-gradient(
+    circle,
+    rgba(74, 127, 167, 0.25) 0%,
+    rgba(10, 25, 49, 0) 70%
+  );
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.title {
+  font-size: clamp(2.2rem, 4vw, 2.85rem);
+  font-weight: 800;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+  max-width: 700px;
+  margin: 0;
+}
+
+/* Zillow Standard Search Box */
+.searchCard {
+  width: 100%;
+  max-width: 740px;
+  margin-top: 6px;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+  border: 1px solid #e2e8f0;
+}
+
+.searchIconWrapper {
+  padding-left: 10px;
+  color: var(--color-accent, #4a7fa7);
+  display: flex;
+  align-items: center;
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 0.95rem;
+  color: var(--color-primary, #0a1931);
+  outline: none;
+  padding: 8px 4px;
+}
+
+.searchInput::placeholder {
+  color: #94a3b8;
+}
+
+/* Zillow Search Button */
+.searchBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 22px;
+  min-height: 42px;
+  border-radius: 6px;
+  background: var(--color-primary, #0a1931);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.92rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.searchBtn:hover {
+  background: #173258;
+}
+
+.tabsRow {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.tabBtn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #e2e8f0;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tabBtn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+.tabBtnActive {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: var(--color-primary, #0a1931);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.verifiedRibbon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #cbd5e1;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 44px 16px 32px;
+  }
+
+  .title {
+    font-size: 2.1rem;
+  }
+
+  .subtitle {
+    font-size: 0.98rem;
+  }
+
+  .searchCard {
+    flex-direction: column;
+    padding: 8px;
+  }
+
+  .searchBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}
