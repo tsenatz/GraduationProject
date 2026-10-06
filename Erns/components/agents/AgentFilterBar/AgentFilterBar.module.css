@@ -1,8 +1,8 @@
 .filterSection {
   width: 100%;
   background: #ffffff;
-  border-bottom: 1px solid rgba(179, 207, 229, 0.4);
-  padding: 18px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 14px 24px;
   box-sizing: border-box;
 }
 
@@ -11,31 +11,32 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .controlsRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 14px;
   flex-wrap: wrap;
 }
 
 .dropdownGroup {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
+/* Zillow Standard Filter Selects */
 .select {
-  padding: 10px 14px;
-  border-radius: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
   border: 1px solid #cbd5e1;
   background: #ffffff;
-  color: var(--color-primary);
-  font-size: 0.92rem;
+  color: var(--color-primary, #0a1931);
+  font-size: 0.88rem;
   font-weight: 500;
   outline: none;
   cursor: pointer;
@@ -43,7 +44,7 @@
 }
 
 .select:focus {
-  border-color: var(--color-accent);
+  border-color: var(--color-accent, #4a7fa7);
 }
 
 .sortGroup {
@@ -53,7 +54,7 @@
 }
 
 .sortLabel {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: #64748b;
   font-weight: 500;
   white-space: nowrap;
@@ -63,28 +64,28 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
 }
 
 .resultsCount {
   font-weight: 700;
-  color: var(--color-primary);
+  color: var(--color-primary, #0a1931);
 }
 
 .clearBtn {
   background: none;
   border: none;
-  color: var(--color-accent);
-  font-size: 0.88rem;
+  color: var(--color-accent, #4a7fa7);
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   padding: 4px 8px;
-  border-radius: 6px;
-  transition: background 0.15s ease;
+  border-radius: 4px;
+  transition: all 0.15s ease;
 }
 
 .clearBtn:hover {
-  background: rgba(74, 127, 167, 0.1);
+  background: rgba(74, 127, 167, 0.08);
   text-decoration: underline;
 }
 

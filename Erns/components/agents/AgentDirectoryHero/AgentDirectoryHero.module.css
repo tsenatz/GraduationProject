@@ -3,12 +3,12 @@
   width: 100%;
   background: linear-gradient(
     180deg,
-    var(--color-primary) 0%,
+    var(--color-primary, #0a1931) 0%,
     #0f2547 60%,
-    var(--color-primary) 100%
+    var(--color-primary, #0a1931) 100%
   );
   color: #ffffff;
-  padding: 64px 24px 44px;
+  padding: 60px 24px 40px;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -22,7 +22,7 @@
   height: 220px;
   background: radial-gradient(
     circle,
-    rgba(74, 127, 167, 0.28) 0%,
+    rgba(74, 127, 167, 0.25) 0%,
     rgba(10, 25, 49, 0) 70%
   );
   filter: blur(50px);
@@ -38,25 +38,25 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 18px;
 }
 
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 16px;
-  border-radius: 9999px;
+  padding: 5px 12px;
+  border-radius: 4px;
   background: rgba(255, 255, 255, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #ffffff;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 600;
-  backdrop-filter: blur(8px);
+  letter-spacing: 0.02em;
 }
 
 .title {
-  font-size: 2.85rem;
+  font-size: clamp(2.2rem, 4vw, 2.85rem);
   font-weight: 800;
   line-height: 1.18;
   letter-spacing: -0.02em;
@@ -65,29 +65,31 @@
 }
 
 .subtitle {
-  font-size: 1.12rem;
+  font-size: 1.1rem;
   line-height: 1.6;
   color: #cbd5e1;
-  max-width: 720px;
+  max-width: 700px;
   margin: 0;
 }
 
+/* Zillow Standard Search Box */
 .searchCard {
   width: 100%;
-  max-width: 760px;
-  margin-top: 8px;
+  max-width: 740px;
+  margin-top: 6px;
   background: #ffffff;
-  border-radius: 14px;
-  padding: 8px 10px;
+  border-radius: 8px;
+  padding: 6px 8px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.26);
+  gap: 10px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+  border: 1px solid #e2e8f0;
 }
 
 .searchIconWrapper {
   padding-left: 10px;
-  color: var(--color-accent);
+  color: var(--color-accent, #4a7fa7);
   display: flex;
   align-items: center;
 }
@@ -96,8 +98,8 @@
   flex: 1;
   border: none;
   background: transparent;
-  font-size: 1rem;
-  color: var(--color-primary);
+  font-size: 0.95rem;
+  color: var(--color-primary, #0a1931);
   outline: none;
   padding: 8px 4px;
 }
@@ -106,85 +108,87 @@
   color: #94a3b8;
 }
 
+/* Zillow Search Button */
 .searchBtn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 12px 24px;
-  border-radius: 10px;
-  background: var(--color-primary);
+  padding: 10px 22px;
+  min-height: 42px;
+  border-radius: 6px;
+  background: var(--color-primary, #0a1931);
   color: #ffffff;
-  font-weight: 700;
-  font-size: 0.95rem;
+  font-weight: 600;
+  font-size: 0.92rem;
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease;
   white-space: nowrap;
 }
 
 .searchBtn:hover {
-  background: #14284b;
+  background: #173258;
 }
 
 .tabsRow {
   display: flex;
-  gap: 10px;
-  margin-top: 10px;
+  gap: 8px;
+  margin-top: 8px;
   flex-wrap: wrap;
   justify-content: center;
 }
 
 .tabBtn {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   color: #e2e8f0;
-  padding: 8px 18px;
+  padding: 6px 16px;
   border-radius: 9999px;
-  font-size: 0.88rem;
-  font-weight: 600;
+  font-size: 0.85rem;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .tabBtn:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.18);
   color: #ffffff;
 }
 
 .tabBtnActive {
   background: #ffffff;
   border-color: #ffffff;
-  color: var(--color-primary);
-  font-weight: 700;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  color: var(--color-primary, #0a1931);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 .verifiedRibbon {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #94a3b8;
+  color: #cbd5e1;
   font-size: 0.85rem;
   font-weight: 500;
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 @media (max-width: 768px) {
   .hero {
-    padding: 48px 16px 36px;
+    padding: 44px 16px 32px;
   }
 
   .title {
-    font-size: 2.15rem;
+    font-size: 2.1rem;
   }
 
   .subtitle {
-    font-size: 1rem;
+    font-size: 0.98rem;
   }
 
   .searchCard {
     flex-direction: column;
-    padding: 10px;
+    padding: 8px;
   }
 
   .searchBtn {

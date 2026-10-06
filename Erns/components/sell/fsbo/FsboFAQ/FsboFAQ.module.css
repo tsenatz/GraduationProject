@@ -1,6 +1,6 @@
 .section {
   width: 100%;
-  padding: 80px 24px;
+  padding: 64px 24px;
   background-color: #ffffff;
   box-sizing: border-box;
 }
@@ -12,19 +12,19 @@
 
 .header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 40px;
 }
 
 .title {
-  font-size: 2.35rem;
+  font-size: 2.15rem;
   font-weight: 800;
-  color: var(--color-primary);
+  color: var(--color-primary, #0a1931);
   letter-spacing: -0.02em;
-  margin: 0 0 16px;
+  margin: 0 0 10px;
 }
 
 .subtitle {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   line-height: 1.6;
   color: #64748b;
   margin: 0;
@@ -33,19 +33,26 @@
 .accordionList {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
+/* Zillow Standard Box */
 .accordionItem {
-  border: 1px solid rgba(179, 207, 229, 0.4);
-  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
   overflow: hidden;
-  background-color: var(--bg-color, #f6fafd);
-  transition: border-color 0.2s ease;
+  background-color: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.accordionItem:hover {
+  border-color: #cbd5e1;
 }
 
 .accordionItemOpen {
-  border-color: var(--color-accent);
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .accordionTrigger {
@@ -53,7 +60,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 22px 24px;
+  padding: 18px 22px;
   background: none;
   border: none;
   text-align: left;
@@ -64,22 +71,24 @@
 .question {
   font-size: 1.05rem;
   font-weight: 700;
-  color: var(--color-primary);
+  color: var(--color-primary, #0a1931);
   margin: 0;
 }
 
 .iconWrapper {
-  color: var(--color-accent);
+  color: #64748b;
   transition: transform 0.2s ease;
   flex-shrink: 0;
 }
 
 .iconWrapperOpen {
   transform: rotate(180deg);
+  color: var(--color-primary, #0a1931);
 }
 
 .accordionContent {
-  padding: 0 24px 22px;
+  padding: 0 22px 20px;
+  border-top: 1px solid #f1f5f9;
   animation: fadeIn 0.2s ease;
 }
 
@@ -95,7 +104,7 @@
 }
 
 .answer {
-  font-size: 0.96rem;
+  font-size: 0.95rem;
   line-height: 1.65;
   color: #475569;
   margin: 0;
@@ -103,18 +112,18 @@
 
 @media (max-width: 640px) {
   .section {
-    padding: 60px 16px;
+    padding: 48px 16px;
   }
 
   .title {
-    font-size: 1.85rem;
+    font-size: 1.75rem;
   }
 
   .accordionTrigger {
-    padding: 18px 16px;
+    padding: 16px 16px;
   }
 
   .accordionContent {
-    padding: 0 16px 18px;
+    padding: 0 16px 16px;
   }
 }

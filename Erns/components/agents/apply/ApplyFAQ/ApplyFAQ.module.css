@@ -1,6 +1,6 @@
 .section {
-  padding: 4.5rem 1.5rem;
-  background-color: var(--color-surface, #ffffff);
+  padding: 64px 24px;
+  background-color: #ffffff;
 }
 
 .container {
@@ -10,47 +10,53 @@
 
 .header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 40px;
 }
 
 .title {
-  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-size: 2.15rem;
   font-weight: 800;
   color: var(--color-primary, #0a1931);
   margin-bottom: 0.5rem;
 }
 
 .subtitle {
-  font-size: 1rem;
+  font-size: 1.02rem;
   color: #64748b;
 }
 
 .accordionList {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 12px;
 }
 
+/* Zillow Standard Box */
 .accordionItem {
-  background-color: var(--bg-color, #f6fafd);
-  border: 1px solid rgba(74, 127, 167, 0.18);
-  border-radius: 10px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
   overflow: hidden;
-  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.accordionItem:hover {
+  border-color: #cbd5e1;
 }
 
 .accordionItemOpen {
-  border-color: var(--color-accent, #4a7fa7);
-  box-shadow: 0 4px 12px rgba(10, 25, 49, 0.05);
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .accordionTrigger {
   width: 100%;
-  padding: 1.25rem 1.5rem;
+  padding: 18px 22px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  gap: 16px;
   background: none;
   border: none;
   cursor: pointer;
@@ -65,32 +71,34 @@
 }
 
 .iconWrapper {
-  color: var(--color-accent, #4a7fa7);
-  transition: transform 0.25s ease;
+  color: #64748b;
+  transition: transform 0.2s ease;
   flex-shrink: 0;
 }
 
 .iconWrapperOpen {
   transform: rotate(180deg);
+  color: var(--color-primary, #0a1931);
 }
 
 .accordionContent {
-  padding: 0 1.5rem 1.25rem;
+  padding: 0 22px 20px;
+  border-top: 1px solid #f1f5f9;
 }
 
 .answer {
   font-size: 0.95rem;
-  line-height: 1.6;
+  line-height: 1.65;
   color: #475569;
   margin: 0;
 }
 
 @media (max-width: 640px) {
   .section {
-    padding: 3.5rem 1rem;
+    padding: 48px 16px;
   }
   .accordionTrigger {
-    padding: 1rem 1.2rem;
+    padding: 16px 16px;
   }
   .question {
     font-size: 0.98rem;

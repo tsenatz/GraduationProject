@@ -1,7 +1,7 @@
 .section {
   width: 100%;
-  padding: 80px 24px;
-  background-color: var(--color-primary);
+  padding: 72px 24px;
+  background-color: var(--color-primary, #0a1931);
   color: #ffffff;
   box-sizing: border-box;
   text-align: center;
@@ -14,11 +14,11 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 700px;
-  height: 300px;
+  width: 600px;
+  height: 250px;
   background: radial-gradient(
     circle,
-    rgba(74, 127, 167, 0.28) 0%,
+    rgba(74, 127, 167, 0.22) 0%,
     rgba(10, 25, 49, 0) 70%
   );
   filter: blur(60px);
@@ -28,16 +28,16 @@
 .container {
   position: relative;
   z-index: 2;
-  max-width: 780px;
+  max-width: 760px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
 }
 
 .title {
-  font-size: 2.5rem;
+  font-size: 2.35rem;
   font-weight: 800;
   line-height: 1.2;
   margin: 0;
@@ -46,7 +46,7 @@
 }
 
 .desc {
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   line-height: 1.6;
   color: #cbd5e1;
   margin: 0;
@@ -54,57 +54,58 @@
 
 .actions {
   display: flex;
-  gap: 16px;
-  margin-top: 12px;
+  gap: 14px;
+  margin-top: 10px;
   flex-wrap: wrap;
   justify-content: center;
 }
 
+/* Zillow Standard Buttons */
 .joinBtn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 14px 32px;
-  border-radius: 10px;
+  padding: 10px 24px;
+  min-height: 44px;
+  border-radius: 6px;
   background: #ffffff;
-  color: var(--color-primary);
-  font-weight: 700;
-  font-size: 1rem;
+  color: var(--color-primary, #0a1931);
+  font-weight: 600;
+  font-size: 0.95rem;
   border: none;
+  text-decoration: none;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease;
 }
 
 .joinBtn:hover {
-  background: var(--color-bg-warm);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  background: #f1f5f9;
 }
 
 .fsboBtn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 14px 28px;
-  border-radius: 10px;
+  padding: 10px 22px;
+  min-height: 44px;
+  border-radius: 6px;
   background: transparent;
   color: #ffffff;
   font-weight: 600;
-  font-size: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  font-size: 0.95rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
   text-decoration: none;
   transition: all 0.2s ease;
 }
 
 .fsboBtn:hover {
   background: rgba(255, 255, 255, 0.1);
-  border-color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 @media (max-width: 640px) {
   .section {
-    padding: 60px 16px;
+    padding: 52px 16px;
   }
 
   .title {

@@ -2,7 +2,7 @@
   position: relative;
   background: linear-gradient(135deg, #0a1931 0%, #0d2342 60%, #13335e 100%);
   color: #ffffff;
-  padding: 5rem 1.5rem;
+  padding: 64px 24px;
   overflow: hidden;
   text-align: center;
 }
@@ -13,8 +13,8 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 600px;
-  height: 350px;
-  background: radial-gradient(circle, rgba(74, 127, 167, 0.25) 0%, transparent 70%);
+  height: 300px;
+  background: radial-gradient(circle, rgba(74, 127, 167, 0.22) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -26,17 +26,17 @@
 }
 
 .title {
-  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  font-size: clamp(1.8rem, 3.5vw, 2.35rem);
   font-weight: 800;
   color: #ffffff;
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.75rem;
 }
 
 .desc {
   font-size: 1.05rem;
   color: #cbd5e1;
   max-width: 620px;
-  margin: 0 auto 2.25rem;
+  margin: 0 auto 2rem;
   line-height: 1.6;
 }
 
@@ -44,39 +44,40 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
+/* Zillow Standard Action Buttons */
 .primaryBtn {
   background-color: var(--color-accent, #4a7fa7);
   color: #ffffff;
-  padding: 0.85rem 1.8rem;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 1rem;
+  padding: 10px 24px;
+  min-height: 44px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
   border: none;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 14px rgba(74, 127, 167, 0.35);
+  transition: background-color 0.2s ease;
 }
 
 .primaryBtn:hover {
   background-color: #3b6b8e;
-  transform: translateY(-2px);
 }
 
 .secondaryBtn {
   background-color: rgba(255, 255, 255, 0.08);
   color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 0.85rem 1.6rem;
-  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 10px 22px;
+  min-height: 44px;
+  border-radius: 6px;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.95rem;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -86,12 +87,12 @@
 
 .secondaryBtn:hover {
   background-color: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.35);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 @media (max-width: 640px) {
   .section {
-    padding: 3.5rem 1rem;
+    padding: 48px 16px;
   }
   .actions {
     flex-direction: column;

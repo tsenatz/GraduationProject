@@ -1,8 +1,8 @@
 .section {
-  padding: 4.5rem 1.5rem;
+  padding: 64px 24px;
   background-color: var(--bg-color, #f6fafd);
-  border-top: 1px solid rgba(74, 127, 167, 0.12);
-  border-bottom: 1px solid rgba(74, 127, 167, 0.12);
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .container {
@@ -12,22 +12,22 @@
 
 .header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 40px;
   max-width: 680px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .title {
-  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-size: 2.15rem;
   font-weight: 800;
   color: var(--color-primary, #0a1931);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   letter-spacing: -0.01em;
 }
 
 .subtitle {
-  font-size: 1rem;
+  font-size: 1.02rem;
   color: #64748b;
   line-height: 1.6;
 }
@@ -35,38 +35,38 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  gap: 20px;
 }
 
+/* Zillow Standard Box */
 .card {
-  background-color: var(--color-surface, #ffffff);
-  border: 1px solid rgba(74, 127, 167, 0.18);
-  border-radius: 12px;
-  padding: 2.25rem 1.75rem;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 26px 22px;
   position: relative;
-  box-shadow: 0 4px 12px rgba(10, 25, 49, 0.04);
-  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(10, 25, 49, 0.08);
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(10, 25, 49, 0.08);
 }
 
 .numberBadge {
-  font-size: 2.25rem;
+  font-size: 1.8rem;
   font-weight: 900;
   color: var(--color-bg-warm, #b3cfe5);
   line-height: 1;
-  margin-bottom: 1rem;
-  opacity: 0.85;
+  margin-bottom: 0.75rem;
 }
 
 .cardTitle {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: var(--color-primary, #0a1931);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   line-height: 1.35;
 }
 
@@ -79,12 +79,12 @@
 @media (max-width: 900px) {
   .grid {
     grid-template-columns: 1fr;
-    gap: 1.25rem;
+    gap: 16px;
   }
 }
 
 @media (max-width: 640px) {
   .section {
-    padding: 3.5rem 1rem;
+    padding: 48px 16px;
   }
 }

@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background-color: var(--color-primary);
+  background-color: var(--color-primary, #0a1931);
   padding: 40px 24px;
   box-sizing: border-box;
 }
@@ -15,12 +15,7 @@
 .heroImage {
   object-fit: cover;
   object-position: center;
-  filter: brightness(0.64) contrast(1.05);
-  transition: transform 10s ease;
-}
-
-.heroContainer:hover .heroImage {
-  transform: scale(1.03);
+  filter: brightness(0.62) contrast(1.05);
 }
 
 .heroOverlay {
@@ -28,9 +23,9 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(10, 25, 49, 0.75) 0%,
-    rgba(10, 25, 49, 0.88) 60%,
-    rgba(10, 25, 49, 0.98) 100%
+    rgba(10, 25, 49, 0.72) 0%,
+    rgba(10, 25, 49, 0.85) 60%,
+    rgba(10, 25, 49, 0.95) 100%
   );
   z-index: 1;
 }
@@ -38,94 +33,84 @@
 .heroContent {
   position: relative;
   z-index: 2;
-  max-width: 820px;
+  max-width: 800px;
   margin: 0 auto;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 18px;
 }
 
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 16px;
-  border-radius: 9999px;
+  padding: 5px 12px;
+  border-radius: 4px;
   background-color: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: #ffffff;
-  font-size: 0.875rem;
-  font-weight: 500;
-  backdrop-filter: blur(8px);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .title {
-  font-size: 3rem;
+  font-size: clamp(2.2rem, 4vw, 3.1rem);
   font-weight: 800;
   line-height: 1.18;
   color: #ffffff;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
   margin: 0;
 }
 
 .subtitle {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   line-height: 1.6;
-  color: #e2e8f0;
-  max-width: 680px;
+  color: #cbd5e1;
+  max-width: 660px;
   margin: 0;
 }
 
+/* Zillow Hero Action Button */
 .ctaButton {
-  margin-top: 10px;
+  margin-top: 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 14px 34px;
-  border-radius: 8px;
+  gap: 8px;
+  padding: 12px 28px;
+  min-height: 46px;
+  border-radius: 6px;
   background-color: #ffffff;
-  color: var(--color-primary);
-  font-size: 1.05rem;
-  font-weight: 700;
+  color: var(--color-primary, #0a1931);
+  font-size: 0.98rem;
+  font-weight: 600;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-  border: 2px solid transparent;
+  border: 1px solid transparent;
 }
 
 .ctaButton:hover {
-  background-color: var(--color-bg-warm);
-  color: var(--color-primary);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  background-color: #f1f5f9;
+  color: var(--color-primary, #0a1931);
 }
 
 .ctaButton:active {
-  transform: translateY(0);
+  background-color: #e2e8f0;
 }
 
 @media (max-width: 960px) {
   .heroContainer {
     min-height: calc(100vh - 124px);
     height: calc(100vh - 124px);
-    padding: 40px 20px;
-  }
-
-  .title {
-    font-size: 2.15rem;
-  }
-
-  .subtitle {
-    font-size: 1.05rem;
+    padding: 36px 16px;
   }
 
   .ctaButton {
     width: 100%;
-    padding: 14px 20px;
-    font-size: 1rem;
+    padding: 12px 20px;
   }
 }
