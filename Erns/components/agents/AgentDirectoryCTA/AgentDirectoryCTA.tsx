@@ -19,20 +19,10 @@ export const AgentDirectoryCTA: React.FC = () => {
         <p className={styles.desc}>{t.desc}</p>
 
         <div className={styles.actions}>
-          <button
-            type="button"
-            className={styles.joinBtn}
-            onClick={() => {
-              window.alert(
-                isAmharic
-                  ? "የወኪሎች ምዝገባ ቅጽ በቅርቡ ይቀርባል!"
-                  : "Agent application portal opening soon!"
-              );
-            }}
-          >
+          <Link href="/sell/agent/apply" className={styles.joinBtn}>
             <UserPlus size={18} />
             <span>{t.btnJoin}</span>
-          </button>
+          </Link>
 
           <Link href="/sell/list" className={styles.fsboBtn}>
             <Home size={18} />

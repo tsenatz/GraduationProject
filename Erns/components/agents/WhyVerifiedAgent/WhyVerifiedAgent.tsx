@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { TrendingUp, UserCheck2, FileBadge } from "lucide-react";
+import Link from "next/link";
+import { TrendingUp, UserCheck2, FileBadge, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { agentTranslations } from "../translations";
 import styles from "./WhyVerifiedAgent.module.css";
@@ -33,6 +34,33 @@ export const WhyVerifiedAgent: React.FC = () => {
               </div>
             );
           })}
+        </div>
+
+        <div style={{ textAlign: "center", marginTop: "2rem" }}>
+          <Link
+            href="/sell/agent/apply"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              color: "var(--color-primary, #0a1931)",
+              fontWeight: 600,
+              fontSize: "0.95rem",
+              textDecoration: "none",
+              padding: "10px 20px",
+              borderRadius: "8px",
+              border: "1px solid var(--color-accent, #4a7fa7)",
+              backgroundColor: "rgba(74, 127, 167, 0.05)",
+              transition: "all 0.2s ease",
+            }}
+          >
+            <span>
+              {isAmharic
+                ? "የተረጋገጠ ወኪል ለመሆን ማመልከት ይፈልጋሉ? መስፈርቶችን ይመልከቱ"
+                : "Want to become a verified agent? Review requirements & apply"}
+            </span>
+            <ArrowRight size={16} />
+          </Link>
         </div>
       </div>
     </section>

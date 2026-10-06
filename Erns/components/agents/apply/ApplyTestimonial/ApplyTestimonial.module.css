@@ -1,0 +1,113 @@
+.section {
+  padding: 4.5rem 1.5rem;
+  background-color: var(--bg-color, #f6fafd);
+  border-top: 1px solid rgba(74, 127, 167, 0.12);
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.card {
+  background: linear-gradient(135deg, #0a1931 0%, #0d2342 100%);
+  border-radius: 16px;
+  padding: 3rem 2.5rem;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(10, 25, 49, 0.15);
+}
+
+.quoteIcon {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  font-size: 6rem;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.06);
+  font-family: Georgia, serif;
+  user-select: none;
+}
+
+.quote {
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  line-height: 1.6;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
+  color: #f1f5f9;
+}
+
+.authorRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.authorInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-accent, #4a7fa7);
+}
+
+.name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.2rem;
+}
+
+.agency {
+  font-size: 0.88rem;
+  color: #94a3b8;
+}
+
+.metrics {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.metricBadge {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-bg-warm, #b3cfe5);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: 2rem 1.5rem;
+  }
+  .authorRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .metrics {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+}

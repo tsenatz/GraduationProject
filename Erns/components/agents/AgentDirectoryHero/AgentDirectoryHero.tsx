@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { Search, ShieldCheck, Award } from "lucide-react";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { agentTranslations } from "../translations";
@@ -99,8 +100,22 @@ export const AgentDirectoryHero: React.FC<AgentDirectoryHeroProps> = ({
         </div>
 
         <div className={styles.verifiedRibbon}>
-          <ShieldCheck size={16} color="#10b981" />
-          <span>{t.verifiedCount}</span>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+            <ShieldCheck size={16} color="#10b981" />
+            <span>{t.verifiedCount}</span>
+          </div>
+          <span style={{ opacity: 0.4 }}>•</span>
+          <Link
+            href="/sell/agent/apply"
+            style={{
+              color: "var(--color-bg-warm, #b3cfe5)",
+              textDecoration: "underline",
+              fontSize: "0.85rem",
+              fontWeight: 500,
+            }}
+          >
+            {isAmharic ? "ወኪል ነዎት? እዚህ ያመልክቱ" : "Are you an agent? Apply to join"}
+          </Link>
         </div>
       </div>
     </section>
