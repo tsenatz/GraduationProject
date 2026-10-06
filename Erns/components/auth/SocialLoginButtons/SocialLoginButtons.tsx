@@ -1,3 +1,6 @@
+"use client";
+
+import { signIn } from "next-auth/react";
 import {
   GoogleIcon,
   AppleIcon,
@@ -19,9 +22,17 @@ export function SocialLoginButtons({
   onApple,
   onFacebook,
 }: SocialLoginButtonsProps) {
+  const handleGoogleClick = () => {
+    if (onGoogle) {
+      onGoogle();
+    } else {
+      signIn("google", { redirectTo: "/" });
+    }
+  };
+
   return (
     <div className={styles.socialLogin}>
-      <button type="button" className={styles.socialBtn} onClick={onGoogle}>
+      <button type="button" className={styles.socialBtn} onClick={handleGoogleClick}>
         <GoogleIcon className={styles.socialIcon} />
       </button>
       <button type="button" className={styles.socialBtn} onClick={onApple}>
@@ -33,3 +44,4 @@ export function SocialLoginButtons({
     </div>
   );
 }
+
