@@ -1,278 +1,283 @@
-/* Zillow Standard Agent Card */
+/* ERNS Brand Specialist / Agent Consultation Card */
 .card {
-  background: #ffffff;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
-  padding: 28px 24px;
+  background: var(--color-surface, #ffffff);
+  border-radius: 18px;
+  border: 1px solid rgba(74, 127, 167, 0.22);
+  box-shadow: 0 4px 16px -2px rgba(10, 25, 49, 0.05), 0 2px 6px -1px rgba(10, 25, 49, 0.02);
+  padding: 24px 22px 20px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  justify-content: space-between;
+  gap: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  position: relative;
 }
 
 .card:hover {
-  border-color: #cbd5e1;
-  box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+  border-color: var(--color-accent, #4a7fa7);
+  box-shadow: 0 12px 28px -4px rgba(10, 25, 49, 0.1), 0 4px 12px -2px rgba(74, 127, 167, 0.08);
 }
 
+/* 1. Header Row */
 .headerRow {
   display: flex;
-  gap: 18px;
-  align-items: flex-start;
+  align-items: center;
+  gap: 14px;
 }
 
 .avatarWrapper {
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
-  overflow: hidden;
-  border: 2px solid #e2e8f0;
   flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(10, 25, 49, 0.12);
+  border: 2px solid var(--color-bg-warm, #b3cfe5);
 }
 
 .avatarImg {
   width: 100%;
   height: 100%;
+  border-radius: 50%;
   object-fit: cover;
+  display: block;
 }
 
-.agentInfo {
+.avatarVerifiedIcon {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  background: var(--color-primary, #0a1931);
+  color: #ffffff;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ffffff;
+}
+
+.headerInfo {
   flex: 1;
+  min-width: 0;
 }
 
 .nameRow {
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .name {
-  font-size: 1.35rem;
+  font-size: 1.15rem;
   font-weight: 800;
   color: var(--color-primary, #0a1931);
   margin: 0;
-}
-
-.verifiedBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: rgba(16, 185, 129, 0.12);
-  color: #059669;
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 2px 7px;
-  border-radius: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .agency {
-  font-size: 0.92rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  color: #64748b;
-  margin: 3px 0 6px;
+  color: var(--color-accent, #4a7fa7);
+  margin: 3px 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.ratingRow {
+/* 2. Meta Row (Rating Pill + Location) */
+.metaRow {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-.stars {
-  display: flex;
+.ratingBadge {
+  display: inline-flex;
   align-items: center;
-  gap: 2px;
-  color: #f59e0b;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  background: rgba(74, 127, 167, 0.12);
+  color: var(--color-primary, #0a1931);
+  border: 1px solid rgba(74, 127, 167, 0.22);
+  line-height: 1;
 }
 
 .ratingNumber {
-  font-size: 0.95rem;
-  font-weight: 800;
   color: var(--color-primary, #0a1931);
 }
 
-.reviewCount {
-  font-size: 0.85rem;
-  color: #64748b;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.actionsTop {
+.location {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 5px;
+  color: var(--color-accent, #4a7fa7);
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Zillow Contact & Call Buttons */
-.contactBtn {
-  display: inline-flex;
+.locationIcon {
+  color: var(--color-accent, #4a7fa7);
+  flex-shrink: 0;
+}
+
+/* 3. Stats / Activity Lines */
+.statsInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.statLine {
+  display: flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 18px;
-  min-height: 40px;
-  border-radius: 6px;
-  background: var(--color-primary, #0a1931);
-  color: #ffffff;
+  flex-wrap: wrap;
+}
+
+.statBold {
+  font-weight: 700;
+  color: var(--color-primary, #0a1931);
+}
+
+.statDot {
+  color: var(--color-bg-warm, #b3cfe5);
+}
+
+/* 4. Tags / Pills Row */
+.tagsRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.tagPill {
+  background: rgba(74, 127, 167, 0.08);
+  color: var(--color-primary, #0a1931);
+  font-size: 0.78rem;
   font-weight: 600;
-  font-size: 0.9rem;
-  border: 1px solid var(--color-primary, #0a1931);
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+  padding: 4px 11px;
+  border-radius: 9999px;
+  border: 1px solid rgba(74, 127, 167, 0.18);
   white-space: nowrap;
 }
 
-.contactBtn:hover {
-  background: #173258;
-  border-color: #173258;
+.tagPillCount {
+  background: rgba(10, 25, 49, 0.04);
+  border: 1px solid rgba(74, 127, 167, 0.25);
+  color: var(--color-accent, #4a7fa7);
 }
 
-.callBtn {
+/* 5. Footer Row (Price Range + Action Buttons) */
+.footerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(74, 127, 167, 0.16);
+  padding-top: 16px;
+  margin-top: 4px;
+  gap: 12px;
+}
+
+.priceCol {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.priceAmount {
+  font-size: 1.12rem;
+  font-weight: 800;
+  color: var(--color-primary, #0a1931);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.priceLabel {
+  font-size: 0.75rem;
+  color: var(--color-accent, #4a7fa7);
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.callIconBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid rgba(74, 127, 167, 0.28);
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  min-height: 40px;
-  border-radius: 6px;
-  background: #ffffff;
+  justify-content: center;
   color: var(--color-primary, #0a1931);
-  font-weight: 600;
-  font-size: 0.9rem;
-  border: 1px solid #cbd5e1;
   text-decoration: none;
   transition: all 0.2s ease;
 }
 
-.callBtn:hover {
-  background: #f8fafc;
-  border-color: #94a3b8;
+.callIconBtn:hover {
+  background: rgba(74, 127, 167, 0.1);
+  border-color: var(--color-accent, #4a7fa7);
+  color: var(--color-accent, #4a7fa7);
 }
 
-/* 4-Category Ratings (Zillow Signature) */
-.categoriesGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  background: var(--bg-color, #f6fafd);
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  padding: 12px 16px;
-}
-
-.categoryItem {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.categoryLabel {
-  font-size: 0.75rem;
+.bookBtn {
+  background: var(--color-primary, #0a1931);
+  color: #ffffff;
   font-weight: 600;
-  color: #64748b;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
+  font-size: 0.88rem;
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: 1px solid var(--color-primary, #0a1931);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(10, 25, 49, 0.15);
 }
 
-.categoryScore {
-  font-size: 0.98rem;
-  font-weight: 800;
-  color: var(--color-primary, #0a1931);
-  display: flex;
-  align-items: center;
-  gap: 4px;
+.bookBtn:hover {
+  background: #173258;
+  border-color: #173258;
+  box-shadow: 0 4px 14px rgba(10, 25, 49, 0.25);
+  transform: translateY(-1px);
 }
 
-/* Stats Ribbon */
-.statsRow {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  border-top: 1px solid #f1f5f9;
-  border-bottom: 1px solid #f1f5f9;
-  padding: 12px 0;
-}
-
-.statItem {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.statValue {
-  font-size: 0.98rem;
-  font-weight: 800;
-  color: var(--color-primary, #0a1931);
-}
-
-.statLabel {
-  font-size: 0.78rem;
-  color: #64748b;
-  font-weight: 500;
-}
-
-.bio {
-  font-size: 0.92rem;
-  line-height: 1.6;
-  color: #475569;
-  margin: 0;
-}
-
-/* Review Snippet */
-.reviewSnippet {
-  background: #f8fafc;
-  border-left: 3px solid var(--color-accent, #4a7fa7);
-  padding: 12px 16px;
-  border-radius: 0 6px 6px 0;
-}
-
-.reviewQuote {
-  font-size: 0.9rem;
-  line-height: 1.5;
-  color: #334155;
-  font-style: italic;
-  margin: 0 0 4px;
-}
-
-.reviewMeta {
-  font-size: 0.78rem;
-  color: #64748b;
-  font-weight: 600;
-}
-
-@media (max-width: 900px) {
-  .headerRow {
+@media (max-width: 480px) {
+  .footerRow {
     flex-direction: column;
-  }
-
-  .actionsTop {
-    width: 100%;
-  }
-
-  .contactBtn,
-  .callBtn {
-    flex: 1;
-    justify-content: center;
-  }
-
-  .categoriesGrid {
-    grid-template-columns: repeat(2, 1fr);
+    align-items: stretch;
     gap: 12px;
   }
 
-  .statsRow {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-}
-
-@media (max-width: 640px) {
-  .card {
-    padding: 20px 16px;
+  .actions {
+    width: 100%;
   }
 
-  .categoriesGrid {
-    grid-template-columns: 1fr;
+  .bookBtn {
+    flex: 1;
+    text-align: center;
   }
 }

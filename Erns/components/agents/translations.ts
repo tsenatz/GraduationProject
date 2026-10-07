@@ -43,7 +43,9 @@ export const agentTranslations = {
         areas: "Areas Served",
       },
       btnContact: "Contact Agent",
+      btnBook: "Book Consultation",
       btnCall: "Call",
+      priceRangeLabel: "Price Range",
       recentReviewFrom: "Recent review from",
     },
     modal: {
@@ -154,7 +156,9 @@ export const agentTranslations = {
         areas: "የሚሰሩባቸው ቦታዎች",
       },
       btnContact: "ከወኪሉ ጋር ይገናኙ",
+      btnBook: "ምክክር ያስይዙ",
       btnCall: "ይደውሉ",
+      priceRangeLabel: "የዋጋ ክልል",
       recentReviewFrom: "የቅርብ ጊዜ አስተያየት ከ",
     },
     modal: {
