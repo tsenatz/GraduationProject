@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   AgentDirectoryHero,
   AgentFilterBar,
@@ -14,15 +15,31 @@ import {
   AgentFilterState,
 } from "@/components/agents";
 
-export default function FindListingAgentPage() {
+function FindListingAgentContent() {
+  const searchParams = useSearchParams();
+  const urlSubCity = searchParams.get("subCity") || "";
+  const urlSearch = searchParams.get("address") || searchParams.get("search") || "";
+
   const [filters, setFilters] = useState<AgentFilterState>({
-    searchQuery: "",
-    selectedSubCity: "",
+    searchQuery: urlSearch,
+    selectedSubCity: urlSubCity,
     specialty: "listing-agent",
     minRating: 0,
     selectedLanguage: "",
     sortBy: "rating",
   });
+
+  useEffect(() => {
+    const subCity = searchParams.get("subCity");
+    const search = searchParams.get("address") || searchParams.get("search");
+    if (subCity || search) {
+      setFilters((prev) => ({
+        ...prev,
+        ...(subCity !== null ? { selectedSubCity: subCity } : {}),
+        ...(search !== null ? { searchQuery: search } : {}),
+      }));
+    }
+  }, [searchParams]);
 
   const [selectedAgentForContact, setSelectedAgentForContact] =
     useState<Agent | null>(null);
@@ -161,5 +178,13 @@ export default function FindListingAgentPage() {
         />
       )}
     </main>
+  );
+}
+
+export default function FindListingAgentPage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: "100vh" }} />}>
+      <FindListingAgentContent />
+    </Suspense>
   );
 }
