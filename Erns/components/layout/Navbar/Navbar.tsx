@@ -3,9 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Menu, X, ChevronRight } from "lucide-react";
+import { Home, Menu, X, ChevronRight, Heart } from "lucide-react";
 import SignInButton from "@/components/auth/SignInButton";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
+import { useFavorites } from "@/components/providers/FavoritesProvider";
 import styles from "./Navbar.module.css";
 
 import { NAV_LINKS_LEFT, NAV_LINKS_RIGHT } from "./navLinks";
@@ -13,6 +14,7 @@ import { NAV_LINKS_LEFT, NAV_LINKS_RIGHT } from "./navLinks";
 export default function Navbar() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { count } = useFavorites();
 
   // Helper for dynamic breadcrumbs on mobile
   const getBreadcrumbLabel = () => {
@@ -88,6 +90,20 @@ export default function Navbar() {
               </Link>
             );
           })}
+          <Link
+            href="/favorites"
+            className={`${styles.navLink} ${pathname === "/favorites" ? styles.active : ""} ${styles.favNavLink}`}
+            aria-label={`Saved homes (${count})`}
+            title="Saved Homes"
+          >
+            <Heart
+              size={20}
+              className={styles.favIcon}
+              fill={pathname === "/favorites" ? "#e11d48" : "none"}
+              color={pathname === "/favorites" ? "#e11d48" : "currentColor"}
+            />
+            {count > 0 && <span className={styles.favBadge}>{count}</span>}
+          </Link>
           <LanguageSwitcher />
           <SignInButton />
         </nav>

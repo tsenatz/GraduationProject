@@ -139,6 +139,42 @@
   border-bottom: 2px solid var(--color-primary);
 }
 
+.favNavLink {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  padding: 0.3rem 0.5rem;
+}
+
+.favIcon {
+  color: var(--color-primary);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.favNavLink:hover .favIcon {
+  color: #e11d48;
+  transform: scale(1.1);
+}
+
+.favBadge {
+  position: absolute;
+  top: -2px;
+  right: -4px;
+  background: #e11d48;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(225, 29, 72, 0.4);
+  line-height: 1;
+}
+
 .mobileDrawerItemBtn {
   width: 100%;
   padding-top: 0.5rem;
