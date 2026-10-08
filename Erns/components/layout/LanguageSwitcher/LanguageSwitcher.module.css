@@ -8,12 +8,13 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 0.35rem 0.75rem;
-  border-radius: 9999px;
+  padding: 0.4rem 0.85rem;
+  min-height: 34px;
+  border-radius: 20px;
   background-color: rgba(var(--color-accent-rgb), 0.08);
   border: 1px solid rgba(var(--color-accent-rgb), 0.25);
   color: var(--color-primary);
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -44,21 +45,11 @@
   flex-shrink: 0;
 }
 
-.langSegment {
-  font-weight: 600;
-  color: #64748b;
-  transition: color 0.15s ease;
-}
-
-.divider {
-  color: rgba(var(--color-accent-rgb), 0.4);
-  font-size: 0.75rem;
-  font-weight: 400;
-}
-
-.active {
+.singleLangText {
+  font-weight: 700;
+  font-size: 0.88rem;
   color: var(--color-primary);
-  font-weight: 800;
+  line-height: 1;
 }
 
 /* Mobile full-width variant */

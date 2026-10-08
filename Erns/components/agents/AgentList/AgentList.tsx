@@ -10,12 +10,14 @@ import styles from "./AgentList.module.css";
 interface AgentListProps {
   agents: Agent[];
   onContactClick: (agent: Agent) => void;
+  onViewProfileClick: (agent: Agent) => void;
   onResetFilters: () => void;
 }
 
 export const AgentList: React.FC<AgentListProps> = ({
   agents,
   onContactClick,
+  onViewProfileClick,
   onResetFilters,
 }) => {
   const { isAmharic } = useLanguage();
@@ -56,6 +58,7 @@ export const AgentList: React.FC<AgentListProps> = ({
               key={agent.id}
               agent={agent}
               onContactClick={onContactClick}
+              onViewProfileClick={onViewProfileClick}
             />
           ))}
         </div>

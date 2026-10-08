@@ -11,26 +11,31 @@ interface LanguageSwitcherProps {
 export function LanguageSwitcher({ isMobileDrawer = false }: LanguageSwitcherProps) {
   const { language, toggleLanguage } = useLanguage();
 
+  // Show only ONE language name at a time:
+  // - When the site is in English, show "አማ" (clicking it switches to Amharic)
+  // - When the site is in Amharic, show "EN" (clicking it switches to English)
+  const displayLabel = language === "en" ? "አማ" : "EN";
+  const targetTitle =
+    language === "en"
+      ? "ቀይር ወደ አማርኛ (Switch to Amharic)"
+      : "Switch to English";
+
   if (isMobileDrawer) {
     return (
       <div className={styles.mobileWrapper}>
         <span className={styles.mobileLabel}>
           <Globe size={18} aria-hidden="true" />
-          <span>Language / ቋንቋ</span>
+          <span>{language === "en" ? "Language" : "ቋንቋ"}</span>
         </span>
         <button
           type="button"
           onClick={toggleLanguage}
           className={styles.toggleBtn}
-          aria-label={`Current language: ${language === "en" ? "English" : "Amharic"}. Click to switch.`}
+          title={targetTitle}
+          aria-label={targetTitle}
         >
-          <span className={`${styles.langSegment} ${language === "en" ? styles.active : ""}`}>
-            EN
-          </span>
-          <span className={styles.divider}>/</span>
-          <span className={`${styles.langSegment} ${language === "am" ? styles.active : ""}`}>
-            አማ
-          </span>
+          <Globe size={15} className={styles.globeIcon} aria-hidden="true" />
+          <span className={styles.singleLangText}>{displayLabel}</span>
         </button>
       </div>
     );
@@ -42,17 +47,11 @@ export function LanguageSwitcher({ isMobileDrawer = false }: LanguageSwitcherPro
         type="button"
         onClick={toggleLanguage}
         className={styles.toggleBtn}
-        title={language === "en" ? "Switch to Amharic (አማርኛ)" : "Switch to English"}
-        aria-label={`Current language: ${language === "en" ? "English" : "Amharic"}. Click to switch.`}
+        title={targetTitle}
+        aria-label={targetTitle}
       >
         <Globe size={15} className={styles.globeIcon} aria-hidden="true" />
-        <span className={`${styles.langSegment} ${language === "en" ? styles.active : ""}`}>
-          EN
-        </span>
-        <span className={styles.divider}>|</span>
-        <span className={`${styles.langSegment} ${language === "am" ? styles.active : ""}`}>
-          አማ
-        </span>
+        <span className={styles.singleLangText}>{displayLabel}</span>
       </button>
     </div>
   );
