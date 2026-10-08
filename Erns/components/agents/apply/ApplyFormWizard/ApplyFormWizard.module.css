@@ -1,0 +1,605 @@
+.section {
+  padding: 64px 24px;
+  background-color: #ffffff;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Zillow Standard Form Card */
+.cardWrapper {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  padding: 36px 32px;
+  position: relative;
+}
+
+.wizardHeader {
+  text-align: center;
+  margin-bottom: 2.25rem;
+}
+
+.wizardBadge {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-accent, #4a7fa7);
+  background: rgba(74, 127, 167, 0.1);
+  padding: 0.3rem 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.wizardTitle {
+  font-size: clamp(1.5rem, 2.3vw, 1.95rem);
+  font-weight: 800;
+  color: var(--color-primary, #0a1931);
+  margin-bottom: 0.4rem;
+}
+
+.wizardDesc {
+  font-size: 0.95rem;
+  color: #64748b;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Stepper Progress Bar */
+.stepper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  margin-bottom: 2.5rem;
+  padding: 0 0.5rem;
+}
+
+.stepper::before {
+  content: "";
+  position: absolute;
+  top: 16px;
+  left: 2rem;
+  right: 2rem;
+  height: 2px;
+  background-color: #e2e8f0;
+  z-index: 0;
+}
+
+.stepItem {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.stepNumber {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 2px solid #cbd5e1;
+  color: #64748b;
+  font-weight: 700;
+  font-size: 0.88rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.stepItemActive .stepNumber {
+  background-color: var(--color-primary, #0a1931);
+  border-color: var(--color-primary, #0a1931);
+  color: #ffffff;
+}
+
+.stepItemCompleted .stepNumber {
+  background-color: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
+}
+
+.stepLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.stepItemActive .stepLabel {
+  color: var(--color-primary, #0a1931);
+  font-weight: 700;
+}
+
+/* Form Fields */
+.formBody {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.formGrid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-primary, #0a1931);
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  font-size: 0.92rem;
+  color: #1e293b;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  transition: border-color 0.2s ease;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-accent, #4a7fa7);
+  box-shadow: 0 0 0 3px rgba(74, 127, 167, 0.1);
+}
+
+.textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Interactive Chips (Sub-Cities & Languages) */
+.chipGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.2rem;
+}
+
+.chip {
+  padding: 0.45rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  background-color: var(--bg-color, #f6fafd);
+  border: 1px solid #cbd5e1;
+  color: var(--color-primary, #0a1931);
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.chip:hover {
+  border-color: var(--color-accent, #4a7fa7);
+  background-color: #eaf3fa;
+}
+
+.chipSelected {
+  background-color: var(--color-primary, #0a1931);
+  border-color: var(--color-primary, #0a1931);
+  color: #ffffff;
+}
+
+/* Checkbox Cards */
+.checkboxGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.checkboxCard {
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 0.8rem 0.9rem;
+  background-color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  transition: all 0.15s ease;
+}
+
+.checkboxCard:hover {
+  border-color: var(--color-accent, #4a7fa7);
+}
+
+.checkboxCardSelected {
+  border-color: var(--color-primary, #0a1931);
+  background-color: rgba(10, 25, 49, 0.04);
+}
+
+.checkboxCard input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary, #0a1931);
+}
+
+/* Document Dropzone */
+.dropzone {
+  border: 2px dashed #cbd5e1;
+  border-radius: 8px;
+  padding: 1.75rem 1.25rem;
+  text-align: center;
+  background-color: var(--bg-color, #f6fafd);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dropzone:hover {
+  border-color: var(--color-accent, #4a7fa7);
+  background-color: #edf5fc;
+}
+
+.dropzoneIcon {
+  color: var(--color-accent, #4a7fa7);
+}
+
+.dropzoneText {
+  font-weight: 600;
+  color: var(--color-primary, #0a1931);
+  font-size: 0.92rem;
+}
+
+.dropzoneHint {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.fileBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #d1fae5;
+  color: #065f46;
+  padding: 0.35rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-top: 0.4rem;
+}
+
+/* Step 4 Live Preview */
+.previewSection {
+  background-color: var(--bg-color, #f6fafd);
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.previewHeaderTitle {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-accent, #4a7fa7);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.previewCard {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+.previewTop {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.previewAvatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #e2e8f0;
+}
+
+.previewName {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-primary, #0a1931);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.previewAgency {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.previewTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.previewTag {
+  background-color: #f1f5f9;
+  color: #334155;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.termsLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.85rem;
+  color: #475569;
+  line-height: 1.5;
+  cursor: pointer;
+  margin-top: 0.75rem;
+}
+
+.termsLabel input {
+  margin-top: 0.15rem;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary, #0a1931);
+}
+
+/* Zillow Standard Form Navigation Buttons */
+.buttonRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.backBtn {
+  background: transparent;
+  color: var(--color-primary, #0a1931);
+  border: 1px solid #cbd5e1;
+  padding: 0.65rem 1.25rem;
+  min-height: 42px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.backBtn:hover {
+  background-color: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.nextBtn,
+.submitBtn {
+  background-color: var(--color-primary, #0a1931);
+  color: #ffffff;
+  border: 1px solid var(--color-primary, #0a1931);
+  padding: 0.7rem 1.5rem;
+  min-height: 42px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.nextBtn:hover,
+.submitBtn:hover {
+  background-color: #173258;
+}
+
+.submitBtn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Success View */
+.successWrapper {
+  text-align: center;
+  padding: 1.5rem 0.5rem;
+}
+
+.successIcon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #d1fae5;
+  color: #10b981;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+}
+
+.successTitle {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--color-primary, #0a1931);
+  margin-bottom: 0.5rem;
+}
+
+.refBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--bg-color, #f6fafd);
+  border: 1px solid #e2e8f0;
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--color-primary, #0a1931);
+  margin-bottom: 1.25rem;
+}
+
+.successDesc {
+  font-size: 0.95rem;
+  color: #475569;
+  max-width: 580px;
+  margin: 0 auto 1.75rem;
+  line-height: 1.6;
+}
+
+.timelineCard {
+  background-color: var(--bg-color, #f6fafd);
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.25rem 1.75rem;
+  text-align: left;
+  max-width: 560px;
+  margin: 0 auto 2rem;
+}
+
+.timelineTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-primary, #0a1931);
+  margin-bottom: 0.75rem;
+}
+
+.timelineList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.timelineItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.88rem;
+  color: #334155;
+  line-height: 1.5;
+}
+
+.timelineDot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: rgba(74, 127, 167, 0.2);
+  color: var(--color-accent, #4a7fa7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.successActions {
+  display: flex;
+  justify-content: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.btnDirectory {
+  background-color: var(--color-primary, #0a1931);
+  color: #ffffff;
+  padding: 0.75rem 1.4rem;
+  min-height: 42px;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.92rem;
+  transition: background-color 0.2s ease;
+}
+
+.btnDirectory:hover {
+  background-color: #173258;
+}
+
+.btnSellerHub {
+  background-color: transparent;
+  color: var(--color-primary, #0a1931);
+  border: 1px solid var(--color-primary, #0a1931);
+  padding: 0.75rem 1.4rem;
+  min-height: 42px;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.92rem;
+  transition: background-color 0.2s ease;
+}
+
+.btnSellerHub:hover {
+  background-color: rgba(10, 25, 49, 0.04);
+}
+
+@media (max-width: 768px) {
+  .cardWrapper {
+    padding: 20px 16px;
+  }
+  .formGrid2,
+  .checkboxGrid {
+    grid-template-columns: 1fr;
+  }
+  .stepper {
+    padding: 0;
+  }
+  .stepLabel {
+    display: none;
+  }
+  .stepper::before {
+    left: 1rem;
+    right: 1rem;
+  }
+}

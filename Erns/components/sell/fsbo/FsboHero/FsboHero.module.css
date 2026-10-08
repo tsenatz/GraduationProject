@@ -1,0 +1,231 @@
+.heroSection {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(
+    180deg,
+    var(--color-primary, #0a1931) 0%,
+    #0f2343 50%,
+    var(--color-primary, #0a1931) 100%
+  );
+  color: #ffffff;
+  padding: 72px 24px 52px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.heroBackgroundPattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.04;
+  background-image: radial-gradient(#ffffff 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+
+.heroGlow {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 250px;
+  background: radial-gradient(
+    circle,
+    rgba(74, 127, 167, 0.22) 0%,
+    rgba(10, 25, 49, 0) 70%
+  );
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.title {
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin: 0;
+  max-width: 820px;
+}
+
+.subtitle {
+  font-size: 1.12rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+  max-width: 680px;
+  margin: 0;
+}
+
+/* Zillow Standard Search Card */
+.searchBarCard {
+  width: 100%;
+  max-width: 840px;
+  margin-top: 8px;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+  border: 1px solid #e2e8f0;
+}
+
+.inputGroup {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: var(--color-primary, #0a1931);
+  transition: border-color 0.2s ease;
+}
+
+.inputGroup:focus-within {
+  border-color: var(--color-accent, #4a7fa7);
+  background: #ffffff;
+}
+
+.inputIcon {
+  color: var(--color-accent, #4a7fa7);
+  flex-shrink: 0;
+}
+
+.selectInput {
+  border: none;
+  background: transparent;
+  width: 100%;
+  font-size: 0.92rem;
+  color: var(--color-primary, #0a1931);
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+}
+
+.textInput {
+  border: none;
+  background: transparent;
+  width: 100%;
+  font-size: 0.92rem;
+  color: var(--color-primary, #0a1931);
+  outline: none;
+}
+
+.textInput::placeholder {
+  color: #94a3b8;
+}
+
+/* Zillow Standard Search Button */
+.submitBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 24px;
+  min-height: 44px;
+  border-radius: 6px;
+  background: var(--color-primary, #0a1931);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.submitBtn:hover {
+  background: #173258;
+}
+
+.statsRow {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.statValue {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.statLabel {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 900px) {
+  .heroSection {
+    padding: 52px 16px 36px;
+  }
+
+  .title {
+    font-size: 2.1rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .searchBarCard {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .inputGroup {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .submitBtn {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .statsRow {
+    gap: 20px;
+  }
+}

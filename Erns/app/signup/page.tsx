@@ -1,273 +1,201 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
+import { useState } from "react";
 import Link from "next/link";
-import { Eye, EyeOff, Home, ChevronDown } from "lucide-react";
-import { GoogleIcon, AppleIcon, FacebookIcon } from "@/components/icons/SocialIcons";
+import { signIn } from "next-auth/react";
+
+import { AuthPageLayout } from "@/components/auth/AuthPageLayout";
+import { AuthImagePanel } from "@/components/auth/AuthImagePanel";
+import { AuthTabs } from "@/components/auth/AuthTabs";
+import { FormInput } from "@/components/auth/FormInput";
+import { SocialLoginButtons } from "@/components/auth/SocialLoginButtons";
+import { registerUser } from "@/lib/actions/auth";
+
 import styles from "./signup.module.css";
 
-export default function SignupPage() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+const CAROUSEL_ITEMS = [
+  {
+    title: "Start your journey",
+    desc: (
+      <>
+        Join thousands of satisfied users.<br />
+        Your dream property is one step away.
+      </>
+    ),
+  },
+  {
+    title: "Discover prime locations",
+    desc: (
+      <>
+        Explore properties in the best neighborhoods<br />
+        for a vibrant lifestyle.
+      </>
+    ),
+  },
+  {
+    title: "Your dream investment",
+    desc: (
+      <>
+        Secure the best deals in real estate<br />
+        with our expert guidance.
+      </>
+    ),
+  },
+];
 
+export default function SignupPage() {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
-    role: "buyer"
   });
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  const carouselItems = [
-    {
-      title: "Start your journey",
-      desc: (
-        <>
-          Join thousands of satisfied users.<br />
-          Your dream property is one step away.
-        </>
-      ),
-    },
-    {
-      title: "Discover prime locations",
-      desc: (
-        <>
-          Explore properties in the best neighborhoods<br />
-          for a vibrant lifestyle.
-        </>
-      ),
-    },
-    {
-      title: "Your dream investment",
-      desc: (
-        <>
-          Secure the best deals in real estate<br />
-          with our expert guidance.
-        </>
-      ),
-    },
-  ];
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % carouselItems.length);
-    }, 4000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData(prev => ({
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }));
+    if (error) setError(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle backend registration logic here
-    console.log("Signup form submitted: ", formData);
+    setError(null);
+    setIsLoading(true);
+
+    try {
+      const res = await registerUser(formData);
+      if (res.error) {
+        setError(res.error);
+        setIsLoading(false);
+        return;
+      }
+
+      // Redirect user to verify email page
+      window.location.href = `/verify-email?email=${encodeURIComponent(formData.email)}`;
+    } catch {
+      setError("An unexpected error occurred. Please try again.");
+      setIsLoading(false);
+    }
   };
 
   return (
-    <main className={styles.container}>
-      {/* Left Image Section */}
-      <section className={styles.imageSection}>
-        <div className={styles.imageWrapper}>
-          <Image
-            src="/signup.png"
-            alt="Modern Architecture Home"
-            fill
-            priority
-            style={{ objectFit: "cover" }}
-          />
-        </div>
-        <div className={styles.imageOverlay} />
+    <AuthPageLayout
+      imagePanelSlot={
+        <AuthImagePanel imageSrc="/signup.png" carouselItems={CAROUSEL_ITEMS} />
+      }
+      formSectionClassName={styles.formSectionOverflow}
+      formSectionSlot={
+        <>
+          <AuthTabs activeTab="signup" />
 
-        <Link href="/" className={styles.logoArea}>
-          <div className={styles.logoIcon}>
-            <Home size={20} strokeWidth={2.5} />
-          </div>
-          <span className={styles.logoText}>ERNS</span>
-        </Link>
-
-        <div className={styles.imageContent}>
-          <div className={styles.textContent} key={currentSlide}>
-            <h1>{carouselItems[currentSlide].title}</h1>
-            <p>{carouselItems[currentSlide].desc}</p>
-          </div>
-          <div className={styles.dots}>
-            {carouselItems.map((_, index) => (
-              <div
-                key={index}
-                className={`${styles.dot} ${currentSlide === index ? styles.active : ""}`}
-                onClick={() => setCurrentSlide(index)}
-                style={{ cursor: "pointer" }}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Right Form Section */}
-      <section className={styles.formSection}>
-        <div className={styles.topTabs}>
-          <Link href="/login" className={styles.tab}>
-            Sign In
-          </Link>
-          <Link href="/signup" className={`${styles.tab} ${styles.activeTab}`}>
-            Sign Up
-          </Link>
-        </div>
-
-        <div className={styles.formWrapper}>
-          <div className={styles.formHeader}>
-            <h2>Join ERNS Today!</h2>
-            <p>Create your account to get started</p>
-          </div>
-
-          <form onSubmit={handleSubmit}>
-            <div className={styles.row}>
-              <div className={styles.inputGroup}>
-                <label htmlFor="firstName">First Name</label>
-                <div className={styles.inputWrapper}>
-                  <input
-                    type="text"
-                    id="firstName"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    className={styles.input}
-                    placeholder="John"
-                    required
-                  />
-                </div>
-              </div>
-              <div className={styles.inputGroup}>
-                <label htmlFor="lastName">Last Name</label>
-                <div className={styles.inputWrapper}>
-                  <input
-                    type="text"
-                    id="lastName"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    className={styles.input}
-                    placeholder="Doe"
-                    required
-                  />
-                </div>
-              </div>
+          <div className={styles.formWrapper}>
+            <div className={styles.formHeader}>
+              <h2>Join ERNS Today!</h2>
+              <p>Create your account to get started</p>
             </div>
 
-            <div className={styles.inputGroup}>
-              <label htmlFor="email">Your Email</label>
-              <div className={styles.inputWrapper}>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
+            {error && (
+              <div
+                style={{
+                  padding: "0.75rem 1rem",
+                  backgroundColor: "#fef2f2",
+                  color: "#b91c1c",
+                  borderRadius: "8px",
+                  fontSize: "0.875rem",
+                  marginBottom: "1rem",
+                  border: "1px solid #fecaca",
+                }}
+              >
+                {error}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit}>
+              <div className={styles.row}>
+                <FormInput
+                  id="firstName"
+                  name="firstName"
+                  label="First Name"
+                  placeholder="John"
+                  value={formData.firstName}
                   onChange={handleChange}
-                  className={styles.input}
-                  placeholder="john.doe@example.com"
+                  required
+                />
+                <FormInput
+                  id="lastName"
+                  name="lastName"
+                  label="Last Name"
+                  placeholder="Doe"
+                  value={formData.lastName}
+                  onChange={handleChange}
                   required
                 />
               </div>
-            </div>
 
-            <div className={styles.row}>
-              <div className={styles.inputGroup}>
-                <label htmlFor="password">Create Password</label>
-                <div className={styles.inputWrapper}>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    id="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    className={styles.input}
-                    placeholder="••••••••"
-                    required
-                  />
-                  {showPassword ? (
-                    <EyeOff
-                      size={20}
-                      className={styles.eyeIcon}
-                      onClick={() => setShowPassword(false)}
-                    />
-                  ) : (
-                    <Eye
-                      size={20}
-                      className={styles.eyeIcon}
-                      onClick={() => setShowPassword(true)}
-                    />
-                  )}
-                </div>
+              <FormInput
+                id="email"
+                name="email"
+                type="email"
+                label="Your Email"
+                placeholder="john.doe@example.com"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+
+              <div className={styles.row}>
+                <FormInput
+                  id="password"
+                  name="password"
+                  type="password"
+                  label="Create Password"
+                  placeholder="••••••••"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+                <FormInput
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  label="Confirm Password"
+                  placeholder="••••••••"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required
+                />
               </div>
 
-              <div className={styles.inputGroup}>
-                <label htmlFor="confirmPassword">Confirm Password</label>
-                <div className={styles.inputWrapper}>
-                  <input
-                    type={showConfirmPassword ? "text" : "password"}
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    className={styles.input}
-                    placeholder="••••••••"
-                    required
-                  />
-                  {showConfirmPassword ? (
-                    <EyeOff
-                      size={20}
-                      className={styles.eyeIcon}
-                      onClick={() => setShowConfirmPassword(false)}
-                    />
-                  ) : (
-                    <Eye
-                      size={20}
-                      className={styles.eyeIcon}
-                      onClick={() => setShowConfirmPassword(true)}
-                    />
-                  )}
-                </div>
-              </div>
+              <button
+                type="submit"
+                className={styles.loginBtn}
+                disabled={isLoading}
+                style={{ opacity: isLoading ? 0.7 : 1, cursor: isLoading ? "not-allowed" : "pointer" }}
+              >
+                {isLoading ? "Creating Account..." : "Create Account"}
+              </button>
+            </form>
+
+            <div className={styles.divider}>
+              <span>Or Sign Up With</span>
             </div>
 
-            <button type="submit" className={styles.loginBtn}>
-              Create Account
-            </button>
-          </form>
+            <SocialLoginButtons />
 
-          <div className={styles.divider}>
-            <span>Or Sign Up With</span>
+            <div className={styles.registerText}>
+              Already have an account?
+              <Link href="/login" className={styles.registerLink}>
+                Log in
+              </Link>
+            </div>
           </div>
-
-          <div className={styles.socialLogin}>
-            <button type="button" className={styles.socialBtn}>
-              <GoogleIcon className={styles.socialIcon} />
-            </button>
-            <button type="button" className={styles.socialBtn}>
-              <AppleIcon className={styles.socialIcon} />
-            </button>
-            <button type="button" className={styles.socialBtn}>
-              <FacebookIcon className={styles.socialIcon} />
-            </button>
-          </div>
-
-          <div className={styles.registerText}>
-            Already have an account?
-            <Link href="/login" className={styles.registerLink}>
-              Log in
-            </Link>
-          </div>
-        </div>
-      </section>
-    </main>
+        </>
+      }
+    />
   );
 }
