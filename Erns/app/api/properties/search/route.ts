@@ -4,13 +4,13 @@ import db from "@/lib/db";
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    
+
     // Parse map boundaries from URL
     const neLat = parseFloat(searchParams.get("neLat") || "90");
     const neLng = parseFloat(searchParams.get("neLng") || "180");
     const swLat = parseFloat(searchParams.get("swLat") || "-90");
     const swLng = parseFloat(searchParams.get("swLng") || "-180");
-    
+
     // Parse filters
     const minPrice = searchParams.get("minPrice") ? parseFloat(searchParams.get("minPrice")!) : undefined;
     const maxPrice = searchParams.get("maxPrice") ? parseFloat(searchParams.get("maxPrice")!) : undefined;
@@ -26,11 +26,11 @@ export async function GET(request: Request) {
         longitude: { lte: neLng, gte: swLng },
         ...(minPrice || maxPrice
           ? {
-              price: {
-                ...(minPrice ? { gte: minPrice } : {}),
-                ...(maxPrice ? { lte: maxPrice } : {}),
-              },
-            }
+            price: {
+              ...(minPrice ? { gte: minPrice } : {}),
+              ...(maxPrice ? { lte: maxPrice } : {}),
+            },
+          }
           : {}),
         ...(status && status !== "Any" ? { status } : {}),
         ...(beds ? { beds: exactMatchBeds ? beds : { gte: beds } } : {}),
