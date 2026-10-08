@@ -93,26 +93,198 @@ export const translations = {
     guides: {
       title: "Helpful guides for home sellers",
       subtitle: "Learn about the selling process, legal requirements, and market insights in Ethiopia.",
-      comingSoon: "Guide coming soon",
+      readGuideBtn: "Read Full Guide",
+      modalCloseBtn: "Close Guide",
+      keyTakeawaysLabel: "Key Takeaways",
+      checklistLabel: "Actionable Checklist",
+      proTipLabel: "Pro Tip",
+      warningLabel: "Important Warning",
+      ctaBoxTitle: "Ready to take the next step?",
+      ctaBoxDesc: "Put these insights into action with ERNS verified tools.",
+      ctaListBtn: "List Your Property for Free",
+      ctaAgentBtn: "Connect with an Expert Agent",
       items: [
         {
+          id: "pricing",
           category: "Valuation",
+          readTime: "6 min read",
           title: "Pricing your home right in Addis Ababa",
           excerpt:
             "Learn how price per square meter varies across sub-cities like Bole, Kazanchis, and CMC, and how to price competitively.",
+          keyTakeaways: [
+            "Overpricing by more than 8-10% in Addis Ababa causes listings to stagnate, deterring qualified buyers.",
+            "Square meter valuations differ vastly between core commercial hubs (Bole, Kazanchis) and residential corridors (CMC, Ayat, Lebu).",
+            "Essential amenities like 3-phase power and a 3,000L+ underground water tank can command up to a 15% price premium.",
+            "Always build in a customary 3% to 5% negotiation buffer (ድርድር) without exceeding fair market thresholds."
+          ],
+          sections: [
+            {
+              heading: "1. Understanding Sub-City Square Meter Variations",
+              paragraphs: [
+                "Real estate in Addis Ababa is intensely localized. While Bole and Kazanchis attract high rental yields and diaspora demand commanding premium rates per square meter, residential zones such as CMC, Summit, and Sarbet follow different valuation benchmarks.",
+                "When calculating your property's value, clearly distinguish between the total land plot (ግቢ) and the built-up living area (የተገነባ ስፋት). In multi-story villas (G+1 or G+2), evaluate the total usable floor area alongside compound utility."
+              ],
+              callout: {
+                type: "tip",
+                title: "Compare Completed Sales, Not Stale Asking Prices",
+                message: "Avoid anchoring your asking price to neighbor signs that have sat unsold for 9+ months. Focus on actual closed contract prices registered in the last 60 to 90 days."
+              }
+            },
+            {
+              heading: "2. The Value Multipliers That Addis Ababa Buyers Prioritize",
+              paragraphs: [
+                "Infrastructure reliability directly dictates final selling price in Ethiopia. Buyers in Addis Ababa place heavy weight on reliable utilities and compound autonomy.",
+                "Properties equipped with borehole water access or high-capacity underground reservoirs paired with an electric booster pump consistently sell faster than comparable properties relying strictly on municipal supply."
+              ],
+              bullets: [
+                "Water Infrastructure: 3,000L - 5,000L underground backup tank with automatic booster.",
+                "Electrical Stability: 3-Phase power meter with automatic generator changeover switch.",
+                "Road Frontage: Direct access to paved asphalt vs cobblestone or gravel roads.",
+                "Compound Security: High perimeter walls, electric fencing, and dedicated guardhouse."
+              ]
+            },
+            {
+              heading: "3. Strategic Pricing & The Ethiopian Negotiation Buffer (ድርድር)",
+              paragraphs: [
+                "In Ethiopian real estate culture, serious buyers virtually always expect room for bargaining (ድርድር). If you price strictly at your bottom line and refuse to negotiate, buyers may walk away feeling unheard.",
+                "The winning strategy is to price 3% to 5% above your target net proceeds. This leaves comfortable room for constructive negotiation while maintaining competitive market positioning."
+              ],
+              callout: {
+                type: "warning",
+                title: "Beware the Stagnation Trap",
+                message: "Properties priced over 10% above market value sit idle for over six months. When sellers eventually reduce the price, buyers assume the property has hidden title defects or structural issues."
+              }
+            }
+          ],
+          checklist: [
+            "Review verified recent sales in your woreda within 500 meters",
+            "Calculate total built-up square meters versus total compound plot",
+            "Inspect and service backup water pump and generator before viewings",
+            "Decide your absolute bottom-line net price and add a 3-5% buffer"
+          ],
+          conclusion: "Accurate pricing from day one attracts serious buyers within the first 14 days of listing, resulting in faster closings and higher net proceeds."
         },
         {
+          id: "title-deed",
           category: "Legal & Title",
-          title: "Title Deed (Libre) & Required Documents",
+          readTime: "7 min read",
+          title: "Title Deed (Carta/Libre) & Required Legal Documents",
           excerpt:
-            "The complete checklist of property documents, verification procedures, and legal steps required to transfer ownership.",
+            "The complete checklist of property documents, verification procedures, and legal steps required to transfer ownership in Ethiopia.",
+          keyTakeaways: [
+            "A clean, unencumbered Landholding Certificate (ካርታ / Carta) is mandatory before accepting binding buyer funds.",
+            "Sub-city land registry clearance verifies that the property has no court injunctions, inheritance disputes, or bank liens.",
+            "All property contracts must be authenticated at the Federal Documents Authentication and Registration Agency (DARO).",
+            "Standard financial closing utilizes Certified Payment Orders (CPO) rather than cash transactions for full security."
+          ],
+          sections: [
+            {
+              heading: "1. Core Document Verification Checklist",
+              paragraphs: [
+                "Before publishing your listing, ensure all primary ownership documents are in order. Missing or outdated paperwork is the leading reason property transactions collapse in Addis Ababa.",
+                "Ensure that the name on the Title Deed matches your current National ID, Kebele ID, or Ethiopian Passport exactly. If the property was acquired during marriage, both spouses must be present or provide notarized power of attorney."
+              ],
+              bullets: [
+                "Original Land Holding Certificate (የይዞታ ማረጋገጫ ካርታ / ዲጂታል ካዳስተር)",
+                "Official National ID / Kebele ID or Passport of all registered owners",
+                "Spousal consent affidavit and marriage certificate (የጋብቻ ማረጋገጫ)",
+                "Approved architectural and site construction plans (የይዞታ ፕላን)",
+                "Inheritance certificate (የውርስ ማረጋገጫ) and court clearance if inherited"
+              ]
+            },
+            {
+              heading: "2. Navigating Sub-City Land Registry Clearance (ክሊራንስ)",
+              paragraphs: [
+                "The seller must secure an official clearance (ክሊራንስ) from the Sub-City Land Management and Registration Office. This confirms the absence of outstanding property taxes, municipal fines, or public easements.",
+                "The land office will verify that the digital cadastral coordinates match the physical boundary walls and that no court injunctions (የፍርድ ቤት እግድ) are registered against the title."
+              ],
+              callout: {
+                type: "warning",
+                title: "Avoid Informal Handwritten Agreements (የእጅ ውል)",
+                message: "Never execute a private handwritten sales contract outside the authorized Documents Authentication and Registration Agency (DARO). In Ethiopia, unauthenticated agreements provide weak legal recourse in judicial disputes."
+              }
+            },
+            {
+              heading: "3. Safe Financial Settlement with Bank CPO",
+              paragraphs: [
+                "The universally accepted and secure settlement instrument in Ethiopian real estate is the Certified Payment Order (CPO) issued by an authorized commercial bank.",
+                "On the day of signing at DARO, the buyer presents the CPO in the seller's name. The seller's bank verifies the authenticity of the instrument before title deed transfer documents are signed and stamped."
+              ],
+              callout: {
+                type: "tip",
+                title: "Budget for Taxes and Transfer Fees",
+                message: "Ensure you account for the 4% title deed transfer fee and Capital Gains tax (15% on net capital gains profit) so there are no surprises at settlement."
+              }
+            }
+          ],
+          checklist: [
+            "Verify Title Deed matches current IDs of all owners",
+            "Obtain tax clearance certificate from your sub-city revenue office",
+            "Confirm absence of bank liens or court injunctions at the Land Bureau",
+            "Instruct buyer to issue Certified Payment Order (CPO) through an authorized bank"
+          ],
+          conclusion: "Preparing your legal documentation in advance protects both parties, prevents transaction delays, and guarantees a smooth title transfer."
         },
         {
+          id: "staging",
           category: "Preparation",
-          title: "Preparing & photographing your property",
+          readTime: "5 min read",
+          title: "Preparing & Photographing Your Property for Maximum Value",
           excerpt:
             "Tips on decluttering, capturing daylight photos, and highlighting key amenities like backup water tanks and generators.",
-        },
+          keyTakeaways: [
+            "Homes with bright, high-resolution daylight photos receive over 3x more qualified viewing requests on ERNS.",
+            "Decluttering compounds, service rooms, and carports instantly elevates perceived value.",
+            "Minor cosmetic fixes (paint touch-ups, repairing leaking fixtures) deliver the highest return on investment.",
+            "Showcasing water reservoirs, backup power, and compound security builds instant buyer confidence."
+          ],
+          sections: [
+            {
+              heading: "1. Compound Curb Appeal & Deep Cleaning",
+              paragraphs: [
+                "In Ethiopian villas and compounds, buyer impressions start at the exterior gate. A clean, well-maintained compound signals that the entire property has been cared for conscientiously.",
+                "Pressure-wash or sweep cobblestone pavers, trim overgrown landscaping, and declutter service quarters (የሰርቪስ ቤቶች) so prospective buyers can appreciate their true utility as guest rooms, offices, or rental units."
+              ],
+              callout: {
+                type: "tip",
+                title: "Maximize Light and Fresh Air",
+                message: "Open all curtains, drapes, and windows 30 minutes before viewing appointments to fill the interior with natural light and fresh ventilation."
+              }
+            },
+            {
+              heading: "2. High-ROI Cosmetic Repairs Prior to Listing",
+              paragraphs: [
+                "You do not need an expensive complete renovation to command top dollar. Focus on high-visibility touch-ups that eliminate buyer doubts.",
+                "When prospective buyers observe leaking faucets, flickering light switches, or peeling paint, they immediately deduct significantly more than the actual repair cost from their offer."
+              ],
+              bullets: [
+                "Apply fresh neutral paint to high-traffic hallways and the living room entrance",
+                "Service dripping faucets, toilet flush valves, and shower heads",
+                "Replace burned-out bulbs with warm daylight LED lighting across all rooms",
+                "Ensure gate locks, compound lighting, and security doors open smoothly"
+              ]
+            },
+            {
+              heading: "3. Capturing High-Impact Photos for ERNS",
+              paragraphs: [
+                "Most home searches begin online on a smartphone. High-quality daylight photography is your primary marketing tool to capture serious domestic and diaspora buyers.",
+                "Photograph during peak morning light (9:00 AM – 11:30 AM) or gentle afternoon sunlight (3:00 PM – 5:00 PM). Avoid night photography with harsh artificial flash, which flattens room depth."
+              ],
+              callout: {
+                type: "tip",
+                title: "Highlight Strategic Amenities",
+                message: "Always include crisp photos of the standby generator, water tank and booster pump, compound parking, and guardhouse. These are decisive selling points in Addis Ababa."
+              }
+            }
+          ],
+          checklist: [
+            "Declutter living spaces, kitchen countertops, and compound walkways",
+            "Repair visible minor plumbing and electrical defects",
+            "Photograph in landscape orientation during bright morning daylight",
+            "Capture dedicated photos of water reservoirs, generator, and parking"
+          ],
+          conclusion: "A meticulously prepared, brightly photographed home commands top market value and sells up to 40% faster on ERNS."
+        }
       ],
     },
     faq: {
@@ -525,26 +697,198 @@ export const translations = {
     guides: {
       title: "ለቤት ሻጮች ጠቃሚ መመሪያዎች",
       subtitle: "ስለ ሽያጭ ሂደት፣ ህጋዊ ሰነዶች እና በአዲስ አበባ ስላለው የገበያ ሁኔታ ይወቁ።",
-      comingSoon: "መመሪያው በቅርቡ ይቀርባል",
+      readGuideBtn: "ሙሉ መመሪያውን ያንብቡ",
+      modalCloseBtn: "መመሪያውን ዝጋ",
+      keyTakeawaysLabel: "ዋና ዋና ነጥቦች",
+      checklistLabel: "የተግባር ዝርዝር",
+      proTipLabel: "ጠቃሚ ምክር",
+      warningLabel: "አስፈላጊ ማስጠንቀቂያ",
+      ctaBoxTitle: "ቀጣዩን እርምጃ ለመውሰድ ዝግጁ ነዎት?",
+      ctaBoxDesc: "እነዚህን ጠቃሚ መረጃዎች በመጠቀም በERNS የተረጋገጡ መሳሪያዎች ስራዎን ይጀምሩ።",
+      ctaListBtn: "ቤትዎን በነፃ ይመዝግቡ",
+      ctaAgentBtn: "ከተረጋገጠ ወኪል ጋር ይገናኙ",
       items: [
         {
+          id: "pricing",
           category: "የዋጋ ግምት",
+          readTime: "6 ደቂቃ ንባብ",
           title: "በአዲስ አበባ የቤትዎን ትክክለኛ ዋጋ መወሰን",
           excerpt:
             "በቦሌ፣ በካዛንቺስ እና በሲኤምሲ ያለው የካሬ ሜትር ዋጋ እንዴት እንደሚለያይና ተወዳዳሪ ዋጋ እንዴት እንደሚሰጡ ይወቁ።",
+          keyTakeaways: [
+            "በአዲስ አበባ የቤትን ዋጋ ከገበያው ከ8-10% በላይ ማስቀመጥ ገዢዎችን በማሸሽ ሽያጩ ለረጅም ወራት እንዲጓተት ያደርጋል።",
+            "በዋና የንግድ ማዕከላት (ቦሌ፣ ካዛንቺስ) እና በመኖሪያ መንደሮች (ሲኤምሲ፣ አያት፣ ለቡ) መካከል ከፍተኛ የካሬ ሜትር ዋጋ ልዩነት አለ።",
+            "3-ፌዝ የኤሌክትሪክ ቆጣሪ እና ከ3,000 ሊትር በላይ የውሃ ታንከር መኖር የንብረቱን ዋጋ እስከ 15% ከፍ ያደርገዋል።",
+            "የገበያውን ወሰን ሳያልፉ ለባህላዊው የዋጋ ድርድር (3% እስከ 5%) ቦታ መተው ይመረጣል።"
+          ],
+          sections: [
+            {
+              heading: "1. የክፍለ ከተሞች የካሬ ሜትር ዋጋ ልዩነት መረዳት",
+              paragraphs: [
+                "በአዲስ አበባ የሪል እስቴት ዋጋ እንደ አካባቢው በእጅጉ ይለያያል። ቦሌ እና ካዛንቺስ ከፍተኛ የኪራይ ገቢ እና የዲያስፖራ ፍላጎት ያላቸው በመሆናቸው በካሬ ሜትር ከፍተኛ ዋጋ ሲኖራቸው፣ እንደ ሲኤምሲ፣ ሰሚት እና ሳርቤት ያሉ የመኖሪያ መንደሮች ደግሞ የራሳቸው የሆነ የዋጋ ስሌት አላቸው።",
+                "የንብረትዎን ዋጋ ሲተምኑ አጠቃላይ የይዞታውን ስፋት (ግቢ) እና የተገነባውን የወለል ስፋት በግልጽ ለይተው ያሰሉ። በቪላ ቤቶች (ጂ+1 ወይም ጂ+2) ላይ ጥቅም ላይ ሊውል የሚችለውን አጠቃላይ ስፋት ከግቢው አገልግሎት ጋር ማመዛዘን ተገቢ ነው።"
+              ],
+              callout: {
+                type: "tip",
+                title: "የተፈጸሙ ሽያጮችን ያወዳድሩ፣ ያልተሸጡ ዋጋዎችን አይደለም",
+                message: "የቤትዎን ዋጋ ለ9 ወራት ባልተሸጡ የጎረቤት ማስታወቂያዎች ላይ ብቻ አይመስርቱ። ባለፉት 60 እና 90 ቀናት ውስጥ የተጠናቀቁ ትክክለኛ የውል ዋጋዎችን ያገናዝቡ።"
+              }
+            },
+            {
+              heading: "2. በአዲስ አበባ ገዢዎች ቅድሚያ የሚሰጧቸው የዋጋ አባዢዎች",
+              paragraphs: [
+                "የመሠረተ ልማት አስተማማኝነት የቤቱን የመጨረሻ የመሸጫ ዋጋ በቀጥታ ይወስናል። በአዲስ አበባ ያሉ ገዢዎች ለተሟላ የውሃ እና መብራት አማራጮች ልዩ ቦታ ይሰጣሉ።",
+                "የከርሰ ምድር ውሃ (ቦርሆል) ወይም ከ3,000 ሊትር በላይ የውሃ ማጠራቀሚያ ታንከር ከፓምፕ ጋር የተገጠመላቸው ቤቶች፣ ከመንግስት መስመር ብቻ ጥገኛ ከሆኑ ቤቶች በበለጠ ፍጥነት ይሸጣሉ።"
+              ],
+              bullets: [
+                "የውሃ መሠረተ ልማት፡ ከ3,000 እስከ 5,000 ሊትር የከርሰ ምድር ታንከር ከራስ-ሰር ፑሽ ፓምፕ ጋር።",
+                "የኤሌክትሪክ አቅርቦት፡ 3-ፌዝ ቆጣሪ እና የጀነሬተር ማገናኛ መስመር።",
+                "የመንገድ ተደራሽነት፡ በቀጥታ አስፋልት ላይ ያለ መንገድ ከኮብልስቶን ወይም ከጠጠር መንገድ በእጅጉ ይበልጣል።",
+                "የግቢው ደህንነት፡ ጠንካራ አጥር፣ የኤሌክትሪክ ሽቦ ጥበቃ እና የጥበቃ ቤት።"
+              ]
+            },
+            {
+              heading: "3. ስልታዊ የዋጋ አወሳሰን እና የድርድር ቦታ",
+              paragraphs: [
+                "በኢትዮጵያ የቤት ግብይት ባህል እውነተኛ ገዢዎች ሁልጊዜም ድርድር ይጠብቃሉ። የመጨረሻውን የፈለጉትን ዋጋ ብቻ አስቀምጠው በፍጹም አልደራደርም ካሉ ገዢዎች ሊርቁ ይችላሉ።",
+                "ትክክለኛው ዘዴ ከሚፈልጉት የተጣራ ገቢ ከ3% እስከ 5% ከፍ አድርገው መለጠፍ ነው። ይህ ለድርድር ምቹ ሁኔታን በመፍጠር የገበያ ተወዳዳሪነትዎን ሳያሳጣ ገዢዎችን ይስባል።"
+              ],
+              callout: {
+                type: "warning",
+                title: "የንብረት መጓተት አደጋን ይጠንቀቁ",
+                message: "ከገበያ ዋጋ ከ10% በላይ የተለጠፉ ቤቶች ከስድስት ወር በላይ ገበያ ላይ ይቆያሉ። ከጊዜ በኋላ ዋጋው ሲቀንስ ገዢዎች በቤቱ ህጋዊነት ወይም ጥራት ላይ ጥርጣሬ ያድርባቸዋል።"
+              }
+            }
+          ],
+          checklist: [
+            "በ500 ሜትር ራዲየስ ውስጥ በቅርቡ የተፈጸሙ ሽያጮችን ያጣሩ",
+            "የተገነባውን የቤት ስፋት ከአጠቃላይ ግቢው ስፋት ለይተው ያሰሉ",
+            "ገዢዎች ከመምጣታቸው በፊት የውሃ ፓምፑንና ጀነሬተሩን ሰርቪስ ያድርጉ",
+            "የመጨረሻውን የሽያጭ ዋጋዎን ወስነው የ3-5% የድርድር ተጨማሪ ያክሉ"
+          ],
+          conclusion: "ከመጀመሪያው ቀን ጀምሮ ትክክለኛ የገበያ ዋጋ መወሰን በመጀመሪያዎቹ 14 ቀናት ውስጥ ዝግጁ ገዢዎችን በማምጣት ፈጣን ሽያጭ እንዲፈጸም ያደርጋል።"
         },
         {
+          id: "title-deed",
           category: "ህጋዊ ሰነዶች",
-          title: "የባለቤትነት ማረጋገጫ (ካርታ/ሊብሬ) እና አስፈላጊ ሰነዶች",
+          readTime: "7 ደቂቃ ንባብ",
+          title: "የባለቤትነት ማረጋገጫ (ካርታ/ሊብሬ) እና አስፈላጊ ህጋዊ ሰነዶች",
           excerpt:
             "የይዞታ ማረጋገጫን ህጋዊነት ማረጋገጥ እና የባለቤትነት ዝውውር ለማከናወን የሚያስፈልጉ ወሳኝ ሰነዶች ዝርዝር።",
+          keyTakeaways: [
+            "ማንኛውንም מחያጭ ገንዘብ ከመቀበልዎ በፊት ከማንኛውም እገዳ ነፃ የሆነ ህጋዊ የይዞታ ማረጋገጫ ካርታ መኖር ግዴታ ነው።",
+            "በክፍለ ከተማው የመሬት አስተዳደር የሚሰጥ ክሊራንስ ቤቱ ከፍርድ ቤት እግድ፣ ከውርስ ክርክር እና ከባንክ እዳ ነፃ መሆኑን ያረጋግጣል።",
+            "ሁሉም የቤት ሽያጭ ውሎች በፌዴራል የሰነዶች ማረጋገጫና ምዝገባ ኤጀንሲ (DARA) ፊት መፈረም አለባቸው።",
+            "አስተማማኝ የገንዘብ ክፍያ በጥሬ ገንዘብ ሳይሆን በባንክ የተረጋገጠ ሲፒኦ (CPO) ብቻ መፈጸም አለበት።"
+          ],
+          sections: [
+            {
+              heading: "1. አስፈላጊ የባለቤትነት ሰነዶች ማጣሪያ",
+              paragraphs: [
+                "ማስታወቂያ ከማውጣትዎ በፊት ዋና ዋና የባለቤትነት ሰነዶች የተሟሉ መሆናቸውን ያረጋግጡ። በአዲስ አበባ የቤት ሽያጭ ከሚሰረዝባቸው ዋነኛ ምክንያቶች አንዱ የሰነድ ጉድለት ነው።",
+                "በካርታው ላይ ያለው ስም ከአሁኑ ብሔራዊ መታወቂያ፣ የቀበሌ መታወቂያ ወይም ፓስፖርት ጋር አንድ መሆኑን ያረጋግጡ። ንብረቱ በትዳር ወቅት የተገኘ ከሆነ ሁለቱም ባለትዳሮች በአካል መገኘት ወይም በውክልና ማረጋገጥ አለባቸው።"
+              ],
+              bullets: [
+                "ዋናው የይዞታ ማረጋገጫ ምስክር ወረቀት (ካርታ / ዲጂታል ካዳስተር)",
+                "የባለቤቱ/ባለቤቶቹ የታደሰ ብሔራዊ መታወቂያ፣ የቀበሌ መታወቂያ ወይም ፓስፖርት",
+                "የትዳር አጋር ፈቃድ እና የጋብቻ ምስክር ወረቀት",
+                "የተፈቀደ የሳይት እና የሕንፃ ፕላን",
+                "በውርስ የተገኘ ከሆነ የውርስ ማረጋገጫ እና የውርስ አጣሪ ውሳኔ"
+              ]
+            },
+            {
+              heading: "2. የክፍለ ከተማ መሬት አስተዳደር ክሊራንስ",
+              paragraphs: [
+                "ሻጩ ከክፍለ ከተማው የመሬት አስተዳደርና ምዝገባ ጽ/ቤት ይፋዊ ክሊራንስ ማውጣት ይኖርበታል። ይህ ሰነድ ንብረቱ የግብር እና የሌሎች ቅጣቶች እዳ የሌለበት መሆኑን ያረጋግጣል።",
+                "የመሬት ጽ/ቤቱ የዲጂታል ካዳስተር መረጃው ከአጥሩ ወሰን ጋር መገጠሙን እና በቤቱ ላይ ምንም ዓይነት የፍርድ ቤት እግድ አለመኖሩን ያጣራል።"
+              ],
+              callout: {
+                type: "warning",
+                title: "ያልተረጋገጡ የእጅ ውሎችን ያስወግዱ",
+                message: "ከህጋዊው የሰነዶች ማረጋገጫና ምዝገባ ኤጀንሲ (DARA) ውጭ የተደረጉ የእጅ ውሎች በፍርድ ቤት ዘንድ ደካማ ተቀባይነት ያላቸው በመሆናቸው በፍጹም ውልዎን በግል አይፈጽሙ።"
+              }
+            },
+            {
+              heading: "3. በባንክ ሲፒኦ (CPO) የሚፈጸም አስተማማኝ ክፍያ",
+              paragraphs: [
+                "በኢትዮጵያ የቤት ሽያጭ ውስጥ ብቸኛው አስተማማኝ እና ተቀባይነት ያለው የክፍያ መንገድ በታወቀ ንግድ ባንክ የሚዘጋጅ ሲፒኦ (Certified Payment Order) ነው።",
+                "በDARA ፊት ውል ከመፈረሙ በፊት ገዢው በሻጩ ስም የተዘጋጀውን ሲፒኦ ያቀርባል። ሻጩ ሲፒኦው ትክክለኛ መሆኑን በባንኩ ካረጋገጠ በኋላ ፊርማዎች ተጠናቀው የባለቤትነት ዝውውር ይካሄዳል።"
+              ],
+              callout: {
+                type: "tip",
+                title: "የግብር እና የስም ማዛወሪያ ክፍያዎችን ያስቡ",
+                message: "የ4% የባለቤትነት ስም ማዛወሪያ ክፍያ እና የተጣራ የትርፍ ግብር (Capital Gains 15%) ስሌትን አስቀድመው ያቅዱ።"
+              }
+            }
+          ],
+          checklist: [
+            "የካርታው ስም ከአሁኑ መታወቂያዎ ጋር መመሳከሩን ያረጋግጡ",
+            "ከክፍለ ከተማው ገቢዎች ጽ/ቤት የግብር ክሊራንስ ያውጡ",
+            "በመሬት አስተዳደር የፍርድ ቤት እግድ አለመኖሩን ያጣሩ",
+            "ገዢው ክፍያውን በባንክ ሲፒኦ (CPO) እንዲያዘጋጅ ያሳስቡ"
+          ],
+          conclusion: "ህጋዊ ሰነዶችን አስቀድሞ ማዘጋጀት ሁለቱንም ወገኖች ከአላስፈላጊ ኪሳራና ጊዜ ማባከን ይጠብቃል።"
         },
         {
+          id: "staging",
           category: "ዝግጅት",
+          readTime: "5 ደቂቃ ንባብ",
           title: "ቤትዎን ለሽያጭና ለፎቶ እንዴት ማዘጋጀት እንዳለብዎ",
           excerpt:
             "ቤቱን ማጽዳት፣ ጥራት ያላቸውን ፎቶዎች ማንሳት እና የውሃ ታንከርና ጀነሬተርን የመሳሰሉ ጠቃሚ ነገሮች ማሳየት።",
-        },
+          keyTakeaways: [
+            "ጥራት ባለው የቀን ብርሃን የተነሱ ፎቶዎች ያሏቸው ቤቶች በERNS ላይ ከ3 እጥፍ በላይ የገዢዎች ጥሪ ያገኛሉ።",
+            "ግቢውን፣ የሰርቪስ ቤቶችን እና የመኪና ማቆሚያውን ማጽዳት የንብረቱን ዋጋ በገዢዎች አይን ከፍ ያደርገዋል።",
+            "ቀለል ያሉ የመዋቢያ ጥገናዎች (ቀለም መቀባት፣ ቧንቧ ማደስ) ከፍተኛ የትርፍ ውጤት ያስገኛሉ።",
+            "የውሃ ታንከር፣ ጀነሬተር እና የግቢውን ጥበቃ ማሳየት የገዢዎችን አመኔታ ወዲያውኑ ይጨምራል።"
+          ],
+          sections: [
+            {
+              heading: "1. የግቢ ውበት እና አጠቃላይ ጽዳት",
+              paragraphs: [
+                "በኢትዮጵያ ቪላ ቤቶች የገዢው የመጀመሪያ ግንዛቤ የሚጀምረው ከውጭው በር ነው። ንጹህና የተስተካከለ ግቢ ቤቱ በጥንቃቄ የተያዘ መሆኑን ያሳያል።",
+                "የኮብልስቶን ወለሎችን ያጽዱ፣ ሳርና አበቦችን ያስተካክሉ፣ እና የሰርቪስ ቤቶችን በማጽዳት ገዢዎች ለቢሮ፣ ለእንግዳ ማረፊያ ወይም ለኪራይ ያላቸውን ጥቅም እንዲያስተውሉ ያድርጉ።"
+              ],
+              callout: {
+                type: "tip",
+                title: "የተፈጥሮ ብርሃን እና ንጹህ አየር",
+                message: "ገዢዎች ከመምጣታቸው 30 ደቂቃ በፊት መስኮቶችን እና መጋረጃዎችን በመክፈት ቤቱ በንጹህ አየር እና በተፈጥሮ ብርሃን እንዲሞላ ያድርጉ።"
+              }
+            },
+            {
+              heading: "2. ከመሸጥዎ በፊት ሊደረጉ የሚገቡ ቀላል ጥገናዎች",
+              paragraphs: [
+                "ከፍተኛ ዋጋ ለማግኘት ውድ ማደስ አያስፈልግዎትም። ይልቁንም የገዢዎችን ጥርጣሬ የሚያስወግዱ ቀላል ጥገናዎች ላይ ያተኩሩ።",
+                "ገዢዎች የሚያንጠባጥብ ቧንቧ ወይም የተላጠ ቀለም ሲያዩ፣ ሌሎች ውስጣዊ ችግሮች አሉ ብለው በማሰብ ከሚቀርበው ዋጋ ላይ በከፍተኛ ሁኔታ ይቀንሳሉ።"
+              ],
+              bullets: [
+                "በሳሎንና ኮሪደሮች ላይ የተላጡ ቀለሞችን በድጋሚ መቀባት",
+                "የሚያንጠባጥቡ ቧንቧዎችን፣ የሻወር እና የመጸዳጃ ቤት እቃዎችን ማደስ",
+                "የተቃጠሉ አምፖሎችን በብርሃን ሰጪ የኤልኢዲ (LED) አምፖሎች መተካት",
+                "የውጭ መግቢያ በሮች እና ቁልፎች ያለችግር እንዲሰሩ ማድረግ"
+              ]
+            },
+            {
+              heading: "3. ለERNS ጥራት ያላቸው ፎቶዎችን ማንሳት",
+              paragraphs: [
+                "አብዛኛዎቹ ገዢዎች ቤትን መፈለግ የሚጀምሩት በስልካቸው ነው። ጥራት ያለው ፎቶ የሀገር ውስጥና የዲያስፖራ ገዢዎችን ለመሳብ ዋነኛው መሳሪያዎ ነው።",
+                "ፎቶዎችን በማለዳ (ከጠዋቱ 3:00 - 5:30) ወይም ከሰዓት (ከቀኑ 9:00 - 11:00) በተፈጥሮ ብርሃን ያንሱ። የቤቱን ጥልቀት የሚያደበዝዙ የምሽት ፍላሽ ፎቶዎችን ያስወግዱ።"
+              ],
+              callout: {
+                type: "tip",
+                title: "ዋና ዋና አገልግሎቶችን ያሳዩ",
+                message: "የውሃ ታንከሩን፣ ጀነሬተሩን፣ የመኪና ማቆሚያውን እና የጥበቃ ቤቱን የሚያሳዩ ፎቶዎችን ማካተት አይርሱ። እነዚህ በአዲስ አበባ ተፈላጊ ነገሮች ናቸው።"
+              }
+            }
+          ],
+          checklist: [
+            "ሳሎኑን፣ ወጥ ቤቱን እና የግቢውን መተላለፊያ ማጽዳት",
+            "የቧንቧ እና የመብራት ጥቃቅን ጉድለቶችን ማስተካከል",
+            "በጠዋት የተፈጥሮ ብርሃን በወርድ (landscape) ፎቶ ማንሳት",
+            "የውሃ ታንከር፣ ጀነሬተር እና የመኪና ማቆሚያ ፎቶዎችን መያዝ"
+          ],
+          conclusion: "በጥንቃቄ የተዘጋጀ እና ማራኪ ፎቶ ያለው ቤት በERNS ላይ በፍጥነት እና በተሻለ ዋጋ ይሸጣል።"
+        }
       ],
     },
     faq: {
