@@ -1,43 +1,26 @@
 .section {
   width: 100%;
-  padding: 72px 24px;
+  padding: 68px 24px;
   background-color: var(--color-primary, #0a1931);
   color: #ffffff;
   box-sizing: border-box;
   text-align: center;
   position: relative;
-  overflow: hidden;
-}
-
-.glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px;
-  height: 250px;
-  background: radial-gradient(
-    circle,
-    rgba(74, 127, 167, 0.22) 0%,
-    rgba(10, 25, 49, 0) 70%
-  );
-  filter: blur(60px);
-  pointer-events: none;
 }
 
 .container {
   position: relative;
   z-index: 2;
-  max-width: 760px;
+  max-width: 740px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 18px;
 }
 
 .title {
-  font-size: 2.35rem;
+  font-size: 2.25rem;
   font-weight: 800;
   line-height: 1.2;
   margin: 0;
@@ -54,58 +37,59 @@
 
 .actions {
   display: flex;
-  gap: 14px;
-  margin-top: 10px;
+  gap: 12px;
+  margin-top: 8px;
   flex-wrap: wrap;
   justify-content: center;
 }
 
-/* Zillow Standard Buttons */
+/* Teammate Pill Buttons */
 .joinBtn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 24px;
+  padding: 0.65rem 1.6rem;
   min-height: 44px;
-  border-radius: 6px;
-  background: #ffffff;
+  border-radius: 20px;
+  background-color: #ffffff;
   color: var(--color-primary, #0a1931);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.95rem;
   border: none;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .joinBtn:hover {
-  background: #f1f5f9;
+  background-color: #f1f5f9;
+  transform: translateY(-1px);
 }
 
 .fsboBtn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 22px;
+  padding: 0.65rem 1.6rem;
   min-height: 44px;
-  border-radius: 6px;
-  background: transparent;
+  border-radius: 20px;
+  background-color: transparent;
   color: #ffffff;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.95rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
   text-decoration: none;
   transition: all 0.2s ease;
 }
 
 .fsboBtn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.7);
 }
 
 @media (max-width: 640px) {
   .section {
-    padding: 52px 16px;
+    padding: 48px 16px;
   }
 
   .title {

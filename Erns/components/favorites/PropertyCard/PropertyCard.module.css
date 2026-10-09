@@ -1,0 +1,380 @@
+.cardContainer {
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(10, 25, 49, 0.05);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  position: relative;
+}
+
+.cardContainer:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(10, 25, 49, 0.12);
+  border-color: #cbd5e1;
+}
+
+/* Image Container */
+.imageContainer {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background-color: #f1f5f9;
+  overflow: hidden;
+}
+
+.propertyImage {
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.cardContainer:hover .propertyImage {
+  transform: scale(1.03);
+}
+
+.imageOverlayGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.35) 0%,
+    rgba(0, 0, 0, 0) 35%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+  pointer-events: none;
+}
+
+/* Top Badges */
+.topBadgesRow {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
+}
+
+.listingBadge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: #ffffff;
+  backdrop-filter: blur(6px);
+}
+
+.badgeSale {
+  background: rgba(10, 25, 49, 0.88);
+}
+
+.badgeRent {
+  background: rgba(37, 99, 235, 0.9);
+}
+
+.verifiedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: rgba(16, 185, 129, 0.92);
+  color: #ffffff;
+  padding: 4px 9px;
+  border-radius: 6px;
+  backdrop-filter: blur(6px);
+}
+
+/* Interactive Heart Button */
+.heartBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.18s ease;
+  backdrop-filter: blur(4px);
+}
+
+.heartBtn:hover {
+  transform: scale(1.12);
+  background: #ffffff;
+}
+
+.heartBtn:active {
+  transform: scale(0.9);
+}
+
+.heartIcon {
+  transition: transform 0.2s ease;
+}
+
+.heartBtnActive .heartIcon {
+  transform: scale(1.05);
+}
+
+/* Carousel Arrows */
+.carouselArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.82);
+  color: #0a1931;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease, background 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+.cardContainer:hover .carouselArrow {
+  opacity: 1;
+}
+
+.carouselArrow:hover {
+  background: #ffffff;
+}
+
+.arrowPrev {
+  left: 8px;
+}
+
+.arrowNext {
+  right: 8px;
+}
+
+/* Dots */
+.dotsContainer {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+  z-index: 2;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  transition: all 0.2s ease;
+}
+
+.dotActive {
+  background: #ffffff;
+  width: 14px;
+  border-radius: 4px;
+}
+
+/* Card Body Content */
+.contentBody {
+  padding: 18px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  text-align: left;
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.priceContainer {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.priceValue {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--color-primary, #0a1931);
+  letter-spacing: -0.02em;
+}
+
+.currency {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #4a7fa7;
+}
+
+.propertyTypeTag {
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  background: #f1f5f9;
+  color: #475569;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+/* Specs Row */
+.specsRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: #334155;
+  font-size: 0.88rem;
+}
+
+.specItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.specIcon {
+  color: #4a7fa7;
+}
+
+.specDivider {
+  color: #cbd5e1;
+}
+
+/* Location */
+.locationRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+  font-size: 0.86rem;
+  margin-bottom: 8px;
+}
+
+.pinIcon {
+  color: #e11d48;
+  flex-shrink: 0;
+}
+
+.locationText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.locationText strong {
+  color: #0a1931;
+}
+
+/* Property Title */
+.propertyTitle {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #0a1931;
+  margin: 0 0 16px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Card Footer */
+.cardFooter {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.agentTag {
+  display: flex;
+  flex-direction: column;
+}
+
+.agentName {
+  font-size: 0.78rem;
+  color: #64748b;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 140px;
+}
+
+.cardButtonsGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contactBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 12px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #0a1931;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.contactBtn:hover {
+  background: #eff6ff;
+  border-color: #4a7fa7;
+  color: #1e40af;
+}
+
+.phoneRevealedBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  background: #ecfdf5;
+  color: #047857;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid #a7f3d0;
+}
+
+.detailsBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  border-radius: 6px;
+  border: none;
+  background: #0a1931;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.18s ease;
+}
+
+.detailsBtn:hover {
+  background: #173258;
+}

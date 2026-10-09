@@ -23,32 +23,35 @@ enum VerificationStatus {
 }
 
 model User {
-  id            String          @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String?
   firstName     String?
   lastName      String?
-  email         String          @unique
+  email         String    @unique
   emailVerified DateTime?
   image         String?
-  password      String?         // Hashed password for Credentials sign up/in
-  role          Role            @default(USER)
+  password      String? // Hashed password for Credentials sign up/in
+  role          Role      @default(USER)
 
   // 1-to-0..1 relationship with professional profile
-  agentProfile  AgentProfile?
+  agentProfile AgentProfile?
+
+  // User's saved/favorite properties
+  favorites Favorite[]
 
   accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support
   Authenticator Authenticator[]
 
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model AgentProfile {
-  id                 String             @id @default(cuid())
-  userId             String             @unique
-  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   licenseNumber      String?
   licenseState       String?
@@ -59,8 +62,8 @@ model AgentProfile {
   serviceAreas       String[]
   verificationStatus VerificationStatus @default(PENDING)
 
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Account {
@@ -76,10 +79,10 @@ model Account {
   id_token          String?
   session_state     String?
 
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([provider, providerAccountId])
 }
@@ -90,8 +93,8 @@ model Session {
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model VerificationToken {
@@ -113,36 +116,36 @@ model Authenticator {
   credentialBackedUp   Boolean
   transports           String?
 
-  user                 User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, credentialID])
 }
 
-//model for property listings and their details
-model Property {
-  id          String   @id @default(cuid())
-  title       String
-  description String?
-  price       Float
-  
-  // Property Details
-  beds        Int
-  baths       Float
-  sqft        Int
-  propertyType String  // e.g., "Single Family", "Condo", "Townhouse"
-  status      String   // e.g., "FOR_SALE", "FOR_RENT"
-  
-  // Location Data
-  address     String
-  city        String
-  state       String
-  zipCode     String
-  latitude    Float    // Crucial for map plotting
-  longitude   Float    // Crucial for map plotting
-  
-  // Images
-  images      String[] // Array of image URLs
+// User Saved / Favorite Properties
+model Favorite {
+  id         String @id @default(cuid())
+  userId     String
+  user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  propertyId String
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  // Cached property details for offline & fast rendering
+  title          String?
+  titleAm        String?
+  priceETB       Float?
+  listingType    String?
+  imageUrl       String?
+  subCity        String?
+  subCityAm      String?
+  specificArea   String?
+  specificAreaAm String?
+  bedrooms       Int?
+  bathrooms      Int?
+  areaSqM        Float?
+  propertyType   String?
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, propertyId])
+  @@index([userId])
+  @@index([propertyId])
 }

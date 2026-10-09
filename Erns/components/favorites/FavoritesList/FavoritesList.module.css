@@ -1,0 +1,31 @@
+.listSection {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+  box-sizing: border-box;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+@media (max-width: 1080px) {
+  .gridContainer {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 680px) {
+  .listSection {
+    padding: 20px 16px 90px;
+  }
+
+  .gridContainer {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
