@@ -4,8 +4,6 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import useSWR from "swr";
 import type { Property } from "@/app/generated/prisma";
-import { APIProvider, useMapsLibrary } from '@vis.gl/react-google-maps';
-import usePlacesAutocomplete, { getGeocode, getLatLng } from "use-places-autocomplete";
 import { Heart, Search as SearchIcon } from "lucide-react";
 import PropertyMap from "@/components/PropertyMap";
 import BedsBathsFilter from "@/components/BedsBathsFilter";
@@ -13,12 +11,26 @@ import styles from "./Search.module.css";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
+function isPointInPolygon(point: {lat: number, lng: number}, polygon: {lat: number, lng: number}[]) {
+  let isInside = false;
+  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    const xi = polygon[i].lat, yi = polygon[i].lng;
+    const xj = polygon[j].lat, yj = polygon[j].lng;
+    
+    const intersect = ((yi > point.lng) !== (yj > point.lng))
+        && (point.lat < (xj - xi) * (point.lng - yi) / (yj - yi) + xi);
+    if (intersect) isInside = !isInside;
+  }
+  return isInside;
+}
+
 function SearchPageContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const [hoveredPropertyId, setHoveredPropertyId] = useState<string | null>(null);
+  const [polygonCoords, setPolygonCoords] = useState<{lat: number, lng: number}[] | null>(null);
 
   // Read state from URL
   const searchQuery = searchParams.get("query") || "";
@@ -35,50 +47,15 @@ function SearchPageContent() {
   // Fetch properties data
   const { data: properties, isLoading } = useSWR<Property[]>(apiUrl, fetcher);
   const propertiesList = Array.isArray(properties) ? properties : [];
+  
+  const displayedProperties = polygonCoords 
+    ? propertiesList.filter(p => isPointInPolygon({lat: p.latitude, lng: p.longitude}, polygonCoords)) 
+    : propertiesList;
 
-  const placesLibrary = useMapsLibrary('places');
+  const [searchValue, setSearchValue] = useState(searchQuery);
 
-  // Places Autocomplete Hook
-  const {
-    ready,
-    value,
-    suggestions: { status: placesStatus, data: placesData },
-    setValue,
-    clearSuggestions,
-    init,
-  } = usePlacesAutocomplete({
-    initOnMount: false,
-    requestOptions: {
-      /* Define search scope here */
-    },
-    debounce: 300,
-    defaultValue: searchQuery,
-  });
-
-  useEffect(() => {
-    if (placesLibrary) {
-      init();
-    }
-  }, [placesLibrary, init]);
-
-  const handleSelectPlace = async (address: string) => {
-    setValue(address, false);
-    clearSuggestions();
-
-    try {
-      const results = await getGeocode({ address });
-      const { lat, lng } = await getLatLng(results[0]);
-      
-      // Update URL with query and recenter map (we'll pass lat/lng to map if needed, but for now just update query)
-      const current = new URLSearchParams(Array.from(searchParams.entries()));
-      current.set("query", address);
-      // Optional: you can set centerLat and centerLng in URL to recenter map
-      current.set("lat", lat.toString());
-      current.set("lng", lng.toString());
-      router.replace(`${pathname}?${current.toString()}`, { scroll: false });
-    } catch (error) {
-      console.error("Error: ", error);
-    }
+  const handleSearchSubmit = () => {
+    updateQueryString("query", searchValue);
   };
 
   const updateQueryString = (key: string, val: string) => {
@@ -124,19 +101,14 @@ function SearchPageContent() {
             type="text" 
             placeholder="Address, neighborhood, or zip"
             className={styles.searchInput}
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            disabled={!ready}
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearchSubmit();
+              }
+            }}
           />
-          {placesStatus === "OK" && (
-            <ul className={styles.suggestionsList}>
-              {placesData.map(({ place_id, description }) => (
-                <li key={place_id} onClick={() => handleSelectPlace(description)}>
-                  {description}
-                </li>
-              ))}
-            </ul>
-          )}
         </div>
         
         <select 
@@ -185,13 +157,11 @@ function SearchPageContent() {
       <div className={styles.contentContainer}>
         {/* Left Map Section */}
         <div className={styles.mapSection}>
-          {/* Mock Remove Boundary Button */}
-          <button className={styles.removeBoundaryBtn}>Remove Boundary ✕</button>
-          
           <PropertyMap 
-            properties={propertiesList}
+            properties={displayedProperties}
             onBoundsChange={handleBoundsChange}
             hoveredPropertyId={hoveredPropertyId}
+            onPolygonChange={setPolygonCoords}
           />
         </div>
 
@@ -203,14 +173,14 @@ function SearchPageContent() {
             </h1>
             <div className={styles.listSubheader}>
               <span className={styles.resultsCount}>
-                {isLoading ? "Loading..." : `${propertiesList.length} results`}
+                {isLoading ? "Loading..." : `${displayedProperties.length} results`}
               </span>
               <span className={styles.sortDropdown}>Sort: Homes for You ⌄</span>
             </div>
           </div>
 
           <div className={styles.propertyGrid}>
-            {propertiesList.map((property) => (
+            {displayedProperties.map((property) => (
               <div 
                 key={property.id} 
                 className={styles.propertyCard}
@@ -247,7 +217,7 @@ function SearchPageContent() {
             ))}
           </div>
 
-          {!isLoading && propertiesList.length === 0 && (
+          {!isLoading && displayedProperties.length === 0 && (
             <div style={{ textAlign: "center", marginTop: "40px", color: "var(--text-muted)" }}>
               No properties found in this area matching your criteria.
             </div>
@@ -258,11 +228,8 @@ function SearchPageContent() {
   );
 }
 
-// Wrap with APIProvider so usePlacesAutocomplete works
 export default function SearchPage() {
   return (
-    <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""} libraries={['places']}>
-      <SearchPageContent />
-    </APIProvider>
+    <SearchPageContent />
   );
 }
