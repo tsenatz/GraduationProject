@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
-import { Home, Menu, X, ChevronRight } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { Home, Menu, X, ChevronRight, Heart } from "lucide-react";
 import SignInButton from "@/components/auth/SignInButton";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
+import { useFavorites } from "@/components/providers/FavoritesProvider";
 import styles from "./Navbar.module.css";
 
 import { NAV_LINKS_LEFT, NAV_LINKS_RIGHT } from "./navLinks";
@@ -14,20 +15,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const checkIsActive = (href: string) => {
-    const [basePath, searchStr] = href.split("?");
-    if (basePath !== pathname) return false;
-    if (!searchStr) return true;
-    
-    const linkParams = new URLSearchParams(searchStr);
-    for (const [key, value] of Array.from(linkParams.entries())) {
-      if (searchParams.get(key) !== value) {
-        return false;
-      }
-    }
-    return true;
-  };
+  const { count } = useFavorites();
 
   // Helper for dynamic breadcrumbs on mobile
   const getBreadcrumbLabel = () => {
@@ -66,7 +54,7 @@ export default function Navbar() {
         {/* Desktop Left Navigation Items */}
         <nav className={styles.navSectionLeft} aria-label="Main primary navigation">
           {NAV_LINKS_LEFT.map((link) => {
-                const isActive = checkIsActive(link.href);
+            const isActive = checkIsActive(link.href);
             return (
               <Link
                 key={link.href}
@@ -91,7 +79,7 @@ export default function Navbar() {
         {/* Desktop Right Navigation Items & Mobile Right Profile */}
         <nav className={styles.navSectionRight} aria-label="Main secondary navigation">
           {NAV_LINKS_RIGHT.map((link) => {
-                const isActive = checkIsActive(link.href);
+            const isActive = checkIsActive(link.href);
             return (
               <Link
                 key={link.href}
@@ -103,6 +91,20 @@ export default function Navbar() {
               </Link>
             );
           })}
+          <Link
+            href="/favorites"
+            className={`${styles.navLink} ${pathname === "/favorites" ? styles.active : ""} ${styles.favNavLink}`}
+            aria-label={`Saved homes (${count})`}
+            title="Saved Homes"
+          >
+            <Heart
+              size={20}
+              className={styles.favIcon}
+              fill={pathname === "/favorites" ? "#e11d48" : "none"}
+              color={pathname === "/favorites" ? "#e11d48" : "currentColor"}
+            />
+            {count > 0 && <span className={styles.favBadge}>{count}</span>}
+          </Link>
           <LanguageSwitcher />
           <SignInButton />
         </nav>
@@ -135,7 +137,7 @@ export default function Navbar() {
           <nav aria-label="Mobile drawer navigation" className={styles.mobileDrawerNav}>
             <ul className={styles.mobileDrawerList}>
               {[...NAV_LINKS_LEFT, ...NAV_LINKS_RIGHT].map((link) => {
-                    const isActive = checkIsActive(link.href);
+                const isActive = checkIsActive(link.href);
                 return (
                   <li key={link.href} className={styles.mobileDrawerItem}>
                     <Link
