@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   FsboHero,
   FsboListingBuilder,
@@ -12,9 +13,22 @@ import {
   FsboCTA,
 } from "@/components/sell/fsbo";
 
-export default function ForSaleByOwnerPage() {
-  const [selectedSubCity, setSelectedSubCity] = useState("Bole");
-  const [selectedAddress, setSelectedAddress] = useState("");
+function ForSaleByOwnerContent() {
+  const searchParams = useSearchParams();
+  const urlSubCity = searchParams.get("subCity") || "Bole";
+  const urlAddress = searchParams.get("address") || "";
+
+  const [selectedSubCity, setSelectedSubCity] = useState(urlSubCity);
+  const [selectedAddress, setSelectedAddress] = useState(urlAddress);
+
+  useEffect(() => {
+    if (searchParams.get("subCity")) {
+      setSelectedSubCity(searchParams.get("subCity")!);
+    }
+    if (searchParams.get("address")) {
+      setSelectedAddress(searchParams.get("address")!);
+    }
+  }, [searchParams]);
 
   const handleLocationSelect = (subCity: string, address: string) => {
     if (subCity) setSelectedSubCity(subCity);
@@ -43,5 +57,13 @@ export default function ForSaleByOwnerPage() {
       <FsboFAQ />
       <FsboCTA />
     </main>
+  );
+}
+
+export default function ForSaleByOwnerPage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: "100vh" }} />}>
+      <ForSaleByOwnerContent />
+    </Suspense>
   );
 }

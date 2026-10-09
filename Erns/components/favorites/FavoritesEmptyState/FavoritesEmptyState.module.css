@@ -1,0 +1,193 @@
+.emptyContainer {
+  max-width: 680px;
+  margin: 60px auto 80px;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.illustrationWrapper {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.heartCircleGlow {
+  position: absolute;
+  inset: -10px;
+  background: radial-gradient(circle, rgba(225, 29, 72, 0.22) 0%, rgba(225, 29, 72, 0) 70%);
+  border-radius: 50%;
+  filter: blur(14px);
+}
+
+.heartCircle {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: #fff1f2;
+  border: 2px dashed #fecdd3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heartIcon {
+  color: #e11d48;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+.title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--color-primary, #0a1931);
+  letter-spacing: -0.02em;
+  margin: 0 0 10px;
+}
+
+.subtitle {
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: #64748b;
+  margin: 0 0 32px;
+  max-width: 520px;
+}
+
+.buttonGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+}
+
+.primaryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  min-height: 48px;
+  border-radius: 8px;
+  background: var(--color-primary, #0a1931);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.primaryBtn:hover {
+  background: #173258;
+  transform: translateY(-1px);
+}
+
+.secondaryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  min-height: 48px;
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--color-primary, #0a1931);
+  border: 1px solid #cbd5e1;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.secondaryBtn:hover {
+  background: #f8fafc;
+  border-color: #4a7fa7;
+}
+
+/* Tips Card */
+.tipsCard {
+  width: 100%;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px 28px;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.tipsHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.tipsIcon {
+  color: #4a7fa7;
+}
+
+.tipsTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0a1931;
+  margin: 0;
+}
+
+.tipsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tipItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.88rem;
+  color: #475569;
+  line-height: 1.45;
+}
+
+.checkIcon {
+  color: #10b981;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+@media (max-width: 640px) {
+  .emptyContainer {
+    margin: 40px auto 60px;
+    padding: 0 16px;
+  }
+
+  .title {
+    font-size: 1.55rem;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .tipsCard {
+    padding: 18px 20px;
+  }
+}

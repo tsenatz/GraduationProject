@@ -13,7 +13,6 @@ export const AgentDirectoryCTA: React.FC = () => {
 
   return (
     <section className={styles.section}>
-      <div className={styles.glow} />
       <div className={styles.container}>
         <h2 className={styles.title}>{t.title}</h2>
         <p className={styles.desc}>{t.desc}</p>
