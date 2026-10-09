@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Home, Menu, X, ChevronRight, Heart } from "lucide-react";
 import SignInButton from "@/components/auth/SignInButton";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
@@ -13,7 +13,6 @@ import { NAV_LINKS_LEFT, NAV_LINKS_RIGHT } from "./navLinks";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { count } = useFavorites();
 
