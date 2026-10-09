@@ -1,109 +1,696 @@
+/* Bottom Banner Section */
 .ctaSection {
   background: linear-gradient(
     135deg,
     var(--color-primary, #0a1931) 0%,
-    #0d2243 60%,
+    #0d2243 55%,
     #13335e 100%
   );
-  padding: 72px 24px;
+  padding: 84px 24px;
   color: #ffffff;
   text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
 .ctaContainer {
-  max-width: 800px;
+  max-width: 840px;
   margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.badgeWrapper {
+  margin-bottom: 16px;
+}
+
+.ctaBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #b3cfe5;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .title {
-  font-size: 2.35rem;
+  font-size: clamp(2rem, 4vw, 2.7rem);
   font-weight: 800;
-  line-height: 1.25;
-  letter-spacing: -0.02em;
-  margin: 0 0 12px;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  margin: 0 0 14px;
+  color: #ffffff;
 }
 
 .description {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   line-height: 1.6;
   color: #cbd5e1;
-  max-width: 620px;
-  margin: 0 auto 32px;
+  max-width: 660px;
+  margin: 0 auto 36px;
 }
 
-.buttonGroup {
+.mainActionWrapper {
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 14px;
-  flex-wrap: wrap;
+  margin-bottom: 28px;
 }
 
-/* Zillow Standard Action Buttons */
-.primaryBtn {
+.exploreBtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 10px 22px;
-  border-radius: 6px;
+  gap: 10px;
+  padding: 14px 34px;
+  min-height: 52px;
+  border-radius: 8px;
   background-color: #ffffff;
   color: var(--color-primary, #0a1931);
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background-color 0.2s ease;
-  border: 1px solid transparent;
-}
-
-.primaryBtn:hover {
-  background-color: #f1f5f9;
-}
-
-.secondaryBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 10px 22px;
-  border-radius: 6px;
-  background-color: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-decoration: none;
+  font-size: 1.02rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
   transition: all 0.2s ease;
 }
 
-.secondaryBtn:hover {
-  background-color: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.5);
+.exploreBtn:hover {
+  background-color: #f1f5f9;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
 }
 
+.exploreBtn:active {
+  transform: translateY(0);
+}
+
+.directLinksRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.directLabel {
+  font-size: 0.88rem;
+  color: #94a3b8;
+}
+
+.directButtonGroup {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.directBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #b3cfe5;
+  font-size: 0.92rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.18s ease;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.directBtn:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.dividerDot {
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+/* =========================================
+   Selling Path Quiz Modal
+   ========================================= */
+
+.quizBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 25, 49, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.quizModal {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 620px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--color-primary, #0a1931);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(24px) scale(0.98);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Modal Header & Progress */
+.quizHeader {
+  padding: 20px 24px 12px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.quizHeaderTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.stepIndicator {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #4a7fa7;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.quizCloseBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.quizCloseBtn:hover {
+  background: #f1f5f9;
+  color: #0a1931;
+}
+
+.progressBarWrapper {
+  width: 100%;
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  background: #4a7fa7;
+  border-radius: 9999px;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Modal Content Body */
+.quizBody {
+  padding: 24px 28px 28px;
+  text-align: left;
+}
+
+.stepTitleBox {
+  margin-bottom: 22px;
+}
+
+.stepTitle {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #0a1931;
+  margin: 0 0 6px;
+}
+
+.stepSubtitle {
+  font-size: 0.92rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Step 1 Form Fields */
+.stepForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fieldLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.selectField,
+.inputField {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #0a1931;
+  font-size: 0.92rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.selectField:focus,
+.inputField:focus {
+  border-color: #4a7fa7;
+  box-shadow: 0 0 0 3px rgba(74, 127, 167, 0.15);
+}
+
+.typePillsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.typePill {
+  padding: 7px 14px;
+  border-radius: 9999px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #334155;
+  font-size: 0.84rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.typePill:hover {
+  border-color: #4a7fa7;
+  background: #eff6ff;
+}
+
+.typePillActive {
+  background: #0a1931;
+  color: #ffffff;
+  border-color: #0a1931;
+}
+
+/* Steps 2 & 3: Choice Cards */
+.cardsStack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.choiceCard {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+  background: #ffffff;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.choiceCard:hover {
+  border-color: #93c5fd;
+  background: #f8fafc;
+  transform: translateY(-1px);
+}
+
+.choiceCardActive {
+  border-color: #4a7fa7;
+  background: #f0f7ff;
+}
+
+.choiceIconWrapper {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.choiceCardActive .choiceIconWrapper {
+  background: #4a7fa7;
+  color: #ffffff;
+}
+
+.choiceText {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.choiceText strong {
+  font-size: 0.96rem;
+  color: #0a1931;
+}
+
+.choiceText span {
+  font-size: 0.85rem;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+/* Step Footer Navigation */
+.stepFooter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.btnBack {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #475569;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btnBack:hover {
+  background: #f8fafc;
+  color: #0a1931;
+}
+
+.btnNext {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border-radius: 8px;
+  border: none;
+  background: #0a1931;
+  color: #ffffff;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btnNext:hover {
+  background: #173258;
+}
+
+/* =========================================
+   Step 4: Recommendation Cards
+   ========================================= */
+
+.recommendationContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.recommendationTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  background: #ecfdf5;
+  color: #047857;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.recommendationCard {
+  width: 100%;
+  border-radius: 12px;
+  border: 2px solid #bfdbfe;
+  background: #f0f7ff;
+  padding: 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.recCardFsbo {
+  border-color: #a7f3d0;
+  background: #f0fdf4;
+}
+
+.recCardExpress {
+  border-color: #fde68a;
+  background: #fffbeb;
+}
+
+.recommendationHeader {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.recIconAgent,
+.recIconFsbo,
+.recIconExpress {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.recIconAgent {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.recIconFsbo {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.recIconExpress {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.recommendationTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0a1931;
+  margin: 0 0 8px;
+  line-height: 1.3;
+}
+
+.recommendationDesc {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #475569;
+  margin: 0;
+}
+
+.recPrimaryBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 24px;
+  border-radius: 8px;
+  background: #0a1931;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.96rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.recPrimaryBtn:hover {
+  background: #173258;
+}
+
+.recBtnFsbo {
+  background: #047857;
+}
+
+.recBtnFsbo:hover {
+  background: #065f46;
+}
+
+.recBtnExpress {
+  background: #b45309;
+}
+
+.recBtnExpress:hover {
+  background: #92400e;
+}
+
+/* Alternatives and Retake */
+.recAlternatives {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.altLabel {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.altLinks {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.altLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #4a7fa7;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.altLink:hover {
+  text-decoration: underline;
+  color: #0a1931;
+}
+
+.altDivider {
+  color: #cbd5e1;
+}
+
+.retakeWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.btnRetake {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.btnRetake:hover {
+  background: #f1f5f9;
+  color: #0a1931;
+}
+
+/* Mobile Responsive */
 @media (max-width: 640px) {
   .ctaSection {
-    padding: 52px 16px;
+    padding: 60px 16px;
   }
 
   .title {
-    font-size: 1.85rem;
+    font-size: 1.8rem;
   }
 
   .description {
     font-size: 0.98rem;
+    margin-bottom: 28px;
   }
 
-  .buttonGroup {
+  .exploreBtn {
+    width: 100%;
+    padding: 12px 20px;
+  }
+
+  .quizModal {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .quizBody {
+    padding: 20px 18px 24px;
+  }
+
+  .choiceCard {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .recommendationCard {
+    padding: 18px 16px;
+  }
+
+  .recommendationHeader {
     flex-direction: column;
-    width: 100%;
-  }
-
-  .primaryBtn,
-  .secondaryBtn {
-    width: 100%;
-    box-sizing: border-box;
+    gap: 10px;
   }
 }

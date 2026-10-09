@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Star, CheckCircle2, Mail, ExternalLink, TrendingUp, Home } from "lucide-react";
+import { Star, MapPin, Phone, CheckCircle2 } from "lucide-react";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { agentTranslations } from "../translations";
 import { Agent } from "../types";
@@ -24,121 +24,103 @@ export const AgentCard: React.FC<AgentCardProps> = ({
   const displayName = isAmharic ? agent.nameAm : agent.name;
   const displayAgency = isAmharic ? agent.agencyAm : agent.agency;
   const subCitiesList = isAmharic ? agent.subCitiesAm : agent.subCities;
-  const displayAreas = subCitiesList.slice(0, 3).join(", ");
+  const primaryLocation = subCitiesList.length > 0 ? `${subCitiesList[0]}, Addis Ababa` : "Addis Ababa, ET";
 
-  const salesText = t.salesHighlight
-    ? t.salesHighlight.replace("{count}", agent.salesCountLast12Months.toString())
-    : `${agent.salesCountLast12Months} sales (12 mo)`;
-
-  const listingsText = t.listingsHighlight
-    ? t.listingsHighlight.replace("{count}", agent.activeListingsCount.toString())
-    : `${agent.activeListingsCount} listings`;
+  // Build tags combining sub-cities & specialty
+  const allTags = [...subCitiesList];
+  const visibleTags = allTags.slice(0, 3);
+  const remainingCount = allTags.length - visibleTags.length;
 
   return (
-    <article className={styles.card}>
-      {/* Top Header: Avatar + Verified Badge */}
-      <div className={styles.topSection}>
-        <div
-          className={styles.avatarWrapper}
-          onClick={() => onViewProfileClick(agent)}
-          title={displayName}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              onViewProfileClick(agent);
-            }
-          }}
-        >
-          <img
-            src={agent.photoUrl}
-            alt={displayName}
-            className={styles.avatarImg}
-          />
-        </div>
-
-        <div className={styles.nameSection}>
-          <button
-            type="button"
-            className={styles.nameButton}
-            onClick={() => onViewProfileClick(agent)}
-          >
-            <h3 className={styles.name}>{displayName}</h3>
-          </button>
-
+    <div className={styles.card}>
+      {/* 1. Header: Avatar + Name & Agency */}
+      <div className={styles.headerRow}>
+        <div className={styles.avatarWrapper}>
+          <img src={agent.photoUrl} alt={displayName} className={styles.avatarImg} />
           {agent.isVerified && (
-            <span className={styles.verifiedBadge}>
-              <CheckCircle2 size={12} />
-              <span>{t.verifiedBadge}</span>
+            <span className={styles.avatarVerifiedIcon} title={t.verifiedBadge}>
+              <CheckCircle2 size={13} />
             </span>
           )}
         </div>
 
-        <p className={styles.agencyLocation}>
-          <span className={styles.agencyName}>{displayAgency}</span>
-          <span className={styles.areasText}>{displayAreas}</span>
-        </p>
+        <div className={styles.headerInfo}>
+          <div className={styles.nameRow}>
+            <h3 className={styles.name}>{displayName}</h3>
+          </div>
+          <p className={styles.agency}>{displayAgency}</p>
+        </div>
       </div>
 
-      {/* Middle Section: Ratings & Key Highlight Chips */}
-      <div className={styles.middleSection}>
-        <div className={styles.ratingRow}>
-          <div className={styles.stars}>
-            {[...Array(5)].map((_, i) => (
-              <Star
-                key={i}
-                size={14}
-                fill={i < Math.floor(agent.rating) ? "#f59e0b" : "none"}
-                color="#f59e0b"
-              />
-            ))}
-          </div>
-          <span className={styles.ratingNumber}>
-            {agent.rating.toFixed(1)}
+      {/* 2. Rating Badge + Location */}
+      <div className={styles.metaRow}>
+        <div className={styles.ratingBadge}>
+          <Star size={13} fill="#f59e0b" color="#f59e0b" />
+          <span className={styles.ratingNumber}>{agent.rating.toFixed(1)}</span>
+        </div>
+
+        <div className={styles.location}>
+          <MapPin size={14} className={styles.locationIcon} />
+          <span>{primaryLocation}</span>
+        </div>
+      </div>
+
+      {/* 3. Experience & Performance Stats */}
+      <div className={styles.statsInfo}>
+        <div className={styles.statLine}>
+          <span className={styles.statBold}>{agent.salesCountLast12Months}</span>{" "}
+          <span>{t.stats.sales}</span>
+        </div>
+        <div className={styles.statLine}>
+          <span className={styles.statBold}>{agent.activeListingsCount}</span>{" "}
+          <span>{t.stats.listings}</span>
+          <span className={styles.statDot}>•</span>
+          <span>{agent.reviewCount} {t.reviews}</span>
+        </div>
+      </div>
+
+      {/* 4. Tags / Pills (Sub-cities & categories) */}
+      <div className={styles.tagsRow}>
+        {visibleTags.map((tag, idx) => (
+          <span key={idx} className={styles.tagPill}>
+            {tag}
           </span>
+        ))}
+        {remainingCount > 0 && (
+          <span className={`${styles.tagPill} ${styles.tagPillCount}`}>
+            +{remainingCount}
+          </span>
+        )}
+      </div>
+
+      {/* 5. Footer: Price Range + Action Buttons */}
+      <div className={styles.footerRow}>
+        <div className={styles.priceCol}>
+          <span className={styles.priceAmount}>
+            {agent.priceRangeETB.min} - {agent.priceRangeETB.max} ETB
+          </span>
+          <span className={styles.priceLabel}>{t.priceRangeLabel}</span>
+        </div>
+
+        <div className={styles.actions}>
+          <a
+            href={`tel:+251${agent.phone}`}
+            className={styles.callIconBtn}
+            title={t.btnCall}
+            aria-label={t.btnCall}
+          >
+            <Phone size={15} />
+          </a>
           <button
             type="button"
-            className={styles.reviewCountBtn}
-            onClick={() => onViewProfileClick(agent)}
-            title="View reviews and full ratings"
+            className={styles.bookBtn}
+            onClick={() => onContactClick(agent)}
           >
-            ({agent.reviewCount} {t.reviews})
+            {t.btnBook}
           </button>
         </div>
-
-        <div className={styles.chipsRow}>
-          <span className={styles.chip}>
-            <TrendingUp size={12} color="var(--color-primary)" />
-            <span>{salesText}</span>
-          </span>
-          <span className={styles.chip}>
-            <Home size={12} color="var(--color-primary)" />
-            <span>{listingsText}</span>
-          </span>
-        </div>
       </div>
-
-      {/* Bottom Actions: View More & Contact Agent Side by Side */}
-      <div className={styles.actionsRow}>
-        <button
-          type="button"
-          className={styles.viewMoreBtn}
-          onClick={() => onViewProfileClick(agent)}
-        >
-          <span>{t.btnViewMore || "View More"}</span>
-          <ExternalLink size={13} />
-        </button>
-
-        <button
-          type="button"
-          className={styles.contactBtn}
-          onClick={() => onContactClick(agent)}
-        >
-          <Mail size={14} />
-          <span>{t.btnContact}</span>
-        </button>
-      </div>
-    </article>
+    </div>
   );
 };
 
