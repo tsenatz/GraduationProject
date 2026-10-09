@@ -2,20 +2,19 @@
   position: relative;
   width: 100%;
   min-height: calc(100vh - 64px);
-  height: calc(100vh - 64px);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   background-color: var(--color-primary, #0a1931);
-  padding: 40px 24px;
+  padding: 60px 24px;
   box-sizing: border-box;
 }
 
 .heroImage {
   object-fit: cover;
   object-position: center;
-  filter: brightness(0.62) contrast(1.05);
+  filter: brightness(0.55) contrast(1.08);
 }
 
 .heroOverlay {
@@ -23,9 +22,9 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(10, 25, 49, 0.72) 0%,
-    rgba(10, 25, 49, 0.85) 60%,
-    rgba(10, 25, 49, 0.95) 100%
+    rgba(10, 25, 49, 0.75) 0%,
+    rgba(10, 25, 49, 0.88) 55%,
+    rgba(10, 25, 49, 0.98) 100%
   );
   z-index: 1;
 }
@@ -33,7 +32,7 @@
 .heroContent {
   position: relative;
   z-index: 2;
-  max-width: 800px;
+  max-width: 860px;
   margin: 0 auto;
   text-align: center;
   display: flex;
@@ -46,71 +45,386 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 5px 12px;
-  border-radius: 4px;
+  padding: 6px 14px;
+  border-radius: 9999px;
   background-color: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   color: #ffffff;
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-weight: 600;
   letter-spacing: 0.02em;
+  backdrop-filter: blur(8px);
 }
 
 .title {
-  font-size: clamp(2.2rem, 4vw, 3.1rem);
+  font-size: clamp(2.3rem, 4.5vw, 3.4rem);
   font-weight: 800;
-  line-height: 1.18;
+  line-height: 1.15;
   color: #ffffff;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
   margin: 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .subtitle {
   font-size: 1.15rem;
   line-height: 1.6;
-  color: #cbd5e1;
-  max-width: 660px;
+  color: #e2e8f0;
+  max-width: 680px;
   margin: 0;
 }
 
-/* Zillow Hero Action Button */
-.ctaButton {
-  margin-top: 12px;
+/* Zillow-Style Address Search Bar */
+.searchCard {
+  width: 100%;
+  max-width: 820px;
+  margin-top: 10px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-sizing: border-box;
+}
+
+.inputGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  flex: 0 0 240px;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.addressInputGroup {
+  flex: 1 1 auto;
+}
+
+.inputGroup:focus-within {
+  background: #ffffff;
+  border-color: #4a7fa7;
+  box-shadow: 0 0 0 3px rgba(74, 127, 167, 0.15);
+}
+
+.inputIcon {
+  color: #4a7fa7;
+  flex-shrink: 0;
+}
+
+.selectInput {
+  border: none;
+  background: transparent;
+  width: 100%;
+  font-size: 0.95rem;
+  color: #0a1931;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+}
+
+.selectInput option {
+  color: #0a1931;
+  background: #ffffff;
+}
+
+.inputDivider {
+  display: none;
+}
+
+.textInput {
+  border: none;
+  background: transparent;
+  width: 100%;
+  font-size: 0.95rem;
+  color: #0a1931;
+  outline: none;
+  font-family: inherit;
+}
+
+.textInput::placeholder {
+  color: #94a3b8;
+}
+
+.submitBtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   padding: 12px 28px;
-  min-height: 46px;
-  border-radius: 6px;
-  background-color: #ffffff;
-  color: var(--color-primary, #0a1931);
+  min-height: 48px;
+  border-radius: 8px;
+  background: #0a1931;
+  color: #ffffff;
+  font-weight: 700;
   font-size: 0.98rem;
-  font-weight: 600;
-  text-decoration: none;
+  border: none;
   cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.submitBtn:hover {
+  background: #173258;
+  transform: translateY(-1px);
+}
+
+.submitBtn:active {
+  transform: translateY(0);
+}
+
+/* Sub-link to browse without searching */
+.browseLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  color: #b3cfe5;
+  font-size: 0.92rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.browseLink:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* Location-Tailored Modal */
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 25, 49, 0.7);
+  backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modalCard {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 680px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+  padding: 32px;
+  box-sizing: border-box;
+  border: 1px solid #e2e8f0;
+  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px) scale(0.98);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.modalHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.modalLocationBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: #eff6ff;
+  color: #1e40af;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.modalTitle {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #0a1931;
+  margin: 0 0 6px;
+}
+
+.modalSubtitle {
+  font-size: 0.95rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.closeBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #64748b;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.2s ease;
-  border: 1px solid transparent;
 }
 
-.ctaButton:hover {
-  background-color: #f1f5f9;
-  color: var(--color-primary, #0a1931);
+.closeBtn:hover {
+  background: #f1f5f9;
+  color: #0a1931;
 }
 
-.ctaButton:active {
-  background-color: #e2e8f0;
+.modalOptionsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
 }
 
-@media (max-width: 960px) {
+.modalOptionCard {
+  position: relative;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 22px 20px;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  transition: all 0.22s ease;
+  background: #f8fafc;
+}
+
+.modalOptionCard:hover {
+  border-color: #4a7fa7;
+  background: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(74, 127, 167, 0.16);
+}
+
+.modalOptionTag {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 14px;
+}
+
+.modalOptionTagFsbo {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.modalOptionIconWrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.modalOptionIconFsbo {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.modalOptionTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0a1931;
+  margin: 0 0 8px;
+  line-height: 1.35;
+}
+
+.modalOptionDesc {
+  font-size: 0.88rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0 0 16px;
+  flex: 1;
+}
+
+.modalOptionBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1d4ed8;
+  margin-top: auto;
+}
+
+.modalOptionBtnFsbo {
+  color: #047857;
+}
+
+.modalOptionCard:hover .modalOptionBtn {
+  gap: 9px;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 768px) {
   .heroContainer {
-    min-height: calc(100vh - 124px);
-    height: calc(100vh - 124px);
-    padding: 36px 16px;
+    min-height: auto;
+    padding: 48px 16px;
   }
 
-  .ctaButton {
+  .searchCard {
+    flex-direction: column;
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .inputGroup {
     width: 100%;
-    padding: 12px 20px;
+    flex: 1 1 auto;
+  }
+
+  .submitBtn {
+    width: 100%;
+  }
+
+  .modalCard {
+    padding: 24px 18px;
+  }
+
+  .modalOptionsGrid {
+    grid-template-columns: 1fr;
+    gap: 14px;
   }
 }

@@ -1,0 +1,283 @@
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 64px);
+  /* Navbar is 64px */
+  overflow: hidden;
+  background-color: var(--color-surface);
+}
+
+.filtersBar {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color);
+  gap: 12px;
+  background-color: var(--color-surface);
+  z-index: 100;
+  flex-wrap: wrap;
+  overflow: visible;
+}
+
+/* Search Bar styling */
+.searchWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 320px;
+}
+
+.searchIconWrapper {
+  position: absolute;
+  left: 12px;
+  display: flex;
+  align-items: center;
+  color: var(--color-accent);
+  pointer-events: none;
+}
+
+.searchInput {
+  padding: 10px 16px 10px 40px;
+  border: 1px solid var(--border-color);
+  border-radius: 9999px;
+  /* full pill */
+  outline: none;
+  width: 100%;
+  font-size: 15px;
+  transition: all 0.2s;
+  color: var(--color-primary);
+}
+
+.searchInput:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+.searchInput::placeholder {
+  color: var(--color-accent);
+}
+
+.suggestionsList {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin-top: 4px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 50;
+  list-style: none;
+  padding: 0;
+}
+
+.suggestionsList li {
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--color-primary);
+}
+
+.suggestionsList li:hover {
+  background-color: var(--bg-color);
+}
+
+/* Filter Pills */
+.filterPill,
+.filterButton {
+  padding: 8px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  /* Slightly rounded */
+  background-color: var(--color-surface);
+  cursor: pointer;
+  color: var(--color-primary);
+  font-size: 15px;
+  outline: none;
+  appearance: auto;
+}
+
+.filterPill:hover,
+.filterButton:hover {
+  background-color: var(--bg-color);
+}
+
+.saveSearchButton {
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.saveSearchButton:hover {
+  background-color: var(--color-primary-transparent-90);
+}
+
+.contentContainer {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Map Section */
+.mapSection {
+  flex: 1;
+  position: relative;
+  border-right: 1px solid var(--border-color);
+}
+
+.removeBoundaryBtn {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-surface);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 20px;
+  z-index: 10;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.removeBoundaryBtn:hover {
+  background-color: var(--bg-color);
+}
+
+/* List Section */
+.listSection {
+  width: 45%;
+  min-width: 450px;
+  max-width: 650px;
+  overflow-y: auto;
+  padding: 16px 20px;
+  background-color: var(--color-surface);
+}
+
+.listHeader {
+  margin-bottom: 20px;
+}
+
+.listTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 4px;
+}
+
+.listSubheader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: var(--color-accent);
+}
+
+.sortDropdown {
+  color: var(--color-primary);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.propertyGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+/* Property Card */
+.propertyCard {
+  background-color: var(--color-surface);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  border: 1px solid transparent;
+  transition: box-shadow 0.2s ease-in-out, border 0.2s ease;
+}
+
+.propertyCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-color: var(--color-accent);
+}
+
+.cardImageWrapper {
+  height: 200px;
+  position: relative;
+  background-color: var(--color-bg-warm);
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cardImagePlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-accent);
+}
+
+/* Badges */
+.cardBadge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background-color: var(--color-surface);
+  color: var(--color-primary);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.heartBtn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.heartBtn:hover {
+  transform: scale(1.1);
+}
+
+.cardContent {
+  padding: 12px;
+}
+
+.cardPrice {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 4px;
+}
+
+.cardSpecs {
+  font-size: 0.95rem;
+  color: var(--color-accent);
+  margin-bottom: 4px;
+}
+
+.cardAddress {
+  font-size: 0.85rem;
+  color: var(--color-accent);
+}
