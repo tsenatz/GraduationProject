@@ -1,13 +1,33 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import useSWR from "swr";
 import type { Property } from "@/app/generated/prisma";
-import { Heart, Search as SearchIcon } from "lucide-react";
-import PropertyMap from "@/components/PropertyMap";
+import dynamic from "next/dynamic";
+import { Heart, Search as SearchIcon, MapPin, List } from "lucide-react";
 import BedsBathsFilter from "@/components/BedsBathsFilter";
 import styles from "./Search.module.css";
+
+const PropertyMap = dynamic(() => import("@/components/PropertyMap"), {
+  ssr: false,
+  loading: () => (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#f6fafd",
+        color: "var(--color-primary)",
+        fontWeight: 600,
+      }}
+    >
+      Loading map...
+    </div>
+  ),
+});
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -30,6 +50,8 @@ function SearchPageContent() {
   const searchParams = useSearchParams();
 
   const [hoveredPropertyId, setHoveredPropertyId] = useState<string | null>(null);
+  const [selectedPropertyId, setSelectedPropertyId] = useState<string | null>(null);
+  const [mobileTab, setMobileTab] = useState<"map" | "list">("map");
   const [polygonCoords, setPolygonCoords] = useState<{lat: number, lng: number}[] | null>(null);
 
   // Read state from URL
@@ -80,14 +102,14 @@ function SearchPageContent() {
     router.replace(`${pathname}?${current.toString()}`, { scroll: false });
   };
 
-  const handleBoundsChange = (bounds: { neLat: number; neLng: number; swLat: number; swLng: number }) => {
+  const handleBoundsChange = useCallback((bounds: { neLat: number; neLng: number; swLat: number; swLng: number }) => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
     current.set("neLat", bounds.neLat.toString());
     current.set("neLng", bounds.neLng.toString());
     current.set("swLat", bounds.swLat.toString());
     current.set("swLng", bounds.swLng.toString());
     router.replace(`${pathname}?${current.toString()}`, { scroll: false });
-  };
+  }, [searchParams, pathname, router]);
 
   return (
     <div className={styles.pageContainer}>
@@ -156,17 +178,19 @@ function SearchPageContent() {
       {/* Main Split Content */}
       <div className={styles.contentContainer}>
         {/* Left Map Section */}
-        <div className={styles.mapSection}>
+        <div className={`${styles.mapSection} ${mobileTab === "list" ? styles.mapSectionHidden : ""}`}>
           <PropertyMap 
             properties={displayedProperties}
             onBoundsChange={handleBoundsChange}
             hoveredPropertyId={hoveredPropertyId}
+            selectedPropertyId={selectedPropertyId}
+            onSelectProperty={(property) => setSelectedPropertyId(property ? property.id : null)}
             onPolygonChange={setPolygonCoords}
           />
         </div>
 
         {/* Right List Section */}
-        <div className={styles.listSection}>
+        <div className={`${styles.listSection} ${mobileTab === "map" ? styles.listSectionHidden : ""}`}>
           <div className={styles.listHeader}>
             <h1 className={styles.listTitle}>
               {searchQuery ? `${searchQuery} Real Estate & Homes` : 'Real Estate & Homes For Sale'}
@@ -183,9 +207,14 @@ function SearchPageContent() {
             {displayedProperties.map((property) => (
               <div 
                 key={property.id} 
-                className={styles.propertyCard}
+                id={`property-${property.id}`}
+                className={`${styles.propertyCard} ${selectedPropertyId === property.id ? styles.propertyCardSelected : ""}`}
                 onMouseEnter={() => setHoveredPropertyId(property.id)}
                 onMouseLeave={() => setHoveredPropertyId(null)}
+                onClick={() => {
+                  setSelectedPropertyId(property.id);
+                  setHoveredPropertyId(property.id);
+                }}
               >
                 <div className={styles.cardImageWrapper}>
                   {property.images && property.images.length > 0 ? (
@@ -194,13 +223,21 @@ function SearchPageContent() {
                     <div className={styles.cardImagePlaceholder}>No Image</div>
                   )}
                   {/* Badges and Icons */}
-                  <div className={styles.cardBadge}>Open: Sat 1-3pm</div>
-                  <button className={styles.heartBtn}><Heart size={20} fill="rgba(0,0,0,0.4)" color="white" /></button>
+                  <div className={styles.cardBadge}>
+                    {property.status === "FOR_RENT" ? "For Rent" : "For Sale"}
+                  </div>
+                  <button 
+                    className={styles.heartBtn} 
+                    aria-label="Save favorite"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <Heart size={20} fill="rgba(0,0,0,0.4)" color="white" />
+                  </button>
                 </div>
                 
                 <div className={styles.cardContent}>
                   <div className={styles.cardPrice}>
-                    ${property.price.toLocaleString()}
+                    ETB {property.price.toLocaleString()}
                   </div>
                   <div className={styles.cardSpecs}>
                     <strong>{property.beds}</strong> bds <span className="mx-1">|</span> 
@@ -224,12 +261,36 @@ function SearchPageContent() {
           )}
         </div>
       </div>
+
+      {/* Floating Mobile Toggle (Map / List) */}
+      <div className={styles.mobileToggleBar}>
+        <button
+          type="button"
+          className={`${styles.mobileToggleBtn} ${mobileTab === "map" ? styles.mobileToggleBtnActive : ""}`}
+          onClick={() => setMobileTab("map")}
+          aria-label="Show Map"
+        >
+          <MapPin size={15} />
+          <span>Map</span>
+        </button>
+        <button
+          type="button"
+          className={`${styles.mobileToggleBtn} ${mobileTab === "list" ? styles.mobileToggleBtnActive : ""}`}
+          onClick={() => setMobileTab("list")}
+          aria-label="Show List"
+        >
+          <List size={15} />
+          <span>List ({displayedProperties.length})</span>
+        </button>
+      </div>
     </div>
   );
 }
 
 export default function SearchPage() {
   return (
-    <SearchPageContent />
+    <Suspense fallback={<div className={styles.pageContainer}><p style={{ padding: "40px", textAlign: "center", color: "var(--color-accent)" }}>Loading search...</p></div>}>
+      <SearchPageContent />
+    </Suspense>
   );
 }

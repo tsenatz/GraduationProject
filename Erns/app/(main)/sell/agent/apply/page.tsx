@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
 import {
   ApplyHero,
   ApplyBenefits,
@@ -29,7 +30,9 @@ export default function ApplyVerifiedAgentPage() {
       <ApplyHero />
       <ApplyBenefits />
       <ApplyRequirements />
-      <ApplyFormWizard />
+      <Suspense fallback={null}>
+        <ApplyFormWizard />
+      </Suspense>
       <ApplyTestimonial />
       <ApplyFAQ />
       <ApplyCTA />
