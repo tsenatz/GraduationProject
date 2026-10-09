@@ -10,9 +10,14 @@ import styles from "./AgentCard.module.css";
 interface AgentCardProps {
   agent: Agent;
   onContactClick: (agent: Agent) => void;
+  onViewProfileClick: (agent: Agent) => void;
 }
 
-export const AgentCard: React.FC<AgentCardProps> = ({ agent, onContactClick }) => {
+export const AgentCard: React.FC<AgentCardProps> = ({
+  agent,
+  onContactClick,
+  onViewProfileClick,
+}) => {
   const { isAmharic } = useLanguage();
   const t = agentTranslations[isAmharic ? "am" : "en"].card;
 

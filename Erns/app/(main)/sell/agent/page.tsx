@@ -7,6 +7,7 @@ import {
   AgentFilterBar,
   AgentList,
   AgentContactModal,
+  AgentDetailModal,
   WhyVerifiedAgent,
   AgentDirectoryFAQ,
   AgentDirectoryCTA,
@@ -42,6 +43,8 @@ function FindListingAgentContent() {
   }, [searchParams]);
 
   const [selectedAgentForContact, setSelectedAgentForContact] =
+    useState<Agent | null>(null);
+  const [selectedAgentForDetail, setSelectedAgentForDetail] =
     useState<Agent | null>(null);
 
   const handleFilterChange = (key: keyof AgentFilterState, value: any) => {
@@ -164,12 +167,25 @@ function FindListingAgentContent() {
       <AgentList
         agents={filteredAgents}
         onContactClick={(agent) => setSelectedAgentForContact(agent)}
+        onViewProfileClick={(agent) => setSelectedAgentForDetail(agent)}
         onResetFilters={handleClearFilters}
       />
 
       <WhyVerifiedAgent />
       <AgentDirectoryFAQ />
       <AgentDirectoryCTA />
+
+      {selectedAgentForDetail && (
+        <AgentDetailModal
+          agent={selectedAgentForDetail}
+          isOpen={Boolean(selectedAgentForDetail)}
+          onClose={() => setSelectedAgentForDetail(null)}
+          onContactClick={(agent) => {
+            setSelectedAgentForDetail(null);
+            setSelectedAgentForContact(agent);
+          }}
+        />
+      )}
 
       {selectedAgentForContact && (
         <AgentContactModal

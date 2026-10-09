@@ -64,13 +64,15 @@
   min-width: 0;
 }
 
-.nameRow {
+.nameSection {
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 6px;
 }
 
 .name {
+  font-size: 1.15rem;
   font-size: 1.15rem;
   font-weight: 800;
   color: var(--color-primary, #0a1931);

@@ -1,45 +1,46 @@
 .modalOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(10, 25, 49, 0.65);
+  background-color: rgba(10, 25, 49, 0.45);
   backdrop-filter: blur(4px);
   z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
+  box-sizing: border-box;
 }
 
-/* Zillow Standard Modal Box */
+/* Modal Card (Matching teammate Onboarding & RentalManager modal) */
 .modalCard {
   background: #ffffff;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
   max-width: 520px;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
   position: relative;
-  animation: scaleIn 0.2s ease;
+  animation: scaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes scaleIn {
   from {
-    transform: scale(0.97);
+    transform: scale(0.97) translateY(8px);
     opacity: 0;
   }
   to {
-    transform: scale(1);
+    transform: scale(1) translateY(0);
     opacity: 1;
   }
 }
 
 .modalHeader {
-  padding: 20px 24px 18px;
-  border-bottom: 1px solid #f1f5f9;
+  padding: 1.25rem 1.75rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -56,19 +57,21 @@
   height: 48px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1px solid #e2e8f0;
+  border: 2px solid rgba(15, 23, 42, 0.08);
 }
 
 .modalTitle {
   font-size: 1.2rem;
   font-weight: 800;
   color: var(--color-primary, #0a1931);
+  letter-spacing: -0.01em;
   margin: 0;
 }
 
 .modalSubtitle {
   font-size: 0.85rem;
   color: #64748b;
+  font-weight: 500;
   margin: 2px 0 0;
 }
 
@@ -78,17 +81,20 @@
   color: #94a3b8;
   cursor: pointer;
   padding: 6px;
-  border-radius: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.15s ease;
 }
 
 .closeBtn:hover {
-  background: #f1f5f9;
+  background: rgba(10, 25, 49, 0.05);
   color: var(--color-primary, #0a1931);
 }
 
 .form {
-  padding: 20px 24px;
+  padding: 1.5rem 1.75rem;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -97,68 +103,72 @@
 .formGroup {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
 }
 
 .label {
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.88rem;
+  font-weight: 700;
   color: var(--color-primary, #0a1931);
 }
 
 .input {
-  padding: 9px 12px;
-  border-radius: 6px;
-  border: 1px solid #cbd5e1;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1.5px solid rgba(15, 23, 42, 0.18);
   background: #ffffff;
   color: var(--color-primary, #0a1931);
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   outline: none;
-  transition: border-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .input:focus {
-  border-color: var(--color-accent, #4a7fa7);
+  border-color: var(--color-primary, #0a1931);
+  box-shadow: 0 0 0 3px rgba(10, 25, 49, 0.08);
 }
 
 .textarea {
-  min-height: 85px;
+  min-height: 90px;
   resize: vertical;
-  padding: 9px 12px;
-  border-radius: 6px;
-  border: 1px solid #cbd5e1;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1.5px solid rgba(15, 23, 42, 0.18);
   background: #ffffff;
   color: var(--color-primary, #0a1931);
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   font-family: inherit;
   outline: none;
+  transition: all 0.2s ease;
 }
 
 .textarea:focus {
-  border-color: var(--color-accent, #4a7fa7);
+  border-color: var(--color-primary, #0a1931);
+  box-shadow: 0 0 0 3px rgba(10, 25, 49, 0.08);
 }
 
-/* Zillow Standard Modal Submit Button */
+/* Teammate Pill Submit Button */
 .submitBtn {
-  margin-top: 6px;
-  padding: 10px 20px;
-  min-height: 42px;
-  border-radius: 6px;
-  background: var(--color-primary, #0a1931);
+  margin-top: 8px;
+  padding: 0.75rem 1.75rem;
+  min-height: 44px;
+  border-radius: 20px;
+  background-color: var(--color-primary, #0a1931);
   color: #ffffff;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.95rem;
   border: none;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .submitBtn:hover {
-  background: #173258;
+  background-color: #061122;
+  transform: translateY(-1px);
 }
 
 .successContent {
-  padding: 36px 24px;
+  padding: 40px 24px;
   text-align: center;
   display: flex;
   flex-direction: column;

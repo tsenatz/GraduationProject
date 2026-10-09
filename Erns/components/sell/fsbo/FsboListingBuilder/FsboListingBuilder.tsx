@@ -573,7 +573,7 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
               {t.successRef}2026-{submissionRef}
             </div>
             <div className={styles.modalActions}>
-              <Link href="/buy" className={styles.modalPrimaryBtn}>
+              <Link href="/search?status=FOR_SALE" className={styles.modalPrimaryBtn}>
                 {t.btnViewListing}
               </Link>
               <button
