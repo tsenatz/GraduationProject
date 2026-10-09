@@ -61,6 +61,9 @@ function SearchPageContent() {
   const beds = searchParams.get("beds") || "Any";
   const baths = searchParams.get("baths") || "Any";
   const exactMatchBeds = searchParams.get("exactMatchBeds") === "true";
+  const propertyType = searchParams.get("propertyType") || "";
+  
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   
   // Construct API URL
   const apiQueryString = searchParams.toString();
@@ -102,14 +105,9 @@ function SearchPageContent() {
     router.replace(`${pathname}?${current.toString()}`, { scroll: false });
   };
 
-  const handleBoundsChange = useCallback((bounds: { neLat: number; neLng: number; swLat: number; swLng: number }) => {
-    const current = new URLSearchParams(Array.from(searchParams.entries()));
-    current.set("neLat", bounds.neLat.toString());
-    current.set("neLng", bounds.neLng.toString());
-    current.set("swLat", bounds.swLat.toString());
-    current.set("swLng", bounds.swLng.toString());
-    router.replace(`${pathname}?${current.toString()}`, { scroll: false });
-  }, [searchParams, pathname, router]);
+  const handleBoundsChange = useCallback(() => {
+    // Disabled to prevent map refresh on zoom. Map bounds filtering can be added later as a manual "Search this area" button.
+  }, []);
 
   return (
     <div className={styles.pageContainer}>
@@ -138,7 +136,7 @@ function SearchPageContent() {
           value={status}
           onChange={(e) => updateQueryString("status", e.target.value)}
         >
-          <option value="Any">For sale</option>
+          <option value="Any">Select Type</option>
           <option value="FOR_SALE">For Sale</option>
           <option value="FOR_RENT">For Rent</option>
         </select>
@@ -162,23 +160,48 @@ function SearchPageContent() {
           onApply={handleBedsBathsApply}
         />
         
-        <select className={styles.filterPill}>
+        <select 
+          className={styles.filterPill} 
+          value={propertyType} 
+          onChange={(e) => updateQueryString("propertyType", e.target.value)}
+        >
           <option value="">Property type</option>
+          <option value="Apartment">Apartment</option>
+          <option value="Condominium">Condominium</option>
+          <option value="Studio">Studio</option>
+          <option value="Villa">Villa</option>
+          <option value="House">House</option>
+          <option value="Commercial">Commercial</option>
+          <option value="Land">Land</option>
         </select>
 
-        <button className={styles.filterButton}>
-          <span className="font-semibold">Filters</span>
-        </button>
-
         <div className="ml-auto flex items-center space-x-2">
-           <button className={styles.saveSearchButton}>Save search</button>
+           <button className={styles.saveSearchButton} onClick={() => setIsSaveModalOpen(true)}>Save search</button>
         </div>
       </div>
 
       {/* Main Split Content */}
       <div className={styles.contentContainer}>
         {/* Left Map Section */}
-        <div className={`${styles.mapSection} ${mobileTab === "list" ? styles.mapSectionHidden : ""}`}>
+        <div className={`${styles.mapSection} ${mobileTab === "list" ? styles.mapSectionHidden : ""}`} style={{ position: "relative" }}>
+          <div style={{ position: 'absolute', top: '15px', right: '15px', zIndex: 1000 }}>
+            <button 
+              onClick={() => router.push('/search')}
+              style={{
+                background: 'white',
+                border: '1px solid #ccc',
+                padding: '8px 16px',
+                borderRadius: '8px',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                fontSize: '14px',
+                color: '#333'
+              }}
+            >
+              Reset Search
+            </button>
+          </div>
           <PropertyMap 
             properties={displayedProperties}
             onBoundsChange={handleBoundsChange}
@@ -283,6 +306,53 @@ function SearchPageContent() {
           <span>List ({displayedProperties.length})</span>
         </button>
       </div>
+
+      {/* Save Search Modal */}
+      {isSaveModalOpen && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999,
+          display: 'flex', alignItems: 'center', justifyContent: 'center'
+        }}>
+          <div style={{
+            background: 'white', borderRadius: '12px', width: '90%', maxWidth: '400px', overflow: 'hidden'
+          }}>
+            <div style={{
+              background: '#e6f4ea', padding: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#137333', fontWeight: 'bold' }}>
+                <span style={{ background: '#1e8e3e', color: 'white', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>✓</span>
+                Search saved! <span style={{ color: '#1a73e8', cursor: 'pointer', marginLeft: '8px' }}>Copy Link</span>
+              </div>
+              <button onClick={() => setIsSaveModalOpen(false)} style={{ border: 'none', background: 'transparent', cursor: 'pointer', fontSize: '18px', fontWeight: 'bold' }}>✕</button>
+            </div>
+            
+            <div style={{ padding: '20px' }}>
+              <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: 'black' }}>Name your search</label>
+              <input 
+                type="text" 
+                defaultValue={`${status !== "Any" ? (status === "FOR_RENT" ? "For Rent" : "For Sale") : "Properties"} near ${searchQuery || "Ethiopia"}`}
+                style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '8px', marginBottom: '20px', fontSize: '16px', color: 'black' }}
+              />
+              
+              <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: 'black' }}>Frequency</label>
+              <select style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '8px', marginBottom: '24px', fontSize: '16px', backgroundColor: 'white', color: 'black' }}>
+                <option>Instant</option>
+                <option>Daily</option>
+                <option>Weekly</option>
+                <option>Never</option>
+              </select>
+
+              <button 
+                onClick={() => setIsSaveModalOpen(false)}
+                style={{ width: '100%', padding: '14px', background: '#0a3bd9', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', fontSize: '16px', cursor: 'pointer' }}
+              >
+                Update
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

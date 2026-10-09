@@ -21,6 +21,7 @@ const MAP_STYLES = [
   { id: "liberty", label: "Street", url: "https://tiles.openfreemap.org/styles/liberty" },
   { id: "bright", label: "Bright", url: "https://tiles.openfreemap.org/styles/bright" },
   { id: "positron", label: "Light", url: "https://tiles.openfreemap.org/styles/positron" },
+  { id: "satellite", label: "Satellite", url: "satellite-style" },
 ];
 
 // Fallback Addis Ababa coordinates
@@ -62,7 +63,53 @@ export default function PropertyMap({
   const [activeProperty, setActiveProperty] = useState<Property | null>(null);
 
   // Determine initial style URL (supports custom ENV if set, otherwise OpenFreeMap)
-  const getStyleUrl = (styleId: string): string => {
+  const getStyleUrl = (styleId: string): string | maplibregl.StyleSpecification => {
+    if (styleId === 'satellite') {
+      return {
+        version: 8,
+        sources: {
+          'esri-satellite': {
+            type: 'raster',
+            tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
+            tileSize: 256,
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP'
+          },
+          'esri-transportation': {
+            type: 'raster',
+            tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}'],
+            tileSize: 256
+          },
+          'esri-labels': {
+            type: 'raster',
+            tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'],
+            tileSize: 256
+          }
+        },
+        layers: [
+          {
+            id: 'satellite-layer',
+            type: 'raster',
+            source: 'esri-satellite',
+            minzoom: 0,
+            maxzoom: 22
+          },
+          {
+            id: 'transportation-layer',
+            type: 'raster',
+            source: 'esri-transportation',
+            minzoom: 0,
+            maxzoom: 22
+          },
+          {
+            id: 'labels-layer',
+            type: 'raster',
+            source: 'esri-labels',
+            minzoom: 0,
+            maxzoom: 22
+          }
+        ]
+      };
+    }
     if (process.env.NEXT_PUBLIC_MAP_STYLE_URL) {
       return process.env.NEXT_PUBLIC_MAP_STYLE_URL;
     }
