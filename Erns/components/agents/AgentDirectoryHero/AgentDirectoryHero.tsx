@@ -33,7 +33,6 @@ export const AgentDirectoryHero: React.FC<AgentDirectoryHeroProps> = ({
 
   return (
     <section className={styles.hero}>
-      <div className={styles.glow} />
       <div className={styles.container}>
         <div className={styles.badge}>
           <Award size={16} />

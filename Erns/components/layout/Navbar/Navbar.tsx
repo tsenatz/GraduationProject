@@ -13,6 +13,7 @@ import { NAV_LINKS_LEFT, NAV_LINKS_RIGHT } from "./navLinks";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { count } = useFavorites();
 
@@ -20,7 +21,7 @@ export default function Navbar() {
   const getBreadcrumbLabel = () => {
     if (pathname === "/") return null;
     const allLinks = [...NAV_LINKS_LEFT, ...NAV_LINKS_RIGHT, { href: "/login", label: "Login" }];
-    const match = allLinks.find((link) => link.href === pathname);
+    const match = allLinks.find((link) => checkIsActive(link.href));
     if (match) return match.label;
     const segments = pathname.split("/").filter(Boolean);
     if (segments.length === 0) return null;
@@ -53,7 +54,7 @@ export default function Navbar() {
         {/* Desktop Left Navigation Items */}
         <nav className={styles.navSectionLeft} aria-label="Main primary navigation">
           {NAV_LINKS_LEFT.map((link) => {
-            const isActive = pathname === link.href;
+            const isActive = checkIsActive(link.href);
             return (
               <Link
                 key={link.href}
@@ -78,7 +79,7 @@ export default function Navbar() {
         {/* Desktop Right Navigation Items & Mobile Right Profile */}
         <nav className={styles.navSectionRight} aria-label="Main secondary navigation">
           {NAV_LINKS_RIGHT.map((link) => {
-            const isActive = pathname === link.href;
+            const isActive = checkIsActive(link.href);
             return (
               <Link
                 key={link.href}
@@ -136,7 +137,7 @@ export default function Navbar() {
           <nav aria-label="Mobile drawer navigation" className={styles.mobileDrawerNav}>
             <ul className={styles.mobileDrawerList}>
               {[...NAV_LINKS_LEFT, ...NAV_LINKS_RIGHT].map((link) => {
-                const isActive = pathname === link.href;
+                const isActive = checkIsActive(link.href);
                 return (
                   <li key={link.href} className={styles.mobileDrawerItem}>
                     <Link
