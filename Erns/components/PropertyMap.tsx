@@ -14,13 +14,12 @@ export interface PropertyMapProps {
   selectedPropertyId?: string | null;
   onSelectProperty?: (property: Property | null) => void;
   onPolygonChange?: (polygon: { lat: number; lng: number }[] | null) => void;
+  onViewListing?: (property: Property) => void;
 }
 
 // OpenMapTiles-compatible tile styles (hosted on OpenFreeMap, zero API key required)
 const MAP_STYLES = [
-  { id: "liberty", label: "Street", url: "https://tiles.openfreemap.org/styles/liberty" },
-  { id: "bright", label: "Bright", url: "https://tiles.openfreemap.org/styles/bright" },
-  { id: "positron", label: "Light", url: "https://tiles.openfreemap.org/styles/positron" },
+  { id: "liberty", label: "Default", url: "https://tiles.openfreemap.org/styles/liberty" },
   { id: "satellite", label: "Satellite", url: "satellite-style" },
 ];
 
@@ -49,6 +48,7 @@ export default function PropertyMap({
   hoveredPropertyId,
   selectedPropertyId,
   onSelectProperty,
+  onViewListing,
 }: PropertyMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
@@ -173,17 +173,21 @@ export default function PropertyMap({
     actionBtn.textContent = "View Listing";
     actionBtn.onclick = (e) => {
       e.stopPropagation();
-      const cardEl = document.getElementById(`property-${property.id}`);
-      if (cardEl) {
-        cardEl.scrollIntoView({ behavior: "smooth", block: "center" });
-        cardEl.classList.add("ring-2");
+      if (onViewListing) {
+        onViewListing(property);
+      } else {
+        const cardEl = document.getElementById(`property-${property.id}`);
+        if (cardEl) {
+          cardEl.scrollIntoView({ behavior: "smooth", block: "center" });
+          cardEl.classList.add("ring-2");
+        }
       }
     };
     body.appendChild(actionBtn);
 
     card.appendChild(body);
     return card;
-  }, []);
+  }, [onViewListing]);
 
   // Open property popup on map
   const openPropertyPopup = useCallback(
@@ -539,7 +543,7 @@ export default function PropertyMap({
           <button
             type="button"
             className={styles.retryBtn}
-            onClick={() => handleStyleChange(currentStyle === "liberty" ? "bright" : "liberty")}
+            onClick={() => handleStyleChange(currentStyle === "liberty" ? "satellite" : "liberty")}
           >
             Retry Loading Map
           </button>

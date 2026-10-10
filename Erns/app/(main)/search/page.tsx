@@ -7,6 +7,8 @@ import type { Property } from "@/app/generated/prisma";
 import dynamic from "next/dynamic";
 import { Heart, Search as SearchIcon, MapPin, List } from "lucide-react";
 import BedsBathsFilter from "@/components/BedsBathsFilter";
+import { useFavorites } from "@/components/providers/FavoritesProvider";
+import PropertyDetailModal from "@/components/favorites/PropertyDetailModal/PropertyDetailModal";
 import styles from "./Search.module.css";
 
 const PropertyMap = dynamic(() => import("@/components/PropertyMap"), {
@@ -53,6 +55,31 @@ function SearchPageContent() {
   const [selectedPropertyId, setSelectedPropertyId] = useState<string | null>(null);
   const [mobileTab, setMobileTab] = useState<"map" | "list">("map");
   const [polygonCoords, setPolygonCoords] = useState<{lat: number, lng: number}[] | null>(null);
+
+  const { toggleFavorite, isFavorite } = useFavorites();
+  const [detailProperty, setDetailProperty] = useState<any>(null);
+
+  const mapToDetailProperty = (property: Property) => ({
+      id: property.id,
+      title: property.title,
+      titleAm: property.title,
+      priceETB: property.price,
+      listingType: property.status === "FOR_RENT" ? "rent" : "sale",
+      imageUrl: property.images && property.images.length > 0 ? property.images[0] : "",
+      images: property.images,
+      subCity: property.city,
+      subCityAm: property.city,
+      specificArea: property.address,
+      specificAreaAm: property.address,
+      bedrooms: property.beds,
+      bathrooms: property.baths,
+      areaSqM: property.sqft * 0.092903,
+      propertyType: property.propertyType,
+      ownerOrAgentName: "Contact Agent",
+      ownerOrAgentPhone: "+251900000000",
+      isVerified: true,
+      description: property.description || "No description provided.",
+  });
 
   // Read state from URL
   const searchQuery = searchParams.get("query") || "";
@@ -184,7 +211,7 @@ function SearchPageContent() {
       <div className={styles.contentContainer}>
         {/* Left Map Section */}
         <div className={`${styles.mapSection} ${mobileTab === "list" ? styles.mapSectionHidden : ""}`} style={{ position: "relative" }}>
-          <div style={{ position: 'absolute', top: '15px', right: '15px', zIndex: 1000 }}>
+          <div style={{ position: 'absolute', top: '15px', left: '50%', transform: 'translateX(-50%)', zIndex: 1000 }}>
             <button 
               onClick={() => router.push('/search')}
               style={{
@@ -209,6 +236,7 @@ function SearchPageContent() {
             selectedPropertyId={selectedPropertyId}
             onSelectProperty={(property) => setSelectedPropertyId(property ? property.id : null)}
             onPolygonChange={setPolygonCoords}
+            onViewListing={(property) => setDetailProperty(mapToDetailProperty(property as any))}
           />
         </div>
 
@@ -216,7 +244,7 @@ function SearchPageContent() {
         <div className={`${styles.listSection} ${mobileTab === "map" ? styles.listSectionHidden : ""}`}>
           <div className={styles.listHeader}>
             <h1 className={styles.listTitle}>
-              {searchQuery ? `${searchQuery} Real Estate & Homes` : 'Real Estate & Homes For Sale'}
+              {searchQuery ? `Properties in ${searchQuery}` : 'Real Estate & Homes For Sale'}
             </h1>
             <div className={styles.listSubheader}>
               <span className={styles.resultsCount}>
@@ -252,9 +280,12 @@ function SearchPageContent() {
                   <button 
                     className={styles.heartBtn} 
                     aria-label="Save favorite"
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleFavorite(mapToDetailProperty(property) as any);
+                    }}
                   >
-                    <Heart size={20} fill="rgba(0,0,0,0.4)" color="white" />
+                    <Heart size={20} fill={isFavorite(property.id) ? "#e11d48" : "rgba(0,0,0,0.4)"} color={isFavorite(property.id) ? "#e11d48" : "white"} />
                   </button>
                 </div>
                 
@@ -314,6 +345,7 @@ function SearchPageContent() {
           backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999,
           display: 'flex', alignItems: 'center', justifyContent: 'center'
         }}>
+          {/* ... Modal content ... */}
           <div style={{
             background: 'white', borderRadius: '12px', width: '90%', maxWidth: '400px', overflow: 'hidden'
           }}>
@@ -352,6 +384,14 @@ function SearchPageContent() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Property Detail Modal */}
+      {detailProperty && (
+        <PropertyDetailModal 
+          property={detailProperty} 
+          onClose={() => setDetailProperty(null)} 
+        />
       )}
     </div>
   );

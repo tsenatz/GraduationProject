@@ -356,18 +356,6 @@ export function PropertyDetailModal({
               </div>
             </div>
 
-            <div className={styles.contactActionButtons}>
-              <a
-                href={`tel:${property.ownerOrAgentPhone}`}
-                className={styles.callNowBtn}
-              >
-                <Phone size={16} />
-                <span>
-                  {t.callDirect}: {property.ownerOrAgentPhone}
-                </span>
-              </a>
-            </div>
-
             {/* Viewing Request Form */}
             {inquirySubmitted ? (
               <div className={styles.inquirySuccessBox}>

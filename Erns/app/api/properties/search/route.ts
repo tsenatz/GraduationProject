@@ -28,11 +28,9 @@ export async function GET(request: Request) {
         ...(query
           ? {
             OR: [
-              { title: { contains: query, mode: "insensitive" } },
               { address: { contains: query, mode: "insensitive" } },
               { city: { contains: query, mode: "insensitive" } },
               { state: { contains: query, mode: "insensitive" } },
-              { propertyType: { contains: query, mode: "insensitive" } },
             ],
           }
           : {}),
