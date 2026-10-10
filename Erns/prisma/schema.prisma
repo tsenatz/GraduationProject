@@ -39,6 +39,9 @@ model User {
   // User's saved/favorite properties
   favorites Favorite[]
 
+  // User's listed properties
+  properties Property[]
+
   accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support
@@ -148,4 +151,59 @@ model Favorite {
   @@unique([userId, propertyId])
   @@index([userId])
   @@index([propertyId])
+}
+
+// Property Listings (FSBO & Agent)
+model Property {
+  id              String   @id @default(cuid())
+  userId          String?
+  user            User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  title           String
+  titleAm         String?
+  description     String?
+  price           Float    // in ETB
+  isNegotiable    Boolean  @default(true)
+
+  // Property Details
+  beds            Int      @default(1)
+  baths           Float    @default(1)
+  sqft            Int      @default(100)
+  areaSqM         Float?
+  propertyType    String   @default("Apartment")
+  status          String   @default("FOR_SALE") // "FOR_SALE", "FOR_RENT", "PENDING", "SOLD"
+  listingType     String   @default("SALE")     // "SALE", "RENT"
+  titleDeedStatus String?
+
+  // Location Data
+  subCity         String?
+  subCityAm       String?
+  woreda          String?
+  specificArea    String?
+  specificAreaAm  String?
+  address         String
+  city            String   @default("Addis Ababa")
+  state           String   @default("Addis Ababa")
+  zipCode         String   @default("1000")
+  latitude        Float    @default(9.0107)
+  longitude       Float    @default(38.7612)
+
+  // Features & Media
+  amenities       String[] @default([])
+  images          String[] @default([])
+
+  // Contact
+  ownerName       String?
+  contactPhone    String?
+  preferredTime   String?  @default("anytime")
+
+  referenceNo     String   @unique @default(cuid())
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([subCity])
+  @@index([latitude, longitude])
 }
