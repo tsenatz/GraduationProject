@@ -13,9 +13,14 @@ import { NAV_LINKS_LEFT, NAV_LINKS_RIGHT } from "./navLinks";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { count } = useFavorites();
+
+  const checkIsActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    const linkPathname = href.split("?")[0];
+    return pathname.startsWith(linkPathname);
+  };
 
   // Helper for dynamic breadcrumbs on mobile
   const getBreadcrumbLabel = () => {
