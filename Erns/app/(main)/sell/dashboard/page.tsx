@@ -17,6 +17,7 @@ import {
   Lock,
   Layers,
   ArrowRight,
+  Pencil,
 } from "lucide-react";
 import {
   getSellerPropertiesAction,
@@ -381,6 +382,15 @@ export default function SellerDashboardPage() {
                         <span>Mark as Sold</span>
                       </button>
                     )}
+
+                    <Link
+                      href={`/sell/edit/${property.id}`}
+                      className={styles.btnEdit}
+                      title="Edit Listing Details"
+                    >
+                      <Pencil size={15} />
+                      <span>Edit</span>
+                    </Link>
 
                     <Link
                       href={`/search?query=${encodeURIComponent(property.subCity || "Addis Ababa")}`}

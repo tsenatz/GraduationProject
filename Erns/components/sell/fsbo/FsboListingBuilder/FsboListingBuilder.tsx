@@ -31,12 +31,18 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { translations } from "@/components/sell/translations";
-import { createPropertyListingAction } from "@/lib/actions/listings";
+import {
+  createPropertyListingAction,
+  updatePropertyListingAction,
+} from "@/lib/actions/listings";
 import styles from "./FsboListingBuilder.module.css";
 
 interface FsboListingBuilderProps {
   initialSubCity?: string;
   initialAddress?: string;
+  initialData?: any;
+  mode?: "create" | "edit";
+  propertyId?: string;
 }
 
 const PROPERTY_TYPES = [
@@ -57,6 +63,9 @@ const SAMPLE_PHOTOS = [
 export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
   initialSubCity = "Bole",
   initialAddress = "",
+  initialData,
+  mode = "create",
+  propertyId,
 }) => {
   const { data: session } = useSession();
   const { isAmharic } = useLanguage();
@@ -65,40 +74,40 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [submissionRef, setSubmissionRef] = useState("");
-  const [createdPropertyId, setCreatedPropertyId] = useState("");
+  const [submissionRef, setSubmissionRef] = useState(initialData?.referenceNo || "");
+  const [createdPropertyId, setCreatedPropertyId] = useState(propertyId || "");
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Form State
+  // Form State initialized with initialData (if in edit mode) or defaults
   const [formData, setFormData] = useState({
-    subCity: initialSubCity || "Bole",
-    woreda: "Woreda 03",
-    specificArea: initialAddress || "Atlas, near Edna Mall",
-    propertyType: "apartment",
-    bedrooms: 3,
-    bathrooms: 2,
-    areaSqM: 145,
-    priceETB: 12500000,
-    isNegotiable: true,
-    titleDeedStatus: "digital",
-    selectedAmenities: [
+    subCity: initialData?.subCity || initialSubCity || "Bole",
+    woreda: initialData?.woreda || "Woreda 03",
+    specificArea: initialData?.specificArea || initialAddress || "Atlas, near Edna Mall",
+    propertyType: initialData?.propertyType || "apartment",
+    bedrooms: initialData?.bedrooms || 3,
+    bathrooms: initialData?.bathrooms || 2,
+    areaSqM: initialData?.areaSqM || 145,
+    priceETB: initialData?.priceETB || 12500000,
+    isNegotiable: initialData?.isNegotiable !== undefined ? initialData.isNegotiable : true,
+    titleDeedStatus: initialData?.titleDeedStatus || "digital",
+    selectedAmenities: initialData?.amenities || [
       "Water Tank / Reserve (የውሃ ታንከር)",
       "Standby Generator (ጀነሬተር)",
       "Dedicated Parking (የመኪና ማቆሚያ)",
     ],
-    description: "",
-    ownerName: "",
-    phone: "",
-    preferredTime: "anytime",
+    description: initialData?.description || "",
+    ownerName: initialData?.ownerName || "",
+    phone: initialData?.phone || "",
+    preferredTime: initialData?.preferredTime || "anytime",
   });
 
-  const [photos, setPhotos] = useState<string[]>([
-    SAMPLE_PHOTOS[0],
-    SAMPLE_PHOTOS[1],
-    SAMPLE_PHOTOS[2],
-  ]);
+  const [photos, setPhotos] = useState<string[]>(
+    initialData?.photos && initialData.photos.length > 0
+      ? initialData.photos
+      : [SAMPLE_PHOTOS[0], SAMPLE_PHOTOS[1], SAMPLE_PHOTOS[2]]
+  );
 
   // Prepopulate contact info if user is authenticated
   useEffect(() => {
@@ -118,7 +127,7 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
       return {
         ...prev,
         selectedAmenities: exists
-          ? prev.selectedAmenities.filter((a) => a !== amenity)
+          ? prev.selectedAmenities.filter((a: string) => a !== amenity)
           : [...prev.selectedAmenities, amenity],
       };
     });
@@ -188,39 +197,76 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
     setIsSubmitting(true);
 
     try {
-      const result = await createPropertyListingAction({
-        subCity: formData.subCity,
-        woreda: formData.woreda,
-        specificArea: formData.specificArea,
-        propertyType: formData.propertyType,
-        bedrooms: formData.bedrooms,
-        bathrooms: formData.bathrooms,
-        areaSqM: formData.areaSqM,
-        priceETB: formData.priceETB,
-        isNegotiable: formData.isNegotiable,
-        titleDeedStatus: formData.titleDeedStatus,
-        amenities: formData.selectedAmenities,
-        description: formData.description,
-        ownerName: formData.ownerName || session.user.name || "Owner",
-        phone: formData.phone,
-        preferredTime: formData.preferredTime,
-        photos,
-      });
+      if (mode === "edit" && propertyId) {
+        const result = await updatePropertyListingAction(propertyId, {
+          subCity: formData.subCity,
+          woreda: formData.woreda,
+          specificArea: formData.specificArea,
+          propertyType: formData.propertyType,
+          bedrooms: formData.bedrooms,
+          bathrooms: formData.bathrooms,
+          areaSqM: formData.areaSqM,
+          priceETB: formData.priceETB,
+          isNegotiable: formData.isNegotiable,
+          titleDeedStatus: formData.titleDeedStatus,
+          amenities: formData.selectedAmenities,
+          description: formData.description,
+          ownerName: formData.ownerName || session.user.name || "Owner",
+          phone: formData.phone,
+          preferredTime: formData.preferredTime,
+          photos,
+        });
 
-      if (result.success) {
-        setSubmissionRef(result.referenceNo || `ERN-${Math.floor(10000 + Math.random() * 90000)}`);
-        setCreatedPropertyId(result.propertyId || "");
-        setIsSubmitted(true);
-      } else {
-        if (result.error === "AUTH_REQUIRED") {
-          setShowAuthModal(true);
+        if (result.success) {
+          setSubmissionRef(initialData?.referenceNo || result.referenceNo || "");
+          setCreatedPropertyId(propertyId);
+          setIsSubmitted(true);
         } else {
-          setErrorMessage(result.error || "Failed to save listing");
+          if (result.error === "AUTH_REQUIRED") {
+            setShowAuthModal(true);
+          } else {
+            setErrorMessage(result.error || "Failed to update listing");
+          }
+        }
+      } else {
+        const result = await createPropertyListingAction({
+          subCity: formData.subCity,
+          woreda: formData.woreda,
+          specificArea: formData.specificArea,
+          propertyType: formData.propertyType,
+          bedrooms: formData.bedrooms,
+          bathrooms: formData.bathrooms,
+          areaSqM: formData.areaSqM,
+          priceETB: formData.priceETB,
+          isNegotiable: formData.isNegotiable,
+          titleDeedStatus: formData.titleDeedStatus,
+          amenities: formData.selectedAmenities,
+          description: formData.description,
+          ownerName: formData.ownerName || session.user.name || "Owner",
+          phone: formData.phone,
+          preferredTime: formData.preferredTime,
+          photos,
+        });
+
+        if (result.success) {
+          setSubmissionRef(result.referenceNo || `ERN-${Math.floor(10000 + Math.random() * 90000)}`);
+          setCreatedPropertyId(result.propertyId || "");
+          setIsSubmitted(true);
+        } else {
+          if (result.error === "AUTH_REQUIRED") {
+            setShowAuthModal(true);
+          } else {
+            setErrorMessage(result.error || "Failed to save listing");
+          }
         }
       }
     } catch (err) {
       console.error("Submission error:", err);
-      setErrorMessage("Something went wrong while publishing your home.");
+      setErrorMessage(
+        mode === "edit"
+          ? "Something went wrong while updating your listing."
+          : "Something went wrong while publishing your home."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -245,8 +291,20 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
     <section id="fsbo-builder" className={styles.section}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <h2 className={styles.title}>{t.title}</h2>
-          <p className={styles.subtitle}>{t.subtitle}</p>
+          <h2 className={styles.title}>
+            {mode === "edit"
+              ? isAmharic
+                ? "የቤትዎን መረጃ ያሻሽሉ"
+                : "Edit Your Property Listing"
+              : t.title}
+          </h2>
+          <p className={styles.subtitle}>
+            {mode === "edit"
+              ? isAmharic
+                ? `ማጣቀሻ ቁጥር፡ ${initialData?.referenceNo || ""} - ዋጋ፣ ዝርዝር ወይም ፎቶዎችን ያሻሽሉ`
+                : `Reference #${initialData?.referenceNo || ""} • Update your price, photos, or specs.`
+              : t.subtitle}
+          </p>
         </div>
 
         <div className={styles.wizardLayout}>
@@ -703,12 +761,26 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
                       {isSubmitting ? (
                         <>
                           <Loader2 size={18} className="animate-spin" />
-                          <span>Publishing to Database...</span>
+                          <span>
+                            {mode === "edit"
+                              ? isAmharic
+                                ? "እየተሻሻለ ነው..."
+                                : "Saving Changes..."
+                              : isAmharic
+                              ? "ወደ ዳታቤዝ እየገባ ነው..."
+                              : "Publishing to Database..."}
+                          </span>
                         </>
                       ) : (
                         <>
                           <Tag size={18} />
-                          <span>{t.btnPublish}</span>
+                          <span>
+                            {mode === "edit"
+                              ? isAmharic
+                                ? "ለውጦችን መዝግብ"
+                                : "Save Changes"
+                              : t.btnPublish}
+                          </span>
                         </>
                       )}
                     </button>
@@ -838,17 +910,39 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
             <div className={styles.modalIcon}>
               <CheckCircle2 size={38} />
             </div>
-            <h3 className={styles.modalTitle}>{t.successTitle}</h3>
+            <h3 className={styles.modalTitle}>
+              {mode === "edit"
+                ? isAmharic
+                  ? "የቤትዎ መረጃ በተሳካ ሁኔታ ተሻሽሏል!"
+                  : "Listing Updated Successfully!"
+                : t.successTitle}
+            </h3>
             <p className={styles.modalDesc}>
-              Your listing has been saved to the PostgreSQL database and published to the ERNS marketplace.
+              {mode === "edit"
+                ? isAmharic
+                  ? "ሁሉም ለውጦች በዳታቤዝ ውስጥ ተመዝግበው ገበያ ላይ ወዲያውኑ ታይተዋል።"
+                  : "All changes have been saved to the PostgreSQL database and updated in the marketplace."
+                : isAmharic
+                ? "ቤትዎ በዳታቤዝ ውስጥ ተመዝግቦ በ ERNS ገበያ ላይ ወዲያውኑ ታይቷል።"
+                : "Your listing has been saved to the PostgreSQL database and published to the ERNS marketplace."}
             </p>
             <div className={styles.referenceBadge}>
               {t.successRef} {submissionRef}
             </div>
 
             <div className={styles.modalActions} style={{ flexDirection: "column", gap: "10px" }}>
-              <Link href="/sell/dashboard" className={styles.modalPrimaryBtn} style={{ width: "100%", textAlign: "center" }}>
-                <span>Go to Seller Dashboard</span>
+              <Link
+                href="/sell/dashboard"
+                className={styles.modalPrimaryBtn}
+                style={{ width: "100%", textAlign: "center" }}
+              >
+                <span>
+                  {mode === "edit"
+                    ? isAmharic
+                      ? "ወደ ሻጭ ዳሽቦርድ ተመለስ"
+                      : "Return to Seller Dashboard"
+                    : "Go to Seller Dashboard"}
+                </span>
                 <ArrowRight size={16} style={{ display: "inline", marginLeft: "6px" }} />
               </Link>
 
@@ -860,14 +954,16 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
                 >
                   {t.btnViewListing}
                 </Link>
-                <button
-                  type="button"
-                  className={styles.modalSecondaryBtn}
-                  style={{ flex: 1 }}
-                  onClick={resetForm}
-                >
-                  {t.btnCreateAnother}
-                </button>
+                {mode !== "edit" && (
+                  <button
+                    type="button"
+                    className={styles.modalSecondaryBtn}
+                    style={{ flex: 1 }}
+                    onClick={resetForm}
+                  >
+                    {t.btnCreateAnother}
+                  </button>
+                )}
               </div>
             </div>
           </div>
