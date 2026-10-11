@@ -1,29 +1,40 @@
 import { NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
+import { auth } from "@/lib/auth";
+import fs from "fs/promises";
 import path from "path";
 import crypto from "crypto";
-import { auth } from "@/lib/auth";
 
-// Validate binary file signature (magic bytes) to ensure file is authentically an image
-function isValidImageSignature(buffer: Buffer): boolean {
-  if (buffer.length < 4) return false;
+// 10MB maximum file size limit
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
-  // JPEG signature: 0xFF, 0xD8, 0xFF
+/**
+ * Validate binary file signatures (magic bytes) to ensure authentic file types
+ * Supports images (JPEG, PNG, WEBP, GIF) and documents (PDF)
+ */
+function verifyFileSignature(buffer: Buffer): string | null {
+  if (buffer.length < 4) return null;
+
+  // JPEG: 0xFF, 0xD8, 0xFF
   if (buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff) {
-    return true;
+    return ".jpg";
   }
 
-  // PNG signature: 0x89, 0x50, 0x4E, 0x47 (89 'P' 'N' 'G')
+  // PNG: 0x89, 0x50, 0x4E, 0x47
   if (buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4e && buffer[3] === 0x47) {
-    return true;
+    return ".png";
   }
 
-  // GIF signature: 'G' 'I' 'F' '8'
+  // GIF: 0x47, 0x49, 0x46, 0x38 ('G' 'I' 'F' '8')
   if (buffer[0] === 0x47 && buffer[1] === 0x49 && buffer[2] === 0x46 && buffer[3] === 0x38) {
-    return true;
+    return ".gif";
   }
 
-  // WEBP signature: 'R' 'I' 'F' 'F' ... 'W' 'E' 'B' 'P'
+  // PDF: 0x25, 0x50, 0x44, 0x46 ('%' 'P' 'D' 'F')
+  if (buffer[0] === 0x25 && buffer[1] === 0x50 && buffer[2] === 0x44 && buffer[3] === 0x46) {
+    return ".pdf";
+  }
+
+  // WEBP: 'R' 'I' 'F' 'F' ... 'W' 'E' 'B' 'P'
   if (
     buffer.length >= 12 &&
     buffer[0] === 0x52 &&
@@ -35,19 +46,19 @@ function isValidImageSignature(buffer: Buffer): boolean {
     buffer[10] === 0x42 &&
     buffer[11] === 0x50
   ) {
-    return true;
+    return ".webp";
   }
 
-  return false;
+  return null;
 }
 
 export async function POST(request: Request) {
   try {
-    // 1. Authentication Gate: Require verified session
+    // 1. Session check: Require authenticated session
     const session = await auth();
     if (!session?.user?.id) {
       return NextResponse.json(
-        { success: false, error: "Unauthorized. Please sign in to upload photos." },
+        { success: false, error: "Unauthorized. Please sign in to upload files." },
         { status: 401 }
       );
     }
@@ -62,20 +73,10 @@ export async function POST(request: Request) {
       );
     }
 
-    // 2. MIME type whitelist
-    const allowedMimeTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
-    if (!allowedMimeTypes.includes(file.type)) {
+    // 2. File size validation
+    if (file.size > MAX_FILE_SIZE) {
       return NextResponse.json(
-        { success: false, error: "Invalid file type. Allowed formats: JPG, PNG, WebP." },
-        { status: 400 }
-      );
-    }
-
-    // 3. Strict size limit (8MB max per property image)
-    const MAX_SIZE = 8 * 1024 * 1024;
-    if (file.size > MAX_SIZE) {
-      return NextResponse.json(
-        { success: false, error: "File exceeds 8MB size limit." },
+        { success: false, error: "File exceeds 10MB limit." },
         { status: 400 }
       );
     }
@@ -83,37 +84,42 @@ export async function POST(request: Request) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // 4. Magic bytes security check: prevent malicious executable masking
-    if (!isValidImageSignature(buffer)) {
+    // 3. Binary magic bytes verification
+    const verifiedExt = verifyFileSignature(buffer);
+    if (!verifiedExt) {
       return NextResponse.json(
-        { success: false, error: "Corrupt or invalid image file signature detected." },
+        {
+          success: false,
+          error: "Invalid file format. Only JPG, PNG, WEBP, GIF, and PDF are permitted.",
+        },
         { status: 400 }
       );
     }
 
-    // 5. Filename sanitization: generate unguessable cryptographically random filename
-    const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
-    const safeExt = ["jpg", "jpeg", "png", "webp", "gif"].includes(ext) ? ext : "jpg";
-    const uniqueId = crypto.randomBytes(12).toString("hex");
-    const filename = `prop-${Date.now()}-${uniqueId}.${safeExt}`;
+    // 4. Generate collision-resistant unique filename
+    const uniqueId = crypto.randomBytes(16).toString("hex");
+    const safeFilename = `upload-${Date.now()}-${uniqueId}${verifiedExt}`;
 
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    const filePath = path.join(uploadDir, filename);
+    // 5. Save to public/uploads directory
+    const uploadsDir = path.join(process.cwd(), "public", "uploads");
+    await fs.mkdir(uploadsDir, { recursive: true });
 
-    // Write file securely
-    await writeFile(filePath, buffer);
+    const filePath = path.join(uploadsDir, safeFilename);
+    await fs.writeFile(filePath, buffer);
 
-    const publicUrl = `/uploads/${filename}`;
+    const publicUrl = `/uploads/${safeFilename}`;
 
     return NextResponse.json({
       success: true,
       url: publicUrl,
-      filename,
+      filename: safeFilename,
+      fileName: file.name,
+      fileSize: file.size,
     });
   } catch (error) {
-    console.error("Secure upload error:", error);
+    console.error("Upload API error:", error);
     return NextResponse.json(
-      { success: false, error: "Internal server error during upload" },
+      { success: false, error: "Failed to process upload" },
       { status: 500 }
     );
   }

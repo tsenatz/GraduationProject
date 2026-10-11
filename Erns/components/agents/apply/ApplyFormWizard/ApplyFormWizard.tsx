@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import {
   CheckCircle2,
   UploadCloud,
@@ -13,9 +14,12 @@ import {
   Sparkles,
   Home,
   Check,
+  Loader2,
+  Lock,
 } from "lucide-react";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { applyTranslations } from "../applyTranslations";
+import { applyAsAgentAction } from "@/lib/actions/agents";
 import styles from "./ApplyFormWizard.module.css";
 
 const SUB_CITIES = [
@@ -32,13 +36,18 @@ const SUB_CITIES = [
 ];
 
 export const ApplyFormWizard: React.FC = () => {
+  const { data: session } = useSession();
   const { isAmharic } = useLanguage();
   const t = applyTranslations[isAmharic ? "am" : "en"].wizard;
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [referenceId, setReferenceId] = useState("");
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [isUploadingDoc, setIsUploadingDoc] = useState(false);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -52,11 +61,23 @@ export const ApplyFormWizard: React.FC = () => {
     specialties: ["listing-agent"],
     languages: ["Amharic", "English"],
     tinNumber: "",
+    documentUrl: "",
     attachedFileName: "",
     bio: "",
     website: "",
     agreedToTerms: false,
   });
+
+  // Prepopulate from session if available
+  useEffect(() => {
+    if (session?.user) {
+      setFormData((prev) => ({
+        ...prev,
+        fullName: prev.fullName || session.user?.name || "",
+        email: prev.email || session.user?.email || "",
+      }));
+    }
+  }, [session]);
 
   const [validationError, setValidationError] = useState("");
 
@@ -120,6 +141,46 @@ export const ApplyFormWizard: React.FC = () => {
     });
   };
 
+  const handleRealFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    const file = e.target.files[0];
+
+    setIsUploadingDoc(true);
+    setValidationError("");
+
+    try {
+      const uploadFormData = new FormData();
+      uploadFormData.append("file", file);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: uploadFormData,
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setFormData((prev) => ({
+          ...prev,
+          documentUrl: data.url,
+          attachedFileName: data.fileName || file.name,
+        }));
+      } else {
+        const data = await res.json();
+        if (res.status === 401) {
+          setShowAuthModal(true);
+        } else {
+          setValidationError(data.error || "Failed to upload document");
+        }
+      }
+    } catch (err) {
+      console.error("Upload error:", err);
+      setValidationError("Network error uploading document.");
+    } finally {
+      setIsUploadingDoc(false);
+      e.target.value = "";
+    }
+  };
+
   const handleSimulatedFileUpload = () => {
     const sampleFiles = [
       "ethiopia_trade_license_2026.pdf",
@@ -127,7 +188,11 @@ export const ApplyFormWizard: React.FC = () => {
       "broker_tin_certificate.pdf",
     ];
     const randomFile = sampleFiles[Math.floor(Math.random() * sampleFiles.length)];
-    handleTextChange("attachedFileName", randomFile);
+    setFormData((prev) => ({
+      ...prev,
+      attachedFileName: randomFile,
+      documentUrl: `/uploads/${randomFile}`,
+    }));
   };
 
   const validateCurrentStep = (): boolean => {
@@ -197,18 +262,54 @@ export const ApplyFormWizard: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateCurrentStep()) return;
 
+    if (!session?.user) {
+      setShowAuthModal(true);
+      return;
+    }
+
     setIsSubmitting(true);
-    setTimeout(() => {
-      const generatedRef = `ERN-AG-2026-${Math.floor(10000 + Math.random() * 90000)}`;
-      setReferenceId(generatedRef);
+    setValidationError("");
+
+    try {
+      const result = await applyAsAgentAction({
+        fullName: formData.fullName,
+        fullNameAm: formData.fullNameAm,
+        phone: formData.phone,
+        email: formData.email,
+        agency: formData.agency,
+        experience: formData.experience,
+        selectedSubCities: formData.selectedSubCities,
+        specialties: formData.specialties,
+        languages: formData.languages,
+        tinNumber: formData.tinNumber,
+        documentUrl: formData.documentUrl || formData.attachedFileName,
+        attachedFileName: formData.attachedFileName,
+        bio: formData.bio,
+        website: formData.website,
+        agreedToTerms: formData.agreedToTerms,
+      });
+
+      if (result.success) {
+        setReferenceId(result.referenceNo || `ERN-AG-2026-${Math.floor(10000 + Math.random() * 90000)}`);
+        setIsSubmitted(true);
+        window.scrollTo({ top: document.getElementById("agent-application-wizard")?.offsetTop ?? 0, behavior: "smooth" });
+      } else {
+        if (result.error === "AUTH_REQUIRED") {
+          setShowAuthModal(true);
+        } else {
+          setValidationError(result.error || "Failed to submit application");
+        }
+      }
+    } catch (err) {
+      console.error("Submission error:", err);
+      setValidationError("An unexpected error occurred while saving your application.");
+    } finally {
       setIsSubmitting(false);
-      setIsSubmitted(true);
-      window.scrollTo({ top: document.getElementById("agent-application-wizard")?.offsetTop ?? 0, behavior: "smooth" });
-    }, 1200);
+    }
   };
 
   return (
@@ -269,6 +370,7 @@ export const ApplyFormWizard: React.FC = () => {
                       specialties: ["listing-agent"],
                       languages: ["Amharic", "English"],
                       tinNumber: "",
+                      documentUrl: "",
                       attachedFileName: "",
                       bio: "",
                       website: "",
@@ -535,19 +637,35 @@ export const ApplyFormWizard: React.FC = () => {
 
                     <div className={styles.fieldGroup}>
                       <label className={styles.label}>{t.step3.uploadLabel}</label>
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        style={{ display: "none" }}
+                        accept=".pdf,image/png,image/jpeg,image/webp"
+                        onChange={handleRealFileUpload}
+                      />
                       <div
                         className={styles.dropzone}
-                        onClick={handleSimulatedFileUpload}
+                        onClick={() => fileInputRef.current?.click()}
                       >
-                        <UploadCloud size={32} className={styles.dropzoneIcon} />
-                        <span className={styles.dropzoneText}>
-                          {formData.attachedFileName
-                            ? formData.attachedFileName
-                            : t.step3.uploadHint}
-                        </span>
-                        <span className={styles.dropzoneHint}>
-                          Supports PDF, JPG, PNG (Max 10MB)
-                        </span>
+                        {isUploadingDoc ? (
+                          <>
+                            <Loader2 size={32} className="animate-spin" style={{ color: "var(--color-primary)" }} />
+                            <span className={styles.dropzoneText}>Uploading and verifying document...</span>
+                          </>
+                        ) : (
+                          <>
+                            <UploadCloud size={32} className={styles.dropzoneIcon} />
+                            <span className={styles.dropzoneText}>
+                              {formData.attachedFileName
+                                ? formData.attachedFileName
+                                : t.step3.uploadHint}
+                            </span>
+                            <span className={styles.dropzoneHint}>
+                              Click to browse • Supports PDF, JPG, PNG (Max 10MB)
+                            </span>
+                          </>
+                        )}
                         {formData.attachedFileName && (
                           <div className={styles.fileBadge}>
                             <FileCheck2 size={16} />
@@ -556,6 +674,25 @@ export const ApplyFormWizard: React.FC = () => {
                             </span>
                           </div>
                         )}
+                      </div>
+                      <div style={{ marginTop: "8px", textAlign: "right" }}>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleSimulatedFileUpload();
+                          }}
+                          style={{
+                            background: "transparent",
+                            border: "none",
+                            color: "var(--color-accent)",
+                            fontSize: "0.82rem",
+                            textDecoration: "underline",
+                            cursor: "pointer",
+                          }}
+                        >
+                          Or attach sample license document
+                        </button>
                       </div>
                     </div>
 
@@ -730,6 +867,93 @@ export const ApplyFormWizard: React.FC = () => {
           )}
         </div>
       </div>
+
+      {/* Auth Gate Modal */}
+      {showAuthModal && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(0, 0, 0, 0.6)",
+            backdropFilter: "blur(4px)",
+            zIndex: 9999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "20px",
+          }}
+          onClick={() => setShowAuthModal(false)}
+        >
+          <div
+            style={{
+              background: "white",
+              borderRadius: "20px",
+              padding: "36px 28px",
+              maxWidth: "460px",
+              width: "100%",
+              textAlign: "center",
+              boxShadow: "0 20px 50px rgba(0,0,0,0.15)",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              style={{
+                width: "64px",
+                height: "64px",
+                borderRadius: "16px",
+                background: "#eff6ff",
+                color: "#2563eb",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto 16px",
+              }}
+            >
+              <Lock size={30} />
+            </div>
+            <h3 style={{ fontSize: "1.3rem", fontWeight: 800, marginBottom: "8px", color: "#0f172a" }}>
+              Sign In to Apply as an Agent
+            </h3>
+            <p style={{ color: "#64748b", fontSize: "0.92rem", lineHeight: 1.5, marginBottom: "24px" }}>
+              Please sign in to your ERNS account so your verified credentials, TIN certificate, and agent badge can be securely linked to your profile.
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              <Link
+                href="/login?callbackUrl=/sell/agent/apply"
+                style={{
+                  background: "var(--color-primary, #0a3bd9)",
+                  color: "white",
+                  padding: "12px 20px",
+                  borderRadius: "10px",
+                  fontWeight: 700,
+                  textDecoration: "none",
+                  display: "block",
+                }}
+              >
+                Sign In / Register
+              </Link>
+              <button
+                type="button"
+                onClick={() => setShowAuthModal(false)}
+                style={{
+                  background: "transparent",
+                  border: "1px solid #e2e8f0",
+                  padding: "11px 20px",
+                  borderRadius: "10px",
+                  color: "#64748b",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

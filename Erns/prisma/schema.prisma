@@ -52,21 +52,31 @@ model User {
 }
 
 model AgentProfile {
-  id     String @id @default(cuid())
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                 String             @id @default(cuid())
+  userId             String             @unique
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  fullName           String?
+  fullNameAm         String?
   licenseNumber      String?
+  tinNumber          String?
   licenseState       String?
   brokerage          String?
+  experience         String?
+  specialties        String[]           @default([])
+  languages          String[]           @default(["Amharic", "English"])
   professionalPhone  String?
   professionalEmail  String?
   bio                String?
+  bioAm              String?
+  website            String?
+  documentUrl        String?
+  referenceNo        String?            @unique
   serviceAreas       String[]
   verificationStatus VerificationStatus @default(PENDING)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
 }
 
 model Account {
@@ -153,31 +163,57 @@ model Favorite {
   @@index([propertyId])
 }
 
-// Model for property listings and their details
+// Property Listings (FSBO & Agent)
 model Property {
-  id          String   @id @default(cuid())
-  title       String
-  description String?
-  price       Float
+  id              String   @id @default(cuid())
+  userId          String?
+  user            User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  title           String
+  titleAm         String?
+  description     String?
+  price           Float    // in ETB
+  isNegotiable    Boolean  @default(true)
 
   // Property Details
-  beds         Int
-  baths        Float
-  sqft         Int
-  propertyType String // e.g., "Single Family", "Condo", "Townhouse"
-  status       String // e.g., "FOR_SALE", "FOR_RENT"
+  beds            Int      @default(1)
+  baths           Float    @default(1)
+  sqft            Int      @default(100)
+  areaSqM         Float?
+  propertyType    String   @default("Apartment")
+  status          String   @default("FOR_SALE") // "FOR_SALE", "FOR_RENT", "PENDING", "SOLD"
+  listingType     String   @default("SALE")     // "SALE", "RENT"
+  titleDeedStatus String?
 
   // Location Data
-  address   String
-  city      String
-  state     String
-  zipCode   String
-  latitude  Float // Crucial for map plotting
-  longitude Float // Crucial for map plotting
+  subCity         String?
+  subCityAm       String?
+  woreda          String?
+  specificArea    String?
+  specificAreaAm  String?
+  address         String
+  city            String   @default("Addis Ababa")
+  state           String   @default("Addis Ababa")
+  zipCode         String   @default("1000")
+  latitude        Float    @default(9.0107)
+  longitude       Float    @default(38.7612)
 
-  // Images
-  images String[] // Array of image URLs
+  // Features & Media
+  amenities       String[] @default([])
+  images          String[] @default([])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  // Contact
+  ownerName       String?
+  contactPhone    String?
+  preferredTime   String?  @default("anytime")
+
+  referenceNo     String   @unique @default(cuid())
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([subCity])
+  @@index([latitude, longitude])
 }
