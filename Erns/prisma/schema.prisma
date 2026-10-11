@@ -217,4 +217,3 @@ model Property {
   @@index([subCity])
   @@index([latitude, longitude])
 }
-

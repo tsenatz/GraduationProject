@@ -12,6 +12,7 @@ export async function GET(request: Request) {
     const swLng = parseFloat(searchParams.get("swLng") || "-180");
 
     // Parse filters
+    const query = searchParams.get("query")?.trim();
     const minPrice = searchParams.get("minPrice") ? parseFloat(searchParams.get("minPrice")!) : undefined;
     const maxPrice = searchParams.get("maxPrice") ? parseFloat(searchParams.get("maxPrice")!) : undefined;
     const status = searchParams.get("status"); // "FOR_SALE" or "FOR_RENT"
@@ -24,6 +25,15 @@ export async function GET(request: Request) {
       where: {
         latitude: { lte: neLat, gte: swLat },
         longitude: { lte: neLng, gte: swLng },
+        ...(query
+          ? {
+            OR: [
+              { address: { contains: query, mode: "insensitive" } },
+              { city: { contains: query, mode: "insensitive" } },
+              { state: { contains: query, mode: "insensitive" } },
+            ],
+          }
+          : {}),
         ...(minPrice || maxPrice
           ? {
             price: {

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Home, Menu, X, ChevronRight, Heart } from "lucide-react";
 import SignInButton from "@/components/auth/SignInButton";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
@@ -18,6 +18,8 @@ export default function Navbar() {
 
   const checkIsActive = (href: string) => {
     if (href === "/") return pathname === "/";
+    // Check if the current pathname starts with the link href
+    // and correctly handle query params if any in the nav link
     const linkPathname = href.split("?")[0];
     return pathname.startsWith(linkPathname);
   };
