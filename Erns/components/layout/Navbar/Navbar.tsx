@@ -13,22 +13,15 @@ import { NAV_LINKS_LEFT, NAV_LINKS_RIGHT } from "./navLinks";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { count } = useFavorites();
 
   const checkIsActive = (href: string) => {
-    const [basePath, searchStr] = href.split("?");
-    if (basePath !== pathname) return false;
-    if (!searchStr) return true;
-
-    const linkParams = new URLSearchParams(searchStr);
-    for (const [key, value] of Array.from(linkParams.entries())) {
-      if (searchParams.get(key) !== value) {
-        return false;
-      }
-    }
-    return true;
+    if (href === "/") return pathname === "/";
+    // Check if the current pathname starts with the link href
+    // and correctly handle query params if any in the nav link
+    const linkPathname = href.split("?")[0];
+    return pathname.startsWith(linkPathname);
   };
 
   // Helper for dynamic breadcrumbs on mobile
