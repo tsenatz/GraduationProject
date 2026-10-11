@@ -6,6 +6,10 @@ import {
   FsboHero,
   FsboListingBuilder,
   FsboHowItWorks,
+  FsboWhyErns,
+  FsboLegalChecklist,
+  FsboProsCons,
+  FsboFAQ,
   FsboCTA,
 } from "@/components/sell/fsbo";
 
@@ -47,6 +51,10 @@ function ForSaleByOwnerContent() {
         initialAddress={selectedAddress}
       />
       <FsboHowItWorks />
+      <FsboWhyErns />
+      <FsboLegalChecklist />
+      <FsboProsCons />
+      <FsboFAQ />
       <FsboCTA />
     </main>
   );
