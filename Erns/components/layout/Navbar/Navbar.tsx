@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Home, Menu, X, ChevronRight, Heart } from "lucide-react";
 import SignInButton from "@/components/auth/SignInButton";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
@@ -16,6 +16,20 @@ export default function Navbar() {
   const searchParams = useSearchParams();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { count } = useFavorites();
+
+  const checkIsActive = (href: string) => {
+    const [basePath, searchStr] = href.split("?");
+    if (basePath !== pathname) return false;
+    if (!searchStr) return true;
+
+    const linkParams = new URLSearchParams(searchStr);
+    for (const [key, value] of Array.from(linkParams.entries())) {
+      if (searchParams.get(key) !== value) {
+        return false;
+      }
+    }
+    return true;
+  };
 
   // Helper for dynamic breadcrumbs on mobile
   const getBreadcrumbLabel = () => {
