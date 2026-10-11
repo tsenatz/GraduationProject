@@ -161,24 +161,23 @@ model Property {
   price       Float
 
   // Property Details
-  beds        Int
-  baths       Float
-  sqft        Int
-  propertyType String  // e.g., "Single Family", "Condo", "Townhouse"
-  status      String   // e.g., "FOR_SALE", "FOR_RENT"
+  beds         Int
+  baths        Float
+  sqft         Int
+  propertyType String // e.g., "Single Family", "Condo", "Townhouse"
+  status       String // e.g., "FOR_SALE", "FOR_RENT"
 
   // Location Data
-  address     String
-  city        String
-  state       String
-  zipCode     String
-  latitude    Float    // Crucial for map plotting
-  longitude   Float    // Crucial for map plotting
+  address   String
+  city      String
+  state     String
+  zipCode   String
+  latitude  Float // Crucial for map plotting
+  longitude Float // Crucial for map plotting
 
   // Images
-  images      String[] // Array of image URLs
+  images String[] // Array of image URLs
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
-
