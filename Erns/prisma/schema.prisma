@@ -39,6 +39,9 @@ model User {
   // User's saved/favorite properties
   favorites Favorite[]
 
+  // User's listed properties
+  properties Property[]
+
   accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support
