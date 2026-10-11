@@ -19,9 +19,8 @@ import {
   Tag,
   X,
   Lock,
-  Building2,
-  Home,
-  Landmark,
+  Building,
+  Houses,
   Warehouse,
   Sparkles,
   Loader2,
@@ -45,11 +44,78 @@ interface FsboListingBuilderProps {
   propertyId?: string;
 }
 
+/**
+ * Dedicated Villa / Estate compound icon matching Lucide aesthetics
+ * Features a 2-story main villa with balcony/terrace and attached side wing/veranda
+ */
+const VillaIcon: React.FC<{ size?: number; className?: string }> = ({ size = 24, className }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+    aria-hidden="true"
+  >
+    {/* Main 2-story house roof */}
+    <path d="M2 10.5L8.5 4.5L15 10.5" />
+    {/* Main house walls */}
+    <path d="M4 9.5V20H13V9.5" />
+    {/* Second floor balcony / window */}
+    <path d="M7 11H10" />
+    {/* Front door */}
+    <path d="M7 20V15.5H10V20" />
+    {/* Attached side wing / veranda */}
+    <path d="M13 12L17.5 8.5L22 12" />
+    <path d="M13 11.5V20H21V11.5" />
+    {/* Wing window */}
+    <path d="M15.5 15H18.5" />
+  </svg>
+);
+/**
+ * Dedicated Apartment / High-rise residential tower icon matching Lucide aesthetics
+ * Features a modern stepped residential tower with apartment windows, balcony terrace, and entrance
+ */
+const ApartmentIcon: React.FC<{ size?: number; className?: string }> = ({ size = 24, className }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+    aria-hidden="true"
+  >
+    {/* Main residential tower */}
+    <path d="M4 21V4a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v17" />
+    {/* Stepped terrace / second tower */}
+    <path d="M14 9a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v12" />
+    {/* Ground baseline */}
+    <path d="M2 21h20" />
+    {/* Tower windows */}
+    <path d="M7 7h3" />
+    <path d="M7 11h3" />
+    <path d="M7 15h3" />
+    {/* Stepped wing windows */}
+    <path d="M16 12h1" />
+    <path d="M16 16h1" />
+    {/* Main lobby entrance */}
+    <path d="M8 21v-3h3v3" />
+  </svg>
+);
+
 const PROPERTY_TYPES = [
-  { id: "apartment", labelEn: "Apartment", labelAm: "አፓርታማ", icon: Building2 },
-  { id: "villa", labelEn: "Villa / House", labelAm: "ቪላ / ቤት", icon: Home },
-  { id: "condo", labelEn: "Condominium", labelAm: "ኮንዶሚኒየም", icon: Landmark },
-  { id: "townhouse", labelEn: "Townhouse", labelAm: "ታውንሃውስ", icon: Home },
+  { id: "apartment", labelEn: "Apartment", labelAm: "አፓርታማ", icon: ApartmentIcon },
+  { id: "villa", labelEn: "Villa / House", labelAm: "ቪላ / ቤት", icon: VillaIcon },
+  { id: "condo", labelEn: "Condominium", labelAm: "ኮንዶሚኒየም", icon: Building },
+  { id: "townhouse", labelEn: "Townhouse", labelAm: "ታውንሃውስ", icon: Houses },
   { id: "commercial", labelEn: "Commercial", labelAm: "የንግድ ቦታ", icon: Warehouse },
 ];
 

@@ -246,11 +246,32 @@ export function PropertyDetailView({ property }: PropertyDetailViewProps) {
                   <span className={styles.negotiableBadge}>Negotiable</span>
                 )}
               </div>
-              {pricePerM2 && (
-                <div className={styles.pricePerM2}>
-                  ~{formatPrice(pricePerM2)} ETB / m²
-                </div>
-              )}
+              <div className={styles.headerActionBtns}>
+                <button
+                  type="button"
+                  className={`${styles.actionBtn} ${favorited ? styles.actionBtnFavorited : ""}`}
+                  onClick={handleFavoriteClick}
+                  aria-label={favorited ? "Remove from saved homes" : "Save to favorites"}
+                  title={favorited ? "Remove from favorites" : "Save to favorites"}
+                >
+                  <Heart
+                    size={18}
+                    fill={favorited ? "#e11d48" : "none"}
+                    color={favorited ? "#e11d48" : "currentColor"}
+                  />
+                  <span>{favorited ? "Saved" : "Save"}</span>
+                </button>
+                <button
+                  type="button"
+                  className={styles.actionBtn}
+                  onClick={handleShare}
+                  aria-label="Share listing"
+                  title="Share link"
+                >
+                  <Share2 size={18} />
+                  <span>Share</span>
+                </button>
+              </div>
             </div>
 
             <h1 className={styles.propertyTitle}>{property.title}</h1>
