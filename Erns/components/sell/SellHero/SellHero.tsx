@@ -76,6 +76,18 @@ export function SellHero() {
         <h1 className={styles.title}>{t.hero.title}</h1>
         <p className={styles.subtitle}>{t.hero.subtitle}</p>
 
+        {/* Direct Action Buttons: "List your home on ERNS" */}
+        <div className={styles.heroButtonRow}>
+          <Link href="/sell/list" className={styles.heroDirectListBtn}>
+            <Home size={18} aria-hidden="true" />
+            <span>List your home on ERNS</span>
+            <ArrowRight size={16} aria-hidden="true" />
+          </Link>
+          <Link href="/sell/dashboard" className={styles.heroDashboardBtn}>
+            <span>Seller Dashboard</span>
+          </Link>
+        </div>
+
         {/* Zillow-Style Address Search Bar */}
         <form className={styles.searchCard} onSubmit={handleSearchSubmit}>
           <div className={styles.inputGroup}>

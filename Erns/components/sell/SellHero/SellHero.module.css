@@ -74,6 +74,59 @@
   margin: 0;
 }
 
+/* Direct Hero Action Buttons */
+.heroButtonRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+  margin-bottom: 8px;
+}
+
+.heroDirectListBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #ffffff;
+  color: #0a1931;
+  font-size: 1rem;
+  font-weight: 800;
+  padding: 13px 26px;
+  border-radius: 9999px;
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  transition: all 0.2s ease;
+}
+
+.heroDirectListBtn:hover {
+  background: #f1f5f9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.heroDashboardBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(10, 25, 49, 0.65);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 12px 22px;
+  border-radius: 9999px;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+}
+
+.heroDashboardBtn:hover {
+  background: rgba(10, 25, 49, 0.85);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
+}
+
 /* Zillow-Style Address Search Bar */
 .searchCard {
   width: 100%;
