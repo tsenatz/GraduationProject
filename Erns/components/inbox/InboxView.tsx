@@ -17,6 +17,13 @@ import { ChatThread } from "./ChatThread/ChatThread";
 import { InboxEmptyState } from "./InboxEmptyState/InboxEmptyState";
 import { TourScheduleModal } from "./TourScheduleModal/TourScheduleModal";
 import { InboxAuthGate } from "./InboxAuthGate/InboxAuthGate";
+import {
+  getInboxConversationsAction,
+  sendMessageAction,
+  scheduleTourAction,
+  confirmTourAction,
+  markConversationAsReadAction,
+} from "@/lib/actions/inbox";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { inboxTranslations } from "./translations";
 import styles from "./InboxView.module.css";
@@ -41,9 +48,13 @@ export const InboxView: React.FC = () => {
   const [isTourModalOpen, setIsTourModalOpen] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [showMobileChat, setShowMobileChat] = useState(false);
+  const [isLiveSyncing, setIsLiveSyncing] = useState(false);
 
-  // 1. Initial Load: Read from LocalStorage or seed with realistic data
+  // 1. Initial Load & Live Server Polling
   useEffect(() => {
+    let isMounted = true;
+
+    // Load from local cache for instant initial paint
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
@@ -51,20 +62,76 @@ export const InboxView: React.FC = () => {
         if (Array.isArray(parsed) && parsed.length > 0) {
           setConversations(parsed);
           setSelectedId(parsed[0].id);
-          return;
         }
       }
     } catch {
       // Ignore read errors
     }
-    setConversations(INITIAL_CONVERSATIONS);
-    setSelectedId(INITIAL_CONVERSATIONS[0].id);
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_CONVERSATIONS));
-    } catch {
-      // Ignore write errors
+
+    const fetchServerConversations = async (isInitial = false) => {
+      // If unauthenticated and not in demo mode, skip server poll
+      if (status !== "authenticated" && !isDemoMode) return;
+
+      try {
+        if (isInitial) setIsLiveSyncing(true);
+        const res = await getInboxConversationsAction();
+        if (res.success && res.conversations && isMounted) {
+          setConversations((prev) => {
+            const prevSummary = prev
+              .map(
+                (c) =>
+                  `${c.id}:${c.messages.length}:${c.lastMessageAt}:${c.unreadCount}:${
+                    c.messages[c.messages.length - 1]?.id || ""
+                  }`
+              )
+              .join("|");
+            const nextSummary = res.conversations!
+              .map(
+                (c) =>
+                  `${c.id}:${c.messages.length}:${c.lastMessageAt}:${c.unreadCount}:${
+                    c.messages[c.messages.length - 1]?.id || ""
+                  }`
+              )
+              .join("|");
+
+            if (prevSummary !== nextSummary) {
+              return res.conversations!;
+            }
+            return prev;
+          });
+
+          // Ensure selected ID remains valid without jumping
+          if (res.conversations.length > 0) {
+            setSelectedId((prevId) => {
+              if (!prevId) return res.conversations![0].id;
+              const exists = res.conversations!.some((c) => c.id === prevId);
+              return exists ? prevId : res.conversations![0].id;
+            });
+          }
+        }
+      } catch (err) {
+        console.warn("Live inbox sync poll error:", err);
+      } finally {
+        if (isMounted) setIsLiveSyncing(false);
+      }
+    };
+
+    // Run initial fetch
+    fetchServerConversations(true);
+
+    // Live sync polling interval: Poll database every 3.5s when authenticated
+    let pollInterval: NodeJS.Timeout | null = null;
+    if (status === "authenticated") {
+      pollInterval = setInterval(() => {
+        fetchServerConversations(false);
+      }, 3500);
     }
-  }, []);
+
+    return () => {
+      isMounted = false;
+      if (pollInterval) clearInterval(pollInterval);
+    };
+  }, [status, isDemoMode]);
 
   // Save to LocalStorage whenever conversations state changes
   const updateConversations = (
@@ -221,6 +288,12 @@ export const InboxView: React.FC = () => {
         return c;
       })
     );
+
+    if (status === "authenticated") {
+      markConversationAsReadAction({ conversationId: id }).catch((err) =>
+        console.warn("Failed to mark as read on server:", err)
+      );
+    }
   };
 
   const handleSendMessage = (text: string) => {
@@ -230,7 +303,7 @@ export const InboxView: React.FC = () => {
     const userRole = currentConv ? currentConv.userPerspective : "buyer";
 
     const currentUserName = session?.user?.name || "You";
-    const currentUserId = session?.user?.email || "current-user";
+    const currentUserId = session?.user?.id || session?.user?.email || "current-user";
 
     const newMessage: Message = {
       id: `msg-${Date.now()}`,
@@ -256,8 +329,28 @@ export const InboxView: React.FC = () => {
       })
     );
 
-    // Simulated contextual reply
-    simulateParticipantReply(selectedId, text);
+    // Persist via Server Action when authenticated
+    if (status === "authenticated") {
+      sendMessageAction({
+        conversationId: selectedId,
+        recipientId: currentConv?.participant.id,
+        propertyId: currentConv?.property.id,
+        content: text,
+        type: "text",
+        senderRole: userRole,
+      }).catch((err) => console.warn("Failed to send message to server:", err));
+    }
+
+    // If in demo mode or interacting with a mock sample participant, simulate bot reply
+    const isMockParticipant =
+      isDemoMode ||
+      currentConv?.participant.id.startsWith("agent-") ||
+      currentConv?.participant.id.startsWith("owner-") ||
+      currentConv?.participant.id.startsWith("buyer-");
+
+    if (isMockParticipant) {
+      simulateParticipantReply(selectedId, text);
+    }
   };
 
   const simulateParticipantReply = (convId: string, userText: string) => {
@@ -373,7 +466,7 @@ export const InboxView: React.FC = () => {
     const userRole = currentConv ? currentConv.userPerspective : "buyer";
 
     const currentUserName = session?.user?.name || "You";
-    const currentUserId = session?.user?.email || "current-user";
+    const currentUserId = session?.user?.id || session?.user?.email || "current-user";
 
     const tourMessage: Message = {
       id: `msg-tour-${Date.now()}`,
@@ -406,6 +499,15 @@ export const InboxView: React.FC = () => {
         return c;
       })
     );
+
+    if (status === "authenticated") {
+      scheduleTourAction({
+        conversationId: selectedId,
+        tourDate,
+        tourTime,
+        note,
+      }).catch((err) => console.warn("Failed to schedule tour on server:", err));
+    }
   };
 
   const handleConfirmTour = (convId: string, messageId: string) => {
@@ -431,6 +533,13 @@ export const InboxView: React.FC = () => {
       })
     );
 
+    if (status === "authenticated") {
+      confirmTourAction({
+        conversationId: convId,
+        messageId,
+      }).catch((err) => console.warn("Failed to confirm tour on server:", err));
+    }
+
     // Add confirmation text message
     handleSendMessage(
       "I have confirmed your tour request! Looking forward to welcoming you."
@@ -448,7 +557,7 @@ export const InboxView: React.FC = () => {
     const userRole = currentConv ? currentConv.userPerspective : "buyer";
 
     const currentUserName = session?.user?.name || "You";
-    const currentUserId = session?.user?.email || "current-user";
+    const currentUserId = session?.user?.id || session?.user?.email || "current-user";
 
     const attachMessage: Message = {
       id: `msg-file-${Date.now()}`,
@@ -478,6 +587,22 @@ export const InboxView: React.FC = () => {
         return c;
       })
     );
+
+    if (status === "authenticated") {
+      sendMessageAction({
+        conversationId: selectedId,
+        recipientId: currentConv?.participant.id,
+        propertyId: currentConv?.property.id,
+        content: `Shared document: ${file.name}`,
+        type: "attachment",
+        metadata: {
+          fileName: file.name,
+          fileSize: file.size,
+          fileUrl: file.url,
+        },
+        senderRole: userRole,
+      }).catch((err) => console.warn("Failed to attach file on server:", err));
+    }
   };
 
   const handleToggleStar = (id: string, e?: React.MouseEvent) => {
@@ -603,6 +728,7 @@ export const InboxView: React.FC = () => {
           onPerspectiveChange={handlePerspectiveChange}
           perspectiveCounts={perspectiveCounts}
           totalCount={folderCounts.all}
+          isLiveSyncing={status === "authenticated" || isLiveSyncing}
         />
 
         {/* Dual Pane Layout */}

@@ -15,6 +15,7 @@ interface InboxHeaderProps {
     selling_hosting: number;
   };
   totalCount: number;
+  isLiveSyncing?: boolean;
 }
 
 export const InboxHeader: React.FC<InboxHeaderProps> = ({
@@ -22,6 +23,7 @@ export const InboxHeader: React.FC<InboxHeaderProps> = ({
   onPerspectiveChange,
   perspectiveCounts,
   totalCount,
+  isLiveSyncing = true,
 }) => {
   const { isAmharic } = useLanguage();
   const t = inboxTranslations[isAmharic ? "am" : "en"];
@@ -46,6 +48,15 @@ export const InboxHeader: React.FC<InboxHeaderProps> = ({
               ? "ሚናዎ፡ ሻጭ እና አከራይ"
               : "Role: Seller & Landlord"}
           </span>
+          {isLiveSyncing && (
+            <span
+              className={styles.liveSyncBadge}
+              title={isAmharic ? "የቀጥታ ማመሳሰል ነቅቷል" : "Live Real-Time Sync Active"}
+            >
+              <span className={styles.liveSyncDot} />
+              <span>{isAmharic ? "ቀጥታ" : "Live"}</span>
+            </span>
+          )}
         </div>
         <p className={styles.subtitle}>{currentPerspectiveConfig.subtitle}</p>
       </div>
