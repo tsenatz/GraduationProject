@@ -15,6 +15,13 @@ import {
   InquiryType,
 } from "@/components/inbox/types";
 import { INITIAL_CONVERSATIONS } from "@/components/inbox/mockConversations";
+import {
+  sendPushNotificationToUser,
+  savePushSubscriptionAction,
+  sendTestPushNotificationAction,
+} from "@/lib/push";
+
+export { savePushSubscriptionAction, sendTestPushNotificationAction };
 
 export interface InboxActionResult<T = any> {
   success: boolean;
@@ -417,6 +424,25 @@ export async function sendMessageAction(params: {
         userPerspective: "buyer",
       };
       store.unshift(newConv);
+    }
+
+    // C. Dispatch Web Push notification to recipient (even if browser window is closed)
+    const recipientToNotify =
+      params.recipientId ||
+      targetConv?.participant.id ||
+      (targetConv?.userPerspective === "buyer" ? "seller" : "buyer");
+
+    if (recipientToNotify && recipientToNotify !== currentUserId) {
+      sendPushNotificationToUser(recipientToNotify, {
+        title: `${currentUserName} • ERNS Message`,
+        body:
+          params.type === "tour_request"
+            ? `Requested an in-person tour for ${params.metadata?.tourDate || "upcoming date"}`
+            : params.content.length > 90
+            ? `${params.content.slice(0, 87)}...`
+            : params.content,
+        url: "/inbox",
+      }).catch((err) => console.warn("Background push dispatch error:", err));
     }
 
     revalidatePath("/inbox");

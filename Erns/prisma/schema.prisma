@@ -47,6 +47,9 @@ model User {
   conversationsAsSeller Conversation[] @relation("SellerConversations")
   messagesSent          Message[]      @relation("SentMessages")
 
+  // Web Push API subscriptions for background notifications
+  pushSubscriptions     PushSubscription[]
+
   accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support
@@ -287,5 +290,18 @@ model Message {
   @@index([conversationId])
   @@index([senderId])
   @@index([createdAt])
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
 }
 

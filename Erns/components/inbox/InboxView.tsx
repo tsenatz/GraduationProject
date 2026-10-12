@@ -17,6 +17,7 @@ import { ChatThread } from "./ChatThread/ChatThread";
 import { InboxEmptyState } from "./InboxEmptyState/InboxEmptyState";
 import { TourScheduleModal } from "./TourScheduleModal/TourScheduleModal";
 import { InboxAuthGate } from "./InboxAuthGate/InboxAuthGate";
+import { PushNotificationManager } from "./PushNotificationManager/PushNotificationManager";
 import {
   getInboxConversationsAction,
   sendMessageAction,
@@ -720,6 +721,9 @@ export const InboxView: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Background Push Notification Manager */}
+      <PushNotificationManager />
 
       <div className={styles.inboxCard}>
         {/* Top Perspective Header Banner across the Card */}

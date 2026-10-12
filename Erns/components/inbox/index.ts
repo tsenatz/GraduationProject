@@ -11,3 +11,4 @@ export { MessageComposer } from "./MessageComposer/MessageComposer";
 export { TourScheduleModal } from "./TourScheduleModal/TourScheduleModal";
 export { InboxEmptyState } from "./InboxEmptyState/InboxEmptyState";
 export { InboxAuthGate } from "./InboxAuthGate/InboxAuthGate";
+export { PushNotificationManager } from "./PushNotificationManager/PushNotificationManager";
