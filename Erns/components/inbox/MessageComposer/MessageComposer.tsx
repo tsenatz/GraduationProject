@@ -1,18 +1,21 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { Send, Calendar, Paperclip, Sparkles } from "lucide-react";
+import { Send, Calendar, Paperclip, Sparkles, Building2 } from "lucide-react";
+import { UserPerspective } from "../types";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { inboxTranslations } from "../translations";
 import styles from "./MessageComposer.module.css";
 
 interface MessageComposerProps {
+  userPerspective?: UserPerspective;
   onSendMessage: (text: string) => void;
   onOpenTourModal: () => void;
   onAttachFile: (file: { name: string; size: string; url: string }) => void;
 }
 
 export const MessageComposer: React.FC<MessageComposerProps> = ({
+  userPerspective = "buyer",
   onSendMessage,
   onOpenTourModal,
   onAttachFile,
@@ -22,6 +25,24 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
 
   const [text, setText] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const getPrompts = (): string[] => {
+    switch (userPerspective) {
+      case "renter":
+        return t.quickPromptsRenter;
+      case "seller":
+        return t.quickPromptsSeller;
+      case "landlord":
+        return t.quickPromptsLandlord;
+      case "buyer":
+      default:
+        return t.quickPromptsBuyer;
+    }
+  };
+
+  const prompts = getPrompts();
+  const isSellerOrLandlord =
+    userPerspective === "seller" || userPerspective === "landlord";
 
   const handleSend = () => {
     if (!text.trim()) return;
@@ -55,14 +76,21 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
 
   return (
     <div className={styles.composerWrapper}>
-      {/* Zillow-Style Quick Prompts Pills */}
+      {isSellerOrLandlord && (
+        <div className={styles.perspectiveNotice}>
+          <Building2 size={13} />
+          <span>{t.sellerComposerNotice}</span>
+        </div>
+      )}
+
+      {/* Quick Prompts Pills tailored per role */}
       <div className={styles.quickPromptsBar}>
         <div className={styles.promptsHeader}>
           <Sparkles size={13} className={styles.promptsIcon} />
           <span>{t.quickPromptsTitle}</span>
         </div>
         <div className={styles.promptsList}>
-          {t.quickPrompts.map((prompt, idx) => (
+          {prompts.map((prompt, idx) => (
             <button
               key={idx}
               type="button"
@@ -92,10 +120,22 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
               type="button"
               className={styles.toolBtn}
               onClick={onOpenTourModal}
-              title={t.scheduleTourBtn}
+              title={
+                isSellerOrLandlord
+                  ? isAmharic
+                    ? "ጉብኝት አዘጋጅ"
+                    : "Propose Tour"
+                  : t.scheduleTourBtn
+              }
             >
-              <Calendar size={17} />
-              <span>{t.scheduleTourBtn}</span>
+              <Calendar size={16} />
+              <span>
+                {isSellerOrLandlord
+                  ? isAmharic
+                    ? "ጉብኝት አቅርብ"
+                    : "Propose Tour"
+                  : t.scheduleTourBtn}
+              </span>
             </button>
 
             <button
@@ -104,7 +144,7 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
               onClick={() => fileInputRef.current?.click()}
               title={t.attachFileBtn}
             >
-              <Paperclip size={17} />
+              <Paperclip size={16} />
             </button>
 
             <input
@@ -122,7 +162,7 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
             disabled={!text.trim()}
             aria-label={t.sendBtn}
           >
-            <Send size={16} />
+            <Send size={15} />
             <span>{t.sendBtn}</span>
           </button>
         </div>

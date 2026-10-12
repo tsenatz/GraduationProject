@@ -10,7 +10,7 @@ import { InboxEmptyState } from "./InboxEmptyState/InboxEmptyState";
 import { TourScheduleModal } from "./TourScheduleModal/TourScheduleModal";
 import styles from "./InboxView.module.css";
 
-const STORAGE_KEY = "erns_inbox_conversations_v1";
+const STORAGE_KEY = "erns_inbox_conversations_v2";
 
 export const InboxView: React.FC = () => {
   const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -63,9 +63,12 @@ export const InboxView: React.FC = () => {
     const nonArchived = conversations.filter((c) => !c.isArchived);
     return {
       all: nonArchived.length,
-      unread: nonArchived.filter((c) => c.unreadCount > 0).length,
+      buying: nonArchived.filter((c) => c.category === "buy").length,
+      renting: nonArchived.filter((c) => c.category === "rent").length,
+      selling: nonArchived.filter((c) => c.category === "sell").length,
+      landlord: nonArchived.filter((c) => c.category === "landlord").length,
       tours: nonArchived.filter((c) => c.inquiryType === "tour").length,
-      my_listings: nonArchived.filter((c) => c.participant.role === "buyer").length,
+      unread: nonArchived.filter((c) => c.unreadCount > 0).length,
       archived: conversations.filter((c) => c.isArchived).length,
     };
   }, [conversations]);
@@ -78,18 +81,27 @@ export const InboxView: React.FC = () => {
         if (!conv.isArchived) return false;
       } else {
         if (conv.isArchived) return false;
+        if (activeFolder === "buying" && conv.category !== "buy") return false;
+        if (activeFolder === "renting" && conv.category !== "rent") return false;
+        if (activeFolder === "selling" && conv.category !== "sell") return false;
+        if (activeFolder === "landlord" && conv.category !== "landlord") return false;
         if (activeFolder === "unread" && conv.unreadCount === 0) return false;
         if (activeFolder === "tours" && conv.inquiryType !== "tour") return false;
-        if (activeFolder === "my_listings" && conv.participant.role !== "buyer") return false;
       }
 
       // Keyword search
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
-        const matchName = conv.participant.name.toLowerCase().includes(q);
-        const matchProp = conv.property.title.toLowerCase().includes(q) ||
+        const matchName =
+          conv.participant.name.toLowerCase().includes(q) ||
+          (conv.participant.nameAm && conv.participant.nameAm.toLowerCase().includes(q));
+        const matchProp =
+          conv.property.title.toLowerCase().includes(q) ||
+          (conv.property.titleAm && conv.property.titleAm.toLowerCase().includes(q)) ||
           conv.property.subCity.toLowerCase().includes(q);
-        const matchMsg = conv.messages.some((m) => m.content.toLowerCase().includes(q));
+        const matchMsg = conv.messages.some((m) =>
+          m.content.toLowerCase().includes(q)
+        );
         if (!matchName && !matchProp && !matchMsg) return false;
       }
 
@@ -125,11 +137,14 @@ export const InboxView: React.FC = () => {
   const handleSendMessage = (text: string) => {
     if (!selectedId) return;
 
+    const currentConv = conversations.find((c) => c.id === selectedId);
+    const userRole = currentConv ? currentConv.userPerspective : "buyer";
+
     const newMessage: Message = {
       id: `msg-${Date.now()}`,
       senderId: "current-user",
       senderName: "You",
-      senderRole: "buyer",
+      senderRole: userRole,
       content: text,
       timestamp: new Date().toISOString(),
       isRead: true,
@@ -149,36 +164,67 @@ export const InboxView: React.FC = () => {
       })
     );
 
-    // Realistic auto-reply simulation from agent/owner
-    simulateAgentReply(selectedId, text);
+    // Simulated contextual reply
+    simulateParticipantReply(selectedId, text);
   };
 
-  const simulateAgentReply = (convId: string, userText: string) => {
+  const simulateParticipantReply = (convId: string, userText: string) => {
     setIsTyping(true);
 
     setTimeout(() => {
       setIsTyping(false);
 
       const target = conversations.find((c) => c.id === convId);
-      const isAgent = target?.participant.role === "agent";
+      if (!target) return;
 
-      let replyContent = isAgent
-        ? "Thank you for reaching out! I have received your message and will coordinate the details directly with the property records."
-        : "Selam! Thank you for your inquiry. The property is currently available for viewing and I am happy to answer any questions.";
+      const p = target.participant;
+      const perspective = target.userPerspective;
 
-      if (userText.toLowerCase().includes("tour") || userText.toLowerCase().includes("visit")) {
-        replyContent = "I would be happy to host a tour for you. Let me know what time works best for you and I will have the premises prepared.";
-      } else if (userText.toLowerCase().includes("price") || userText.toLowerCase().includes("negotiable")) {
-        replyContent = "The owner is open to reasonable negotiations for qualified buyers utilizing registered Ethiopian bank accounts or escrow.";
-      } else if (userText.toLowerCase().includes("libre") || userText.toLowerCase().includes("carta")) {
-        replyContent = "The digital Carta/Libre has been cleared by the land bureau and is available for legal inspection upon request.";
+      let replyContent = "";
+
+      if (perspective === "seller") {
+        // Current user is the seller; reply is from prospective buyer
+        if (userText.toLowerCase().includes("saturday") || userText.toLowerCase().includes("tour")) {
+          replyContent = `Thank you so much! Saturday works perfectly for us. We will arrive at the compound on time.`;
+        } else if (userText.toLowerCase().includes("price") || userText.toLowerCase().includes("negotiable")) {
+          replyContent = `Understood! We are ready with bank proof of funds and appreciate your flexibility on the price.`;
+        } else {
+          replyContent = `Thank you for confirming! I am reviewing the listing details and will be in touch shortly.`;
+        }
+      } else if (perspective === "landlord") {
+        // Current user is the landlord; reply is from prospective tenant
+        if (userText.toLowerCase().includes("application") || userText.toLowerCase().includes("id")) {
+          replyContent = `Thank you! I have uploaded my employment letter and will complete the ID verification right away.`;
+        } else if (userText.toLowerCase().includes("deposit") || userText.toLowerCase().includes("lease")) {
+          replyContent = `The 2-month deposit is agreeable. Could we finalize the move-in inspection for this Friday?`;
+        } else {
+          replyContent = `Understood! I appreciate your quick guidance on this rental apartment.`;
+        }
+      } else if (perspective === "renter") {
+        // Current user is the renter; reply is from landlord or leasing agent
+        if (userText.toLowerCase().includes("tour") || userText.toLowerCase().includes("visit")) {
+          replyContent = `I would be pleased to show you the apartment. I'll arrange building security clearance for your visit.`;
+        } else if (userText.toLowerCase().includes("deposit") || userText.toLowerCase().includes("utilities")) {
+          replyContent = `Yes, all major utilities (water reservoir, standby generator) are covered under the management fee.`;
+        } else {
+          replyContent = `Thank you for your interest! Feel free to ask if you'd like to inspect the building amenities.`;
+        }
+      } else {
+        // Default buyer perspective; reply is from agent or seller
+        if (userText.toLowerCase().includes("libre") || userText.toLowerCase().includes("carta")) {
+          replyContent = `The digital Carta/Libre has been cleared by the Addis Ababa Land Bureau and is available for legal verification.`;
+        } else if (userText.toLowerCase().includes("tour") || userText.toLowerCase().includes("visit")) {
+          replyContent = `I would be happy to host a property tour. Let me know which time window works best and I will arrange access.`;
+        } else {
+          replyContent = `Thank you for reaching out! I've received your inquiry and will provide full property details shortly.`;
+        }
       }
 
-      const agentMessage: Message = {
+      const replyMsg: Message = {
         id: `msg-reply-${Date.now()}`,
-        senderId: target?.participant.id || "agent-reply",
-        senderName: target?.participant.name || "Agent",
-        senderRole: target?.participant.role || "agent",
+        senderId: p.id,
+        senderName: p.name,
+        senderRole: p.role,
         content: replyContent,
         timestamp: new Date().toISOString(),
         isRead: false,
@@ -190,7 +236,7 @@ export const InboxView: React.FC = () => {
           if (c.id === convId) {
             return {
               ...c,
-              messages: [...c.messages, agentMessage],
+              messages: [...c.messages, replyMsg],
               lastMessageAt: new Date().toISOString(),
             };
           }
@@ -203,12 +249,17 @@ export const InboxView: React.FC = () => {
   const handleTourSubmit = (tourDate: string, tourTime: string, note?: string) => {
     if (!selectedId) return;
 
+    const currentConv = conversations.find((c) => c.id === selectedId);
+    const userRole = currentConv ? currentConv.userPerspective : "buyer";
+
     const tourMessage: Message = {
       id: `msg-tour-${Date.now()}`,
       senderId: "current-user",
       senderName: "You",
-      senderRole: "buyer",
-      content: note ? `Tour Request: ${note}` : `Requested an in-person property tour for ${tourDate} at ${tourTime}.`,
+      senderRole: userRole,
+      content: note
+        ? `Tour Request: ${note}`
+        : `Requested an in-person property tour for ${tourDate} at ${tourTime}.`,
       timestamp: new Date().toISOString(),
       isRead: true,
       type: "tour_request",
@@ -234,14 +285,44 @@ export const InboxView: React.FC = () => {
     );
   };
 
+  const handleConfirmTour = (convId: string, messageId: string) => {
+    updateConversations((prev) =>
+      prev.map((c) => {
+        if (c.id === convId) {
+          return {
+            ...c,
+            messages: c.messages.map((m) =>
+              m.id === messageId
+                ? {
+                    ...m,
+                    metadata: {
+                      ...m.metadata,
+                      tourStatus: "confirmed",
+                    },
+                  }
+                : m
+            ),
+          };
+        }
+        return c;
+      })
+    );
+
+    // Add confirmation text message
+    handleSendMessage("I have confirmed your tour request! Looking forward to welcoming you.");
+  };
+
   const handleAttachFile = (file: { name: string; size: string; url: string }) => {
     if (!selectedId) return;
+
+    const currentConv = conversations.find((c) => c.id === selectedId);
+    const userRole = currentConv ? currentConv.userPerspective : "buyer";
 
     const attachMessage: Message = {
       id: `msg-file-${Date.now()}`,
       senderId: "current-user",
       senderName: "You",
-      senderRole: "buyer",
+      senderRole: userRole,
       content: `Shared document: ${file.name}`,
       timestamp: new Date().toISOString(),
       isRead: true,
@@ -281,7 +362,10 @@ export const InboxView: React.FC = () => {
   };
 
   const handleDeleteConversation = (id: string) => {
-    if (typeof window !== "undefined" && !window.confirm("Delete this conversation thread?")) {
+    if (
+      typeof window !== "undefined" &&
+      !window.confirm("Delete this conversation thread?")
+    ) {
       return;
     }
     updateConversations((prev) => prev.filter((c) => c.id !== id));
@@ -336,6 +420,7 @@ export const InboxView: React.FC = () => {
               onToggleArchive={handleToggleArchive}
               onDeleteConversation={handleDeleteConversation}
               onToggleStar={handleToggleStar}
+              onConfirmTour={handleConfirmTour}
             />
           ) : (
             <InboxEmptyState />

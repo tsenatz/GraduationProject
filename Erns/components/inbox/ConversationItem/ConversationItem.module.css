@@ -4,11 +4,10 @@
   gap: 12px;
   padding: 14px 16px;
   background: #ffffff;
-  border-bottom: 1px solid rgba(74, 127, 167, 0.15);
+  border-bottom: 1px solid #f1f5f9;
   cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
-  outline: none;
+  transition: all 0.15s ease;
+  user-select: none;
 }
 
 .itemCard:hover {
@@ -21,43 +20,35 @@
 }
 
 .itemCardUnread {
-  background: #ffffff;
-}
-
-.itemCardUnread .name {
-  font-weight: 800;
-  color: #0A1931;
-}
-
-.itemCardUnread .snippet {
-  font-weight: 700;
-  color: #0A1931;
+  background: #fafcff;
 }
 
 .avatarWrapper {
   position: relative;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
   flex-shrink: 0;
+  width: 46px;
+  height: 46px;
 }
 
 .avatar {
   border-radius: 50%;
   object-fit: cover;
+  border: 1.5px solid #e2e8f0;
 }
 
 .verifiedIcon {
   position: absolute;
-  bottom: 0px;
-  right: 0px;
-  background: #ffffff;
-  color: #2563eb;
+  bottom: -2px;
+  right: -2px;
+  background: #0284c7;
+  color: #ffffff;
   border-radius: 50%;
+  width: 17px;
+  height: 17px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1px;
+  border: 2px solid #ffffff;
 }
 
 .contentCol {
@@ -65,7 +56,7 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
 }
 
 .topRow {
@@ -80,6 +71,7 @@
   align-items: center;
   gap: 6px;
   min-width: 0;
+  flex-wrap: nowrap;
 }
 
 .name {
@@ -100,6 +92,40 @@
   padding: 1px 5px;
   border-radius: 4px;
   flex-shrink: 0;
+}
+
+.catBadge {
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 1px 6px;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+
+.catBadgeBuy {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+}
+
+.catBadgeRent {
+  background: #f5f3ff;
+  color: #7c3aed;
+  border: 1px solid #ddd6fe;
+}
+
+.catBadgeSell {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+}
+
+.catBadgeLandlord {
+  background: #f0fdfa;
+  color: #0d9488;
+  border: 1px solid #99f6e4;
 }
 
 .rightMeta {
@@ -143,7 +169,7 @@
   border: 1px solid #e2e8f0;
   border-radius: 6px;
   padding: 3px 6px;
-  margin: 2px 0;
+  margin: 1px 0;
 }
 
 .propThumbMini {

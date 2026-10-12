@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Bed, Bath, Maximize2, MapPin, ExternalLink, Tag } from "lucide-react";
+import { Bed, Bath, Maximize2, MapPin, ExternalLink, Settings } from "lucide-react";
 import { PropertySnapshot as PropertySnapshotType } from "../types";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { inboxTranslations } from "../translations";
@@ -17,7 +17,8 @@ export const PropertySnapshot: React.FC<PropertySnapshotProps> = ({ property }) 
   const { isAmharic } = useLanguage();
   const t = inboxTranslations[isAmharic ? "am" : "en"].chatThread;
 
-  const displayTitle = (isAmharic && property.titleAm) ? property.titleAm : property.title;
+  const displayTitle =
+    isAmharic && property.titleAm ? property.titleAm : property.title;
   const formatPrice = (val: number) => {
     return new Intl.NumberFormat(isAmharic ? "am-ET" : "en-US").format(val);
   };
@@ -32,8 +33,18 @@ export const PropertySnapshot: React.FC<PropertySnapshotProps> = ({ property }) 
           sizes="90px"
           className={styles.image}
         />
-        <span className={`${styles.typeBadge} ${property.listingType === "rent" ? styles.typeRent : styles.typeSale}`}>
-          {property.listingType === "rent" ? (isAmharic ? "ኪራይ" : "For Rent") : (isAmharic ? "ሽያጭ" : "For Sale")}
+        <span
+          className={`${styles.typeBadge} ${
+            property.listingType === "rent" ? styles.typeRent : styles.typeSale
+          }`}
+        >
+          {property.listingType === "rent"
+            ? isAmharic
+              ? "ኪራይ"
+              : "For Rent"
+            : isAmharic
+            ? "ሽያጭ"
+            : "For Sale"}
         </span>
       </div>
 
@@ -46,6 +57,13 @@ export const PropertySnapshot: React.FC<PropertySnapshotProps> = ({ property }) 
               <span className={styles.period}>{isAmharic ? "/በወር" : "/mo"}</span>
             )}
           </div>
+
+          {property.isUserListing && (
+            <span className={styles.yourListingTag}>
+              {property.listingType === "rent" ? t.yourRentalTag : t.yourListingTag}
+            </span>
+          )}
+
           {property.referenceNo && (
             <span className={styles.refBadge}>Ref #{property.referenceNo}</span>
           )}
@@ -77,15 +95,31 @@ export const PropertySnapshot: React.FC<PropertySnapshotProps> = ({ property }) 
       </div>
 
       <div className={styles.actionCol}>
-        <Link
-          href={`/property/${property.id}`}
-          target="_blank"
-          className={styles.viewListingBtn}
-          title={t.viewListing}
-        >
-          <span>{t.viewListing}</span>
-          <ExternalLink size={14} />
-        </Link>
+        {property.isUserListing ? (
+          <Link
+            href={
+              property.managementUrl ||
+              (property.listingType === "rent"
+                ? "/rentalmanager/dashboard"
+                : "/sell/dashboard")
+            }
+            className={styles.manageListingBtn}
+            title={t.manageListing}
+          >
+            <Settings size={14} />
+            <span>{t.manageListing}</span>
+          </Link>
+        ) : (
+          <Link
+            href={`/property/${property.id}`}
+            target="_blank"
+            className={styles.viewListingBtn}
+            title={t.viewListing}
+          >
+            <span>{t.viewListing}</span>
+            <ExternalLink size={14} />
+          </Link>
+        )}
       </div>
     </div>
   );

@@ -1,7 +1,17 @@
 "use client";
 
 import React from "react";
-import { Search, Mail, Calendar, Archive, Tag, Bell } from "lucide-react";
+import {
+  Search,
+  Mail,
+  Calendar,
+  Archive,
+  ShoppingBag,
+  Key,
+  Tag,
+  Building2,
+  Bell,
+} from "lucide-react";
 import { InboxFolder } from "../types";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { inboxTranslations } from "../translations";
@@ -14,9 +24,12 @@ interface InboxHeaderProps {
   onFolderChange: (folder: InboxFolder) => void;
   folderCounts: {
     all: number;
-    unread: number;
+    buying: number;
+    renting: number;
+    selling: number;
+    landlord: number;
     tours: number;
-    my_listings: number;
+    unread: number;
     archived: number;
   };
 }
@@ -31,11 +44,19 @@ export const InboxHeader: React.FC<InboxHeaderProps> = ({
   const { isAmharic } = useLanguage();
   const t = inboxTranslations[isAmharic ? "am" : "en"];
 
-  const tabs: { id: InboxFolder; label: string; count: number; icon: React.FC<{ size?: number }> }[] = [
+  const tabs: {
+    id: InboxFolder;
+    label: string;
+    count: number;
+    icon: React.FC<{ size?: number }>;
+  }[] = [
     { id: "all", label: t.folders.all, count: folderCounts.all, icon: Mail },
-    { id: "unread", label: t.folders.unread, count: folderCounts.unread, icon: Bell },
+    { id: "buying", label: t.folders.buying, count: folderCounts.buying, icon: ShoppingBag },
+    { id: "renting", label: t.folders.renting, count: folderCounts.renting, icon: Key },
+    { id: "selling", label: t.folders.selling, count: folderCounts.selling, icon: Tag },
+    { id: "landlord", label: t.folders.landlord, count: folderCounts.landlord, icon: Building2 },
     { id: "tours", label: t.folders.tours, count: folderCounts.tours, icon: Calendar },
-    { id: "my_listings", label: t.folders.my_listings, count: folderCounts.my_listings, icon: Tag },
+    { id: "unread", label: t.folders.unread, count: folderCounts.unread, icon: Bell },
     { id: "archived", label: t.folders.archived, count: folderCounts.archived, icon: Archive },
   ];
 
@@ -49,7 +70,7 @@ export const InboxHeader: React.FC<InboxHeaderProps> = ({
         <p className={styles.subtitle}>{t.subtitle}</p>
       </div>
 
-      {/* Zillow Search Input */}
+      {/* Zillow Style Search Input */}
       <div className={styles.searchWrapper}>
         <Search size={16} className={styles.searchIcon} />
         <input
@@ -81,7 +102,6 @@ export const InboxHeader: React.FC<InboxHeaderProps> = ({
           return (
             <button
               key={tab.id}
-              type="button"
               role="tab"
               aria-selected={isActive}
               className={`${styles.tabBtn} ${isActive ? styles.tabBtnActive : ""}`}
@@ -89,11 +109,13 @@ export const InboxHeader: React.FC<InboxHeaderProps> = ({
             >
               <Icon size={14} />
               <span>{tab.label}</span>
-              {tab.count > 0 && (
-                <span className={`${styles.countBadge} ${isActive ? styles.countBadgeActive : ""}`}>
-                  {tab.count}
-                </span>
-              )}
+              <span
+                className={`${styles.countBadge} ${
+                  isActive ? styles.countBadgeActive : ""
+                }`}
+              >
+                {tab.count}
+              </span>
             </button>
           );
         })}
@@ -101,5 +123,3 @@ export const InboxHeader: React.FC<InboxHeaderProps> = ({
     </div>
   );
 };
-
-export default InboxHeader;

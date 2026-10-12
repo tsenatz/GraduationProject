@@ -3,12 +3,9 @@
   align-items: center;
   gap: 14px;
   background: #ffffff;
-  border-bottom: 1px solid rgba(74, 127, 167, 0.2);
-  padding: 12px 18px;
-  position: relative;
-  z-index: 10;
-  box-shadow: 0 2px 8px rgba(10, 25, 49, 0.03);
-  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(74, 127, 167, 0.18);
+  padding: 12px 20px;
+  box-shadow: 0 1px 3px rgba(10, 25, 49, 0.03);
 }
 
 .imageWrapper {
@@ -18,7 +15,7 @@
   border-radius: 8px;
   overflow: hidden;
   flex-shrink: 0;
-  background: #e2e8f0;
+  border: 1px solid #e2e8f0;
 }
 
 .image {
@@ -27,23 +24,23 @@
 
 .typeBadge {
   position: absolute;
-  top: 4px;
+  bottom: 4px;
   left: 4px;
-  font-size: 0.65rem;
-  font-weight: 700;
-  padding: 2px 5px;
-  border-radius: 4px;
+  font-size: 0.62rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  padding: 1px 5px;
+  border-radius: 4px;
+  letter-spacing: 0.02em;
 }
 
 .typeSale {
-  background: #0A1931;
+  background: rgba(10, 25, 49, 0.85);
   color: #ffffff;
 }
 
 .typeRent {
-  background: #2563eb;
+  background: rgba(124, 58, 237, 0.85);
   color: #ffffff;
 }
 
@@ -58,7 +55,8 @@
 .topRow {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .priceRow {
@@ -92,6 +90,18 @@
   background: #f1f5f9;
   padding: 2px 6px;
   border-radius: 4px;
+}
+
+.yourListingTag {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+  padding: 1px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.02em;
 }
 
 .title {
@@ -139,6 +149,9 @@
 }
 
 .actionCol {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   flex-shrink: 0;
 }
 
@@ -164,6 +177,27 @@
   border-color: #0A1931;
 }
 
+.manageListingBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #0A1931;
+  color: #ffffff;
+  border: 1px solid #0A1931;
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.manageListingBtn:hover {
+  background: #1e3a8a;
+  border-color: #1e3a8a;
+}
+
 @media (max-width: 640px) {
   .container {
     padding: 10px 14px;
@@ -178,10 +212,12 @@
   .specsRow {
     display: none;
   }
-  .viewListingBtn span {
+  .viewListingBtn span,
+  .manageListingBtn span {
     display: none;
   }
-  .viewListingBtn {
+  .viewListingBtn,
+  .manageListingBtn {
     padding: 7px 8px;
   }
 }

@@ -1,6 +1,17 @@
-export type SenderRole = "buyer" | "agent" | "owner" | "system";
+export type SenderRole =
+  | "buyer"
+  | "renter"
+  | "seller"
+  | "landlord"
+  | "agent"
+  | "owner"
+  | "system";
 
 export type MessageType = "text" | "tour_request" | "offer" | "attachment";
+
+export type UserPerspective = "buyer" | "renter" | "seller" | "landlord";
+
+export type ConversationCategory = "buy" | "rent" | "sell" | "landlord";
 
 export interface MessageMetadata {
   tourDate?: string;
@@ -28,7 +39,7 @@ export interface Participant {
   id: string;
   name: string;
   nameAm?: string;
-  role: "agent" | "owner" | "buyer";
+  role: "agent" | "owner" | "buyer" | "renter";
   avatar: string;
   isVerified: boolean;
   phone?: string;
@@ -44,6 +55,7 @@ export interface PropertySnapshot {
   titleAm?: string;
   priceETB: number;
   listingType: "sale" | "rent";
+  rentPeriod?: "month" | "year";
   subCity: string;
   specificArea?: string;
   bedrooms: number;
@@ -52,9 +64,16 @@ export interface PropertySnapshot {
   propertyType: string;
   imageUrl: string;
   referenceNo?: string;
+  isUserListing?: boolean; // True if this is the user's own listing (Seller/Landlord mode)
+  managementUrl?: string; // Optional direct link to seller/rentalmanager dashboard
 }
 
-export type InquiryType = "general" | "tour" | "offer" | "libre_verification";
+export type InquiryType =
+  | "general"
+  | "tour"
+  | "offer"
+  | "libre_verification"
+  | "rental_application";
 
 export interface Conversation {
   id: string;
@@ -66,6 +85,16 @@ export interface Conversation {
   isArchived: boolean;
   isStarred: boolean;
   inquiryType: InquiryType;
+  category: ConversationCategory;
+  userPerspective: UserPerspective;
 }
 
-export type InboxFolder = "all" | "unread" | "tours" | "my_listings" | "archived";
+export type InboxFolder =
+  | "all"
+  | "buying"
+  | "renting"
+  | "selling"
+  | "landlord"
+  | "tours"
+  | "unread"
+  | "archived";

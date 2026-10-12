@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { ShieldCheck, Star, Calendar, FileText, MapPin } from "lucide-react";
+import { ShieldCheck, Star } from "lucide-react";
 import { Conversation } from "../types";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { inboxTranslations } from "../translations";
@@ -22,14 +22,16 @@ export const ConversationItem: React.FC<ConversationItemProps> = ({
   onToggleStar,
 }) => {
   const { isAmharic } = useLanguage();
-  const t = inboxTranslations[isAmharic ? "am" : "en"].conversationList;
+  const t = inboxTranslations[isAmharic ? "am" : "en"];
 
   const participant = conversation.participant;
   const property = conversation.property;
   const lastMsg = conversation.messages[conversation.messages.length - 1];
 
-  const displayName = isAmharic && participant.nameAm ? participant.nameAm : participant.name;
-  const displayPropTitle = isAmharic && property.titleAm ? property.titleAm : property.title;
+  const displayName =
+    isAmharic && participant.nameAm ? participant.nameAm : participant.name;
+  const displayPropTitle =
+    isAmharic && property.titleAm ? property.titleAm : property.title;
 
   const formatTimestamp = (iso: string) => {
     try {
@@ -49,9 +51,44 @@ export const ConversationItem: React.FC<ConversationItemProps> = ({
     }
   };
 
+  const getRoleLabel = () => {
+    if (participant.role === "agent") return isAmharic ? "ወኪል" : "Agent";
+    if (participant.role === "buyer") return isAmharic ? "ገዢ" : "Buyer";
+    if (participant.role === "renter") return isAmharic ? "ተከራይ" : "Tenant";
+    return isAmharic ? "ባለቤት" : "Owner";
+  };
+
+  const getCatBadgeClass = () => {
+    switch (conversation.category) {
+      case "buy":
+        return styles.catBadgeBuy;
+      case "rent":
+        return styles.catBadgeRent;
+      case "sell":
+        return styles.catBadgeSell;
+      case "landlord":
+        return styles.catBadgeLandlord;
+      default:
+        return styles.catBadgeBuy;
+    }
+  };
+
+  const getCatBadgeText = () => {
+    return t.categoryBadges[conversation.category] || conversation.category;
+  };
+
+  const getFormattedPrice = () => {
+    const formatted = new Intl.NumberFormat("en-US").format(property.priceETB);
+    if (property.listingType === "rent") {
+      return `ETB ${formatted}${isAmharic ? "/ወር" : "/mo"}`;
+    }
+    return `ETB ${formatted}`;
+  };
+
   const getSnippet = () => {
     if (!lastMsg) return "";
-    const prefix = lastMsg.senderId === "current-user" ? t.youPrefix : "";
+    const prefix =
+      lastMsg.senderId === "current-user" ? t.conversationList.youPrefix : "";
     if (lastMsg.type === "tour_request") {
       return `${prefix}🗓️ Tour Requested (${lastMsg.metadata?.tourDate || ""})`;
     }
@@ -81,13 +118,13 @@ export const ConversationItem: React.FC<ConversationItemProps> = ({
         <Image
           src={participant.avatar}
           alt={displayName}
-          width={48}
-          height={48}
+          width={46}
+          height={46}
           className={styles.avatar}
         />
         {participant.isVerified && (
           <span className={styles.verifiedIcon} title="Verified">
-            <ShieldCheck size={12} />
+            <ShieldCheck size={11} />
           </span>
         )}
       </div>
@@ -97,20 +134,32 @@ export const ConversationItem: React.FC<ConversationItemProps> = ({
         <div className={styles.topRow}>
           <div className={styles.nameRow}>
             <span className={styles.name}>{displayName}</span>
-            <span className={styles.roleBadge}>
-              {participant.role === "agent" ? "Agent" : "Owner"}
+            <span className={styles.roleBadge}>{getRoleLabel()}</span>
+            <span className={`${styles.catBadge} ${getCatBadgeClass()}`}>
+              {getCatBadgeText()}
             </span>
           </div>
 
           <div className={styles.rightMeta}>
-            <span className={styles.time}>{formatTimestamp(conversation.lastMessageAt)}</span>
+            <span className={styles.time}>
+              {formatTimestamp(conversation.lastMessageAt)}
+            </span>
             <button
               type="button"
-              className={`${styles.starBtn} ${conversation.isStarred ? styles.starred : ""}`}
+              className={`${styles.starBtn} ${
+                conversation.isStarred ? styles.starred : ""
+              }`}
               onClick={(e) => onToggleStar(conversation.id, e)}
-              title={conversation.isStarred ? t.unstar : t.star}
+              title={
+                conversation.isStarred
+                  ? t.conversationList.unstar
+                  : t.conversationList.star
+              }
             >
-              <Star size={14} fill={conversation.isStarred ? "#f59e0b" : "none"} />
+              <Star
+                size={14}
+                fill={conversation.isStarred ? "#f59e0b" : "none"}
+              />
             </button>
           </div>
         </div>
@@ -122,14 +171,12 @@ export const ConversationItem: React.FC<ConversationItemProps> = ({
               src={property.imageUrl}
               alt={displayPropTitle}
               fill
-              sizes="24px"
+              sizes="22px"
               className={styles.propThumbImg}
             />
           </div>
           <span className={styles.propTitleText}>{displayPropTitle}</span>
-          <span className={styles.propPriceText}>
-            ETB {new Intl.NumberFormat("en-US").format(property.priceETB)}
-          </span>
+          <span className={styles.propPriceText}>{getFormattedPrice()}</span>
         </div>
 
         {/* Last Message Snippet */}
