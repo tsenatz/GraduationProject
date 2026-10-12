@@ -1,35 +1,28 @@
 .headerContainer {
   background: var(--color-surface);
-  border-bottom: 1px solid rgba(var(--color-accent-rgb), 0.18);
-  padding: 20px 24px 0px;
+  border-bottom: 1px solid rgba(var(--color-accent-rgb), 0.16);
+  padding: 16px 18px 0px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  box-shadow: 0 1px 3px rgba(var(--color-primary-rgb), 0.02);
+  gap: 12px;
+  flex-shrink: 0;
 }
 
 .topRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.titleCol {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  gap: 10px;
 }
 
 .titleWrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .title {
-  font-size: 1.55rem;
+  font-size: 1.35rem;
   font-weight: 800;
   color: var(--color-primary);
   letter-spacing: -0.02em;
@@ -40,40 +33,33 @@
 .badge {
   background: rgba(var(--color-accent-rgb), 0.12);
   color: var(--color-primary);
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   font-weight: 800;
-  padding: 2px 8px;
+  padding: 1px 7px;
   border-radius: 9999px;
   border: 1px solid rgba(var(--color-accent-rgb), 0.2);
 }
 
-.subtitle {
-  font-size: 0.86rem;
-  color: var(--color-accent);
-  margin: 0;
-  max-width: 600px;
-  line-height: 1.45;
-}
-
-/* Airbnb/Zillow Style Perspective Pill Switcher */
+/* Perspective Segmented Switcher (Zillow / Airbnb style full-width toggle) */
 .perspectiveSwitch {
-  display: inline-flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   background: rgba(var(--color-accent-rgb), 0.08);
-  padding: 4px;
-  border-radius: 9999px;
-  border: 1px solid rgba(var(--color-accent-rgb), 0.2);
-  gap: 4px;
-  flex-shrink: 0;
+  padding: 3px;
+  border-radius: 10px;
+  border: 1px solid rgba(var(--color-accent-rgb), 0.18);
+  gap: 3px;
+  width: 100%;
 }
 
 .perspectiveBtn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 7px 16px;
-  border-radius: 9999px;
-  font-size: 0.84rem;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
   font-weight: 700;
   color: var(--color-primary);
   background: transparent;
@@ -90,15 +76,15 @@
 .perspectiveBtnActive {
   background: var(--color-primary) !important;
   color: var(--color-surface) !important;
-  box-shadow: 0 2px 8px rgba(var(--color-primary-rgb), 0.2);
+  box-shadow: 0 2px 6px rgba(var(--color-primary-rgb), 0.18);
 }
 
 .perspectiveCount {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 800;
-  padding: 1px 7px;
+  padding: 1px 6px;
   border-radius: 9999px;
-  background: rgba(var(--color-accent-rgb), 0.16);
+  background: rgba(var(--color-accent-rgb), 0.15);
   color: var(--color-primary);
 }
 
@@ -107,73 +93,10 @@
   color: #ffffff;
 }
 
-/* Bottom Controls Row: Sub-tabs on left, Search input on right */
-.controlsRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.tabsRow {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  flex: 1;
-}
-
-.tabsRow::-webkit-scrollbar {
-  display: none;
-}
-
-.tabBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: transparent;
-  border: none;
-  border-bottom: 2.5px solid transparent;
-  padding: 8px 12px 10px;
-  font-size: 0.83rem;
-  font-weight: 600;
-  color: var(--color-accent);
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.2s ease;
-}
-
-.tabBtn:hover {
-  color: var(--color-primary);
-}
-
-.tabBtnActive {
-  color: var(--color-primary);
-  font-weight: 800;
-  border-bottom-color: var(--color-primary);
-}
-
-.countBadge {
-  background: rgba(var(--color-accent-rgb), 0.1);
-  color: var(--color-accent);
-  font-size: 0.68rem;
-  font-weight: 700;
-  padding: 1px 6px;
-  border-radius: 9999px;
-  transition: all 0.2s;
-}
-
-.tabBtnActive .countBadge {
-  background: var(--color-primary);
-  color: var(--color-surface);
-}
-
+/* Search Bar */
 .searchWrapper {
   position: relative;
-  width: 260px;
-  flex-shrink: 0;
-  margin-bottom: 6px;
+  width: 100%;
 }
 
 .searchIcon {
@@ -189,12 +112,13 @@
   width: 100%;
   padding: 7px 32px 7px 34px;
   font-size: 0.82rem;
-  border: 1.5px solid rgba(var(--color-accent-rgb), 0.25);
+  border: 1.5px solid rgba(var(--color-accent-rgb), 0.22);
   border-radius: 9999px;
   background: var(--bg-color);
   color: var(--color-primary);
   outline: none;
   transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
 .searchInput:focus {
@@ -221,18 +145,58 @@
   color: var(--color-primary);
 }
 
-@media (max-width: 900px) {
-  .headerContainer {
-    padding: 16px 16px 0;
-    gap: 12px;
-  }
-  .controlsRow {
-    flex-direction: column-reverse;
-    align-items: stretch;
-    gap: 10px;
-  }
-  .searchWrapper {
-    width: 100%;
-    margin-bottom: 0;
-  }
+/* Sub-folder Tabs */
+.tabsRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  width: 100%;
+}
+
+.tabsRow::-webkit-scrollbar {
+  display: none;
+}
+
+.tabBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  border-bottom: 2.5px solid transparent;
+  padding: 7px 9px 9px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.tabBtn:hover {
+  color: var(--color-primary);
+}
+
+.tabBtnActive {
+  color: var(--color-primary);
+  font-weight: 800;
+  border-bottom-color: var(--color-primary);
+}
+
+.countBadge {
+  background: rgba(var(--color-accent-rgb), 0.1);
+  color: var(--color-accent);
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 9999px;
+  transition: all 0.2s;
+}
+
+.tabBtnActive .countBadge {
+  background: var(--color-primary);
+  color: var(--color-surface);
 }

@@ -1,52 +1,23 @@
-.pageContainer {
+.inboxLayout {
+  display: flex;
+  height: calc(100vh - 64px);
+  background: var(--bg-color);
+  overflow: hidden;
+  position: relative;
   width: 100%;
-  max-width: 1360px;
-  margin: 0 auto;
-  padding: 24px 24px 60px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
 }
 
 @media (max-width: 960px) {
-  .pageContainer {
-    padding: 16px 12px 64px;
+  .inboxLayout {
+    height: calc(100vh - 124px);
   }
-}
-
-.inboxCard {
-  background: var(--color-surface);
-  border: 1px solid rgba(var(--color-accent-rgb), 0.22);
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(var(--color-primary-rgb), 0.05);
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 150px);
-  min-height: 620px;
-  overflow: hidden;
-  position: relative;
-}
-
-@media (max-width: 960px) {
-  .inboxCard {
-    height: calc(100vh - 160px);
-    border-radius: 12px;
-  }
-}
-
-.dualPaneContainer {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-  position: relative;
-  min-height: 0;
 }
 
 .leftPane {
-  width: 390px;
+  width: 380px;
   min-width: 320px;
-  max-width: 430px;
-  flex: 0 0 390px;
+  max-width: 420px;
+  flex: 0 0 380px;
   border-right: 1px solid rgba(var(--color-accent-rgb), 0.18);
   background: var(--color-surface);
   display: flex;

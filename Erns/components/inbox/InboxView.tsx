@@ -485,8 +485,14 @@ export const InboxView: React.FC = () => {
   };
 
   return (
-    <div className={styles.pageContainer}>
-      <div className={styles.inboxCard}>
+    <div className={styles.inboxLayout}>
+      {/* Left Pane: Navigation, Perspective Switcher, Search & Conversation List */}
+      <aside
+        className={`${styles.leftPane} ${
+          showMobileChat ? styles.leftPaneHiddenMobile : ""
+        }`}
+        aria-label="Conversation list"
+      >
         <InboxHeader
           activePerspective={activePerspective}
           onPerspectiveChange={handlePerspectiveChange}
@@ -498,49 +504,39 @@ export const InboxView: React.FC = () => {
           onSearchChange={setSearchQuery}
         />
 
-        <div className={styles.dualPaneContainer}>
-          {/* Left Pane: Conversations List */}
-          <aside
-            className={`${styles.leftPane} ${
-              showMobileChat ? styles.leftPaneHiddenMobile : ""
-            }`}
-            aria-label="Conversation list"
-          >
-            <ConversationList
-              conversations={filteredConversations}
-              selectedId={selectedId}
-              onSelect={handleSelectConversation}
-              onToggleStar={handleToggleStar}
-              hasSearchQuery={!!searchQuery.trim()}
-            />
-          </aside>
+        <ConversationList
+          conversations={filteredConversations}
+          selectedId={selectedId}
+          onSelect={handleSelectConversation}
+          onToggleStar={handleToggleStar}
+          hasSearchQuery={!!searchQuery.trim()}
+        />
+      </aside>
 
-          {/* Right Pane: Active Thread or Empty State */}
-          <main
-            className={`${styles.rightPane} ${
-              !showMobileChat ? styles.rightPaneHiddenMobile : ""
-            }`}
-            aria-label="Active conversation"
-          >
-            {activeConversation ? (
-              <ChatThread
-                conversation={activeConversation}
-                isTyping={isTyping}
-                onBackToList={() => setShowMobileChat(false)}
-                onSendMessage={handleSendMessage}
-                onOpenTourModal={() => setIsTourModalOpen(true)}
-                onAttachFile={handleAttachFile}
-                onToggleArchive={handleToggleArchive}
-                onDeleteConversation={handleDeleteConversation}
-                onToggleStar={handleToggleStar}
-                onConfirmTour={handleConfirmTour}
-              />
-            ) : (
-              <InboxEmptyState />
-            )}
-          </main>
-        </div>
-      </div>
+      {/* Right Pane: Full-Height Spacious Chat Board */}
+      <main
+        className={`${styles.rightPane} ${
+          !showMobileChat ? styles.rightPaneHiddenMobile : ""
+        }`}
+        aria-label="Active conversation"
+      >
+        {activeConversation ? (
+          <ChatThread
+            conversation={activeConversation}
+            isTyping={isTyping}
+            onBackToList={() => setShowMobileChat(false)}
+            onSendMessage={handleSendMessage}
+            onOpenTourModal={() => setIsTourModalOpen(true)}
+            onAttachFile={handleAttachFile}
+            onToggleArchive={handleToggleArchive}
+            onDeleteConversation={handleDeleteConversation}
+            onToggleStar={handleToggleStar}
+            onConfirmTour={handleConfirmTour}
+          />
+        ) : (
+          <InboxEmptyState />
+        )}
+      </main>
 
       {/* Tour Scheduling Modal */}
       {activeConversation && (

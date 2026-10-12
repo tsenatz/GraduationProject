@@ -99,111 +99,104 @@ export const InboxHeader: React.FC<InboxHeaderProps> = ({
 
   return (
     <div className={styles.headerContainer}>
-      {/* Top Row: Title & Subtitle on left, Perspective Segmented Switcher on right */}
+      {/* 1. Title Row */}
       <div className={styles.topRow}>
-        <div className={styles.titleCol}>
-          <div className={styles.titleWrapper}>
-            <h1 className={styles.title}>{t.title}</h1>
-            <span className={styles.badge}>{folderCounts.all}</span>
-          </div>
-          <p className={styles.subtitle}>
-            {currentPerspectiveConfig.subtitle}
-          </p>
-        </div>
-
-        {/* Perspective Switcher */}
-        <div className={styles.perspectiveSwitch} role="tablist">
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activePerspective === "buying_renting"}
-            className={`${styles.perspectiveBtn} ${
-              activePerspective === "buying_renting"
-                ? styles.perspectiveBtnActive
-                : ""
-            }`}
-            onClick={() => onPerspectiveChange("buying_renting")}
-          >
-            <Compass size={15} />
-            <span>{t.perspectives.buying_renting.title}</span>
-            <span className={styles.perspectiveCount}>
-              {perspectiveCounts.buying_renting}
-            </span>
-          </button>
-
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activePerspective === "selling_hosting"}
-            className={`${styles.perspectiveBtn} ${
-              activePerspective === "selling_hosting"
-                ? styles.perspectiveBtnActive
-                : ""
-            }`}
-            onClick={() => onPerspectiveChange("selling_hosting")}
-          >
-            <Building2 size={15} />
-            <span>{t.perspectives.selling_hosting.title}</span>
-            <span className={styles.perspectiveCount}>
-              {perspectiveCounts.selling_hosting}
-            </span>
-          </button>
+        <div className={styles.titleWrapper}>
+          <h1 className={styles.title}>{t.title}</h1>
+          <span className={styles.badge}>{folderCounts.all}</span>
         </div>
       </div>
 
-      {/* Controls Row: Sub-tabs on left, Search Bar on right */}
-      <div className={styles.controlsRow}>
-        <div className={styles.tabsRow} role="tablist">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            const isActive = activeFolder === tab.id;
+      {/* 2. Top Perspective Switcher (Zillow / Airbnb Segmented Pill) */}
+      <div className={styles.perspectiveSwitch} role="tablist">
+        <button
+          type="button"
+          role="tab"
+          aria-selected={activePerspective === "buying_renting"}
+          className={`${styles.perspectiveBtn} ${
+            activePerspective === "buying_renting"
+              ? styles.perspectiveBtnActive
+              : ""
+          }`}
+          onClick={() => onPerspectiveChange("buying_renting")}
+        >
+          <Compass size={14} />
+          <span>{t.perspectives.buying_renting.title}</span>
+          <span className={styles.perspectiveCount}>
+            {perspectiveCounts.buying_renting}
+          </span>
+        </button>
 
-            return (
-              <button
-                key={tab.id}
-                role="tab"
-                aria-selected={isActive}
-                className={`${styles.tabBtn} ${
-                  isActive ? styles.tabBtnActive : ""
-                }`}
-                onClick={() => onFolderChange(tab.id)}
-              >
-                <Icon size={14} />
-                <span>{tab.label}</span>
-                <span
-                  className={`${styles.countBadge} ${
-                    isActive ? styles.countBadgeActive : ""
-                  }`}
-                >
-                  {tab.count}
-                </span>
-              </button>
-            );
-          })}
-        </div>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={activePerspective === "selling_hosting"}
+          className={`${styles.perspectiveBtn} ${
+            activePerspective === "selling_hosting"
+              ? styles.perspectiveBtnActive
+              : ""
+          }`}
+          onClick={() => onPerspectiveChange("selling_hosting")}
+        >
+          <Building2 size={14} />
+          <span>{t.perspectives.selling_hosting.title}</span>
+          <span className={styles.perspectiveCount}>
+            {perspectiveCounts.selling_hosting}
+          </span>
+        </button>
+      </div>
 
-        {/* Search Bar */}
-        <div className={styles.searchWrapper}>
-          <Search size={15} className={styles.searchIcon} />
-          <input
-            type="text"
-            className={styles.searchInput}
-            placeholder={t.searchPlaceholder}
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-            aria-label={t.searchPlaceholder}
-          />
-          {searchQuery && (
+      {/* 3. Search Bar */}
+      <div className={styles.searchWrapper}>
+        <Search size={14} className={styles.searchIcon} />
+        <input
+          type="text"
+          className={styles.searchInput}
+          placeholder={t.searchPlaceholder}
+          value={searchQuery}
+          onChange={(e) => onSearchChange(e.target.value)}
+          aria-label={t.searchPlaceholder}
+        />
+        {searchQuery && (
+          <button
+            type="button"
+            className={styles.clearSearchBtn}
+            onClick={() => onSearchChange("")}
+            aria-label="Clear search"
+          >
+            ×
+          </button>
+        )}
+      </div>
+
+      {/* 4. Sub-folder Navigation Tabs */}
+      <div className={styles.tabsRow} role="tablist">
+        {tabs.map((tab) => {
+          const Icon = tab.icon;
+          const isActive = activeFolder === tab.id;
+
+          return (
             <button
-              type="button"
-              className={styles.clearSearchBtn}
-              onClick={() => onSearchChange("")}
-              aria-label="Clear search"
+              key={tab.id}
+              role="tab"
+              aria-selected={isActive}
+              className={`${styles.tabBtn} ${
+                isActive ? styles.tabBtnActive : ""
+              }`}
+              onClick={() => onFolderChange(tab.id)}
             >
-              ×
+              <Icon size={13} />
+              <span>{tab.label}</span>
+              <span
+                className={`${styles.countBadge} ${
+                  isActive ? styles.countBadgeActive : ""
+                }`}
+              >
+                {tab.count}
+              </span>
             </button>
-          )}
-        </div>
+          );
+        })}
       </div>
     </div>
   );
