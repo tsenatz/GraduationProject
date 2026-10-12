@@ -41,6 +41,33 @@ export const inboxTranslations = {
       sell: "Buyer Lead",
       landlord: "Tenant Lead",
     },
+    authGate: {
+      title: "Sign in to Access Your Inbox",
+      subtitle:
+        "Connect directly with verified property owners, certified real estate agents, and manage your scheduled home tours in Addis Ababa.",
+      signInBtn: "Sign In to Continue",
+      signUpText: "Don't have an ERNS account?",
+      signUpBtn: "Create Free Account",
+      features: [
+        {
+          title: "Direct Owner & Agent Messaging",
+          desc: "Discuss Title Deeds (Libre), legal verification, and negotiate directly.",
+        },
+        {
+          title: "In-Person Tour Booking",
+          desc: "Schedule and confirm verified property visits with live calendar sync.",
+        },
+        {
+          title: "Multi-Role Management",
+          desc: "Seamlessly switch between buying/renting inquiries and your own listings.",
+        },
+      ],
+      demoNote: "Want to explore before signing in?",
+      demoBtn: "Preview Demo Inbox",
+      demoBannerText: "Preview Mode: Showing sample Addis Ababa conversations. Sign in to send live messages.",
+      exitDemoBtn: "Sign In Now",
+      loadingText: "Checking authentication session...",
+    },
     conversationList: {
       emptyAll: "No conversations in this view",
       emptyAllDesc:
@@ -208,6 +235,33 @@ export const inboxTranslations = {
       rent: "ለኪራይ",
       sell: "የገዢ ጥያቄ",
       landlord: "የተከራይ ማመልከቻ",
+    },
+    authGate: {
+      title: "መልዕክቶችዎን ለማግኘት ይግቡ",
+      subtitle:
+        "በአዲስ አበባ ከተረጋገጡ የቤት ባለቤቶችና ፈቃድ ካላቸው የሪል እስቴት ወኪሎች ጋር በቀጥታ ይገናኙ፣ እንዲሁም የጉብኝት ቀጠሮዎችን ይከታተሉ።",
+      signInBtn: "ለመቀጠል ይግቡ",
+      signUpText: "የ ERNS መለያ የለዎትም?",
+      signUpBtn: "ነፃ መለያ ይክፈቱ",
+      features: [
+        {
+          title: "ከባለቤቶችና ወኪሎች ጋር ቀጥታ ውይይት",
+          desc: "ስለ ይዞታ ማረጋገጫ (ሊብሬ)፣ የኪራይ ውል እና የዋጋ ድርድር በቀጥታ ይነጋገሩ።",
+        },
+        {
+          title: "የአካል ጉብኝት ቀጠሮ ማስያዝ",
+          desc: "የተረጋገጡ ቤቶችን በአካል ለመጎብኘት ቀጠሮ ያስይዙ እና ያረጋግጡ።",
+        },
+        {
+          title: "ሁለገብ የሚና አስተዳደር",
+          desc: "በግዢ/ኪራይ ጥያቄዎች እና በራስዎ ሽያጭ መካከል በቀላሉ ይቀያይሩ።",
+        },
+      ],
+      demoNote: "ሳይገቡ በፊት የኢንቦክሱን ይዘት መመልከት ይፈልጋሉ?",
+      demoBtn: "የሙከራ ኢንቦክስ ይመልከቱ",
+      demoBannerText: "የሙከራ እይታ፡ የአዲስ አበባ ምሳሌ መልዕክቶች እየታዩ ነው። እውነተኛ መልዕክቶችን ለመላክ ይግቡ።",
+      exitDemoBtn: "አሁን ይግቡ",
+      loadingText: "የመግቢያ ሁኔታ በመረጋገጥ ላይ ነው...",
     },
     conversationList: {
       emptyAll: "በዚህ እይታ ውስጥ ምንም መልዕክት የለም",

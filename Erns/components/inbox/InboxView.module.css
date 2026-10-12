@@ -204,3 +204,99 @@
     display: none !important;
   }
 }
+
+/* Loading State */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  background: var(--color-surface);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.2);
+  border-radius: 16px;
+  min-height: 400px;
+}
+
+.loadingSpinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(var(--color-accent-rgb), 0.2);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingText {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+/* Demo Notice Banner */
+.demoNoticeBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 18px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  font-size: 0.82rem;
+  color: #1e40af;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.demoNoticeLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.demoSparkleIcon {
+  color: #2563eb;
+  flex-shrink: 0;
+}
+
+.demoNoticeActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.demoSignInLink {
+  font-weight: 800;
+  color: #1d4ed8;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.15s;
+}
+
+.demoSignInLink:hover {
+  color: #1e3a8a;
+}
+
+.demoExitBtn {
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-size: 1.2rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 4px;
+}
+
+.demoExitBtn:hover {
+  color: #111827;
+}
+

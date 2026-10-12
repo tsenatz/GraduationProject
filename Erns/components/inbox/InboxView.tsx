@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
-import { Search } from "lucide-react";
+import Link from "next/link";
+import { Search, Sparkles } from "lucide-react";
+import { useSession } from "next-auth/react";
 import {
   Conversation,
   MainPerspective,
@@ -14,6 +16,7 @@ import { ConversationList } from "./ConversationList/ConversationList";
 import { ChatThread } from "./ChatThread/ChatThread";
 import { InboxEmptyState } from "./InboxEmptyState/InboxEmptyState";
 import { TourScheduleModal } from "./TourScheduleModal/TourScheduleModal";
+import { InboxAuthGate } from "./InboxAuthGate/InboxAuthGate";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { inboxTranslations } from "./translations";
 import styles from "./InboxView.module.css";
@@ -21,9 +24,11 @@ import styles from "./InboxView.module.css";
 const STORAGE_KEY = "erns_inbox_conversations_v3";
 
 export const InboxView: React.FC = () => {
+  const { data: session, status } = useSession();
   const { isAmharic } = useLanguage();
   const t = inboxTranslations[isAmharic ? "am" : "en"];
 
+  const [isDemoMode, setIsDemoMode] = useState(false);
   const [conversations, setConversations] =
     useState<Conversation[]>(INITIAL_CONVERSATIONS);
   const [activePerspective, setActivePerspective] =
@@ -224,10 +229,13 @@ export const InboxView: React.FC = () => {
     const currentConv = conversations.find((c) => c.id === selectedId);
     const userRole = currentConv ? currentConv.userPerspective : "buyer";
 
+    const currentUserName = session?.user?.name || "You";
+    const currentUserId = session?.user?.email || "current-user";
+
     const newMessage: Message = {
       id: `msg-${Date.now()}`,
-      senderId: "current-user",
-      senderName: "You",
+      senderId: currentUserId,
+      senderName: currentUserName,
       senderRole: userRole,
       content: text,
       timestamp: new Date().toISOString(),
@@ -364,10 +372,13 @@ export const InboxView: React.FC = () => {
     const currentConv = conversations.find((c) => c.id === selectedId);
     const userRole = currentConv ? currentConv.userPerspective : "buyer";
 
+    const currentUserName = session?.user?.name || "You";
+    const currentUserId = session?.user?.email || "current-user";
+
     const tourMessage: Message = {
       id: `msg-tour-${Date.now()}`,
-      senderId: "current-user",
-      senderName: "You",
+      senderId: currentUserId,
+      senderName: currentUserName,
       senderRole: userRole,
       content: note
         ? `Tour Request: ${note}`
@@ -436,10 +447,13 @@ export const InboxView: React.FC = () => {
     const currentConv = conversations.find((c) => c.id === selectedId);
     const userRole = currentConv ? currentConv.userPerspective : "buyer";
 
+    const currentUserName = session?.user?.name || "You";
+    const currentUserId = session?.user?.email || "current-user";
+
     const attachMessage: Message = {
       id: `msg-file-${Date.now()}`,
-      senderId: "current-user",
-      senderName: "You",
+      senderId: currentUserId,
+      senderName: currentUserName,
       senderRole: userRole,
       content: `Shared document: ${file.name}`,
       timestamp: new Date().toISOString(),
@@ -532,8 +546,56 @@ export const InboxView: React.FC = () => {
     },
   ];
 
+  // 1. Loading Authentication State
+  if (status === "loading") {
+    return (
+      <div className={styles.pageContainer}>
+        <div className={styles.loadingContainer}>
+          <div className={styles.loadingSpinner} />
+          <p className={styles.loadingText}>{t.authGate.loadingText}</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 2. Unauthenticated State (unless user opted into Demo Preview Mode)
+  if (status === "unauthenticated" && !isDemoMode) {
+    return (
+      <div className={styles.pageContainer}>
+        <InboxAuthGate onEnableDemo={() => setIsDemoMode(true)} />
+      </div>
+    );
+  }
+
   return (
     <div className={styles.pageContainer}>
+      {/* Demo Mode Notice Banner */}
+      {isDemoMode && (
+        <div className={styles.demoNoticeBanner}>
+          <div className={styles.demoNoticeLeft}>
+            <Sparkles size={14} className={styles.demoSparkleIcon} />
+            <span>{t.authGate.demoBannerText}</span>
+          </div>
+          <div className={styles.demoNoticeActions}>
+            <Link
+              href="/login?callbackUrl=/inbox"
+              className={styles.demoSignInLink}
+            >
+              {t.authGate.exitDemoBtn}
+            </Link>
+            <button
+              type="button"
+              className={styles.demoExitBtn}
+              onClick={() => setIsDemoMode(false)}
+              title="Exit demo"
+              aria-label="Exit demo mode"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className={styles.inboxCard}>
         {/* Top Perspective Header Banner across the Card */}
         <InboxHeader
