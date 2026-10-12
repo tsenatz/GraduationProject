@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { X, CheckCircle2, Send } from "lucide-react";
+import { startNewConversationAction } from "@/lib/actions/inbox";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { agentTranslations } from "../translations";
 import { Agent } from "../types";
@@ -34,6 +36,15 @@ export const AgentContactModal: React.FC<AgentContactModalProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSent(true);
+
+    startNewConversationAction({
+      recipientId: agent.id,
+      recipientName: displayName,
+      propertyTitle: `Inquiry with Agent ${displayName}`,
+      initialMessage: userMessage || `Hello ${displayName}, I would like to consult with you regarding properties in ${userSubCity}.`,
+      category: "buy",
+      inquiryType: "general",
+    }).catch((err) => console.warn("Failed to create agent conversation:", err));
   };
 
   return (
@@ -70,14 +81,23 @@ export const AgentContactModal: React.FC<AgentContactModalProps> = ({
             <p className={styles.successDesc}>
               {t.successDesc.replace("{name}", displayName)}
             </p>
-            <button
-              type="button"
-              className={styles.submitBtn}
-              onClick={onClose}
-              style={{ width: "160px" }}
-            >
-              {t.btnClose}
-            </button>
+            <div style={{ display: "flex", gap: "10px", marginTop: "14px", justifyContent: "center" }}>
+              <Link
+                href="/inbox"
+                className={styles.submitBtn}
+                style={{ width: "auto", padding: "10px 18px", textDecoration: "none" }}
+              >
+                {isAmharic ? "ወደ መልዕክት ሳጥን ሂድ" : "Go to Inbox"}
+              </Link>
+              <button
+                type="button"
+                className={styles.submitBtn}
+                onClick={onClose}
+                style={{ width: "auto", padding: "10px 18px", backgroundColor: "#e2e8f0", color: "#334155" }}
+              >
+                {t.btnClose}
+              </button>
+            </div>
           </div>
         ) : (
           <form className={styles.form} onSubmit={handleSubmit}>
