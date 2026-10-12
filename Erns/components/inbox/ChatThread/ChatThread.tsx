@@ -81,6 +81,66 @@ export const ChatThread: React.FC<ChatThreadProps> = ({
     conversation.userPerspective === "seller" ||
     conversation.userPerspective === "landlord";
 
+  const getUserRoleTag = () => {
+    switch (conversation.userPerspective) {
+      case "buyer":
+        return isAmharic ? "👤 እርስዎ (ገዢ)" : "👤 You (Home Buyer)";
+      case "renter":
+        return isAmharic ? "👤 እርስዎ (ተከራይ)" : "👤 You (Tenant Applicant)";
+      case "seller":
+        return isAmharic ? "🏡 የእርስዎ ሽያጭ (ባለቤት)" : "🏡 Your Property (Seller)";
+      case "landlord":
+        return isAmharic ? "🏢 የእርስዎ ኪራይ (አከራይ)" : "🏢 Your Rental (Landlord)";
+      default:
+        return isAmharic ? "እርስዎ" : "You";
+    }
+  };
+
+  const getParticipantRoleTag = () => {
+    const role = participant.role;
+    if (role === "agent") {
+      return isAmharic
+        ? `🏢 ${displayName} (ወኪል)`
+        : `🏢 ${displayName} (Verified Agent)`;
+    }
+    if (role === "owner") {
+      return isAmharic
+        ? `🔑 ${displayName} (ባለቤት)`
+        : `🔑 ${displayName} (Property Owner)`;
+    }
+    if (role === "buyer") {
+      return isAmharic
+        ? `👤 ${displayName} (ፍላጎት ያለው ገዢ)`
+        : `👤 ${displayName} (Buyer Lead)`;
+    }
+    if (role === "renter") {
+      return isAmharic
+        ? `👤 ${displayName} (ተከራይ አመልካች)`
+        : `👤 ${displayName} (Tenant Applicant)`;
+    }
+    return displayName;
+  };
+
+  const getRelationshipContextText = () => {
+    const propTitle =
+      isAmharic && conversation.property.titleAm
+        ? conversation.property.titleAm
+        : conversation.property.title;
+
+    if (
+      conversation.userPerspective === "buyer" ||
+      conversation.userPerspective === "renter"
+    ) {
+      return isAmharic
+        ? `ስለ ${propTitle} የቀረበ ጥያቄ`
+        : `Inquiring on ${propTitle}`;
+    } else {
+      return isAmharic
+        ? `በእርስዎ ${propTitle} ላይ የቀረበ ጥያቄ`
+        : `Inbound inquiry on ${propTitle}`;
+    }
+  };
+
   return (
     <div className={styles.threadContainer}>
       {/* Thread Header */}
@@ -172,6 +232,21 @@ export const ChatThread: React.FC<ChatThreadProps> = ({
           >
             <Trash2 size={16} />
           </button>
+        </div>
+      </div>
+
+      {/* Character Persona Relationship Divider Banner */}
+      <div className={styles.characterRelationshipBar}>
+        <div className={styles.relationshipBadges}>
+          <span className={styles.userRoleTag}>{getUserRoleTag()}</span>
+          <span className={styles.exchangeArrow}>⇄</span>
+          <span className={styles.participantRoleTag}>
+            {getParticipantRoleTag()}
+          </span>
+        </div>
+        <div className={styles.relationshipContext}>
+          <span className={styles.contextDot} />
+          <span>{getRelationshipContextText()}</span>
         </div>
       </div>
 

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
+import { Search } from "lucide-react";
 import {
   Conversation,
   MainPerspective,
@@ -13,11 +14,16 @@ import { ConversationList } from "./ConversationList/ConversationList";
 import { ChatThread } from "./ChatThread/ChatThread";
 import { InboxEmptyState } from "./InboxEmptyState/InboxEmptyState";
 import { TourScheduleModal } from "./TourScheduleModal/TourScheduleModal";
+import { useLanguage } from "@/components/providers/LanguageProvider";
+import { inboxTranslations } from "./translations";
 import styles from "./InboxView.module.css";
 
 const STORAGE_KEY = "erns_inbox_conversations_v3";
 
 export const InboxView: React.FC = () => {
+  const { isAmharic } = useLanguage();
+  const t = inboxTranslations[isAmharic ? "am" : "en"];
+
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activePerspective, setActivePerspective] =
     useState<MainPerspective>("buying_renting");
@@ -484,59 +490,146 @@ export const InboxView: React.FC = () => {
     }
   };
 
+  const currentPerspectiveConfig = t.perspectives[activePerspective];
+
+  const tabs: {
+    id: SubFolder;
+    label: string;
+    count: number;
+  }[] = [
+    {
+      id: "all",
+      label: currentPerspectiveConfig.tabs.all,
+      count: folderCounts.all,
+    },
+    {
+      id: "sale",
+      label: currentPerspectiveConfig.tabs.sale,
+      count: folderCounts.sale,
+    },
+    {
+      id: "rent",
+      label: currentPerspectiveConfig.tabs.rent,
+      count: folderCounts.rent,
+    },
+    {
+      id: "tours",
+      label: currentPerspectiveConfig.tabs.tours,
+      count: folderCounts.tours,
+    },
+    {
+      id: "unread",
+      label: currentPerspectiveConfig.tabs.unread,
+      count: folderCounts.unread,
+    },
+    {
+      id: "archived",
+      label: currentPerspectiveConfig.tabs.archived,
+      count: folderCounts.archived,
+    },
+  ];
+
   return (
-    <div className={styles.inboxLayout}>
-      {/* Left Pane: Navigation, Perspective Switcher, Search & Conversation List */}
-      <aside
-        className={`${styles.leftPane} ${
-          showMobileChat ? styles.leftPaneHiddenMobile : ""
-        }`}
-        aria-label="Conversation list"
-      >
+    <div className={styles.pageContainer}>
+      <div className={styles.inboxCard}>
+        {/* Top Perspective Header Banner across the Card */}
         <InboxHeader
           activePerspective={activePerspective}
           onPerspectiveChange={handlePerspectiveChange}
           perspectiveCounts={perspectiveCounts}
-          activeFolder={activeFolder}
-          onFolderChange={setActiveFolder}
-          folderCounts={folderCounts}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
+          totalCount={folderCounts.all}
         />
 
-        <ConversationList
-          conversations={filteredConversations}
-          selectedId={selectedId}
-          onSelect={handleSelectConversation}
-          onToggleStar={handleToggleStar}
-          hasSearchQuery={!!searchQuery.trim()}
-        />
-      </aside>
+        {/* Dual Pane Layout */}
+        <div className={styles.dualPaneContainer}>
+          {/* Left Pane: Search, Sub-filters & Categorized Conversation List */}
+          <aside
+            className={`${styles.leftPane} ${
+              showMobileChat ? styles.leftPaneHiddenMobile : ""
+            }`}
+            aria-label="Conversation list"
+          >
+            {/* Search & Sub-folder Controls */}
+            <div className={styles.leftControls}>
+              <div className={styles.searchWrapper}>
+                <Search size={14} className={styles.searchIcon} />
+                <input
+                  type="text"
+                  className={styles.searchInput}
+                  placeholder={t.searchPlaceholder}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  aria-label={t.searchPlaceholder}
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    className={styles.clearSearchBtn}
+                    onClick={() => setSearchQuery("")}
+                    aria-label="Clear search"
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
 
-      {/* Right Pane: Full-Height Spacious Chat Board */}
-      <main
-        className={`${styles.rightPane} ${
-          !showMobileChat ? styles.rightPaneHiddenMobile : ""
-        }`}
-        aria-label="Active conversation"
-      >
-        {activeConversation ? (
-          <ChatThread
-            conversation={activeConversation}
-            isTyping={isTyping}
-            onBackToList={() => setShowMobileChat(false)}
-            onSendMessage={handleSendMessage}
-            onOpenTourModal={() => setIsTourModalOpen(true)}
-            onAttachFile={handleAttachFile}
-            onToggleArchive={handleToggleArchive}
-            onDeleteConversation={handleDeleteConversation}
-            onToggleStar={handleToggleStar}
-            onConfirmTour={handleConfirmTour}
-          />
-        ) : (
-          <InboxEmptyState />
-        )}
-      </main>
+              <div className={styles.subFolderTabs} role="tablist">
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    role="tab"
+                    aria-selected={activeFolder === tab.id}
+                    className={`${styles.subFolderTabBtn} ${
+                      activeFolder === tab.id
+                        ? styles.subFolderTabBtnActive
+                        : ""
+                    }`}
+                    onClick={() => setActiveFolder(tab.id)}
+                  >
+                    <span>{tab.label}</span>
+                    <span className={styles.subFolderTabCount}>{tab.count}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <ConversationList
+              conversations={filteredConversations}
+              selectedId={selectedId}
+              onSelect={handleSelectConversation}
+              onToggleStar={handleToggleStar}
+              hasSearchQuery={!!searchQuery.trim()}
+              activePerspective={activePerspective}
+              activeFolder={activeFolder}
+            />
+          </aside>
+
+          {/* Right Pane: Full-Height Spacious Chat Board */}
+          <main
+            className={`${styles.rightPane} ${
+              !showMobileChat ? styles.rightPaneHiddenMobile : ""
+            }`}
+            aria-label="Active conversation"
+          >
+            {activeConversation ? (
+              <ChatThread
+                conversation={activeConversation}
+                isTyping={isTyping}
+                onBackToList={() => setShowMobileChat(false)}
+                onSendMessage={handleSendMessage}
+                onOpenTourModal={() => setIsTourModalOpen(true)}
+                onAttachFile={handleAttachFile}
+                onToggleArchive={handleToggleArchive}
+                onDeleteConversation={handleDeleteConversation}
+                onToggleStar={handleToggleStar}
+                onConfirmTour={handleConfirmTour}
+              />
+            ) : (
+              <InboxEmptyState />
+            )}
+          </main>
+        </div>
+      </div>
 
       {/* Tour Scheduling Modal */}
       {activeConversation && (

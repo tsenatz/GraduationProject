@@ -1,19 +1,8 @@
 "use client";
 
 import React from "react";
-import {
-  Search,
-  Mail,
-  Calendar,
-  Archive,
-  ShoppingBag,
-  Key,
-  Tag,
-  Building2,
-  Bell,
-  Compass,
-} from "lucide-react";
-import { MainPerspective, SubFolder } from "../types";
+import { Compass, Building2 } from "lucide-react";
+import { MainPerspective } from "../types";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { inboxTranslations } from "../translations";
 import styles from "./InboxHeader.module.css";
@@ -25,90 +14,48 @@ interface InboxHeaderProps {
     buying_renting: number;
     selling_hosting: number;
   };
-  activeFolder: SubFolder;
-  onFolderChange: (folder: SubFolder) => void;
-  folderCounts: {
-    all: number;
-    sale: number;
-    rent: number;
-    tours: number;
-    unread: number;
-    archived: number;
-  };
-  searchQuery: string;
-  onSearchChange: (query: string) => void;
+  totalCount: number;
 }
 
 export const InboxHeader: React.FC<InboxHeaderProps> = ({
   activePerspective,
   onPerspectiveChange,
   perspectiveCounts,
-  activeFolder,
-  onFolderChange,
-  folderCounts,
-  searchQuery,
-  onSearchChange,
+  totalCount,
 }) => {
   const { isAmharic } = useLanguage();
   const t = inboxTranslations[isAmharic ? "am" : "en"];
   const currentPerspectiveConfig = t.perspectives[activePerspective];
 
-  const tabs: {
-    id: SubFolder;
-    label: string;
-    count: number;
-    icon: React.FC<{ size?: number }>;
-  }[] = [
-    {
-      id: "all",
-      label: currentPerspectiveConfig.tabs.all,
-      count: folderCounts.all,
-      icon: Mail,
-    },
-    {
-      id: "sale",
-      label: currentPerspectiveConfig.tabs.sale,
-      count: folderCounts.sale,
-      icon: activePerspective === "buying_renting" ? ShoppingBag : Tag,
-    },
-    {
-      id: "rent",
-      label: currentPerspectiveConfig.tabs.rent,
-      count: folderCounts.rent,
-      icon: activePerspective === "buying_renting" ? Key : Building2,
-    },
-    {
-      id: "tours",
-      label: currentPerspectiveConfig.tabs.tours,
-      count: folderCounts.tours,
-      icon: Calendar,
-    },
-    {
-      id: "unread",
-      label: currentPerspectiveConfig.tabs.unread,
-      count: folderCounts.unread,
-      icon: Bell,
-    },
-    {
-      id: "archived",
-      label: currentPerspectiveConfig.tabs.archived,
-      count: folderCounts.archived,
-      icon: Archive,
-    },
-  ];
-
   return (
-    <div className={styles.headerContainer}>
-      {/* 1. Title Row */}
-      <div className={styles.topRow}>
-        <div className={styles.titleWrapper}>
+    <header
+      className={styles.headerContainer}
+      aria-label="Inbox navigation and perspective switcher"
+    >
+      {/* Left Col: Page Title & Context Persona Subtitle */}
+      <div className={styles.titleCol}>
+        <div className={styles.titleRow}>
           <h1 className={styles.title}>{t.title}</h1>
-          <span className={styles.badge}>{folderCounts.all}</span>
+          <span className={styles.badge}>{totalCount}</span>
+          <span className={styles.personaBadge}>
+            {activePerspective === "buying_renting"
+              ? isAmharic
+                ? "ሚናዎ፡ ገዢ እና ተከራይ"
+                : "Role: Buyer & Tenant"
+              : isAmharic
+              ? "ሚናዎ፡ ሻጭ እና አከራይ"
+              : "Role: Seller & Landlord"}
+          </span>
         </div>
+        <p className={styles.subtitle}>{currentPerspectiveConfig.subtitle}</p>
       </div>
 
-      {/* 2. Top Perspective Switcher (Zillow / Airbnb Segmented Pill) */}
-      <div className={styles.perspectiveSwitch} role="tablist">
+      {/* Right Col: Top Perspective Toggle (Segmented Switcher) */}
+      <div
+        className={styles.perspectiveSwitch}
+        role="tablist"
+        aria-label="Perspective Switcher"
+      >
         <button
           type="button"
           role="tab"
@@ -120,7 +67,7 @@ export const InboxHeader: React.FC<InboxHeaderProps> = ({
           }`}
           onClick={() => onPerspectiveChange("buying_renting")}
         >
-          <Compass size={14} />
+          <Compass size={15} />
           <span>{t.perspectives.buying_renting.title}</span>
           <span className={styles.perspectiveCount}>
             {perspectiveCounts.buying_renting}
@@ -138,67 +85,14 @@ export const InboxHeader: React.FC<InboxHeaderProps> = ({
           }`}
           onClick={() => onPerspectiveChange("selling_hosting")}
         >
-          <Building2 size={14} />
+          <Building2 size={15} />
           <span>{t.perspectives.selling_hosting.title}</span>
           <span className={styles.perspectiveCount}>
             {perspectiveCounts.selling_hosting}
           </span>
         </button>
       </div>
-
-      {/* 3. Search Bar */}
-      <div className={styles.searchWrapper}>
-        <Search size={14} className={styles.searchIcon} />
-        <input
-          type="text"
-          className={styles.searchInput}
-          placeholder={t.searchPlaceholder}
-          value={searchQuery}
-          onChange={(e) => onSearchChange(e.target.value)}
-          aria-label={t.searchPlaceholder}
-        />
-        {searchQuery && (
-          <button
-            type="button"
-            className={styles.clearSearchBtn}
-            onClick={() => onSearchChange("")}
-            aria-label="Clear search"
-          >
-            ×
-          </button>
-        )}
-      </div>
-
-      {/* 4. Sub-folder Navigation Tabs */}
-      <div className={styles.tabsRow} role="tablist">
-        {tabs.map((tab) => {
-          const Icon = tab.icon;
-          const isActive = activeFolder === tab.id;
-
-          return (
-            <button
-              key={tab.id}
-              role="tab"
-              aria-selected={isActive}
-              className={`${styles.tabBtn} ${
-                isActive ? styles.tabBtnActive : ""
-              }`}
-              onClick={() => onFolderChange(tab.id)}
-            >
-              <Icon size={13} />
-              <span>{tab.label}</span>
-              <span
-                className={`${styles.countBadge} ${
-                  isActive ? styles.countBadgeActive : ""
-                }`}
-              >
-                {tab.count}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-    </div>
+    </header>
   );
 };
 

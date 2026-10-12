@@ -1,16 +1,45 @@
-.inboxLayout {
-  display: flex;
-  height: calc(100vh - 64px);
-  background: var(--bg-color);
-  overflow: hidden;
-  position: relative;
+.pageContainer {
   width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 24px 44px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (max-width: 960px) {
-  .inboxLayout {
-    height: calc(100vh - 124px);
+  .pageContainer {
+    padding: 14px 14px 56px;
   }
+}
+
+.inboxCard {
+  background: var(--color-surface);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.22);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(var(--color-primary-rgb), 0.05);
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 130px);
+  min-height: 680px;
+  overflow: hidden;
+  position: relative;
+}
+
+@media (max-width: 960px) {
+  .inboxCard {
+    height: calc(100vh - 150px);
+    border-radius: 12px;
+  }
+}
+
+.dualPaneContainer {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  min-height: 0;
 }
 
 .leftPane {
@@ -27,6 +56,117 @@
   position: relative;
   z-index: 2;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Left Pane Search & Sub-Filter Bar */
+.leftControls {
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid rgba(var(--color-accent-rgb), 0.14);
+  background: var(--color-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.searchWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 11px;
+  color: var(--color-accent);
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 8px 30px 8px 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(var(--color-accent-rgb), 0.25);
+  background: var(--bg-color);
+  font-size: 0.8rem;
+  color: var(--color-primary);
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.searchInput:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb), 0.12);
+  background: var(--color-surface);
+}
+
+.clearSearchBtn {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  color: var(--color-accent);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 6px;
+}
+
+/* Sub-folder filter pills */
+.subFolderTabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+}
+
+.subFolderTabs::-webkit-scrollbar {
+  display: none;
+}
+
+.subFolderTabBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--color-accent);
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.subFolderTabBtn:hover {
+  color: var(--color-primary);
+  background: rgba(var(--color-accent-rgb), 0.08);
+}
+
+.subFolderTabBtnActive {
+  background: rgba(var(--color-accent-rgb), 0.12);
+  color: var(--color-primary);
+  border-color: rgba(var(--color-accent-rgb), 0.25);
+}
+
+.subFolderTabCount {
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 9999px;
+  background: rgba(var(--color-accent-rgb), 0.16);
+  color: var(--color-primary);
+}
+
+.subFolderTabBtnActive .subFolderTabCount {
+  background: var(--color-primary);
+  color: var(--color-surface);
 }
 
 .rightPane {

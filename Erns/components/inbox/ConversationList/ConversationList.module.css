@@ -61,3 +61,60 @@
   background: var(--color-primary-transparent-90);
   transform: translateY(-1px);
 }
+
+/* Character Section Dividers */
+.sectionGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.sectionDivider {
+  padding: 10px 18px 8px;
+  background: var(--bg-color);
+  border-top: 1px solid rgba(var(--color-accent-rgb), 0.16);
+  border-bottom: 1px solid rgba(var(--color-accent-rgb), 0.12);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.sectionDividerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.sectionTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--color-primary);
+  min-width: 0;
+}
+
+.sectionIcon {
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.sectionTitle {
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sectionBadge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  background: rgba(var(--color-accent-rgb), 0.16);
+  padding: 1px 7px;
+  border-radius: 9999px;
+  flex-shrink: 0;
+}
