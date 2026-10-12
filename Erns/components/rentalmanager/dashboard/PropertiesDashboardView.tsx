@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useTransition } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   Plus,
   Megaphone,
@@ -31,6 +32,7 @@ export function PropertiesDashboardView({
   userName = "Tsenat",
 }: PropertiesDashboardViewProps) {
   const firstName = userName ? userName.split(" ")[0] : "Tsenat";
+  const searchParams = useSearchParams();
 
   const [properties, setProperties] = useState<RentalPropertyRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,6 +40,17 @@ export function PropertiesDashboardView({
   const [filterStatus, setFilterStatus] = useState<"ALL" | "FOR_RENT" | "RENTED" | "OFF_MARKET">("ALL");
   const [searchQuery, setSearchQuery] = useState("");
   const [isPending, startTransition] = useTransition();
+
+  // Auto-open modal if navigated from topnav button like Zillow
+  useEffect(() => {
+    if (
+      searchParams.get("source") === "topnav" ||
+      searchParams.get("itc") === "postbutton_sitenav" ||
+      searchParams.get("add") === "true"
+    ) {
+      setIsAddModalOpen(true);
+    }
+  }, [searchParams]);
 
   // Load properties on mount
   useEffect(() => {

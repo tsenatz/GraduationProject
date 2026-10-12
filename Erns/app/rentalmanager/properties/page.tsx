@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { auth } from "@/lib/auth";
 import {
   RentalManagerDashboardLayout,
@@ -16,7 +17,9 @@ export default async function RentalManagerPropertiesPage() {
 
   return (
     <RentalManagerDashboardLayout userName={displayName}>
-      <PropertiesDashboardView userName={displayName} />
+      <Suspense fallback={<div style={{ padding: "3rem", textAlign: "center", color: "#64748B" }}>Loading properties...</div>}>
+        <PropertiesDashboardView userName={displayName} />
+      </Suspense>
     </RentalManagerDashboardLayout>
   );
 }
