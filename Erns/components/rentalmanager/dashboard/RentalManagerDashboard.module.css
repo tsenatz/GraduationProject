@@ -391,3 +391,224 @@
 .learnMoreLink:hover {
   color: var(--color-accent, #4A7FA7);
 }
+
+/* --- Properties List & Management Views --- */
+
+.propertiesHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.propertiesTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.propertyCountBadge {
+  background-color: rgba(74, 127, 167, 0.12);
+  color: var(--color-accent, #4A7FA7);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+}
+
+.addPropertyHeaderBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--color-primary, #0A1931);
+  color: #FFFFFF;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.7rem 1.35rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(10, 25, 49, 0.12);
+}
+
+.addPropertyHeaderBtn:hover {
+  background-color: #061122;
+  transform: translateY(-1px);
+}
+
+/* Stats Ribbon */
+.statsRibbon {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.statCard {
+  background: #FFFFFF;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 2px 8px rgba(10, 25, 49, 0.03);
+  transition: all 0.2s ease;
+}
+
+.statCard:hover {
+  border-color: rgba(74, 127, 167, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(10, 25, 49, 0.06);
+}
+
+.statIconBox {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.statInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.statLabel {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.statValue {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--color-primary, #0A1931);
+}
+
+/* Toolbar: Filters & Search */
+.toolbarRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.filterTabs {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: #F1F5F9;
+  padding: 0.3rem;
+  border-radius: 12px;
+}
+
+.filterTabBtn {
+  background: transparent;
+  border: none;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #64748B;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filterTabBtn:hover {
+  color: var(--color-primary, #0A1931);
+}
+
+.filterTabBtnActive {
+  background-color: #FFFFFF;
+  color: var(--color-primary, #0A1931);
+  box-shadow: 0 2px 6px rgba(10, 25, 49, 0.08);
+}
+
+.searchBox {
+  position: relative;
+  min-width: 260px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94A3B8;
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.55rem 0.85rem 0.55rem 2.4rem;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 10px;
+  font-size: 0.88rem;
+  color: var(--color-primary, #0A1931);
+  background-color: #FFFFFF;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.searchInput:focus {
+  border-color: var(--color-accent, #4A7FA7);
+  box-shadow: 0 0 0 3px rgba(74, 127, 167, 0.15);
+}
+
+/* Grid of Properties */
+.propertiesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Empty / No Matches State */
+.emptyFilterState {
+  text-align: center;
+  padding: 3.5rem 1.5rem;
+  background-color: #F8FAFC;
+  border: 1px dashed rgba(15, 23, 42, 0.15);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.emptyFilterTitle {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-primary, #0A1931);
+  margin: 0.75rem 0 0.25rem;
+}
+
+.emptyFilterDesc {
+  font-size: 0.9rem;
+  color: #64748B;
+  margin-bottom: 1.25rem;
+}
+
+.clearFilterBtn {
+  background: transparent;
+  border: 1.5px solid var(--color-accent, #4A7FA7);
+  color: var(--color-accent, #4A7FA7);
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+

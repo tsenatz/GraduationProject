@@ -14,9 +14,13 @@ import styles from "./RentalManagerDashboard.module.css";
 
 interface RentalManagerSidebarProps {
   userName?: string;
+  onAddProperty?: () => void;
 }
 
-export function RentalManagerSidebar({ userName = "Tsenat Zeru" }: RentalManagerSidebarProps) {
+export function RentalManagerSidebar({
+  userName = "Tsenat Zeru",
+  onAddProperty,
+}: RentalManagerSidebarProps) {
   const pathname = usePathname();
 
   const navItems = [
@@ -29,8 +33,9 @@ export function RentalManagerSidebar({ userName = "Tsenat Zeru" }: RentalManager
     },
     {
       label: "Messages",
+      href: "/inbox",
       icon: MessageSquare,
-      enabled: false,
+      enabled: true,
     },
     {
       label: "Payments",
@@ -68,7 +73,21 @@ export function RentalManagerSidebar({ userName = "Tsenat Zeru" }: RentalManager
                   <Icon size={20} />
                   <span>{item.label}</span>
                 </div>
-                {item.showPlus && <Plus size={18} className={styles.navPlusIcon} />}
+                {item.showPlus && (
+                  <span
+                    onClick={(e) => {
+                      if (onAddProperty) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        onAddProperty();
+                      }
+                    }}
+                    title="Add a property"
+                    style={{ display: "flex", alignItems: "center" }}
+                  >
+                    <Plus size={18} className={styles.navPlusIcon} />
+                  </span>
+                )}
               </Link>
             );
           }
