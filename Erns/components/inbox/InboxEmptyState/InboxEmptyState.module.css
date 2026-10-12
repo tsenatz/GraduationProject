@@ -4,8 +4,8 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 40px;
-  background: #f8fafc;
+  padding: 40px 24px;
+  background: var(--bg-color);
   text-align: center;
 }
 
@@ -14,9 +14,9 @@
   width: 76px;
   height: 76px;
   border-radius: 50%;
-  background: #eff6ff;
-  border: 1.5px solid #bfdbfe;
-  color: #2563eb;
+  background: rgba(var(--color-accent-rgb), 0.1);
+  border: 1.5px solid rgba(var(--color-accent-rgb), 0.25);
+  color: var(--color-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,15 +24,15 @@
 }
 
 .mainIcon {
-  color: #0A1931;
+  color: var(--color-primary);
 }
 
 .sparkleDot {
   position: absolute;
   top: 0px;
   right: 0px;
-  background: #2563eb;
-  color: #ffffff;
+  background: var(--color-primary);
+  color: var(--color-surface);
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -44,70 +44,52 @@
 .title {
   font-size: 1.25rem;
   font-weight: 800;
-  color: #0A1931;
+  color: var(--color-primary);
   margin-bottom: 8px;
 }
 
 .desc {
   font-size: 0.88rem;
-  color: #64748b;
+  color: var(--color-accent);
   max-width: 440px;
   line-height: 1.55;
   margin-bottom: 28px;
 }
 
 .hintsCard {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 16px 20px;
-  max-width: 460px;
+  background: var(--color-surface);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.2);
+  border-radius: 12px;
+  padding: 18px 24px;
+  max-width: 420px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 12px;
   text-align: left;
-  margin-bottom: 28px;
-  box-shadow: 0 2px 8px rgba(10, 25, 49, 0.03);
+  box-shadow: 0 2px 10px rgba(var(--color-primary-rgb), 0.03);
+}
+
+.hintsTitle {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-accent);
 }
 
 .hintItem {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 0.82rem;
-  color: #334155;
+  gap: 10px;
+  font-size: 0.84rem;
+  color: var(--color-primary);
 }
 
 .hintBullet {
-  width: 22px;
-  height: 22px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: #f1f5f9;
-  color: #0A1931;
-  font-weight: 800;
-  font-size: 0.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: var(--color-accent);
   flex-shrink: 0;
-}
-
-.browseBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: #0A1931;
-  color: #ffffff;
-  padding: 11px 22px;
-  border-radius: 12px;
-  font-size: 0.88rem;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(10, 25, 49, 0.12);
-}
-
-.browseBtn:hover {
-  background: #172d54;
-  transform: translateY(-1px);
 }

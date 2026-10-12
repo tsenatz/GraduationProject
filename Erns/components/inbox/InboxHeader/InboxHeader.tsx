@@ -12,7 +12,6 @@ import {
   Building2,
   Bell,
   Compass,
-  Home,
 } from "lucide-react";
 import { MainPerspective, SubFolder } from "../types";
 import { useLanguage } from "@/components/providers/LanguageProvider";
@@ -100,8 +99,19 @@ export const InboxHeader: React.FC<InboxHeaderProps> = ({
 
   return (
     <div className={styles.headerContainer}>
-      {/* 1. Top Perspective Segmented Switch (Airbnb/Zillow Style) */}
-      <div className={styles.perspectiveSwitchWrapper}>
+      {/* Top Row: Title & Subtitle on left, Perspective Segmented Switcher on right */}
+      <div className={styles.topRow}>
+        <div className={styles.titleCol}>
+          <div className={styles.titleWrapper}>
+            <h1 className={styles.title}>{t.title}</h1>
+            <span className={styles.badge}>{folderCounts.all}</span>
+          </div>
+          <p className={styles.subtitle}>
+            {currentPerspectiveConfig.subtitle}
+          </p>
+        </div>
+
+        {/* Perspective Switcher */}
         <div className={styles.perspectiveSwitch} role="tablist">
           <button
             type="button"
@@ -114,7 +124,7 @@ export const InboxHeader: React.FC<InboxHeaderProps> = ({
             }`}
             onClick={() => onPerspectiveChange("buying_renting")}
           >
-            <Compass size={17} />
+            <Compass size={15} />
             <span>{t.perspectives.buying_renting.title}</span>
             <span className={styles.perspectiveCount}>
               {perspectiveCounts.buying_renting}
@@ -132,7 +142,7 @@ export const InboxHeader: React.FC<InboxHeaderProps> = ({
             }`}
             onClick={() => onPerspectiveChange("selling_hosting")}
           >
-            <Building2 size={17} />
+            <Building2 size={15} />
             <span>{t.perspectives.selling_hosting.title}</span>
             <span className={styles.perspectiveCount}>
               {perspectiveCounts.selling_hosting}
@@ -141,64 +151,59 @@ export const InboxHeader: React.FC<InboxHeaderProps> = ({
         </div>
       </div>
 
-      {/* 2. Context Explanation Banner */}
-      <div className={styles.contextBanner}>
-        <p className={styles.contextSubtitle}>
-          {currentPerspectiveConfig.subtitle}
-        </p>
-      </div>
+      {/* Controls Row: Sub-tabs on left, Search Bar on right */}
+      <div className={styles.controlsRow}>
+        <div className={styles.tabsRow} role="tablist">
+          {tabs.map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeFolder === tab.id;
 
-      {/* 3. Search Bar */}
-      <div className={styles.searchWrapper}>
-        <Search size={16} className={styles.searchIcon} />
-        <input
-          type="text"
-          className={styles.searchInput}
-          placeholder={t.searchPlaceholder}
-          value={searchQuery}
-          onChange={(e) => onSearchChange(e.target.value)}
-          aria-label={t.searchPlaceholder}
-        />
-        {searchQuery && (
-          <button
-            type="button"
-            className={styles.clearSearchBtn}
-            onClick={() => onSearchChange("")}
-            aria-label="Clear search"
-          >
-            ×
-          </button>
-        )}
-      </div>
-
-      {/* 4. Sub-folder Navigation Tabs */}
-      <div className={styles.tabsRow} role="tablist">
-        {tabs.map((tab) => {
-          const Icon = tab.icon;
-          const isActive = activeFolder === tab.id;
-
-          return (
-            <button
-              key={tab.id}
-              role="tab"
-              aria-selected={isActive}
-              className={`${styles.tabBtn} ${
-                isActive ? styles.tabBtnActive : ""
-              }`}
-              onClick={() => onFolderChange(tab.id)}
-            >
-              <Icon size={14} />
-              <span>{tab.label}</span>
-              <span
-                className={`${styles.countBadge} ${
-                  isActive ? styles.countBadgeActive : ""
+            return (
+              <button
+                key={tab.id}
+                role="tab"
+                aria-selected={isActive}
+                className={`${styles.tabBtn} ${
+                  isActive ? styles.tabBtnActive : ""
                 }`}
+                onClick={() => onFolderChange(tab.id)}
               >
-                {tab.count}
-              </span>
+                <Icon size={14} />
+                <span>{tab.label}</span>
+                <span
+                  className={`${styles.countBadge} ${
+                    isActive ? styles.countBadgeActive : ""
+                  }`}
+                >
+                  {tab.count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Search Bar */}
+        <div className={styles.searchWrapper}>
+          <Search size={15} className={styles.searchIcon} />
+          <input
+            type="text"
+            className={styles.searchInput}
+            placeholder={t.searchPlaceholder}
+            value={searchQuery}
+            onChange={(e) => onSearchChange(e.target.value)}
+            aria-label={t.searchPlaceholder}
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              className={styles.clearSearchBtn}
+              onClick={() => onSearchChange("")}
+              aria-label="Clear search"
+            >
+              ×
             </button>
-          );
-        })}
+          )}
+        </div>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@
   flex-direction: column;
   overflow-y: auto;
   height: 100%;
-  background: #ffffff;
+  background: var(--color-surface);
 }
 
 .emptyContainer {
@@ -20,8 +20,8 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: #eff6ff;
-  color: #4A7FA7;
+  background: rgba(var(--color-accent-rgb), 0.1);
+  color: var(--color-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -31,13 +31,13 @@
 .emptyTitle {
   font-size: 1.05rem;
   font-weight: 800;
-  color: #0A1931;
+  color: var(--color-primary);
   margin-bottom: 6px;
 }
 
 .emptyDesc {
   font-size: 0.82rem;
-  color: #64748b;
+  color: var(--color-accent);
   max-width: 280px;
   line-height: 1.5;
   margin-bottom: 20px;
@@ -47,16 +47,17 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #0A1931;
-  color: #ffffff;
+  background: var(--color-primary);
+  color: var(--color-surface);
   padding: 9px 18px;
-  border-radius: 10px;
+  border-radius: 9999px;
   font-size: 0.82rem;
   font-weight: 700;
   text-decoration: none;
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
 
 .browseBtn:hover {
-  background: #172d54;
+  background: var(--color-primary-transparent-90);
+  transform: translateY(-1px);
 }

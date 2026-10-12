@@ -1,40 +1,81 @@
 .headerContainer {
-  background: #ffffff;
-  border-bottom: 1px solid rgba(74, 127, 167, 0.2);
-  padding: 16px 20px 0px;
+  background: var(--color-surface);
+  border-bottom: 1px solid rgba(var(--color-accent-rgb), 0.18);
+  padding: 20px 24px 0px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  box-shadow: 0 1px 4px rgba(10, 25, 49, 0.02);
+  gap: 16px;
+  box-shadow: 0 1px 3px rgba(var(--color-primary-rgb), 0.02);
 }
 
-.perspectiveSwitchWrapper {
+.topRow {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
+.titleCol {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.titleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.title {
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  letter-spacing: -0.02em;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.badge {
+  background: rgba(var(--color-accent-rgb), 0.12);
+  color: var(--color-primary);
+  font-size: 0.76rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  border: 1px solid rgba(var(--color-accent-rgb), 0.2);
+}
+
+.subtitle {
+  font-size: 0.86rem;
+  color: var(--color-accent);
+  margin: 0;
+  max-width: 600px;
+  line-height: 1.45;
+}
+
+/* Airbnb/Zillow Style Perspective Pill Switcher */
 .perspectiveSwitch {
   display: inline-flex;
   align-items: center;
-  background: #f1f5f9;
+  background: rgba(var(--color-accent-rgb), 0.08);
   padding: 4px;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
+  border-radius: 9999px;
+  border: 1px solid rgba(var(--color-accent-rgb), 0.2);
   gap: 4px;
-  max-width: 100%;
-  overflow-x: auto;
+  flex-shrink: 0;
 }
 
 .perspectiveBtn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
-  border-radius: 9px;
-  font-size: 0.86rem;
+  padding: 7px 16px;
+  border-radius: 9999px;
+  font-size: 0.84rem;
   font-weight: 700;
-  color: #475569;
+  color: var(--color-primary);
   background: transparent;
   border: none;
   cursor: pointer;
@@ -43,22 +84,22 @@
 }
 
 .perspectiveBtn:hover {
-  color: #0A1931;
+  background: rgba(var(--color-accent-rgb), 0.12);
 }
 
 .perspectiveBtnActive {
-  background: #0A1931;
-  color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(10, 25, 49, 0.18);
+  background: var(--color-primary) !important;
+  color: var(--color-surface) !important;
+  box-shadow: 0 2px 8px rgba(var(--color-primary-rgb), 0.2);
 }
 
 .perspectiveCount {
   font-size: 0.72rem;
   font-weight: 800;
   padding: 1px 7px;
-  border-radius: 999px;
-  background: #e2e8f0;
-  color: #475569;
+  border-radius: 9999px;
+  background: rgba(var(--color-accent-rgb), 0.16);
+  color: var(--color-primary);
 }
 
 .perspectiveBtnActive .perspectiveCount {
@@ -66,70 +107,12 @@
   color: #ffffff;
 }
 
-.contextBanner {
+/* Bottom Controls Row: Sub-tabs on left, Search input on right */
+.controlsRow {
   display: flex;
   align-items: center;
-  background: #f8fafc;
-  border-left: 3.5px solid #4A7FA7;
-  padding: 7px 12px;
-  border-radius: 0 6px 6px 0;
-}
-
-.contextSubtitle {
-  font-size: 0.8rem;
-  color: #475569;
-  margin: 0;
-  line-height: 1.4;
-}
-
-.searchWrapper {
-  position: relative;
-  width: 100%;
-}
-
-.searchIcon {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #94a3b8;
-  pointer-events: none;
-}
-
-.searchInput {
-  width: 100%;
-  padding: 8px 36px 8px 38px;
-  font-size: 0.85rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  background: #f8fafc;
-  color: #0A1931;
-  outline: none;
-  transition: all 0.2s ease;
-}
-
-.searchInput:focus {
-  background: #ffffff;
-  border-color: #0A1931;
-  box-shadow: 0 0 0 3px rgba(10, 25, 49, 0.08);
-}
-
-.clearSearchBtn {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: transparent;
-  border: none;
-  color: #94a3b8;
-  font-size: 1.2rem;
-  cursor: pointer;
-  line-height: 1;
-  padding: 4px;
-}
-
-.clearSearchBtn:hover {
-  color: #0A1931;
+  justify-content: space-between;
+  gap: 16px;
 }
 
 .tabsRow {
@@ -138,6 +121,7 @@
   gap: 6px;
   overflow-x: auto;
   scrollbar-width: none;
+  flex: 1;
 }
 
 .tabsRow::-webkit-scrollbar {
@@ -152,46 +136,103 @@
   border: none;
   border-bottom: 2.5px solid transparent;
   padding: 8px 12px 10px;
-  font-size: 0.82rem;
+  font-size: 0.83rem;
   font-weight: 600;
-  color: #64748b;
+  color: var(--color-accent);
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s ease;
 }
 
 .tabBtn:hover {
-  color: #0A1931;
+  color: var(--color-primary);
 }
 
 .tabBtnActive {
-  color: #0A1931;
+  color: var(--color-primary);
   font-weight: 800;
-  border-bottom-color: #0A1931;
+  border-bottom-color: var(--color-primary);
 }
 
 .countBadge {
-  background: #f1f5f9;
-  color: #64748b;
+  background: rgba(var(--color-accent-rgb), 0.1);
+  color: var(--color-accent);
   font-size: 0.68rem;
   font-weight: 700;
   padding: 1px 6px;
-  border-radius: 999px;
+  border-radius: 9999px;
   transition: all 0.2s;
 }
 
-.countBadgeActive {
-  background: #0A1931;
-  color: #ffffff;
+.tabBtnActive .countBadge {
+  background: var(--color-primary);
+  color: var(--color-surface);
 }
 
-@media (max-width: 640px) {
+.searchWrapper {
+  position: relative;
+  width: 260px;
+  flex-shrink: 0;
+  margin-bottom: 6px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-accent);
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 7px 32px 7px 34px;
+  font-size: 0.82rem;
+  border: 1.5px solid rgba(var(--color-accent-rgb), 0.25);
+  border-radius: 9999px;
+  background: var(--bg-color);
+  color: var(--color-primary);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.searchInput:focus {
+  background: var(--color-surface);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.08);
+}
+
+.clearSearchBtn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--color-accent);
+  font-size: 1.15rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 2px;
+}
+
+.clearSearchBtn:hover {
+  color: var(--color-primary);
+}
+
+@media (max-width: 900px) {
   .headerContainer {
-    padding: 12px 14px 0px;
+    padding: 16px 16px 0;
+    gap: 12px;
+  }
+  .controlsRow {
+    flex-direction: column-reverse;
+    align-items: stretch;
     gap: 10px;
   }
-  .perspectiveBtn {
-    padding: 7px 12px;
-    font-size: 0.78rem;
+  .searchWrapper {
+    width: 100%;
+    margin-bottom: 0;
   }
 }

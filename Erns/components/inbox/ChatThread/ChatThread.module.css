@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: #f8fafc;
+  background: var(--bg-color);
   position: relative;
   overflow: hidden;
 }
@@ -11,9 +11,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 20px;
-  background: #ffffff;
-  border-bottom: 1px solid rgba(74, 127, 167, 0.2);
+  padding: 16px 24px;
+  background: var(--color-surface);
+  border-bottom: 1px solid rgba(var(--color-accent-rgb), 0.18);
   gap: 16px;
   flex-shrink: 0;
   z-index: 20;
@@ -30,12 +30,12 @@
   display: none;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  color: #0A1931;
+  background: rgba(var(--color-accent-rgb), 0.1);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.2);
+  color: var(--color-primary);
   cursor: pointer;
   flex-shrink: 0;
 }
@@ -51,6 +51,7 @@
 .avatar {
   border-radius: 50%;
   object-fit: cover;
+  border: 1.5px solid rgba(var(--color-accent-rgb), 0.2);
 }
 
 .onlineBadge {
@@ -60,7 +61,7 @@
   width: 11px;
   height: 11px;
   background: #10b981;
-  border: 2px solid #ffffff;
+  border: 2px solid var(--color-surface);
   border-radius: 50%;
 }
 
@@ -77,9 +78,9 @@
 }
 
 .name {
-  font-size: 0.96rem;
+  font-size: 1.02rem;
   font-weight: 800;
-  color: #0A1931;
+  color: var(--color-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -88,10 +89,10 @@
 .verifiedBadge {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
-  background: #eff6ff;
-  color: #2563eb;
-  padding: 2px 6px;
+  gap: 4px;
+  background: rgba(var(--color-accent-rgb), 0.12);
+  color: var(--color-primary);
+  padding: 2px 7px;
   border-radius: 4px;
   font-size: 0.7rem;
   font-weight: 700;
@@ -101,17 +102,17 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.74rem;
-  color: #64748b;
+  font-size: 0.76rem;
+  color: var(--color-accent);
 }
 
 .dot {
-  color: #cbd5e1;
+  color: rgba(var(--color-accent-rgb), 0.4);
 }
 
 .rate {
-  color: #10b981;
-  font-weight: 600;
+  color: #059669;
+  font-weight: 700;
 }
 
 .headerActions {
@@ -125,40 +126,40 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #f0fdf4;
-  color: #166534;
-  border: 1px solid #bbf7d0;
-  padding: 6px 12px;
+  background: rgba(var(--color-accent-rgb), 0.1);
+  color: var(--color-primary);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.25);
+  padding: 7px 14px;
   border-radius: 8px;
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 700;
   text-decoration: none;
   transition: all 0.2s;
 }
 
 .callBtn:hover {
-  background: #166534;
-  color: #ffffff;
-  border-color: #166534;
+  background: var(--color-primary);
+  color: var(--color-surface);
+  border-color: var(--color-primary);
 }
 
 .iconBtn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 8px;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  color: #64748b;
+  background: var(--color-surface);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.22);
+  color: var(--color-accent);
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .iconBtn:hover {
-  background: #f8fafc;
-  color: #0A1931;
+  background: rgba(var(--color-accent-rgb), 0.08);
+  color: var(--color-primary);
 }
 
 .starred {
@@ -177,7 +178,7 @@
 .messagesArea {
   flex: 1;
   overflow-y: auto;
-  padding: 20px;
+  padding: 24px 28px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -186,16 +187,16 @@
 .dateBadge {
   display: flex;
   justify-content: center;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .dateBadge span {
-  background: #e2e8f0;
-  color: #475569;
+  background: rgba(var(--color-accent-rgb), 0.15);
+  color: var(--color-primary);
   font-size: 0.72rem;
   font-weight: 700;
-  padding: 3px 12px;
-  border-radius: 999px;
+  padding: 4px 14px;
+  border-radius: 9999px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -203,7 +204,7 @@
 .messageRow {
   display: flex;
   align-items: flex-end;
-  gap: 8px;
+  gap: 10px;
   max-width: 80%;
 }
 
@@ -217,8 +218,8 @@
 }
 
 .msgAvatarWrapper {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   flex-shrink: 0;
   margin-bottom: 2px;
@@ -230,24 +231,24 @@
 }
 
 .bubble {
-  padding: 12px 16px;
+  padding: 12px 18px;
   border-radius: 16px;
   position: relative;
   font-size: 0.88rem;
   line-height: 1.5;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 3px rgba(var(--color-primary-rgb), 0.04);
 }
 
 .bubbleIncoming {
-  background: #ffffff;
-  color: #1e293b;
-  border: 1px solid #e2e8f0;
+  background: var(--color-surface);
+  color: var(--color-primary);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.2);
   border-bottom-left-radius: 4px;
 }
 
 .bubbleOutgoing {
-  background: #0A1931;
-  color: #ffffff;
+  background: var(--color-primary);
+  color: var(--color-surface);
   border-bottom-right-radius: 4px;
 }
 
@@ -260,17 +261,17 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 4px;
-  margin-top: 5px;
+  gap: 5px;
+  margin-top: 6px;
 }
 
 .timestamp {
   font-size: 0.68rem;
-  color: #94a3b8;
+  color: var(--color-accent);
 }
 
 .bubbleOutgoing .timestamp {
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .readStatus {
@@ -286,14 +287,14 @@
   color: rgba(255, 255, 255, 0.6);
 }
 
-/* Special Tour Card */
+/* Tour Card */
 .tourCard {
-  background: #f0fdf4;
-  border: 1.5px solid #86efac;
+  background: rgba(var(--color-accent-rgb), 0.08);
+  border: 1.5px solid rgba(var(--color-accent-rgb), 0.28);
   border-radius: 12px;
-  padding: 12px 14px;
+  padding: 14px 16px;
   margin-bottom: 8px;
-  color: #14532d;
+  color: var(--color-primary);
 }
 
 .tourCardHeader {
@@ -304,33 +305,35 @@
 }
 
 .tourCardHeader h4 {
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   font-weight: 800;
+  color: var(--color-primary);
   margin: 0;
 }
 
 .tourCardIcon {
-  color: #16a34a;
+  color: var(--color-accent);
 }
 
 .tourDetails {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .tourLabel {
-  color: #15803d;
+  color: var(--color-accent);
+  font-weight: 600;
 }
 
 .tourStatusBadge {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background: #dcfce7;
-  color: #166534;
+  background: rgba(16, 185, 129, 0.12);
+  color: #047857;
   padding: 3px 8px;
   border-radius: 6px;
   font-size: 0.72rem;
@@ -354,65 +357,64 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 .confirmTourBtn {
-  background: #16a34a;
-  color: #ffffff;
+  background: var(--color-primary);
+  color: var(--color-surface);
   border: none;
-  padding: 6px 12px;
+  padding: 7px 14px;
   border-radius: 6px;
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
 
 .confirmTourBtn:hover {
-  background: #15803d;
+  background: var(--color-primary-transparent-90);
 }
 
 .rescheduleTourBtn {
-  background: #ffffff;
-  color: #14532d;
-  border: 1px solid #86efac;
-  padding: 6px 12px;
+  background: var(--color-surface);
+  color: var(--color-primary);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.3);
+  padding: 7px 14px;
   border-radius: 6px;
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .rescheduleTourBtn:hover {
-  background: #f0fdf4;
+  background: rgba(var(--color-accent-rgb), 0.1);
 }
-
 
 /* Attachment Card */
 .attachmentCard {
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: #f1f5f9;
-  border: 1px solid #cbd5e1;
+  gap: 12px;
+  background: rgba(var(--color-accent-rgb), 0.08);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.22);
   border-radius: 10px;
-  padding: 8px 12px;
+  padding: 10px 14px;
   margin-bottom: 8px;
 }
 
 .bubbleOutgoing .attachmentCard {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 .fileIconWrapper {
-  color: #2563eb;
+  color: var(--color-accent);
 }
 
 .bubbleOutgoing .fileIconWrapper {
-  color: #60a5fa;
+  color: #ffffff;
 }
 
 .fileMeta {
@@ -423,7 +425,7 @@
 }
 
 .fileName {
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-weight: 700;
   white-space: nowrap;
   overflow: hidden;
@@ -431,20 +433,20 @@
 }
 
 .fileSize {
-  font-size: 0.7rem;
-  color: #64748b;
+  font-size: 0.72rem;
+  color: var(--color-accent);
 }
 
 .bubbleOutgoing .fileSize {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .fileDownloadBtn {
-  background: #ffffff;
-  color: #0A1931;
-  border: 1px solid #cbd5e1;
-  width: 28px;
-  height: 28px;
+  background: var(--color-surface);
+  color: var(--color-primary);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.25);
+  width: 30px;
+  height: 30px;
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -454,8 +456,8 @@
 }
 
 .fileDownloadBtn:hover {
-  background: #0A1931;
-  color: #ffffff;
+  background: var(--color-primary);
+  color: var(--color-surface);
 }
 
 /* Typing Bubble */
@@ -463,14 +465,14 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 12px 18px;
+  padding: 14px 20px;
 }
 
 .typingDot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #94a3b8;
+  background: var(--color-accent);
   animation: typingBounce 1.4s infinite ease-in-out both;
 }
 
