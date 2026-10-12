@@ -24,11 +24,14 @@ export const InboxView: React.FC = () => {
   const { isAmharic } = useLanguage();
   const t = inboxTranslations[isAmharic ? "am" : "en"];
 
-  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [conversations, setConversations] =
+    useState<Conversation[]>(INITIAL_CONVERSATIONS);
   const [activePerspective, setActivePerspective] =
     useState<MainPerspective>("buying_renting");
   const [activeFolder, setActiveFolder] = useState<SubFolder>("all");
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(
+    INITIAL_CONVERSATIONS[0]?.id || null
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const [isTourModalOpen, setIsTourModalOpen] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
