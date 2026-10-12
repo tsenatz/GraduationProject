@@ -1,47 +1,85 @@
 .headerContainer {
   background: #ffffff;
   border-bottom: 1px solid rgba(74, 127, 167, 0.2);
-  padding: 20px 24px 0px;
+  padding: 16px 20px 0px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   box-shadow: 0 1px 4px rgba(10, 25, 49, 0.02);
 }
 
-.titleRow {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.titleWrapper {
+.perspectiveSwitchWrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: flex-start;
 }
 
-.title {
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: #0A1931;
-  letter-spacing: -0.02em;
-  margin: 0;
-}
-
-.badge {
+.perspectiveSwitch {
+  display: inline-flex;
+  align-items: center;
   background: #f1f5f9;
-  color: #0A1931;
-  font-size: 0.8rem;
-  font-weight: 800;
-  padding: 2px 8px;
-  border-radius: 999px;
+  padding: 4px;
+  border-radius: 12px;
   border: 1px solid #e2e8f0;
+  gap: 4px;
+  max-width: 100%;
+  overflow-x: auto;
 }
 
-.subtitle {
+.perspectiveBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 9px;
   font-size: 0.86rem;
-  color: #64748b;
+  font-weight: 700;
+  color: #475569;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.perspectiveBtn:hover {
+  color: #0A1931;
+}
+
+.perspectiveBtnActive {
+  background: #0A1931;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(10, 25, 49, 0.18);
+}
+
+.perspectiveCount {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.perspectiveBtnActive .perspectiveCount {
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
+
+.contextBanner {
+  display: flex;
+  align-items: center;
+  background: #f8fafc;
+  border-left: 3.5px solid #4A7FA7;
+  padding: 7px 12px;
+  border-radius: 0 6px 6px 0;
+}
+
+.contextSubtitle {
+  font-size: 0.8rem;
+  color: #475569;
   margin: 0;
+  line-height: 1.4;
 }
 
 .searchWrapper {
@@ -60,11 +98,11 @@
 
 .searchInput {
   width: 100%;
+  padding: 8px 36px 8px 38px;
+  font-size: 0.85rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
   background: #f8fafc;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 10px 38px 10px 40px;
-  font-size: 0.88rem;
   color: #0A1931;
   outline: none;
   transition: all 0.2s ease;
@@ -113,8 +151,8 @@
   background: transparent;
   border: none;
   border-bottom: 2.5px solid transparent;
-  padding: 10px 14px 12px;
-  font-size: 0.84rem;
+  padding: 8px 12px 10px;
+  font-size: 0.82rem;
   font-weight: 600;
   color: #64748b;
   cursor: pointer;
@@ -139,19 +177,21 @@
   font-weight: 700;
   padding: 1px 6px;
   border-radius: 999px;
+  transition: all 0.2s;
 }
 
 .countBadgeActive {
-  background: #eff6ff;
-  color: #1d4ed8;
+  background: #0A1931;
+  color: #ffffff;
 }
 
 @media (max-width: 640px) {
   .headerContainer {
-    padding: 16px 16px 0px;
-    gap: 12px;
+    padding: 12px 14px 0px;
+    gap: 10px;
   }
-  .title {
-    font-size: 1.35rem;
+  .perspectiveBtn {
+    padding: 7px 12px;
+    font-size: 0.78rem;
   }
 }

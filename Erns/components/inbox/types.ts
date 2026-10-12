@@ -11,6 +11,8 @@ export type MessageType = "text" | "tour_request" | "offer" | "attachment";
 
 export type UserPerspective = "buyer" | "renter" | "seller" | "landlord";
 
+export type MainPerspective = "buying_renting" | "selling_hosting";
+
 export type ConversationCategory = "buy" | "rent" | "sell" | "landlord";
 
 export interface MessageMetadata {
@@ -89,12 +91,10 @@ export interface Conversation {
   userPerspective: UserPerspective;
 }
 
-export type InboxFolder =
+export type SubFolder =
   | "all"
-  | "buying"
-  | "renting"
-  | "selling"
-  | "landlord"
+  | "sale"
+  | "rent"
   | "tours"
   | "unread"
   | "archived";

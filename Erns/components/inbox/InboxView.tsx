@@ -1,7 +1,12 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
-import { Conversation, InboxFolder, Message } from "./types";
+import {
+  Conversation,
+  MainPerspective,
+  SubFolder,
+  Message,
+} from "./types";
 import { INITIAL_CONVERSATIONS } from "./mockConversations";
 import { InboxHeader } from "./InboxHeader/InboxHeader";
 import { ConversationList } from "./ConversationList/ConversationList";
@@ -10,12 +15,14 @@ import { InboxEmptyState } from "./InboxEmptyState/InboxEmptyState";
 import { TourScheduleModal } from "./TourScheduleModal/TourScheduleModal";
 import styles from "./InboxView.module.css";
 
-const STORAGE_KEY = "erns_inbox_conversations_v2";
+const STORAGE_KEY = "erns_inbox_conversations_v3";
 
 export const InboxView: React.FC = () => {
   const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [activePerspective, setActivePerspective] =
+    useState<MainPerspective>("buying_renting");
+  const [activeFolder, setActiveFolder] = useState<SubFolder>("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [activeFolder, setActiveFolder] = useState<InboxFolder>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [isTourModalOpen, setIsTourModalOpen] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
@@ -46,7 +53,9 @@ export const InboxView: React.FC = () => {
   }, []);
 
   // Save to LocalStorage whenever conversations state changes
-  const updateConversations = (updater: (prev: Conversation[]) => Conversation[]) => {
+  const updateConversations = (
+    updater: (prev: Conversation[]) => Conversation[]
+  ) => {
     setConversations((prev) => {
       const next = updater(prev);
       try {
@@ -58,35 +67,72 @@ export const InboxView: React.FC = () => {
     });
   };
 
-  // 2. Folder Counts
-  const folderCounts = useMemo(() => {
+  // 2. Perspective Counts (Buying/Renting vs Selling/Hosting)
+  const perspectiveCounts = useMemo(() => {
     const nonArchived = conversations.filter((c) => !c.isArchived);
     return {
-      all: nonArchived.length,
-      buying: nonArchived.filter((c) => c.category === "buy").length,
-      renting: nonArchived.filter((c) => c.category === "rent").length,
-      selling: nonArchived.filter((c) => c.category === "sell").length,
-      landlord: nonArchived.filter((c) => c.category === "landlord").length,
-      tours: nonArchived.filter((c) => c.inquiryType === "tour").length,
-      unread: nonArchived.filter((c) => c.unreadCount > 0).length,
-      archived: conversations.filter((c) => c.isArchived).length,
+      buying_renting: nonArchived.filter(
+        (c) => c.userPerspective === "buyer" || c.userPerspective === "renter"
+      ).length,
+      selling_hosting: nonArchived.filter(
+        (c) => c.userPerspective === "seller" || c.userPerspective === "landlord"
+      ).length,
     };
   }, [conversations]);
 
-  // 3. Filtered Conversations
+  // 3. Sub-folder Counts within the Active Perspective
+  const folderCounts = useMemo(() => {
+    const perspectiveConvs = conversations.filter((c) => {
+      if (activePerspective === "buying_renting") {
+        return c.userPerspective === "buyer" || c.userPerspective === "renter";
+      } else {
+        return c.userPerspective === "seller" || c.userPerspective === "landlord";
+      }
+    });
+
+    const nonArchived = perspectiveConvs.filter((c) => !c.isArchived);
+
+    const isBuyPerspective = activePerspective === "buying_renting";
+    const saleMatchCategory = isBuyPerspective ? "buy" : "sell";
+    const rentMatchCategory = isBuyPerspective ? "rent" : "landlord";
+
+    return {
+      all: nonArchived.length,
+      sale: nonArchived.filter((c) => c.category === saleMatchCategory).length,
+      rent: nonArchived.filter((c) => c.category === rentMatchCategory).length,
+      tours: nonArchived.filter((c) => c.inquiryType === "tour").length,
+      unread: nonArchived.filter((c) => c.unreadCount > 0).length,
+      archived: perspectiveConvs.filter((c) => c.isArchived).length,
+    };
+  }, [conversations, activePerspective]);
+
+  // 4. Filtered Conversations
   const filteredConversations = useMemo(() => {
     return conversations.filter((conv) => {
-      // Folder filter
+      // Main Perspective check
+      const belongsToPerspective =
+        activePerspective === "buying_renting"
+          ? conv.userPerspective === "buyer" || conv.userPerspective === "renter"
+          : conv.userPerspective === "seller" || conv.userPerspective === "landlord";
+
+      if (!belongsToPerspective) return false;
+
+      const isBuyPerspective = activePerspective === "buying_renting";
+      const saleMatchCategory = isBuyPerspective ? "buy" : "sell";
+      const rentMatchCategory = isBuyPerspective ? "rent" : "landlord";
+
+      // Sub-folder filter
       if (activeFolder === "archived") {
         if (!conv.isArchived) return false;
       } else {
         if (conv.isArchived) return false;
-        if (activeFolder === "buying" && conv.category !== "buy") return false;
-        if (activeFolder === "renting" && conv.category !== "rent") return false;
-        if (activeFolder === "selling" && conv.category !== "sell") return false;
-        if (activeFolder === "landlord" && conv.category !== "landlord") return false;
+        if (activeFolder === "sale" && conv.category !== saleMatchCategory)
+          return false;
+        if (activeFolder === "rent" && conv.category !== rentMatchCategory)
+          return false;
         if (activeFolder === "unread" && conv.unreadCount === 0) return false;
-        if (activeFolder === "tours" && conv.inquiryType !== "tour") return false;
+        if (activeFolder === "tours" && conv.inquiryType !== "tour")
+          return false;
       }
 
       // Keyword search
@@ -94,10 +140,12 @@ export const InboxView: React.FC = () => {
         const q = searchQuery.toLowerCase();
         const matchName =
           conv.participant.name.toLowerCase().includes(q) ||
-          (conv.participant.nameAm && conv.participant.nameAm.toLowerCase().includes(q));
+          (conv.participant.nameAm &&
+            conv.participant.nameAm.toLowerCase().includes(q));
         const matchProp =
           conv.property.title.toLowerCase().includes(q) ||
-          (conv.property.titleAm && conv.property.titleAm.toLowerCase().includes(q)) ||
+          (conv.property.titleAm &&
+            conv.property.titleAm.toLowerCase().includes(q)) ||
           conv.property.subCity.toLowerCase().includes(q);
         const matchMsg = conv.messages.some((m) =>
           m.content.toLowerCase().includes(q)
@@ -107,14 +155,41 @@ export const InboxView: React.FC = () => {
 
       return true;
     });
-  }, [conversations, activeFolder, searchQuery]);
+  }, [conversations, activePerspective, activeFolder, searchQuery]);
 
-  // 4. Currently Selected Conversation
+  // Switch perspective handler
+  const handlePerspectiveChange = (p: MainPerspective) => {
+    setActivePerspective(p);
+    setActiveFolder("all");
+
+    // Automatically select first conversation in the newly active perspective
+    const nextConvs = conversations.filter((c) => {
+      if (p === "buying_renting") {
+        return (
+          !c.isArchived &&
+          (c.userPerspective === "buyer" || c.userPerspective === "renter")
+        );
+      } else {
+        return (
+          !c.isArchived &&
+          (c.userPerspective === "seller" || c.userPerspective === "landlord")
+        );
+      }
+    });
+
+    if (nextConvs.length > 0) {
+      setSelectedId(nextConvs[0].id);
+    } else {
+      setSelectedId(null);
+    }
+  };
+
+  // 5. Currently Selected Conversation
   const activeConversation = useMemo(() => {
     return conversations.find((c) => c.id === selectedId) || null;
   }, [conversations, selectedId]);
 
-  // 5. Handlers
+  // 6. Handlers
   const handleSelectConversation = (id: string) => {
     setSelectedId(id);
     setShowMobileChat(true);
@@ -184,36 +259,60 @@ export const InboxView: React.FC = () => {
 
       if (perspective === "seller") {
         // Current user is the seller; reply is from prospective buyer
-        if (userText.toLowerCase().includes("saturday") || userText.toLowerCase().includes("tour")) {
+        if (
+          userText.toLowerCase().includes("saturday") ||
+          userText.toLowerCase().includes("tour")
+        ) {
           replyContent = `Thank you so much! Saturday works perfectly for us. We will arrive at the compound on time.`;
-        } else if (userText.toLowerCase().includes("price") || userText.toLowerCase().includes("negotiable")) {
+        } else if (
+          userText.toLowerCase().includes("price") ||
+          userText.toLowerCase().includes("negotiable")
+        ) {
           replyContent = `Understood! We are ready with bank proof of funds and appreciate your flexibility on the price.`;
         } else {
           replyContent = `Thank you for confirming! I am reviewing the listing details and will be in touch shortly.`;
         }
       } else if (perspective === "landlord") {
         // Current user is the landlord; reply is from prospective tenant
-        if (userText.toLowerCase().includes("application") || userText.toLowerCase().includes("id")) {
+        if (
+          userText.toLowerCase().includes("application") ||
+          userText.toLowerCase().includes("id")
+        ) {
           replyContent = `Thank you! I have uploaded my employment letter and will complete the ID verification right away.`;
-        } else if (userText.toLowerCase().includes("deposit") || userText.toLowerCase().includes("lease")) {
+        } else if (
+          userText.toLowerCase().includes("deposit") ||
+          userText.toLowerCase().includes("lease")
+        ) {
           replyContent = `The 2-month deposit is agreeable. Could we finalize the move-in inspection for this Friday?`;
         } else {
           replyContent = `Understood! I appreciate your quick guidance on this rental apartment.`;
         }
       } else if (perspective === "renter") {
         // Current user is the renter; reply is from landlord or leasing agent
-        if (userText.toLowerCase().includes("tour") || userText.toLowerCase().includes("visit")) {
+        if (
+          userText.toLowerCase().includes("tour") ||
+          userText.toLowerCase().includes("visit")
+        ) {
           replyContent = `I would be pleased to show you the apartment. I'll arrange building security clearance for your visit.`;
-        } else if (userText.toLowerCase().includes("deposit") || userText.toLowerCase().includes("utilities")) {
+        } else if (
+          userText.toLowerCase().includes("deposit") ||
+          userText.toLowerCase().includes("utilities")
+        ) {
           replyContent = `Yes, all major utilities (water reservoir, standby generator) are covered under the management fee.`;
         } else {
           replyContent = `Thank you for your interest! Feel free to ask if you'd like to inspect the building amenities.`;
         }
       } else {
         // Default buyer perspective; reply is from agent or seller
-        if (userText.toLowerCase().includes("libre") || userText.toLowerCase().includes("carta")) {
+        if (
+          userText.toLowerCase().includes("libre") ||
+          userText.toLowerCase().includes("carta")
+        ) {
           replyContent = `The digital Carta/Libre has been cleared by the Addis Ababa Land Bureau and is available for legal verification.`;
-        } else if (userText.toLowerCase().includes("tour") || userText.toLowerCase().includes("visit")) {
+        } else if (
+          userText.toLowerCase().includes("tour") ||
+          userText.toLowerCase().includes("visit")
+        ) {
           replyContent = `I would be happy to host a property tour. Let me know which time window works best and I will arrange access.`;
         } else {
           replyContent = `Thank you for reaching out! I've received your inquiry and will provide full property details shortly.`;
@@ -246,7 +345,11 @@ export const InboxView: React.FC = () => {
     }, 1800);
   };
 
-  const handleTourSubmit = (tourDate: string, tourTime: string, note?: string) => {
+  const handleTourSubmit = (
+    tourDate: string,
+    tourTime: string,
+    note?: string
+  ) => {
     if (!selectedId) return;
 
     const currentConv = conversations.find((c) => c.id === selectedId);
@@ -309,10 +412,16 @@ export const InboxView: React.FC = () => {
     );
 
     // Add confirmation text message
-    handleSendMessage("I have confirmed your tour request! Looking forward to welcoming you.");
+    handleSendMessage(
+      "I have confirmed your tour request! Looking forward to welcoming you."
+    );
   };
 
-  const handleAttachFile = (file: { name: string; size: string; url: string }) => {
+  const handleAttachFile = (file: {
+    name: string;
+    size: string;
+    url: string;
+  }) => {
     if (!selectedId) return;
 
     const currentConv = conversations.find((c) => c.id === selectedId);
@@ -378,11 +487,14 @@ export const InboxView: React.FC = () => {
   return (
     <div className={styles.inboxLayout}>
       <InboxHeader
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
+        activePerspective={activePerspective}
+        onPerspectiveChange={handlePerspectiveChange}
+        perspectiveCounts={perspectiveCounts}
         activeFolder={activeFolder}
         onFolderChange={setActiveFolder}
         folderCounts={folderCounts}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
       />
 
       <div className={styles.dualPaneContainer}>
