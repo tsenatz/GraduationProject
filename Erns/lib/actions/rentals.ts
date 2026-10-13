@@ -394,7 +394,76 @@ export async function updateRentalStatusAction(
 }
 
 /**
- * 4. Delete rental property listing
+ * 4. Update full rental property listing details (Edit mode)
+ */
+export async function updateRentalPropertyAction(
+  propertyId: string,
+  data: Partial<RentalPropertyInput>
+): Promise<RentalActionResult> {
+  try {
+    const store = getRentalMemoryStore();
+    const existing = store.find((p) => p.id === propertyId);
+
+    if (process.env.DATABASE_URL) {
+      try {
+        await (db as any).property.update({
+          where: { id: propertyId },
+          data: {
+            ...(data.title ? { title: data.title } : {}),
+            ...(data.priceETB ? { price: data.priceETB } : {}),
+            ...(data.depositETB ? { deposit: data.depositETB } : {}),
+            ...(data.bedrooms ? { beds: data.bedrooms } : {}),
+            ...(data.bathrooms ? { baths: data.bathrooms } : {}),
+            ...(data.areaSqM ? { areaSqM: data.areaSqM, sqft: Math.round(data.areaSqM * 10.764) } : {}),
+            ...(data.propertyType ? { propertyType: data.propertyType } : {}),
+            ...(data.subCity ? { subCity: data.subCity } : {}),
+            ...(data.specificArea ? { specificArea: data.specificArea } : {}),
+            ...(data.description ? { description: data.description } : {}),
+            ...(data.amenities ? { amenities: data.amenities } : {}),
+            ...(data.images ? { images: data.images } : {}),
+            ...(data.contactPhone ? { contactPhone: data.contactPhone } : {}),
+          },
+        });
+      } catch (err) {
+        console.warn("DB update property skipped:", err);
+      }
+    }
+
+    if (existing) {
+      if (data.title) existing.title = data.title;
+      if (data.priceETB !== undefined) existing.priceETB = data.priceETB;
+      if (data.depositETB !== undefined) existing.depositETB = data.depositETB;
+      if (data.bedrooms !== undefined) existing.bedrooms = data.bedrooms;
+      if (data.bathrooms !== undefined) existing.bathrooms = data.bathrooms;
+      if (data.areaSqM !== undefined) existing.areaSqM = data.areaSqM;
+      if (data.propertyType) existing.propertyType = data.propertyType;
+      if (data.subCity) existing.subCity = data.subCity;
+      if (data.specificArea) {
+        existing.specificArea = data.specificArea;
+        existing.address = `${data.specificArea}, ${existing.subCity}, Addis Ababa`;
+      }
+      if (data.description !== undefined) existing.description = data.description;
+      if (data.amenities) existing.amenities = data.amenities;
+      if (data.images && data.images.length > 0) existing.images = data.images;
+      if (data.furnishedStatus) existing.furnishedStatus = data.furnishedStatus;
+      if (data.leaseTerm) existing.leaseTerm = data.leaseTerm;
+    }
+
+    revalidatePath("/rentalmanager/properties");
+    revalidatePath("/rentalmanager/dashboard");
+
+    return {
+      success: true,
+      property: existing,
+    };
+  } catch (error: any) {
+    console.error("Failed to update rental property:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * 5. Delete rental property listing
  */
 export async function deleteRentalPropertyAction(
   propertyId: string

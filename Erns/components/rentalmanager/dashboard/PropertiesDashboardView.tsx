@@ -12,6 +12,10 @@ import {
   Wallet,
   Home,
   RefreshCw,
+  ArrowUpDown,
+  Filter,
+  Check,
+  X,
 } from "lucide-react";
 import {
   getLandlordRentalPropertiesAction,
@@ -22,6 +26,20 @@ import {
 import { AddRentalPropertyModal } from "./AddRentalPropertyModal/AddRentalPropertyModal";
 import { RentalPropertyCard } from "./RentalPropertyCard/RentalPropertyCard";
 import styles from "./RentalManagerDashboard.module.css";
+
+const SUB_CITY_LIST = [
+  "ALL",
+  "Bole",
+  "Kirkos",
+  "Yeka",
+  "Lideta",
+  "Arada",
+  "Gullele",
+  "Nifas Silk-Lafto",
+  "Akaky Kaliti",
+  "Kolfe Keranio",
+  "Addis Ketema",
+];
 
 interface PropertiesDashboardViewProps {
   userName?: string;
@@ -37,7 +55,12 @@ export function PropertiesDashboardView({
   const [properties, setProperties] = useState<RentalPropertyRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [editingProperty, setEditingProperty] = useState<RentalPropertyRecord | null>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
   const [filterStatus, setFilterStatus] = useState<"ALL" | "FOR_RENT" | "RENTED" | "OFF_MARKET">("ALL");
+  const [selectedSubCity, setSelectedSubCity] = useState("ALL");
+  const [sortBy, setSortBy] = useState<"newest" | "price_desc" | "price_asc" | "inquiries">("newest");
   const [searchQuery, setSearchQuery] = useState("");
   const [isPending, startTransition] = useTransition();
 
@@ -48,6 +71,7 @@ export function PropertiesDashboardView({
       searchParams.get("itc") === "postbutton_sitenav" ||
       searchParams.get("add") === "true"
     ) {
+      setEditingProperty(null);
       setIsAddModalOpen(true);
     }
   }, [searchParams]);
@@ -76,10 +100,11 @@ export function PropertiesDashboardView({
     };
   }, []);
 
-  // Filtered properties
-  const filteredProperties = useMemo(() => {
-    return properties.filter((prop) => {
+  // Filtered & Sorted properties
+  const displayedProperties = useMemo(() => {
+    const filtered = properties.filter((prop) => {
       const matchesStatus = filterStatus === "ALL" || prop.status === filterStatus;
+      const matchesSubCity = selectedSubCity === "ALL" || prop.subCity === selectedSubCity;
       const q = searchQuery.toLowerCase().trim();
       const matchesQuery =
         !q ||
@@ -87,9 +112,17 @@ export function PropertiesDashboardView({
         prop.address.toLowerCase().includes(q) ||
         prop.subCity.toLowerCase().includes(q) ||
         prop.propertyType.toLowerCase().includes(q);
-      return matchesStatus && matchesQuery;
+      return matchesStatus && matchesSubCity && matchesQuery;
     });
-  }, [properties, filterStatus, searchQuery]);
+
+    return filtered.sort((a, b) => {
+      if (sortBy === "price_desc") return (b.priceETB || 0) - (a.priceETB || 0);
+      if (sortBy === "price_asc") return (a.priceETB || 0) - (b.priceETB || 0);
+      if (sortBy === "inquiries") return (b.inquiriesCount || 0) - (a.inquiriesCount || 0);
+      // default "newest"
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+  }, [properties, filterStatus, selectedSubCity, searchQuery, sortBy]);
 
   // Aggregate stats
   const stats = useMemo(() => {
@@ -107,7 +140,6 @@ export function PropertiesDashboardView({
     propertyId: string,
     newStatus: "FOR_RENT" | "RENTED" | "OFF_MARKET"
   ) => {
-    // Optimistic update
     setProperties((prev) =>
       prev.map((p) => (p.id === propertyId ? { ...p, status: newStatus } : p))
     );
@@ -123,34 +155,73 @@ export function PropertiesDashboardView({
     }
 
     setProperties((prev) => prev.filter((p) => p.id !== propertyId));
+    setToastMessage("Property removed from portfolio.");
 
     startTransition(async () => {
       await deleteRentalPropertyAction(propertyId);
     });
   };
 
+  const handleOpenAddModal = () => {
+    setEditingProperty(null);
+    setIsAddModalOpen(true);
+  };
+
+  const handleOpenEditModal = (prop: RentalPropertyRecord) => {
+    setEditingProperty(prop);
+    setIsAddModalOpen(true);
+  };
+
   const handlePropertyAdded = (newProp: RentalPropertyRecord) => {
     setProperties((prev) => [newProp, ...prev]);
     setIsAddModalOpen(false);
+    setToastMessage(`"${newProp.title}" listed successfully!`);
+    setTimeout(() => setToastMessage(null), 4000);
+  };
+
+  const handlePropertyUpdated = (updatedProp: RentalPropertyRecord) => {
+    setProperties((prev) =>
+      prev.map((p) => (p.id === updatedProp.id ? updatedProp : p))
+    );
+    setIsAddModalOpen(false);
+    setEditingProperty(null);
+    setToastMessage(`"${updatedProp.title}" updated successfully!`);
+    setTimeout(() => setToastMessage(null), 4000);
   };
 
   return (
     <div className={styles.mainContent}>
-      {/* If properties exist or loading is complete */}
+      {/* Toast Notification Banner */}
+      {toastMessage && (
+        <div className={styles.toastBanner}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <Check size={18} />
+            <span>{toastMessage}</span>
+          </div>
+          <button
+            type="button"
+            className={styles.toastCloseBtn}
+            onClick={() => setToastMessage(null)}
+          >
+            <X size={16} />
+          </button>
+        </div>
+      )}
+
+      {/* Loading state */}
       {isLoading ? (
         <div style={{ textAlign: "center", padding: "4rem 0", color: "#64748B" }}>
           <RefreshCw className="animate-spin" size={32} style={{ margin: "0 auto 1rem" }} />
           <p style={{ fontWeight: 600 }}>Loading rental properties...</p>
         </div>
       ) : properties.length === 0 ? (
-        /* Empty / Zero properties state: Show Original Welcome Hero */
+        /* Empty Portfolio State (Zillow Welcome Hero) */
         <>
           <div className={styles.pageHeaderRow}>
             <h1 className={styles.pageTitle}>Properties</h1>
           </div>
 
           <div className={styles.heroCard}>
-            {/* Left Column: Greeting & Call to action */}
             <div className={styles.leftHeroCol}>
               <div className={styles.heroGraphic}>
                 <div style={{ textAlign: "center" }}>
@@ -189,14 +260,13 @@ export function PropertiesDashboardView({
 
               <button
                 type="button"
-                onClick={() => setIsAddModalOpen(true)}
+                onClick={handleOpenAddModal}
                 className={styles.primaryAddBtn}
               >
                 Add a property
               </button>
             </div>
 
-            {/* Right Column: All-in-one Solution Card */}
             <div className={styles.solutionBox}>
               <div className={styles.solutionHeader}>
                 <Megaphone size={22} color="#0A1931" />
@@ -213,23 +283,19 @@ export function PropertiesDashboardView({
                 </li>
                 <li className={styles.featureItem}>
                   <span className={styles.bulletDot}>•</span>
-                  <span>Receive applications</span>
+                  <span>Receive applications & tenant screening</span>
                 </li>
                 <li className={styles.featureItem}>
                   <span className={styles.bulletDot}>•</span>
-                  <span>Screen tenants</span>
+                  <span>Message renters & schedule tours</span>
                 </li>
                 <li className={styles.featureItem}>
                   <span className={styles.bulletDot}>•</span>
-                  <span>Message renters</span>
+                  <span>Create and sign digital leases</span>
                 </li>
                 <li className={styles.featureItem}>
                   <span className={styles.bulletDot}>•</span>
-                  <span>Create and sign leases</span>
-                </li>
-                <li className={styles.featureItem}>
-                  <span className={styles.bulletDot}>•</span>
-                  <span>Receive rent payments</span>
+                  <span>Collect rent payments in ETB</span>
                 </li>
               </ul>
 
@@ -240,7 +306,7 @@ export function PropertiesDashboardView({
           </div>
         </>
       ) : (
-        /* Populated Properties Dashboard View */
+        /* Populated Properties Management Dashboard */
         <>
           {/* Header Row */}
           <div className={styles.propertiesHeader}>
@@ -253,7 +319,7 @@ export function PropertiesDashboardView({
 
             <button
               type="button"
-              onClick={() => setIsAddModalOpen(true)}
+              onClick={handleOpenAddModal}
               className={styles.addPropertyHeaderBtn}
             >
               <Plus size={18} />
@@ -318,8 +384,9 @@ export function PropertiesDashboardView({
             </div>
           </div>
 
-          {/* Toolbar: Filters & Search */}
+          {/* Toolbar: Filters, Sub-City, Sort, Search */}
           <div className={styles.toolbarRow}>
+            {/* Left: Status Filter Pills */}
             <div className={styles.filterTabs}>
               <button
                 type="button"
@@ -359,27 +426,59 @@ export function PropertiesDashboardView({
               </button>
             </div>
 
-            <div className={styles.searchBox}>
-              <Search size={16} className={styles.searchIcon} />
-              <input
-                type="text"
-                placeholder="Search by title, sub-city, address..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className={styles.searchInput}
-              />
+            {/* Right: Sub-city select, Sort select & Search input */}
+            <div className={styles.toolbarRight}>
+              {/* Sub-city dropdown */}
+              <select
+                className={styles.sortSelect}
+                value={selectedSubCity}
+                onChange={(e) => setSelectedSubCity(e.target.value)}
+                title="Filter by Sub-City"
+              >
+                {SUB_CITY_LIST.map((sc) => (
+                  <option key={sc} value={sc}>
+                    {sc === "ALL" ? "All Sub-Cities" : sc}
+                  </option>
+                ))}
+              </select>
+
+              {/* Sort By dropdown */}
+              <select
+                className={styles.sortSelect}
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as any)}
+                title="Sort Properties"
+              >
+                <option value="newest">Newest First</option>
+                <option value="price_desc">Price: High to Low</option>
+                <option value="price_asc">Price: Low to High</option>
+                <option value="inquiries">Most Inquiries</option>
+              </select>
+
+              {/* Search Box */}
+              <div className={styles.searchBox}>
+                <Search size={16} className={styles.searchIcon} />
+                <input
+                  type="text"
+                  placeholder="Search by title or address..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className={styles.searchInput}
+                />
+              </div>
             </div>
           </div>
 
           {/* Properties Grid */}
-          {filteredProperties.length > 0 ? (
+          {displayedProperties.length > 0 ? (
             <div className={styles.propertiesGrid}>
-              {filteredProperties.map((prop) => (
+              {displayedProperties.map((prop) => (
                 <RentalPropertyCard
                   key={prop.id}
                   property={prop}
                   onStatusChange={handleStatusChange}
                   onDelete={handleDelete}
+                  onEdit={handleOpenEditModal}
                 />
               ))}
             </div>
@@ -388,28 +487,34 @@ export function PropertiesDashboardView({
               <Building2 size={40} color="#94A3B8" />
               <h3 className={styles.emptyFilterTitle}>No matching properties found</h3>
               <p className={styles.emptyFilterDesc}>
-                Try adjusting your search terms or filter tab to view other listings.
+                Try adjusting your search terms, sub-city, or filter tab to view other listings.
               </p>
               <button
                 type="button"
                 onClick={() => {
                   setFilterStatus("ALL");
+                  setSelectedSubCity("ALL");
                   setSearchQuery("");
                 }}
                 className={styles.clearFilterBtn}
               >
-                Reset Filters
+                Reset All Filters
               </button>
             </div>
           )}
         </>
       )}
 
-      {/* Add Rental Property Modal */}
+      {/* Add / Edit Rental Property Modal */}
       <AddRentalPropertyModal
         isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
+        onClose={() => {
+          setIsAddModalOpen(false);
+          setEditingProperty(null);
+        }}
         onPropertyAdded={handlePropertyAdded}
+        onPropertyUpdated={handlePropertyUpdated}
+        initialData={editingProperty}
       />
     </div>
   );

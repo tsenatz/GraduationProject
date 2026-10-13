@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -13,8 +13,13 @@ import {
   Trash2,
   Users,
   CheckCircle2,
-  Clock,
   EyeOff,
+  Edit3,
+  Share2,
+  Check,
+  Zap,
+  Droplets,
+  ShieldCheck,
 } from "lucide-react";
 import { RentalPropertyRecord } from "@/lib/actions/rentals";
 import styles from "./RentalPropertyCard.module.css";
@@ -26,15 +31,27 @@ interface RentalPropertyCardProps {
     newStatus: "FOR_RENT" | "RENTED" | "OFF_MARKET"
   ) => void;
   onDelete: (propertyId: string) => void;
+  onEdit?: (property: RentalPropertyRecord) => void;
 }
 
 export const RentalPropertyCard: React.FC<RentalPropertyCardProps> = ({
   property,
   onStatusChange,
   onDelete,
+  onEdit,
 }) => {
+  const [copied, setCopied] = useState(false);
+
   const formatPrice = (val: number) => {
     return new Intl.NumberFormat("en-US").format(val);
+  };
+
+  const handleCopyLink = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const url = `${window.location.origin}/property/${property.id}`;
+    navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   const getStatusBadge = () => {
@@ -126,12 +143,31 @@ export const RentalPropertyCard: React.FC<RentalPropertyCardProps> = ({
           </div>
         </div>
 
+        {/* Quick Highlights / Amenities tags */}
+        <div className={styles.amenitiesTags}>
+          {property.amenities.includes("Standby Generator") && (
+            <span className={styles.amenityTag} title="Standby Generator">
+              <Zap size={11} /> Generator
+            </span>
+          )}
+          {property.amenities.includes("Water Tank Reservoir") && (
+            <span className={styles.amenityTag} title="Water Reservoir Tank">
+              <Droplets size={11} /> Water Tank
+            </span>
+          )}
+          {property.amenities.includes("24/7 Compound Security") && (
+            <span className={styles.amenityTag} title="Compound Security">
+              <ShieldCheck size={11} /> Security
+            </span>
+          )}
+        </div>
+
         {/* Performance Metrics */}
         <div className={styles.metricsRow}>
-          <span className={styles.metricBadge}>
+          <Link href="/inbox" className={styles.metricBadge} title="View Inquiries">
             <MessageSquare size={12} />
             <span>{property.inquiriesCount} Inquiries</span>
-          </span>
+          </Link>
           <span className={styles.metricBadge}>
             <Users size={12} />
             <span>{property.applicationsCount} Applications</span>
@@ -153,6 +189,26 @@ export const RentalPropertyCard: React.FC<RentalPropertyCardProps> = ({
           </select>
 
           <div className={styles.actionsRight}>
+            {onEdit && (
+              <button
+                type="button"
+                className={styles.iconBtn}
+                title="Edit Property Details"
+                onClick={() => onEdit(property)}
+              >
+                <Edit3 size={15} />
+              </button>
+            )}
+
+            <button
+              type="button"
+              className={styles.iconBtn}
+              title={copied ? "Copied!" : "Copy Public Link"}
+              onClick={handleCopyLink}
+            >
+              {copied ? <Check size={15} color="#16A34A" /> : <Share2 size={15} />}
+            </button>
+
             <Link
               href={`/property/${property.id}`}
               className={styles.iconBtn}
@@ -160,14 +216,6 @@ export const RentalPropertyCard: React.FC<RentalPropertyCardProps> = ({
               target="_blank"
             >
               <ExternalLink size={15} />
-            </Link>
-
-            <Link
-              href="/inbox"
-              className={styles.iconBtn}
-              title="View Inquiries & Messages"
-            >
-              <MessageSquare size={15} />
             </Link>
 
             <button

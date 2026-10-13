@@ -149,6 +149,26 @@
   margin-bottom: 14px;
 }
 
+.amenitiesTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.amenityTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #0A1931;
+  background-color: rgba(74, 127, 167, 0.08);
+  border: 1px solid rgba(74, 127, 167, 0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
 .metricBadge {
   display: inline-flex;
   align-items: center;
@@ -160,6 +180,13 @@
   font-size: 0.72rem;
   font-weight: 600;
   color: #334155;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.metricBadge:hover {
+  background-color: #F1F5F9;
+  color: #0A1931;
 }
 
 .cardFooter {
