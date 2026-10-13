@@ -9,14 +9,7 @@ const SERVICE_ITEMS = [
     description:
       "A real estate agent can provide you with a clear breakdown of costs so that you can avoid surprise expenses.",
     buttonLabel: "Find a local agent",
-  },
-  {
-    imageSrc: "/sell-house.jpg",
-    imageAlt: "Sell a house illustration",
-    title: "Sell a home",
-    description:
-      "No matter what path you take to sell your home, we can help you navigate a successful sale.",
-    buttonLabel: "See your options",
+    href: "/agents",
   },
   {
     imageSrc: "/rent-house.jpg",
@@ -25,6 +18,16 @@ const SERVICE_ITEMS = [
     description:
       "We're creating a seamless online experience – from shopping on the largest rental network, to applying, to paying rent.",
     buttonLabel: "Find rentals",
+    href: "/search?status=FOR_RENT",
+  },
+  {
+    imageSrc: "/sell-house.jpg",
+    imageAlt: "Sell a house illustration",
+    title: "Sell a home",
+    description:
+      "No matter what path you take to sell your home, we can help you navigate a successful sale.",
+    buttonLabel: "See your options",
+    href: "/sell",
   },
 ];
 
