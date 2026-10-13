@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
-import { LogOut, LayoutDashboard, Home } from "lucide-react";
+import { LogOut, LayoutDashboard, Home, Inbox, Heart } from "lucide-react";
 import styles from "./SignInButton.module.css";
 
 interface SignInButtonProps {
@@ -108,6 +108,30 @@ export default function SignInButton({
             </div>
 
             <div className={styles.dropdownDivider} />
+
+            <Link
+              href="/inbox"
+              className={styles.dropdownItem}
+              onClick={() => {
+                setIsOpen(false);
+                if (onClick) onClick();
+              }}
+            >
+              <Inbox size={16} />
+              <span>Inbox & Messages</span>
+            </Link>
+
+            <Link
+              href="/favorites"
+              className={styles.dropdownItem}
+              onClick={() => {
+                setIsOpen(false);
+                if (onClick) onClick();
+              }}
+            >
+              <Heart size={16} />
+              <span>Saved Homes</span>
+            </Link>
 
             <Link
               href="/rentalmanager"

@@ -1,0 +1,195 @@
+.composerWrapper {
+  border-top: 1px solid rgba(var(--color-accent-rgb), 0.18);
+  background: var(--color-surface);
+  padding: 14px 24px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.perspectiveNotice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(var(--color-accent-rgb), 0.08);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.22);
+  color: var(--color-primary);
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 6px;
+}
+
+.quickPromptsBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.quickPromptsBar::-webkit-scrollbar {
+  display: none;
+}
+
+.promptsHeader {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.promptsIcon {
+  color: var(--color-primary);
+}
+
+.promptsList {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.promptPill {
+  background: rgba(var(--color-accent-rgb), 0.07);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.22);
+  color: var(--color-primary);
+  padding: 5px 13px;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.promptPill:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.inputBox {
+  background: var(--bg-color);
+  border: 1.5px solid rgba(var(--color-accent-rgb), 0.22);
+  border-radius: 14px;
+  padding: 10px 14px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.inputBox:focus-within {
+  border-color: var(--color-primary);
+  background: var(--color-surface);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.08);
+}
+
+.textarea {
+  width: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--color-primary);
+  resize: none;
+  line-height: 1.45;
+}
+
+.textarea::placeholder {
+  color: var(--color-accent);
+  opacity: 0.7;
+}
+
+.actionsBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.leftTools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toolBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-surface);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.25);
+  color: var(--color-primary);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toolBtn:hover {
+  background: rgba(var(--color-accent-rgb), 0.1);
+  border-color: var(--color-primary);
+}
+
+.toolBtnIconOnly {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(var(--color-accent-rgb), 0.25);
+  background: var(--color-surface);
+  color: var(--color-accent);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.toolBtnIconOnly:hover {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.sendBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(var(--color-accent-rgb), 0.25);
+  color: var(--color-surface);
+  border: none;
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: not-allowed;
+  transition: all 0.2s ease;
+}
+
+.sendBtnActive {
+  background: var(--color-primary);
+  cursor: pointer;
+}
+
+.sendBtnActive:hover {
+  background: var(--color-primary-transparent-90);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+  .toolBtn span {
+    display: none;
+  }
+  .toolBtn {
+    padding: 6px 8px;
+  }
+}

@@ -1,0 +1,302 @@
+.pageContainer {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 24px 44px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 960px) {
+  .pageContainer {
+    padding: 14px 14px 56px;
+  }
+}
+
+.inboxCard {
+  background: var(--color-surface);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.22);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(var(--color-primary-rgb), 0.05);
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 130px);
+  min-height: 680px;
+  overflow: hidden;
+  position: relative;
+}
+
+@media (max-width: 960px) {
+  .inboxCard {
+    height: calc(100vh - 150px);
+    border-radius: 12px;
+  }
+}
+
+.dualPaneContainer {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  min-height: 0;
+}
+
+.leftPane {
+  width: 380px;
+  min-width: 320px;
+  max-width: 420px;
+  flex: 0 0 380px;
+  border-right: 1px solid rgba(var(--color-accent-rgb), 0.18);
+  background: var(--color-surface);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Left Pane Search & Sub-Filter Bar */
+.leftControls {
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid rgba(var(--color-accent-rgb), 0.14);
+  background: var(--color-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.searchWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 11px;
+  color: var(--color-accent);
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 8px 30px 8px 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(var(--color-accent-rgb), 0.25);
+  background: var(--bg-color);
+  font-size: 0.8rem;
+  color: var(--color-primary);
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.searchInput:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb), 0.12);
+  background: var(--color-surface);
+}
+
+.clearSearchBtn {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  color: var(--color-accent);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 6px;
+}
+
+/* Sub-folder filter pills */
+.subFolderTabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+}
+
+.subFolderTabs::-webkit-scrollbar {
+  display: none;
+}
+
+.subFolderTabBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--color-accent);
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.subFolderTabBtn:hover {
+  color: var(--color-primary);
+  background: rgba(var(--color-accent-rgb), 0.08);
+}
+
+.subFolderTabBtnActive {
+  background: rgba(var(--color-accent-rgb), 0.12);
+  color: var(--color-primary);
+  border-color: rgba(var(--color-accent-rgb), 0.25);
+}
+
+.subFolderTabCount {
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 9999px;
+  background: rgba(var(--color-accent-rgb), 0.16);
+  color: var(--color-primary);
+}
+
+.subFolderTabBtnActive .subFolderTabCount {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.rightPane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg-color);
+  min-width: 0;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* Mobile responsive single pane toggle */
+@media (max-width: 840px) {
+  .leftPane {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    flex: 1;
+    border-right: none;
+  }
+
+  .leftPaneHiddenMobile {
+    display: none !important;
+  }
+
+  .rightPane {
+    width: 100%;
+    flex: 1;
+  }
+
+  .rightPaneHiddenMobile {
+    display: none !important;
+  }
+}
+
+/* Loading State */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  background: var(--color-surface);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.2);
+  border-radius: 16px;
+  min-height: 400px;
+}
+
+.loadingSpinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(var(--color-accent-rgb), 0.2);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingText {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+/* Demo Notice Banner */
+.demoNoticeBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 18px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  font-size: 0.82rem;
+  color: #1e40af;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.demoNoticeLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.demoSparkleIcon {
+  color: #2563eb;
+  flex-shrink: 0;
+}
+
+.demoNoticeActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.demoSignInLink {
+  font-weight: 800;
+  color: #1d4ed8;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.15s;
+}
+
+.demoSignInLink:hover {
+  color: #1e3a8a;
+}
+
+.demoExitBtn {
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-size: 1.2rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 4px;
+}
+
+.demoExitBtn:hover {
+  color: #111827;
+}
+

@@ -26,6 +26,7 @@ import {
   Copy,
 } from "lucide-react";
 import { PropertyDetailData } from "@/lib/actions/properties";
+import { startNewConversationAction } from "@/lib/actions/inbox";
 import { useFavorites } from "@/components/providers/FavoritesProvider";
 import styles from "./PropertyDetailView.module.css";
 
@@ -103,6 +104,18 @@ export function PropertyDetailView({ property }: PropertyDetailViewProps) {
   const handleInquirySubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setInquirySent(true);
+
+    startNewConversationAction({
+      recipientId: "agent-dawit",
+      recipientName: property.ownerName || "Listing Agent",
+      propertyId: property.id,
+      propertyTitle: property.title,
+      propertyImage: images[0],
+      propertyPrice: property.price,
+      initialMessage: inquiryMessage,
+      category: property.listingType === "RENT" ? "rent" : "buy",
+      inquiryType: "general",
+    }).catch((err) => console.warn("Failed to create conversation:", err));
   };
 
   const formatPrice = (val: number) => {
@@ -390,8 +403,27 @@ export function PropertyDetailView({ property }: PropertyDetailViewProps) {
                 <CheckCircle2 size={32} className={styles.inquirySuccessIcon} />
                 <h4 style={{ fontWeight: 800, marginBottom: "4px" }}>Inquiry Sent!</h4>
                 <p style={{ fontSize: "0.85rem" }}>
-                  The seller has received your contact details and will get in touch shortly.
+                  The seller has received your message and will get in touch shortly.
                 </p>
+                <div style={{ marginTop: "12px" }}>
+                  <Link
+                    href="/inbox"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      padding: "8px 16px",
+                      backgroundColor: "#0A1931",
+                      color: "#FFFFFF",
+                      borderRadius: "6px",
+                      fontSize: "0.85rem",
+                      fontWeight: 600,
+                      textDecoration: "none",
+                    }}
+                  >
+                    <span>View in Inbox</span>
+                  </Link>
+                </div>
               </div>
             ) : (
               <form onSubmit={handleInquirySubmit} className={styles.inquiryForm}>

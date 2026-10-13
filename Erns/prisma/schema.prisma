@@ -42,6 +42,14 @@ model User {
   // User's listed properties
   properties Property[]
 
+  // User's conversations & direct messages
+  conversationsAsBuyer  Conversation[] @relation("BuyerConversations")
+  conversationsAsSeller Conversation[] @relation("SellerConversations")
+  messagesSent          Message[]      @relation("SentMessages")
+
+  // Web Push API subscriptions for background notifications
+  pushSubscriptions     PushSubscription[]
+
   accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support
@@ -209,6 +217,8 @@ model Property {
 
   referenceNo     String   @unique @default(cuid())
 
+  conversations   Conversation[]
+
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
@@ -217,3 +227,81 @@ model Property {
   @@index([subCity])
   @@index([latitude, longitude])
 }
+
+// Real Estate Messaging & Tour Negotiations
+model Conversation {
+  id               String    @id @default(cuid())
+  buyerId          String
+  buyer            User      @relation("BuyerConversations", fields: [buyerId], references: [id], onDelete: Cascade)
+  sellerId         String
+  seller           User      @relation("SellerConversations", fields: [sellerId], references: [id], onDelete: Cascade)
+  propertyId       String?
+  property         Property? @relation(fields: [propertyId], references: [id], onDelete: SetNull)
+
+  // Snapshot cache of property for fast rendering
+  propertyTitle    String?
+  propertyTitleAm  String?
+  propertyPrice    Float?
+  propertyImage    String?
+  propertySubCity  String?
+  listingType      String?   @default("SALE") // "SALE" | "RENT"
+
+  category         String    @default("buy")   // "buy" | "rent" | "sell" | "landlord"
+  inquiryType      String    @default("inquiry") // "inquiry" | "tour" | "offer"
+  isArchivedBuyer  Boolean   @default(false)
+  isArchivedSeller Boolean   @default(false)
+  isStarredBuyer   Boolean   @default(false)
+  isStarredSeller  Boolean   @default(false)
+  lastMessageAt    DateTime  @default(now())
+
+  messages         Message[]
+
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([buyerId])
+  @@index([sellerId])
+  @@index([propertyId])
+  @@index([lastMessageAt])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User         @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  senderName     String?
+  senderRole     String?      // "buyer" | "seller" | "agent" | "renter" | "owner"
+  content        String
+  type           String       @default("text") // "text" | "tour_request" | "attachment"
+
+  // Tour / Attachment metadata
+  tourDate       String?
+  tourTime       String?
+  tourStatus     String?      // "pending" | "confirmed" | "declined"
+  fileName       String?
+  fileSize       String?
+  fileUrl        String?
+
+  isRead         Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+
+  @@index([conversationId])
+  @@index([senderId])
+  @@index([createdAt])
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
