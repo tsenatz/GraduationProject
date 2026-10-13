@@ -17,6 +17,17 @@
   box-shadow: 0 15px 35px rgba(var(--color-primary-rgb), 0.15);
 }
 
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.card:hover .cardButton {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
 .cardImage {
   width: 100%;
   max-width: 280px;
