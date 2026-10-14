@@ -158,7 +158,7 @@ export function Hero() {
               <input
                 type="text"
                 className={styles.locationInput}
-                placeholder="Neighborhood, Sub-City (e.g. Bole, CMC)..."
+                placeholder="Neighborhood or Sub-City (e.g. Bole)..."
                 value={locationQuery}
                 onChange={(e) => {
                   setLocationQuery(e.target.value);
