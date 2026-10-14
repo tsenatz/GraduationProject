@@ -5,8 +5,7 @@ import { useRouter } from "next/navigation";
 import {
   Search,
   MapPin,
-  Building2,
-  Bed,
+  ChevronDown,
   X,
   Sparkles,
 } from "lucide-react";
@@ -29,17 +28,17 @@ const POPULAR_LOCATIONS: LocationSuggestion[] = [
 ];
 
 const PROPERTY_TYPES = [
-  { label: "All Property Types", value: "" },
-  { label: "Apartment", value: "Apartment" },
-  { label: "Condominium", value: "Condominium" },
-  { label: "Villa / House", value: "Villa" },
-  { label: "Townhouse", value: "Townhouse" },
-  { label: "Penthouse", value: "Penthouse" },
+  { label: "Property: All Types", value: "" },
+  { label: "Apartments", value: "Apartment" },
+  { label: "Condominiums", value: "Condominium" },
+  { label: "Villas & Houses", value: "Villa" },
+  { label: "Townhouses", value: "Townhouse" },
+  { label: "Penthouses", value: "Penthouse" },
   { label: "Commercial", value: "Commercial" },
 ];
 
 const BEDROOM_OPTIONS = [
-  { label: "Any Bedrooms", value: "" },
+  { label: "Beds: Any", value: "" },
   { label: "Studio / 1 Bed", value: "1" },
   { label: "2 Bedrooms", value: "2" },
   { label: "3 Bedrooms", value: "3" },
@@ -51,8 +50,8 @@ const QUICK_TAGS = [
   { label: "📍 Kazanchis", query: "Kazanchis" },
   { label: "📍 CMC", query: "CMC" },
   { label: "📍 Sarbet", query: "Sarbet" },
-  { label: "🏢 Condominiums", propertyType: "Condominium" },
-  { label: "🏡 Luxury Villas", propertyType: "Villa" },
+  { label: "🏢 Condos", propertyType: "Condominium" },
+  { label: "🏡 Villas", propertyType: "Villa" },
 ];
 
 export function Hero() {
@@ -62,14 +61,14 @@ export function Hero() {
   const [bedrooms, setBedrooms] = useState("");
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
 
-  const locationSegmentRef = useRef<HTMLDivElement>(null);
+  const searchCardRef = useRef<HTMLFormElement>(null);
 
   // Close suggestions popover when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
-        locationSegmentRef.current &&
-        !locationSegmentRef.current.contains(event.target as Node)
+        searchCardRef.current &&
+        !searchCardRef.current.contains(event.target as Node)
       ) {
         setIsSuggestionsOpen(false);
       }
@@ -139,102 +138,102 @@ export function Hero() {
           Discover apartments, condominiums, and luxury homes across Addis Ababa with ERNS.
         </p>
 
-        {/* Unified Modern Multi-Segment Search Console */}
+        {/* Spacious, Grand Omni-Search Bar */}
         <form
+          ref={searchCardRef}
           role="search"
           onSubmit={handleSearchSubmit}
-          className={styles.searchConsole}
+          className={styles.searchBarCard}
         >
-          {/* 1. Location & Sub-City Segment */}
-          <div
-            ref={locationSegmentRef}
-            className={`${styles.segment} ${styles.locationSegment}`}
-          >
-            <div className={styles.segmentHeader}>
-              <MapPin size={13} color="#4A7FA7" />
-              <span>Location</span>
-            </div>
-            <div className={styles.locationInputRow}>
-              <input
-                type="text"
-                className={styles.locationInput}
-                placeholder="Neighborhood or Sub-City (e.g. Bole)..."
-                value={locationQuery}
-                onChange={(e) => {
-                  setLocationQuery(e.target.value);
-                  setIsSuggestionsOpen(true);
-                }}
-                onFocus={() => setIsSuggestionsOpen(true)}
-                aria-label="Search by neighborhood or sub-city"
-                autoComplete="off"
-              />
-              {locationQuery && (
-                <button
-                  type="button"
-                  className={styles.clearBtn}
-                  onClick={() => setLocationQuery("")}
-                  aria-label="Clear location input"
-                >
-                  <X size={15} />
-                </button>
-              )}
-            </div>
-
-            {/* Popular Neighborhoods Auto-Suggest Dropdown */}
-            {isSuggestionsOpen && (
-              <div className={styles.suggestionsPopover}>
-                <div className={styles.suggestionsHeader}>
-                  <span>Popular in Addis Ababa</span>
-                  <Sparkles size={13} color="#D97706" />
-                </div>
-                <div className={styles.suggestionsList}>
-                  {filteredSuggestions.length > 0 ? (
-                    filteredSuggestions.map((loc) => (
-                      <div
-                        key={loc.name}
-                        className={styles.suggestionItem}
-                        onMouseDown={() => handleSelectLocation(loc.name)}
-                      >
-                        <div className={styles.suggestionLeft}>
-                          <MapPin size={14} className={styles.suggestionIcon} />
-                          <span className={styles.suggestionName}>
-                            {loc.name}
-                          </span>
-                        </div>
-                        <span className={styles.suggestionSubCity}>
-                          {loc.subCity}
-                        </span>
-                      </div>
-                    ))
-                  ) : (
-                    <div
-                      style={{
-                        padding: "0.5rem 0.75rem",
-                        fontSize: "0.88rem",
-                        color: "#64748B",
-                      }}
-                    >
-                      Press Enter to search for &ldquo;{locationQuery}&rdquo;
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
+          <div className={styles.searchIconWrapper} aria-hidden="true">
+            <MapPin size={22} />
           </div>
 
-          <div className={styles.divider} />
+          <input
+            type="text"
+            className={styles.mainSearchInput}
+            placeholder="Enter an address, neighborhood, or sub-city..."
+            value={locationQuery}
+            onChange={(e) => {
+              setLocationQuery(e.target.value);
+              setIsSuggestionsOpen(true);
+            }}
+            onFocus={() => setIsSuggestionsOpen(true)}
+            aria-label="Search address or neighborhood"
+            autoComplete="off"
+          />
 
-          {/* 2. Property Type Segment */}
-          <div className={`${styles.segment} ${styles.typeSegment}`}>
-            <div className={styles.segmentHeader}>
-              <Building2 size={13} color="#4A7FA7" />
-              <span>Property Type</span>
+          {locationQuery && (
+            <button
+              type="button"
+              className={styles.clearBtn}
+              onClick={() => setLocationQuery("")}
+              aria-label="Clear search input"
+            >
+              <X size={16} />
+            </button>
+          )}
+
+          <button
+            type="submit"
+            className={styles.searchSubmitBtn}
+            aria-label="Search properties"
+          >
+            <Search size={18} strokeWidth={2.5} />
+            <span>Search</span>
+          </button>
+
+          {/* Popular Neighborhoods Auto-Suggest Dropdown */}
+          {isSuggestionsOpen && (
+            <div className={styles.suggestionsPopover}>
+              <div className={styles.suggestionsHeader}>
+                <span>Popular in Addis Ababa</span>
+                <Sparkles size={13} color="#D97706" />
+              </div>
+              <div className={styles.suggestionsList}>
+                {filteredSuggestions.length > 0 ? (
+                  filteredSuggestions.map((loc) => (
+                    <div
+                      key={loc.name}
+                      className={styles.suggestionItem}
+                      onMouseDown={() => handleSelectLocation(loc.name)}
+                    >
+                      <div className={styles.suggestionLeft}>
+                        <MapPin size={15} className={styles.suggestionIcon} />
+                        <span className={styles.suggestionName}>
+                          {loc.name}
+                        </span>
+                      </div>
+                      <span className={styles.suggestionSubCity}>
+                        {loc.subCity}
+                      </span>
+                    </div>
+                  ))
+                ) : (
+                  <div
+                    style={{
+                      padding: "0.5rem 0.75rem",
+                      fontSize: "0.88rem",
+                      color: "#64748B",
+                    }}
+                  >
+                    Press Enter to search for &ldquo;{locationQuery}&rdquo;
+                  </div>
+                )}
+              </div>
             </div>
+          )}
+        </form>
+
+        {/* Secondary Row: Clean Filter Pills & Popular Destinations */}
+        <div className={styles.secondaryRow}>
+          {/* Property Type Filter Pill */}
+          <div className={styles.filterPillWrapper}>
             <select
-              className={styles.selectInput}
+              className={styles.filterSelect}
               value={propertyType}
               onChange={(e) => setPropertyType(e.target.value)}
-              aria-label="Select property type"
+              aria-label="Filter by property type"
             >
               {PROPERTY_TYPES.map((type) => (
                 <option key={type.label} value={type.value}>
@@ -242,21 +241,16 @@ export function Hero() {
                 </option>
               ))}
             </select>
+            <ChevronDown size={14} className={styles.filterChevron} />
           </div>
 
-          <div className={styles.divider} />
-
-          {/* 3. Bedrooms Segment */}
-          <div className={`${styles.segment} ${styles.bedsSegment}`}>
-            <div className={styles.segmentHeader}>
-              <Bed size={13} color="#4A7FA7" />
-              <span>Bedrooms</span>
-            </div>
+          {/* Bedrooms Filter Pill */}
+          <div className={styles.filterPillWrapper}>
             <select
-              className={styles.selectInput}
+              className={styles.filterSelect}
               value={bedrooms}
               onChange={(e) => setBedrooms(e.target.value)}
-              aria-label="Select number of bedrooms"
+              aria-label="Filter by bedrooms"
             >
               {BEDROOM_OPTIONS.map((opt) => (
                 <option key={opt.label} value={opt.value}>
@@ -264,25 +258,16 @@ export function Hero() {
                 </option>
               ))}
             </select>
+            <ChevronDown size={14} className={styles.filterChevron} />
           </div>
 
-          {/* 4. Prominent Search Action Button */}
-          <button
-            type="submit"
-            className={styles.searchActionBtn}
-            aria-label="Search real estate listings"
-          >
-            <Search size={18} strokeWidth={2.5} />
-            <span>Search</span>
-          </button>
-        </form>
+          <span className={styles.filterDividerDot} aria-hidden="true">•</span>
 
-        {/* Quick Trending Neighborhood Chips */}
-        <div className={styles.quickTagsWrapper}>
           <span className={styles.quickTagsLabel}>
             <Sparkles size={14} color="#FBBF24" />
             <span>Popular:</span>
           </span>
+
           {QUICK_TAGS.map((tag) => (
             <button
               key={tag.label}
