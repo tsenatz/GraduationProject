@@ -7,6 +7,7 @@ import {
   MessageSquare,
   Wallet,
   Users,
+  FileText,
   Bell,
   Plus,
   ChevronDown,
@@ -33,6 +34,12 @@ export function RentalManagerSidebar({
       enabled: true,
     },
     {
+      label: "Leases",
+      href: "/rentalmanager/leases",
+      icon: FileText,
+      enabled: true,
+    },
+    {
       label: "Payments",
       href: "/rentalmanager/payments",
       icon: Wallet,
@@ -52,8 +59,9 @@ export function RentalManagerSidebar({
     },
     {
       label: "Alerts",
+      href: "/rentalmanager/alerts",
       icon: Bell,
-      enabled: false,
+      enabled: true,
     },
   ];
 

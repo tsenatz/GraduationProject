@@ -91,6 +91,47 @@ export function PaymentsDashboardView({
     });
   }, [payments, selectedStatus, searchQuery]);
 
+  const handleExportCSV = () => {
+    if (payments.length === 0) return;
+    const headers = [
+      "Property",
+      "Unit",
+      "Tenant",
+      "Phone",
+      "Amount_ETB",
+      "Period",
+      "DueDate",
+      "Status",
+      "PaymentMethod",
+      "ReferenceNo",
+    ];
+    const rows = payments.map((p) => [
+      `"${p.propertyTitle.replace(/"/g, '""')}"`,
+      `"${p.unitName}"`,
+      `"${p.tenantName}"`,
+      `"${p.tenantPhone}"`,
+      p.amountETB,
+      `"${p.periodMonth}"`,
+      `"${p.dueDate}"`,
+      `"${p.status}"`,
+      `"${p.paymentMethod || ""}"`,
+      `"${p.referenceNo || ""}"`,
+    ]);
+    const csvContent =
+      "data:text/csv;charset=utf-8," +
+      [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute(
+      "download",
+      `ERNS_Rent_Ledger_${new Date().toISOString().slice(0, 7)}.csv`
+    );
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className={styles.mainContent}>
       {/* Toast Notification */}
@@ -120,15 +161,27 @@ export function PaymentsDashboardView({
             Track rent collections, log Telebirr/CBE transactions, and monitor tenant balances in ETB.
           </p>
         </div>
-        <button
-          type="button"
-          onClick={loadData}
-          className={styles.actionBtnOutline}
-          style={{ display: "flex", alignItems: "center", gap: "0.4rem", padding: "0.6rem 1rem" }}
-        >
-          <RefreshCw size={15} />
-          <span>Refresh</span>
-        </button>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+          <button
+            type="button"
+            onClick={loadData}
+            className={styles.actionBtnOutline}
+            style={{ display: "flex", alignItems: "center", gap: "0.4rem", padding: "0.6rem 1rem" }}
+          >
+            <RefreshCw size={15} />
+            <span>Refresh</span>
+          </button>
+          <button
+            type="button"
+            onClick={handleExportCSV}
+            className={styles.actionBtnOutline}
+            style={{ display: "flex", alignItems: "center", gap: "0.4rem", padding: "0.6rem 1rem" }}
+            title="Download CSV statement"
+          >
+            <Download size={15} />
+            <span>Export CSV</span>
+          </button>
+        </div>
       </div>
 
       {/* Summary Stat Cards */}

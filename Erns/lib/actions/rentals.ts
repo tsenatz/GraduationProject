@@ -128,6 +128,56 @@ export interface RentalApplicationsResult {
   };
 }
 
+export interface LeaseRecord {
+  id: string;
+  leaseNumber: string;
+  propertyId: string;
+  propertyTitle: string;
+  unitName: string;
+  tenantName: string;
+  tenantPhone: string;
+  tenantEmail?: string;
+  monthlyRentETB: number;
+  depositETB: number;
+  startDate: string;
+  endDate: string;
+  status: "ACTIVE" | "EXPIRING_SOON" | "EXPIRED" | "TERMINATED";
+  utilitiesIncluded: string[];
+  rules: string[];
+  signedDate: string;
+}
+
+export interface LeasesResult {
+  success: boolean;
+  error?: string;
+  leases?: LeaseRecord[];
+  stats?: {
+    totalActive: number;
+    expiringSoon: number;
+    expired: number;
+    monthlyContractedETB: number;
+  };
+}
+
+export interface LandlordAlertRecord {
+  id: string;
+  type: "RENT_DUE" | "RENT_OVERDUE" | "NEW_APPLICATION" | "LEASE_EXPIRING" | "TOUR_REQUEST" | "LISTING_MILESTONE";
+  title: string;
+  message: string;
+  severity: "info" | "warning" | "error" | "success";
+  timestamp: string;
+  isRead: boolean;
+  actionUrl?: string;
+  actionLabel?: string;
+}
+
+export interface AlertsResult {
+  success: boolean;
+  error?: string;
+  alerts?: LandlordAlertRecord[];
+  unreadCount?: number;
+}
+
 
 // Initial mock properties for offline & local development demo
 const SEED_RENTAL_PROPERTIES: RentalPropertyRecord[] = [
@@ -217,6 +267,8 @@ declare const globalThis: {
   __ernsLandlordRentals?: RentalPropertyRecord[];
   __ernsLandlordPayments?: RentPaymentRecord[];
   __ernsLandlordApplications?: RentalApplicationRecord[];
+  __ernsLandlordLeases?: LeaseRecord[];
+  __ernsLandlordAlerts?: LandlordAlertRecord[];
 } & typeof global;
 
 function getRentalMemoryStore(): RentalPropertyRecord[] {
@@ -805,4 +857,291 @@ export async function updateRentalApplicationStatusAction(
     return { success: false, error: error.message };
   }
 }
+
+// -------------------------------------------------------------
+// LEASE AGREEMENTS ACTIONS & SEED DATA
+// -------------------------------------------------------------
+const SEED_RENTAL_LEASES: LeaseRecord[] = [
+  {
+    id: "lease-301",
+    leaseNumber: "ERN-LSE-2025-01",
+    propertyId: "rental-101",
+    propertyTitle: "Luxury 2-Bedroom Furnished Apartment in Bole Atlas",
+    unitName: "Unit 201",
+    tenantName: "Dawit Haile",
+    tenantPhone: "+251 91 145 6789",
+    tenantEmail: "dawit.h@example.com",
+    monthlyRentETB: 55000,
+    depositETB: 110000,
+    startDate: "2025-11-01",
+    endDate: "2026-11-01",
+    status: "ACTIVE",
+    utilitiesIncluded: [
+      "Standby Generator Fuel Contribution",
+      "Water Reservoir Tank Service",
+      "24/7 Compound Security",
+      "Building Elevator & Common Area Cleaning",
+    ],
+    rules: [
+      "Residential occupancy only (max 3 persons)",
+      "Quiet hours observed 10:00 PM – 7:00 AM",
+      "Subletting or commercial use strictly prohibited",
+    ],
+    signedDate: "2025-10-28",
+  },
+  {
+    id: "lease-302",
+    leaseNumber: "ERN-LSE-2025-02",
+    propertyId: "rental-102",
+    propertyTitle: "Modern 3-Bedroom Executive Flat in Kazanchis",
+    unitName: "Unit 4A",
+    tenantName: "Helen Tadesse",
+    tenantPhone: "+251 92 334 5566",
+    tenantEmail: "helen.t@example.com",
+    monthlyRentETB: 80000,
+    depositETB: 160000,
+    startDate: "2025-11-15",
+    endDate: "2026-11-15",
+    status: "EXPIRING_SOON",
+    utilitiesIncluded: [
+      "Standby Generator Access",
+      "Dedicated Basement Parking",
+      "Gym Access & Compound Security",
+    ],
+    rules: [
+      "No smoking in common corridors",
+      "One registered pet allowed with security deposit",
+      "Rent payable within first 5 days of calendar month",
+    ],
+    signedDate: "2025-11-10",
+  },
+  {
+    id: "lease-303",
+    leaseNumber: "ERN-LSE-2026-03",
+    propertyId: "rental-101",
+    propertyTitle: "Luxury 2-Bedroom Furnished Apartment in Bole Atlas",
+    unitName: "Unit 102",
+    tenantName: "Yared Bekele",
+    tenantPhone: "+251 93 456 7890",
+    tenantEmail: "yared.b@example.com",
+    monthlyRentETB: 48000,
+    depositETB: 96000,
+    startDate: "2026-02-01",
+    endDate: "2027-02-01",
+    status: "ACTIVE",
+    utilitiesIncluded: [
+      "Water Tank Reservoir",
+      "Standby Generator",
+      "Dedicated Parking",
+    ],
+    rules: [
+      "Strict residential use",
+      "Notice of renewal minimum 60 days before expiration",
+    ],
+    signedDate: "2026-01-25",
+  },
+];
+
+function getLeasesMemoryStore(): LeaseRecord[] {
+  if (!globalThis.__ernsLandlordLeases) {
+    globalThis.__ernsLandlordLeases = JSON.parse(
+      JSON.stringify(SEED_RENTAL_LEASES)
+    );
+  }
+  return globalThis.__ernsLandlordLeases!;
+}
+
+export async function getLandlordLeasesAction(): Promise<LeasesResult> {
+  try {
+    const store = getLeasesMemoryStore();
+    const totalActive = store.filter(
+      (l) => l.status === "ACTIVE" || l.status === "EXPIRING_SOON"
+    ).length;
+    const expiringSoon = store.filter((l) => l.status === "EXPIRING_SOON").length;
+    const expired = store.filter((l) => l.status === "EXPIRED" || l.status === "TERMINATED").length;
+    const monthlyContractedETB = store
+      .filter((l) => l.status === "ACTIVE" || l.status === "EXPIRING_SOON")
+      .reduce((sum, l) => sum + l.monthlyRentETB, 0);
+
+    return {
+      success: true,
+      leases: [...store],
+      stats: {
+        totalActive,
+        expiringSoon,
+        expired,
+        monthlyContractedETB,
+      },
+    };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+export async function createLeaseAgreementAction(input: {
+  propertyId: string;
+  propertyTitle: string;
+  unitName: string;
+  tenantName: string;
+  tenantPhone: string;
+  tenantEmail?: string;
+  monthlyRentETB: number;
+  depositETB: number;
+  startDate: string;
+  endDate: string;
+  utilitiesIncluded?: string[];
+  rules?: string[];
+}): Promise<RentalActionResult> {
+  try {
+    const store = getLeasesMemoryStore();
+    const newLease: LeaseRecord = {
+      id: `lease-${Date.now()}`,
+      leaseNumber: `ERN-LSE-${new Date().getFullYear()}-${String(store.length + 1).padStart(2, "0")}`,
+      propertyId: input.propertyId,
+      propertyTitle: input.propertyTitle,
+      unitName: input.unitName,
+      tenantName: input.tenantName,
+      tenantPhone: input.tenantPhone,
+      tenantEmail: input.tenantEmail,
+      monthlyRentETB: input.monthlyRentETB,
+      depositETB: input.depositETB,
+      startDate: input.startDate,
+      endDate: input.endDate,
+      status: "ACTIVE",
+      utilitiesIncluded: input.utilitiesIncluded || [
+        "Water Tank Reservoir",
+        "Compound Security",
+      ],
+      rules: input.rules || [
+        "Residential use only",
+        "Rent payable in advance within first 5 days of month",
+      ],
+      signedDate: new Date().toISOString().split("T")[0],
+    };
+
+    store.unshift(newLease);
+    revalidatePath("/rentalmanager/leases");
+    revalidatePath("/rentalmanager/dashboard");
+
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+export async function terminateLeaseAction(
+  leaseId: string
+): Promise<RentalActionResult> {
+  try {
+    const store = getLeasesMemoryStore();
+    const item = store.find((l) => l.id === leaseId);
+    if (!item) return { success: false, error: "Lease not found" };
+
+    item.status = "TERMINATED";
+    revalidatePath("/rentalmanager/leases");
+    revalidatePath("/rentalmanager/dashboard");
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+// -------------------------------------------------------------
+// LANDLORD ALERTS & NOTIFICATIONS ACTIONS & SEED DATA
+// -------------------------------------------------------------
+const SEED_LANDLORD_ALERTS: LandlordAlertRecord[] = [
+  {
+    id: "alt-01",
+    type: "RENT_OVERDUE",
+    title: "Rent Overdue: Kazanchis Flat Unit 1B",
+    message: "Michael Smith has not paid October rent (65,000 ETB). Grace period expired 7 days ago.",
+    severity: "error",
+    timestamp: "2 hours ago",
+    isRead: false,
+    actionUrl: "/rentalmanager/payments",
+    actionLabel: "View Payment Ledger",
+  },
+  {
+    id: "alt-02",
+    type: "NEW_APPLICATION",
+    title: "New Tenant Application Received",
+    message: "Bethelhem Girma applied for Bole Atlas Unit 201 with verified income of 140,000 ETB/mo.",
+    severity: "warning",
+    timestamp: "5 hours ago",
+    isRead: false,
+    actionUrl: "/rentalmanager/applications",
+    actionLabel: "Review Application",
+  },
+  {
+    id: "alt-03",
+    type: "LEASE_EXPIRING",
+    title: "Lease Expiring in 31 Days",
+    message: "Helen Tadesse's lease for Kazanchis Unit 4A ends on November 15, 2026. Send renewal terms.",
+    severity: "info",
+    timestamp: "1 day ago",
+    isRead: false,
+    actionUrl: "/rentalmanager/leases",
+    actionLabel: "Manage Leases",
+  },
+  {
+    id: "alt-04",
+    type: "RENT_DUE",
+    title: "Rent Payment Received via Telebirr",
+    message: "Dawit Haile successfully paid 55,000 ETB for October rent (Ref: TB-94182901).",
+    severity: "success",
+    timestamp: "3 days ago",
+    isRead: true,
+    actionUrl: "/rentalmanager/payments",
+    actionLabel: "View Receipt",
+  },
+];
+
+function getAlertsMemoryStore(): LandlordAlertRecord[] {
+  if (!globalThis.__ernsLandlordAlerts) {
+    globalThis.__ernsLandlordAlerts = JSON.parse(
+      JSON.stringify(SEED_LANDLORD_ALERTS)
+    );
+  }
+  return globalThis.__ernsLandlordAlerts!;
+}
+
+export async function getLandlordAlertsAction(): Promise<AlertsResult> {
+  try {
+    const store = getAlertsMemoryStore();
+    const unreadCount = store.filter((a) => !a.isRead).length;
+    return {
+      success: true,
+      alerts: [...store],
+      unreadCount,
+    };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+export async function markAlertAsReadAction(
+  alertId: string
+): Promise<RentalActionResult> {
+  try {
+    const store = getAlertsMemoryStore();
+    const item = store.find((a) => a.id === alertId);
+    if (item) item.isRead = true;
+    revalidatePath("/rentalmanager/alerts");
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+export async function markAllAlertsAsReadAction(): Promise<RentalActionResult> {
+  try {
+    const store = getAlertsMemoryStore();
+    store.forEach((a) => (a.isRead = true));
+    revalidatePath("/rentalmanager/alerts");
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
 

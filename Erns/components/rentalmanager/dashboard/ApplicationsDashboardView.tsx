@@ -19,12 +19,14 @@ import {
   DollarSign,
   UserCheck,
   RefreshCw,
+  ShieldCheck,
 } from "lucide-react";
 import {
   getLandlordRentalApplicationsAction,
   updateRentalApplicationStatusAction,
   RentalApplicationRecord,
 } from "@/lib/actions/rentals";
+import { VerifyTenantModal } from "./VerifyTenantModal";
 import styles from "./RentalManagerDashboard.module.css";
 
 interface ApplicationsDashboardViewProps {
@@ -48,6 +50,11 @@ export function ApplicationsDashboardView({
   const [searchQuery, setSearchQuery] = useState("");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+
+  const [verifyingApp, setVerifyingApp] = useState<RentalApplicationRecord | null>(null);
+  const [isVerifyModalOpen, setIsVerifyModalOpen] = useState(false);
+  const [verifiedAppIds, setVerifiedAppIds] = useState<string[]>(["app-202"]);
+
 
   const loadData = async () => {
     setIsLoading(true);
@@ -329,8 +336,28 @@ export function ApplicationsDashboardView({
                     </Link>
                   </div>
 
-                  {/* Approve / Decline Buttons */}
+                  {/* Approve / Decline & Verify Buttons */}
                   <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                    <button
+                      type="button"
+                      className={styles.actionBtnOutline}
+                      style={{
+                        fontSize: "0.78rem",
+                        padding: "0.4rem 0.65rem",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.3rem",
+                      }}
+                      onClick={() => {
+                        setVerifyingApp(app);
+                        setIsVerifyModalOpen(true);
+                      }}
+                      title="Screen tenant ID and guarantor details"
+                    >
+                      <ShieldCheck size={14} color="#059669" />
+                      <span>{verifiedAppIds.includes(app.id) ? "Verified (ዋስ)" : "Verify (ዋስ)"}</span>
+                    </button>
+
                     {isPendingState && (
                       <>
                         <button
@@ -401,6 +428,18 @@ export function ApplicationsDashboardView({
           </div>
         )}
       </div>
+
+      {/* Verify Tenant Modal */}
+      <VerifyTenantModal
+        isOpen={isVerifyModalOpen}
+        onClose={() => setIsVerifyModalOpen(false)}
+        application={verifyingApp}
+        onVerified={(id) => {
+          setVerifiedAppIds((prev) => [...prev, id]);
+          setToastMessage("Tenant documents and guarantor (ዋስ) verified successfully!");
+          setTimeout(() => setToastMessage(null), 4000);
+        }}
+      />
     </div>
   );
 }
