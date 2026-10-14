@@ -65,6 +65,70 @@ export interface RentalActionResult<T = any> {
   isAuthenticated?: boolean;
 }
 
+export interface RentPaymentRecord {
+  id: string;
+  propertyId: string;
+  propertyTitle: string;
+  unitName: string;
+  tenantName: string;
+  tenantPhone: string;
+  amountETB: number;
+  periodMonth: string;
+  dueDate: string;
+  paidDate?: string;
+  status: "PAID" | "PENDING" | "OVERDUE";
+  paymentMethod?: "Telebirr" | "CBE Birr" | "Bank Transfer" | "Cash" | "Check";
+  referenceNo?: string;
+  notes?: string;
+}
+
+export interface RentPaymentsSummary {
+  totalExpectedETB: number;
+  totalCollectedETB: number;
+  totalPendingETB: number;
+  totalOverdueETB: number;
+  collectionRatePct: number;
+  totalTenants: number;
+  paidTenants: number;
+}
+
+export interface RentalPaymentsResult {
+  success: boolean;
+  error?: string;
+  payments?: RentPaymentRecord[];
+  summary?: RentPaymentsSummary;
+}
+
+export interface RentalApplicationRecord {
+  id: string;
+  propertyId: string;
+  propertyTitle: string;
+  unitName?: string;
+  applicantName: string;
+  applicantPhone: string;
+  applicantEmail: string;
+  monthlyIncomeETB: number;
+  desiredMoveIn: string;
+  householdSize: number;
+  employment: string;
+  message?: string;
+  status: "PENDING" | "APPROVED" | "DECLINED";
+  submittedAt: string;
+}
+
+export interface RentalApplicationsResult {
+  success: boolean;
+  error?: string;
+  applications?: RentalApplicationRecord[];
+  stats?: {
+    total: number;
+    pending: number;
+    approved: number;
+    declined: number;
+  };
+}
+
+
 // Initial mock properties for offline & local development demo
 const SEED_RENTAL_PROPERTIES: RentalPropertyRecord[] = [
   {
@@ -151,6 +215,8 @@ const SEED_RENTAL_PROPERTIES: RentalPropertyRecord[] = [
 // Server-side memory store fallback for offline/development mode
 declare const globalThis: {
   __ernsLandlordRentals?: RentalPropertyRecord[];
+  __ernsLandlordPayments?: RentPaymentRecord[];
+  __ernsLandlordApplications?: RentalApplicationRecord[];
 } & typeof global;
 
 function getRentalMemoryStore(): RentalPropertyRecord[] {
@@ -493,3 +559,250 @@ export async function deleteRentalPropertyAction(
     return { success: false, error: error.message };
   }
 }
+
+// -------------------------------------------------------------
+// RENT PAYMENTS LEDGER ACTIONS & SEED DATA
+// -------------------------------------------------------------
+const SEED_RENTAL_PAYMENTS: RentPaymentRecord[] = [
+  {
+    id: "pay-101",
+    propertyId: "rental-101",
+    propertyTitle: "Luxury 2-Bedroom Furnished Apartment in Bole Atlas",
+    unitName: "Unit 201",
+    tenantName: "Dawit Haile",
+    tenantPhone: "+251 91 145 6789",
+    amountETB: 55000,
+    periodMonth: "October 2026",
+    dueDate: "2026-10-05",
+    paidDate: "2026-10-03",
+    status: "PAID",
+    paymentMethod: "Telebirr",
+    referenceNo: "TB-94182901",
+    notes: "October rent paid early via Telebirr merchant code.",
+  },
+  {
+    id: "pay-102",
+    propertyId: "rental-102",
+    propertyTitle: "Modern 3-Bedroom Executive Flat in Kazanchis",
+    unitName: "Unit 4A",
+    tenantName: "Helen Tadesse",
+    tenantPhone: "+251 92 334 5566",
+    amountETB: 80000,
+    periodMonth: "October 2026",
+    dueDate: "2026-10-05",
+    paidDate: "2026-10-04",
+    status: "PAID",
+    paymentMethod: "CBE Birr",
+    referenceNo: "CBE-4819203",
+    notes: "Direct bank transfer verified by CBE notification.",
+  },
+  {
+    id: "pay-103",
+    propertyId: "rental-101",
+    propertyTitle: "Luxury 2-Bedroom Furnished Apartment in Bole Atlas",
+    unitName: "Unit 102",
+    tenantName: "Yared Bekele",
+    tenantPhone: "+251 93 456 7890",
+    amountETB: 48000,
+    periodMonth: "October 2026",
+    dueDate: "2026-10-18",
+    status: "PENDING",
+    notes: "Upcoming due date in 4 days.",
+  },
+  {
+    id: "pay-104",
+    propertyId: "rental-102",
+    propertyTitle: "Modern 3-Bedroom Executive Flat in Kazanchis",
+    unitName: "Unit 1B",
+    tenantName: "Michael Smith",
+    tenantPhone: "+251 94 567 8901",
+    amountETB: 65000,
+    periodMonth: "October 2026",
+    dueDate: "2026-10-01",
+    status: "OVERDUE",
+    notes: "Grace period expired on Oct 7. Reminder sent via SMS.",
+  },
+];
+
+function getPaymentsMemoryStore(): RentPaymentRecord[] {
+  if (!globalThis.__ernsLandlordPayments) {
+    globalThis.__ernsLandlordPayments = JSON.parse(
+      JSON.stringify(SEED_RENTAL_PAYMENTS)
+    );
+  }
+  return globalThis.__ernsLandlordPayments!;
+}
+
+export async function getLandlordRentalPaymentsAction(): Promise<RentalPaymentsResult> {
+  try {
+    const store = getPaymentsMemoryStore();
+    const totalExpectedETB = store.reduce((acc, p) => acc + p.amountETB, 0);
+    const totalCollectedETB = store
+      .filter((p) => p.status === "PAID")
+      .reduce((acc, p) => acc + p.amountETB, 0);
+    const totalPendingETB = store
+      .filter((p) => p.status === "PENDING")
+      .reduce((acc, p) => acc + p.amountETB, 0);
+    const totalOverdueETB = store
+      .filter((p) => p.status === "OVERDUE")
+      .reduce((acc, p) => acc + p.amountETB, 0);
+
+    const totalTenants = store.length;
+    const paidTenants = store.filter((p) => p.status === "PAID").length;
+    const collectionRatePct =
+      totalExpectedETB > 0
+        ? Math.round((totalCollectedETB / totalExpectedETB) * 100)
+        : 0;
+
+    return {
+      success: true,
+      payments: [...store],
+      summary: {
+        totalExpectedETB,
+        totalCollectedETB,
+        totalPendingETB,
+        totalOverdueETB,
+        collectionRatePct,
+        totalTenants,
+        paidTenants,
+      },
+    };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+export async function recordRentPaymentAction(
+  paymentId: string,
+  details: {
+    paidDate?: string;
+    paymentMethod: "Telebirr" | "CBE Birr" | "Bank Transfer" | "Cash" | "Check";
+    referenceNo?: string;
+    notes?: string;
+  }
+): Promise<RentalActionResult> {
+  try {
+    const store = getPaymentsMemoryStore();
+    const item = store.find((p) => p.id === paymentId);
+    if (!item) {
+      return { success: false, error: "Payment record not found" };
+    }
+
+    item.status = "PAID";
+    item.paidDate = details.paidDate || new Date().toISOString().split("T")[0];
+    item.paymentMethod = details.paymentMethod;
+    if (details.referenceNo) item.referenceNo = details.referenceNo;
+    if (details.notes) item.notes = details.notes;
+
+    revalidatePath("/rentalmanager/payments");
+    revalidatePath("/rentalmanager/dashboard");
+
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+// -------------------------------------------------------------
+// RENTAL APPLICATIONS & TENANT INQUIRIES ACTIONS & SEED DATA
+// -------------------------------------------------------------
+const SEED_RENTAL_APPLICATIONS: RentalApplicationRecord[] = [
+  {
+    id: "app-201",
+    propertyId: "rental-101",
+    propertyTitle: "Luxury 2-Bedroom Furnished Apartment in Bole Atlas",
+    unitName: "Unit 201",
+    applicantName: "Bethelhem Girma",
+    applicantPhone: "+251 91 189 0123",
+    applicantEmail: "bethelhem.g@example.com",
+    monthlyIncomeETB: 140000,
+    desiredMoveIn: "2026-11-01",
+    householdSize: 2,
+    employment: "Senior Software Engineer at UNECA",
+    message: "Relocating for UN contract. Ready to pay 6 months upfront deposit in ETB.",
+    status: "PENDING",
+    submittedAt: new Date(Date.now() - 1000 * 60 * 60 * 18).toISOString(),
+  },
+  {
+    id: "app-202",
+    propertyId: "rental-102",
+    propertyTitle: "Modern 3-Bedroom Executive Flat in Kazanchis",
+    unitName: "Unit 4A",
+    applicantName: "Samuel Alemu",
+    applicantPhone: "+251 92 456 7891",
+    applicantEmail: "samuel.alemu@example.com",
+    monthlyIncomeETB: 195000,
+    desiredMoveIn: "2026-10-25",
+    householdSize: 3,
+    employment: "Branch Manager at Awash Bank",
+    message: "Family of 3 with 1 child. Seeking quiet executive residence near Kazanchis financial hub.",
+    status: "APPROVED",
+    submittedAt: new Date(Date.now() - 1000 * 60 * 60 * 48).toISOString(),
+  },
+  {
+    id: "app-203",
+    propertyId: "rental-101",
+    propertyTitle: "Luxury 2-Bedroom Furnished Apartment in Bole Atlas",
+    unitName: "Unit 102",
+    applicantName: "Hana Kassa",
+    applicantPhone: "+251 93 789 0124",
+    applicantEmail: "hana.k@example.com",
+    monthlyIncomeETB: 65000,
+    desiredMoveIn: "2026-12-01",
+    householdSize: 1,
+    employment: "Accountant at Private Import Firm",
+    message: "Looking for a furnished 1 or 2 bedroom flat in Bole.",
+    status: "DECLINED",
+    submittedAt: new Date(Date.now() - 1000 * 60 * 60 * 96).toISOString(),
+  },
+];
+
+function getApplicationsMemoryStore(): RentalApplicationRecord[] {
+  if (!globalThis.__ernsLandlordApplications) {
+    globalThis.__ernsLandlordApplications = JSON.parse(
+      JSON.stringify(SEED_RENTAL_APPLICATIONS)
+    );
+  }
+  return globalThis.__ernsLandlordApplications!;
+}
+
+export async function getLandlordRentalApplicationsAction(): Promise<RentalApplicationsResult> {
+  try {
+    const store = getApplicationsMemoryStore();
+    const total = store.length;
+    const pending = store.filter((a) => a.status === "PENDING").length;
+    const approved = store.filter((a) => a.status === "APPROVED").length;
+    const declined = store.filter((a) => a.status === "DECLINED").length;
+
+    return {
+      success: true,
+      applications: [...store],
+      stats: { total, pending, approved, declined },
+    };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+export async function updateRentalApplicationStatusAction(
+  applicationId: string,
+  status: "PENDING" | "APPROVED" | "DECLINED"
+): Promise<RentalActionResult> {
+  try {
+    const store = getApplicationsMemoryStore();
+    const item = store.find((a) => a.id === applicationId);
+    if (!item) {
+      return { success: false, error: "Application not found" };
+    }
+
+    item.status = status;
+
+    revalidatePath("/rentalmanager/applications");
+    revalidatePath("/rentalmanager/dashboard");
+
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+

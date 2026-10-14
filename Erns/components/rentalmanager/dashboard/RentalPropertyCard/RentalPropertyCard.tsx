@@ -164,14 +164,14 @@ export const RentalPropertyCard: React.FC<RentalPropertyCardProps> = ({
 
         {/* Performance Metrics */}
         <div className={styles.metricsRow}>
-          <Link href="/inbox" className={styles.metricBadge} title="View Inquiries">
+          <Link href="/inbox" className={styles.metricBadge} title="View Inquiries in Inbox">
             <MessageSquare size={12} />
             <span>{property.inquiriesCount} Inquiries</span>
           </Link>
-          <span className={styles.metricBadge}>
+          <Link href="/rentalmanager/applications" className={styles.metricBadge} title="View Applications Hub">
             <Users size={12} />
             <span>{property.applicationsCount} Applications</span>
-          </span>
+          </Link>
         </div>
 
         {/* Footer Actions */}

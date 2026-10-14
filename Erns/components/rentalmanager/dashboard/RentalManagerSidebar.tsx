@@ -6,6 +6,7 @@ import {
   Building2,
   MessageSquare,
   Wallet,
+  Users,
   Bell,
   Plus,
   ChevronDown,
@@ -32,15 +33,22 @@ export function RentalManagerSidebar({
       enabled: true,
     },
     {
+      label: "Payments",
+      href: "/rentalmanager/payments",
+      icon: Wallet,
+      enabled: true,
+    },
+    {
+      label: "Applications",
+      href: "/rentalmanager/applications",
+      icon: Users,
+      enabled: true,
+    },
+    {
       label: "Messages",
       href: "/inbox",
       icon: MessageSquare,
       enabled: true,
-    },
-    {
-      label: "Payments",
-      icon: Wallet,
-      enabled: false,
     },
     {
       label: "Alerts",
