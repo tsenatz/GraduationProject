@@ -1,0 +1,244 @@
+.propertyCard {
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 6px rgba(10, 25, 49, 0.04);
+}
+
+.propertyCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(10, 25, 49, 0.08);
+  border-color: #CBD5E1;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  background-color: #F1F5F9;
+}
+
+.propertyImg {
+  object-fit: cover;
+}
+
+.statusBadge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.statusListed {
+  background-color: rgba(16, 185, 129, 0.9);
+  color: #FFFFFF;
+}
+
+.statusRented {
+  background-color: rgba(37, 99, 235, 0.9);
+  color: #FFFFFF;
+}
+
+.statusOffMarket {
+  background-color: rgba(100, 116, 139, 0.9);
+  color: #FFFFFF;
+}
+
+.referenceBadge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: rgba(10, 25, 49, 0.75);
+  color: #FFFFFF;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.02em;
+}
+
+.cardBody {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.priceText {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0A1931;
+}
+
+.pricePeriod {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #64748B;
+  margin-left: 4px;
+}
+
+.depositText {
+  font-size: 0.74rem;
+  color: #64748B;
+  font-weight: 500;
+}
+
+.title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0A1931;
+  margin: 0 0 4px 0;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: #64748B;
+  margin-bottom: 12px;
+}
+
+.specsRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-top: 1px solid #F1F5F9;
+  border-bottom: 1px solid #F1F5F9;
+  margin-bottom: 12px;
+}
+
+.specItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  color: #475569;
+  font-weight: 500;
+}
+
+.metricsRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.amenitiesTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.amenityTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #0A1931;
+  background-color: rgba(74, 127, 167, 0.08);
+  border: 1px solid rgba(74, 127, 167, 0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.metricBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background-color: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #334155;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.metricBadge:hover {
+  background-color: #F1F5F9;
+  color: #0A1931;
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid #F1F5F9;
+}
+
+.statusSelect {
+  padding: 5px 8px;
+  border-radius: 6px;
+  border: 1px solid #CBD5E1;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #0A1931;
+  background-color: #FFFFFF;
+  cursor: pointer;
+  outline: none;
+}
+
+.actionsRight {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.iconBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  border: 1px solid #E2E8F0;
+  background-color: #FFFFFF;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.iconBtn:hover {
+  background-color: #F8FAFC;
+  color: #0A1931;
+  border-color: #CBD5E1;
+}
+
+.deleteBtn:hover {
+  background-color: #FEF2F2;
+  color: #EF4444;
+  border-color: #FCA5A5;
+}

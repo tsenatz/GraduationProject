@@ -6,6 +6,8 @@ import {
   Building2,
   MessageSquare,
   Wallet,
+  Users,
+  FileText,
   Bell,
   Plus,
   ChevronDown,
@@ -14,9 +16,13 @@ import styles from "./RentalManagerDashboard.module.css";
 
 interface RentalManagerSidebarProps {
   userName?: string;
+  onAddProperty?: () => void;
 }
 
-export function RentalManagerSidebar({ userName = "Tsenat Zeru" }: RentalManagerSidebarProps) {
+export function RentalManagerSidebar({
+  userName = "Tsenat Zeru",
+  onAddProperty,
+}: RentalManagerSidebarProps) {
   const pathname = usePathname();
 
   const navItems = [
@@ -28,19 +34,34 @@ export function RentalManagerSidebar({ userName = "Tsenat Zeru" }: RentalManager
       enabled: true,
     },
     {
-      label: "Messages",
-      icon: MessageSquare,
-      enabled: false,
+      label: "Leases",
+      href: "/rentalmanager/leases",
+      icon: FileText,
+      enabled: true,
     },
     {
       label: "Payments",
+      href: "/rentalmanager/payments",
       icon: Wallet,
-      enabled: false,
+      enabled: true,
+    },
+    {
+      label: "Applications",
+      href: "/rentalmanager/applications",
+      icon: Users,
+      enabled: true,
+    },
+    {
+      label: "Messages",
+      href: "/rentalmanager/messages",
+      icon: MessageSquare,
+      enabled: true,
     },
     {
       label: "Alerts",
+      href: "/rentalmanager/alerts",
       icon: Bell,
-      enabled: false,
+      enabled: true,
     },
   ];
 
@@ -68,7 +89,21 @@ export function RentalManagerSidebar({ userName = "Tsenat Zeru" }: RentalManager
                   <Icon size={20} />
                   <span>{item.label}</span>
                 </div>
-                {item.showPlus && <Plus size={18} className={styles.navPlusIcon} />}
+                {item.showPlus && (
+                  <span
+                    onClick={(e) => {
+                      if (onAddProperty) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        onAddProperty();
+                      }
+                    }}
+                    title="Add a property"
+                    style={{ display: "flex", alignItems: "center" }}
+                  >
+                    <Plus size={18} className={styles.navPlusIcon} />
+                  </span>
+                )}
               </Link>
             );
           }

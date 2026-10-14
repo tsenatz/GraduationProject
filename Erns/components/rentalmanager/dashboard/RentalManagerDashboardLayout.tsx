@@ -22,7 +22,7 @@ export function RentalManagerDashboardLayout({
 
       <div className={styles.dashboardBody}>
         {/* Dedicated Left Sidebar */}
-        <RentalManagerSidebar userName={userName} />
+        <RentalManagerSidebar userName={userName} onAddProperty={onAddProperty} />
 
         {/* Main Content Area */}
         {children}

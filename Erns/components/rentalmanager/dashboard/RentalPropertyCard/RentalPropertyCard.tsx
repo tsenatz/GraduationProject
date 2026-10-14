@@ -1,0 +1,234 @@
+"use client";
+
+import React, { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import {
+  Bed,
+  Bath,
+  Maximize2,
+  MapPin,
+  ExternalLink,
+  MessageSquare,
+  Trash2,
+  Users,
+  CheckCircle2,
+  EyeOff,
+  Edit3,
+  Share2,
+  Check,
+  Zap,
+  Droplets,
+  ShieldCheck,
+} from "lucide-react";
+import { RentalPropertyRecord } from "@/lib/actions/rentals";
+import styles from "./RentalPropertyCard.module.css";
+
+interface RentalPropertyCardProps {
+  property: RentalPropertyRecord;
+  onStatusChange: (
+    propertyId: string,
+    newStatus: "FOR_RENT" | "RENTED" | "OFF_MARKET"
+  ) => void;
+  onDelete: (propertyId: string) => void;
+  onEdit?: (property: RentalPropertyRecord) => void;
+}
+
+export const RentalPropertyCard: React.FC<RentalPropertyCardProps> = ({
+  property,
+  onStatusChange,
+  onDelete,
+  onEdit,
+}) => {
+  const [copied, setCopied] = useState(false);
+
+  const formatPrice = (val: number) => {
+    return new Intl.NumberFormat("en-US").format(val);
+  };
+
+  const handleCopyLink = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const url = `${window.location.origin}/property/${property.id}`;
+    navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const getStatusBadge = () => {
+    switch (property.status) {
+      case "FOR_RENT":
+        return (
+          <span className={`${styles.statusBadge} ${styles.statusListed}`}>
+            <CheckCircle2 size={12} />
+            <span>Listed for Rent</span>
+          </span>
+        );
+      case "RENTED":
+        return (
+          <span className={`${styles.statusBadge} ${styles.statusRented}`}>
+            <Users size={12} />
+            <span>Occupied / Leased</span>
+          </span>
+        );
+      case "OFF_MARKET":
+      default:
+        return (
+          <span className={`${styles.statusBadge} ${styles.statusOffMarket}`}>
+            <EyeOff size={12} />
+            <span>Off-Market / Draft</span>
+          </span>
+        );
+    }
+  };
+
+  const coverPhoto =
+    property.images && property.images.length > 0
+      ? property.images[0]
+      : "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&auto=format&fit=crop&q=80";
+
+  return (
+    <div className={styles.propertyCard}>
+      {/* Cover Image & Badges */}
+      <div className={styles.imageWrapper}>
+        <Image
+          src={coverPhoto}
+          alt={property.title}
+          fill
+          sizes="(max-width: 768px) 100vw, 360px"
+          className={styles.propertyImg}
+        />
+        {getStatusBadge()}
+        <span className={styles.referenceBadge}>{property.referenceNo}</span>
+      </div>
+
+      {/* Card Body */}
+      <div className={styles.cardBody}>
+        {/* Price Row */}
+        <div className={styles.priceRow}>
+          <div>
+            <span className={styles.priceText}>
+              ETB {formatPrice(property.priceETB)}
+            </span>
+            <span className={styles.pricePeriod}>/ mo</span>
+          </div>
+          <span className={styles.depositText}>
+            Deposit: ETB {formatPrice(property.depositETB)}
+          </span>
+        </div>
+
+        {/* Title & Location */}
+        <h4 className={styles.title} title={property.title}>
+          {property.title}
+        </h4>
+        <div className={styles.location}>
+          <MapPin size={13} />
+          <span>
+            {property.specificArea || property.subCity}, Addis Ababa
+          </span>
+        </div>
+
+        {/* Specs */}
+        <div className={styles.specsRow}>
+          <div className={styles.specItem}>
+            <Bed size={14} />
+            <span>{property.bedrooms} Beds</span>
+          </div>
+          <div className={styles.specItem}>
+            <Bath size={14} />
+            <span>{property.bathrooms} Baths</span>
+          </div>
+          <div className={styles.specItem}>
+            <Maximize2 size={14} />
+            <span>{property.areaSqM} m²</span>
+          </div>
+        </div>
+
+        {/* Quick Highlights / Amenities tags */}
+        <div className={styles.amenitiesTags}>
+          {property.amenities.includes("Standby Generator") && (
+            <span className={styles.amenityTag} title="Standby Generator">
+              <Zap size={11} /> Generator
+            </span>
+          )}
+          {property.amenities.includes("Water Tank Reservoir") && (
+            <span className={styles.amenityTag} title="Water Reservoir Tank">
+              <Droplets size={11} /> Water Tank
+            </span>
+          )}
+          {property.amenities.includes("24/7 Compound Security") && (
+            <span className={styles.amenityTag} title="Compound Security">
+              <ShieldCheck size={11} /> Security
+            </span>
+          )}
+        </div>
+
+        {/* Performance Metrics */}
+        <div className={styles.metricsRow}>
+          <Link href="/rentalmanager/messages" className={styles.metricBadge} title="View Inquiries in Messages">
+            <MessageSquare size={12} />
+            <span>{property.inquiriesCount} Inquiries</span>
+          </Link>
+          <Link href="/rentalmanager/applications" className={styles.metricBadge} title="View Applications Hub">
+            <Users size={12} />
+            <span>{property.applicationsCount} Applications</span>
+          </Link>
+        </div>
+
+        {/* Footer Actions */}
+        <div className={styles.cardFooter}>
+          <select
+            className={styles.statusSelect}
+            value={property.status}
+            onChange={(e) =>
+              onStatusChange(property.id, e.target.value as any)
+            }
+          >
+            <option value="FOR_RENT">Listed for Rent</option>
+            <option value="RENTED">Occupied / Leased</option>
+            <option value="OFF_MARKET">Off-Market / Pause</option>
+          </select>
+
+          <div className={styles.actionsRight}>
+            {onEdit && (
+              <button
+                type="button"
+                className={styles.iconBtn}
+                title="Edit Property Details"
+                onClick={() => onEdit(property)}
+              >
+                <Edit3 size={15} />
+              </button>
+            )}
+
+            <button
+              type="button"
+              className={styles.iconBtn}
+              title={copied ? "Copied!" : "Copy Public Link"}
+              onClick={handleCopyLink}
+            >
+              {copied ? <Check size={15} color="#16A34A" /> : <Share2 size={15} />}
+            </button>
+
+            <Link
+              href={`/property/${property.id}`}
+              className={styles.iconBtn}
+              title="View Public Listing"
+              target="_blank"
+            >
+              <ExternalLink size={15} />
+            </Link>
+
+            <button
+              type="button"
+              className={`${styles.iconBtn} ${styles.deleteBtn}`}
+              onClick={() => onDelete(property.id)}
+              title="Delete Property"
+            >
+              <Trash2 size={15} />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

@@ -391,3 +391,531 @@
 .learnMoreLink:hover {
   color: var(--color-accent, #4A7FA7);
 }
+
+/* --- Properties List & Management Views --- */
+
+.propertiesHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.propertiesTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.propertyCountBadge {
+  background-color: rgba(74, 127, 167, 0.12);
+  color: var(--color-accent, #4A7FA7);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+}
+
+.addPropertyHeaderBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--color-primary, #0A1931);
+  color: #FFFFFF;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.7rem 1.35rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(10, 25, 49, 0.12);
+}
+
+.addPropertyHeaderBtn:hover {
+  background-color: #061122;
+  transform: translateY(-1px);
+}
+
+/* Stats Ribbon */
+.statsRibbon {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.statCard {
+  background: #FFFFFF;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 2px 8px rgba(10, 25, 49, 0.03);
+  transition: all 0.2s ease;
+}
+
+.statCard:hover {
+  border-color: rgba(74, 127, 167, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(10, 25, 49, 0.06);
+}
+
+.statIconBox {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.statInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.statLabel {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.statValue {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--color-primary, #0A1931);
+}
+
+/* Toolbar: Filters & Search */
+.toolbarRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.filterTabs {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: #F1F5F9;
+  padding: 0.3rem;
+  border-radius: 12px;
+}
+
+.filterTabBtn {
+  background: transparent;
+  border: none;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #64748B;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filterTabBtn:hover {
+  color: var(--color-primary, #0A1931);
+}
+
+.filterTabBtnActive {
+  background-color: #FFFFFF;
+  color: var(--color-primary, #0A1931);
+  box-shadow: 0 2px 6px rgba(10, 25, 49, 0.08);
+}
+
+.searchBox {
+  position: relative;
+  min-width: 260px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94A3B8;
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.55rem 0.85rem 0.55rem 2.4rem;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 10px;
+  font-size: 0.88rem;
+  color: var(--color-primary, #0A1931);
+  background-color: #FFFFFF;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.searchInput:focus {
+  border-color: var(--color-accent, #4A7FA7);
+  box-shadow: 0 0 0 3px rgba(74, 127, 167, 0.15);
+}
+
+/* Grid of Properties */
+.propertiesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Empty / No Matches State */
+.emptyFilterState {
+  text-align: center;
+  padding: 3.5rem 1.5rem;
+  background-color: #F8FAFC;
+  border: 1px dashed rgba(15, 23, 42, 0.15);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.emptyFilterTitle {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-primary, #0A1931);
+  margin: 0.75rem 0 0.25rem;
+}
+
+.emptyFilterDesc {
+  font-size: 0.9rem;
+  color: #64748B;
+  margin-bottom: 1.25rem;
+}
+
+.clearFilterBtn {
+  background: transparent;
+  border: 1.5px solid var(--color-accent, #4A7FA7);
+  color: var(--color-accent, #4A7FA7);
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.toolbarRight {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.sortSelect {
+  padding: 0.55rem 0.85rem;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-primary, #0A1931);
+  background-color: #FFFFFF;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.sortSelect:focus {
+  border-color: var(--color-accent, #4A7FA7);
+}
+
+.toastBanner {
+  background-color: #ECFDF5;
+  border: 1px solid #A7F3D0;
+  color: #065F46;
+  padding: 0.85rem 1.25rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.toastCloseBtn {
+  background: transparent;
+  border: none;
+  color: #065F46;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Payments Ledger Table & Status Styles --- */
+.ledgerContainer {
+  background: #FFFFFF;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(10, 25, 49, 0.03);
+}
+
+.tableResponsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.ledgerTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.ledgerTable th {
+  background-color: #F8FAFC;
+  color: #64748B;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.ledgerTable td {
+  padding: 1.15rem 1.25rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+  color: #1E293B;
+  vertical-align: middle;
+}
+
+.ledgerTable tr:last-child td {
+  border-bottom: none;
+}
+
+.ledgerTable tr:hover td {
+  background-color: #F8FAFC;
+}
+
+.pillStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.pillPaid {
+  background-color: #ECFDF5;
+  color: #059669;
+  border: 1px solid #A7F3D0;
+}
+
+.pillPending {
+  background-color: #FFFBEB;
+  color: #D97706;
+  border: 1px solid #FDE68A;
+}
+
+.pillOverdue {
+  background-color: #FEF2F2;
+  color: #DC2626;
+  border: 1px solid #FECACA;
+}
+
+.actionBtnSmall {
+  background-color: var(--color-primary, #0A1931);
+  color: #FFFFFF;
+  border: none;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.45rem 0.95rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.actionBtnSmall:hover {
+  background-color: #061122;
+  transform: translateY(-1px);
+}
+
+.actionBtnOutline {
+  background: transparent;
+  color: var(--color-primary, #0A1931);
+  border: 1.5px solid rgba(10, 25, 49, 0.2);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.45rem 0.95rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.actionBtnOutline:hover {
+  border-color: var(--color-primary, #0A1931);
+  background-color: rgba(10, 25, 49, 0.04);
+}
+
+/* --- Applications Cards Grid --- */
+.applicationsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .applicationsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.applicationCard {
+  background: #FFFFFF;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 16px rgba(10, 25, 49, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  transition: all 0.2s ease;
+}
+
+.applicationCard:hover {
+  border-color: rgba(74, 127, 167, 0.25);
+  box-shadow: 0 8px 24px rgba(10, 25, 49, 0.06);
+}
+
+.applicantTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.applicantAvatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background-color: rgba(74, 127, 167, 0.15);
+  color: var(--color-primary, #0A1931);
+  font-size: 1.2rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.applicantMeta {
+  flex: 1;
+}
+
+.applicantName {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--color-primary, #0A1931);
+  margin-bottom: 0.2rem;
+}
+
+.applicantAppliedFor {
+  font-size: 0.85rem;
+  color: #64748B;
+  font-weight: 500;
+}
+
+.applicantInfoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+  background-color: #F8FAFC;
+  padding: 1rem;
+  border-radius: 12px;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.infoLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #64748B;
+}
+
+.infoVal {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--color-primary, #0A1931);
+}
+
+.applicantMessage {
+  font-size: 0.85rem;
+  color: #475569;
+  line-height: 1.5;
+  background: rgba(179, 207, 229, 0.12);
+  border-left: 3px solid var(--color-accent, #4A7FA7);
+  padding: 0.65rem 0.85rem;
+  border-radius: 4px 8px 8px 4px;
+}
+
+.applicantActionsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.contactDirectBtns {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.iconCircleBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: #FFFFFF;
+  color: var(--color-primary, #0A1931);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.iconCircleBtn:hover {
+  background-color: #F1F5F9;
+  border-color: var(--color-primary, #0A1931);
+  transform: translateY(-1px);
+}
+
+
+
