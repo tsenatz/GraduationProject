@@ -9,6 +9,8 @@ import {
   X,
   Sparkles,
 } from "lucide-react";
+import { useLanguage } from "@/components/providers/LanguageProvider";
+import { heroTranslations } from "./translations";
 import styles from "./Hero.module.css";
 
 interface LocationSuggestion {
@@ -27,24 +29,6 @@ const POPULAR_LOCATIONS: LocationSuggestion[] = [
   { name: "Ayat Zone 3", subCity: "Yeka" },
 ];
 
-const PROPERTY_TYPES = [
-  { label: "Property: All Types", value: "" },
-  { label: "Apartments", value: "Apartment" },
-  { label: "Condominiums", value: "Condominium" },
-  { label: "Villas & Houses", value: "Villa" },
-  { label: "Townhouses", value: "Townhouse" },
-  { label: "Penthouses", value: "Penthouse" },
-  { label: "Commercial", value: "Commercial" },
-];
-
-const BEDROOM_OPTIONS = [
-  { label: "Beds: Any", value: "" },
-  { label: "Studio / 1 Bed", value: "1" },
-  { label: "2 Bedrooms", value: "2" },
-  { label: "3 Bedrooms", value: "3" },
-  { label: "4+ Bedrooms", value: "4" },
-];
-
 const QUICK_TAGS = [
   { label: "📍 Bole Atlas", query: "Bole Atlas" },
   { label: "📍 Kazanchis", query: "Kazanchis" },
@@ -56,12 +40,33 @@ const QUICK_TAGS = [
 
 export function Hero() {
   const router = useRouter();
+  const { language } = useLanguage();
+  const t = heroTranslations[language] || heroTranslations.en;
+
   const [locationQuery, setLocationQuery] = useState("");
   const [propertyType, setPropertyType] = useState("");
   const [bedrooms, setBedrooms] = useState("");
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
 
   const searchCardRef = useRef<HTMLFormElement>(null);
+
+  const propertyTypesList = [
+    { label: t.propertyTypes.all, value: "" },
+    { label: t.propertyTypes.apartment, value: "Apartment" },
+    { label: t.propertyTypes.condo, value: "Condominium" },
+    { label: t.propertyTypes.villa, value: "Villa" },
+    { label: t.propertyTypes.townhouse, value: "Townhouse" },
+    { label: t.propertyTypes.penthouse, value: "Penthouse" },
+    { label: t.propertyTypes.commercial, value: "Commercial" },
+  ];
+
+  const bedroomOptionsList = [
+    { label: t.beds.any, value: "" },
+    { label: t.beds.studio, value: "1" },
+    { label: t.beds.bed2, value: "2" },
+    { label: t.beds.bed3, value: "3" },
+    { label: t.beds.bed4, value: "4" },
+  ];
 
   // Close suggestions popover when clicking outside
   useEffect(() => {
@@ -130,13 +135,11 @@ export function Hero() {
       <div className={styles.overlay} />
       <div className={styles.content}>
         <h1 className={styles.title}>
-          <span>Rentals. Homes.</span>
+          <span>{t.titleLine1}</span>
           <br />
-          <span>Agents. Loans.</span>
+          <span>{t.titleLine2}</span>
         </h1>
-        <p className={styles.subtitle}>
-          Discover apartments, condominiums, and luxury homes across Addis Ababa with ERNS.
-        </p>
+        <p className={styles.subtitle}>{t.subtitle}</p>
 
         {/* Spacious, Grand Omni-Search Bar */}
         <form
@@ -152,7 +155,7 @@ export function Hero() {
           <input
             type="text"
             className={styles.mainSearchInput}
-            placeholder="Enter an address, neighborhood, or sub-city..."
+            placeholder={t.searchPlaceholder}
             value={locationQuery}
             onChange={(e) => {
               setLocationQuery(e.target.value);
@@ -180,7 +183,7 @@ export function Hero() {
             aria-label="Search properties"
           >
             <Search size={18} strokeWidth={2.5} />
-            <span>Search</span>
+            <span>{t.searchBtn}</span>
           </button>
 
           {/* Popular Neighborhoods Auto-Suggest Dropdown */}
@@ -235,7 +238,7 @@ export function Hero() {
               onChange={(e) => setPropertyType(e.target.value)}
               aria-label="Filter by property type"
             >
-              {PROPERTY_TYPES.map((type) => (
+              {propertyTypesList.map((type) => (
                 <option key={type.label} value={type.value}>
                   {type.label}
                 </option>
@@ -252,7 +255,7 @@ export function Hero() {
               onChange={(e) => setBedrooms(e.target.value)}
               aria-label="Filter by bedrooms"
             >
-              {BEDROOM_OPTIONS.map((opt) => (
+              {bedroomOptionsList.map((opt) => (
                 <option key={opt.label} value={opt.value}>
                   {opt.label}
                 </option>
@@ -265,7 +268,7 @@ export function Hero() {
 
           <span className={styles.quickTagsLabel}>
             <Sparkles size={14} color="#FBBF24" />
-            <span>Popular:</span>
+            <span>{t.popularLabel}</span>
           </span>
 
           {QUICK_TAGS.map((tag) => (

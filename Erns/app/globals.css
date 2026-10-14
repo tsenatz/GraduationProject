@@ -66,6 +66,16 @@ body {
   background-color: var(--bg-color);
 }
 
+.home-body-container {
+  display: block;
+}
+
+.home-main-content {
+  margin-left: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
 @media (max-width: 960px) {
   .main-content {
     margin-left: 0;
