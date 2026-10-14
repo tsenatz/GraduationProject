@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -12,6 +13,7 @@ import {
   Plus,
   ChevronDown,
 } from "lucide-react";
+import { getLandlordAlertsAction } from "@/lib/actions/rentals";
 import styles from "./RentalManagerDashboard.module.css";
 
 interface RentalManagerSidebarProps {
@@ -24,6 +26,22 @@ export function RentalManagerSidebar({
   onAddProperty,
 }: RentalManagerSidebarProps) {
   const pathname = usePathname();
+  const [unreadAlerts, setUnreadAlerts] = useState<number>(0);
+
+  useEffect(() => {
+    let isMounted = true;
+    getLandlordAlertsAction()
+      .then((res) => {
+        if (isMounted && res.success && typeof res.unreadCount === "number") {
+          setUnreadAlerts(res.unreadCount);
+        }
+      })
+      .catch(() => {});
+
+    return () => {
+      isMounted = false;
+    };
+  }, [pathname]);
 
   const navItems = [
     {
@@ -89,6 +107,11 @@ export function RentalManagerSidebar({
                   <Icon size={20} />
                   <span>{item.label}</span>
                 </div>
+                {item.label === "Alerts" && unreadAlerts > 0 && (
+                  <span className={styles.sidebarAlertBadge}>
+                    {unreadAlerts}
+                  </span>
+                )}
                 {item.showPlus && (
                   <span
                     onClick={(e) => {

@@ -158,6 +158,17 @@
   white-space: nowrap;
 }
 
+.sidebarAlertBadge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  background-color: #EF4444;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  line-height: 1;
+  box-shadow: 0 1px 3px rgba(239, 68, 68, 0.35);
+}
+
 .navItemLeft {
   display: flex;
   align-items: center;

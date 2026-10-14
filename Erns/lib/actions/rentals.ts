@@ -269,6 +269,7 @@ declare const globalThis: {
   __ernsLandlordApplications?: RentalApplicationRecord[];
   __ernsLandlordLeases?: LeaseRecord[];
   __ernsLandlordAlerts?: LandlordAlertRecord[];
+  __ernsReadAlertIds?: string[];
 } & typeof global;
 
 function getRentalMemoryStore(): RentalPropertyRecord[] {
@@ -460,6 +461,7 @@ export async function createRentalPropertyAction(
 
     revalidatePath("/rentalmanager/properties");
     revalidatePath("/rentalmanager/dashboard");
+    revalidatePath("/rentalmanager/alerts");
     revalidatePath("/search");
 
     return {
@@ -504,6 +506,7 @@ export async function updateRentalStatusAction(
 
     revalidatePath("/rentalmanager/properties");
     revalidatePath("/rentalmanager/dashboard");
+    revalidatePath("/rentalmanager/alerts");
 
     return { success: true };
   } catch (error: any) {
@@ -605,6 +608,7 @@ export async function deleteRentalPropertyAction(
 
     revalidatePath("/rentalmanager/properties");
     revalidatePath("/rentalmanager/dashboard");
+    revalidatePath("/rentalmanager/alerts");
 
     return { success: true };
   } catch (error: any) {
@@ -748,6 +752,7 @@ export async function recordRentPaymentAction(
 
     revalidatePath("/rentalmanager/payments");
     revalidatePath("/rentalmanager/dashboard");
+    revalidatePath("/rentalmanager/alerts");
 
     return { success: true };
   } catch (error: any) {
@@ -851,6 +856,7 @@ export async function updateRentalApplicationStatusAction(
 
     revalidatePath("/rentalmanager/applications");
     revalidatePath("/rentalmanager/dashboard");
+    revalidatePath("/rentalmanager/alerts");
 
     return { success: true };
   } catch (error: any) {
@@ -1022,6 +1028,7 @@ export async function createLeaseAgreementAction(input: {
     store.unshift(newLease);
     revalidatePath("/rentalmanager/leases");
     revalidatePath("/rentalmanager/dashboard");
+    revalidatePath("/rentalmanager/alerts");
 
     return { success: true };
   } catch (error: any) {
@@ -1040,6 +1047,7 @@ export async function terminateLeaseAction(
     item.status = "TERMINATED";
     revalidatePath("/rentalmanager/leases");
     revalidatePath("/rentalmanager/dashboard");
+    revalidatePath("/rentalmanager/alerts");
     return { success: true };
   } catch (error: any) {
     return { success: false, error: error.message };
@@ -1047,71 +1055,173 @@ export async function terminateLeaseAction(
 }
 
 // -------------------------------------------------------------
-// LANDLORD ALERTS & NOTIFICATIONS ACTIONS & SEED DATA
+// DYNAMIC LANDLORD ALERTS & NOTIFICATIONS ACTIONS
 // -------------------------------------------------------------
-const SEED_LANDLORD_ALERTS: LandlordAlertRecord[] = [
-  {
-    id: "alt-01",
-    type: "RENT_OVERDUE",
-    title: "Rent Overdue: Kazanchis Flat Unit 1B",
-    message: "Michael Smith has not paid October rent (65,000 ETB). Grace period expired 7 days ago.",
-    severity: "error",
-    timestamp: "2 hours ago",
-    isRead: false,
-    actionUrl: "/rentalmanager/payments",
-    actionLabel: "View Payment Ledger",
-  },
-  {
-    id: "alt-02",
-    type: "NEW_APPLICATION",
-    title: "New Tenant Application Received",
-    message: "Bethelhem Girma applied for Bole Atlas Unit 201 with verified income of 140,000 ETB/mo.",
-    severity: "warning",
-    timestamp: "5 hours ago",
-    isRead: false,
-    actionUrl: "/rentalmanager/applications",
-    actionLabel: "Review Application",
-  },
-  {
-    id: "alt-03",
-    type: "LEASE_EXPIRING",
-    title: "Lease Expiring in 31 Days",
-    message: "Helen Tadesse's lease for Kazanchis Unit 4A ends on November 15, 2026. Send renewal terms.",
-    severity: "info",
-    timestamp: "1 day ago",
-    isRead: false,
-    actionUrl: "/rentalmanager/leases",
-    actionLabel: "Manage Leases",
-  },
-  {
-    id: "alt-04",
-    type: "RENT_DUE",
-    title: "Rent Payment Received via Telebirr",
-    message: "Dawit Haile successfully paid 55,000 ETB for October rent (Ref: TB-94182901).",
-    severity: "success",
-    timestamp: "3 days ago",
-    isRead: true,
-    actionUrl: "/rentalmanager/payments",
-    actionLabel: "View Receipt",
-  },
-];
-
-function getAlertsMemoryStore(): LandlordAlertRecord[] {
-  if (!globalThis.__ernsLandlordAlerts) {
-    globalThis.__ernsLandlordAlerts = JSON.parse(
-      JSON.stringify(SEED_LANDLORD_ALERTS)
-    );
+function getReadAlertIdsStore(): string[] {
+  if (!globalThis.__ernsReadAlertIds) {
+    globalThis.__ernsReadAlertIds = ["alert-pay-paid-pay-101", "alert-prop-inquiries-rental-102"];
   }
-  return globalThis.__ernsLandlordAlerts!;
+  return globalThis.__ernsReadAlertIds;
+}
+
+function computeDynamicLandlordAlerts(): LandlordAlertRecord[] {
+  const payments = getPaymentsMemoryStore();
+  const applications = getApplicationsMemoryStore();
+  const leases = getLeasesMemoryStore();
+  const rentals = getRentalMemoryStore();
+  const readIds = getReadAlertIdsStore();
+
+  const alerts: LandlordAlertRecord[] = [];
+
+  // 1. Dynamic alerts from Payments Ledger
+  for (const p of payments) {
+    if (p.status === "OVERDUE") {
+      const id = `alert-pay-overdue-${p.id}`;
+      alerts.push({
+        id,
+        type: "RENT_OVERDUE",
+        title: `Rent Overdue: ${p.propertyTitle} (${p.unitName})`,
+        message: `${p.tenantName} has an overdue rent payment of ${p.amountETB.toLocaleString()} ETB for ${p.periodMonth}. Grace period expired on ${p.dueDate}.`,
+        severity: "error",
+        timestamp: "Action required",
+        isRead: readIds.includes(id),
+        actionUrl: "/rentalmanager/payments",
+        actionLabel: "Collect Payment",
+      });
+    } else if (p.status === "PENDING") {
+      const id = `alert-pay-pending-${p.id}`;
+      alerts.push({
+        id,
+        type: "RENT_DUE",
+        title: `Rent Due Soon: ${p.propertyTitle} (${p.unitName})`,
+        message: `${p.tenantName}'s scheduled rent of ${p.amountETB.toLocaleString()} ETB for ${p.periodMonth} is due on ${p.dueDate}.`,
+        severity: "info",
+        timestamp: "Due soon",
+        isRead: readIds.includes(id),
+        actionUrl: "/rentalmanager/payments",
+        actionLabel: "View Ledger",
+      });
+    } else if (p.status === "PAID") {
+      const id = `alert-pay-paid-${p.id}`;
+      alerts.push({
+        id,
+        type: "RENT_DUE",
+        title: `Rent Payment Received: ${p.propertyTitle} (${p.unitName})`,
+        message: `${p.tenantName} successfully paid ${p.amountETB.toLocaleString()} ETB for ${p.periodMonth} via ${p.paymentMethod || "Bank"}${p.referenceNo ? ` (Ref: ${p.referenceNo})` : ""}.`,
+        severity: "success",
+        timestamp: p.paidDate ? `Paid on ${p.paidDate}` : "Recently paid",
+        isRead: readIds.includes(id),
+        actionUrl: "/rentalmanager/payments",
+        actionLabel: "View Receipt",
+      });
+    }
+  }
+
+  // 2. Dynamic alerts from Tenant Applications Hub
+  for (const app of applications) {
+    if (app.status === "PENDING") {
+      const id = `alert-app-pending-${app.id}`;
+      alerts.push({
+        id,
+        type: "NEW_APPLICATION",
+        title: `New Tenant Application: ${app.applicantName}`,
+        message: `${app.applicantName} submitted an application for ${app.propertyTitle} (${app.unitName || "Unit"}) with monthly income of ${app.monthlyIncomeETB.toLocaleString()} ETB.`,
+        severity: "warning",
+        timestamp: "Pending review",
+        isRead: readIds.includes(id),
+        actionUrl: "/rentalmanager/applications",
+        actionLabel: "Screen Tenant",
+      });
+    } else if (app.status === "APPROVED") {
+      const id = `alert-app-approved-${app.id}`;
+      alerts.push({
+        id,
+        type: "NEW_APPLICATION",
+        title: `Application Approved: ${app.applicantName}`,
+        message: `Tenant screening verified for ${app.applicantName} (${app.propertyTitle}). Ready to create formal lease agreement.`,
+        severity: "success",
+        timestamp: "Approved",
+        isRead: readIds.includes(id),
+        actionUrl: "/rentalmanager/leases",
+        actionLabel: "Build Lease",
+      });
+    }
+  }
+
+  // 3. Dynamic alerts from Digital Leases Hub
+  for (const l of leases) {
+    if (l.status === "EXPIRING_SOON") {
+      const id = `alert-lease-expiring-${l.id}`;
+      alerts.push({
+        id,
+        type: "LEASE_EXPIRING",
+        title: `Lease Expiring Soon: ${l.propertyTitle} (${l.unitName})`,
+        message: `${l.tenantName}'s lease ends on ${l.endDate}. Review agreement and initiate renewal notice.`,
+        severity: "warning",
+        timestamp: "Expiring soon",
+        isRead: readIds.includes(id),
+        actionUrl: "/rentalmanager/leases",
+        actionLabel: "Manage Leases",
+      });
+    } else if (l.status === "TERMINATED") {
+      const id = `alert-lease-terminated-${l.id}`;
+      alerts.push({
+        id,
+        type: "LEASE_EXPIRING",
+        title: `Lease Terminated: ${l.propertyTitle} (${l.unitName})`,
+        message: `Lease ${l.leaseNumber} for ${l.tenantName} was terminated. Unit is vacant and ready to list.`,
+        severity: "info",
+        timestamp: "Terminated",
+        isRead: readIds.includes(id),
+        actionUrl: "/rentalmanager/properties",
+        actionLabel: "Relist Unit",
+      });
+    }
+  }
+
+  // 4. Dynamic alerts from Properties Milestones
+  for (const prop of rentals) {
+    if (prop.inquiriesCount > 5) {
+      const id = `alert-prop-inquiries-${prop.id}`;
+      alerts.push({
+        id,
+        type: "LISTING_MILESTONE",
+        title: `High Inquiries: ${prop.title}`,
+        message: `${prop.inquiriesCount} prospective tenants have expressed interest in this ${prop.subCity} listing.`,
+        severity: "info",
+        timestamp: "High traffic",
+        isRead: readIds.includes(id),
+        actionUrl: "/rentalmanager/properties",
+        actionLabel: "View Listing",
+      });
+    }
+  }
+
+  // Priority sorting: errors (overdue rent) first, then warnings (applications, expiring leases), then successes, then info
+  const severityRank: Record<string, number> = {
+    error: 0,
+    warning: 1,
+    success: 2,
+    info: 3,
+  };
+
+  alerts.sort((a, b) => {
+    if (a.isRead !== b.isRead) {
+      return a.isRead ? 1 : -1;
+    }
+    return (severityRank[a.severity] ?? 4) - (severityRank[b.severity] ?? 4);
+  });
+
+  return alerts;
 }
 
 export async function getLandlordAlertsAction(): Promise<AlertsResult> {
   try {
-    const store = getAlertsMemoryStore();
-    const unreadCount = store.filter((a) => !a.isRead).length;
+    const alerts = computeDynamicLandlordAlerts();
+    const unreadCount = alerts.filter((a) => !a.isRead).length;
     return {
       success: true,
-      alerts: [...store],
+      alerts,
       unreadCount,
     };
   } catch (error: any) {
@@ -1123,10 +1233,12 @@ export async function markAlertAsReadAction(
   alertId: string
 ): Promise<RentalActionResult> {
   try {
-    const store = getAlertsMemoryStore();
-    const item = store.find((a) => a.id === alertId);
-    if (item) item.isRead = true;
+    const readIds = getReadAlertIdsStore();
+    if (!readIds.includes(alertId)) {
+      readIds.push(alertId);
+    }
     revalidatePath("/rentalmanager/alerts");
+    revalidatePath("/rentalmanager/dashboard");
     return { success: true };
   } catch (error: any) {
     return { success: false, error: error.message };
@@ -1135,9 +1247,15 @@ export async function markAlertAsReadAction(
 
 export async function markAllAlertsAsReadAction(): Promise<RentalActionResult> {
   try {
-    const store = getAlertsMemoryStore();
-    store.forEach((a) => (a.isRead = true));
+    const alerts = computeDynamicLandlordAlerts();
+    const readIds = getReadAlertIdsStore();
+    alerts.forEach((a) => {
+      if (!readIds.includes(a.id)) {
+        readIds.push(a.id);
+      }
+    });
     revalidatePath("/rentalmanager/alerts");
+    revalidatePath("/rentalmanager/dashboard");
     return { success: true };
   } catch (error: any) {
     return { success: false, error: error.message };
