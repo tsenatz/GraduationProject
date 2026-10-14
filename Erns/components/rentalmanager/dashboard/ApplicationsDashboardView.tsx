@@ -321,9 +321,9 @@ export function ApplicationsDashboardView({
                       <Mail size={16} />
                     </a>
                     <Link
-                      href={`/inbox?recipient=${encodeURIComponent(app.applicantName)}`}
+                      href={`/rentalmanager/messages?recipient=${encodeURIComponent(app.applicantName)}`}
                       className={styles.iconCircleBtn}
-                      title="Open chat in ERNS Inbox"
+                      title="Open chat in Rental Manager Messages"
                     >
                       <MessageSquare size={16} />
                     </Link>

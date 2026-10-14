@@ -31,7 +31,13 @@ import styles from "./InboxView.module.css";
 
 const STORAGE_KEY = "erns_inbox_conversations_v3";
 
-export const InboxView: React.FC = () => {
+export interface InboxViewProps {
+  initialPerspective?: MainPerspective;
+}
+
+export const InboxView: React.FC<InboxViewProps> = ({
+  initialPerspective = "buying_renting",
+}) => {
   const { data: session, status } = useSession();
   const { isAmharic } = useLanguage();
   const t = inboxTranslations[isAmharic ? "am" : "en"];
@@ -40,7 +46,7 @@ export const InboxView: React.FC = () => {
   const [conversations, setConversations] =
     useState<Conversation[]>(INITIAL_CONVERSATIONS);
   const [activePerspective, setActivePerspective] =
-    useState<MainPerspective>("buying_renting");
+    useState<MainPerspective>(initialPerspective);
   const [activeFolder, setActiveFolder] = useState<SubFolder>("all");
   const [selectedId, setSelectedId] = useState<string | null>(
     INITIAL_CONVERSATIONS[0]?.id || null

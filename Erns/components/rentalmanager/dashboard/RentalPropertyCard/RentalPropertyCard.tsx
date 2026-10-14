@@ -164,7 +164,7 @@ export const RentalPropertyCard: React.FC<RentalPropertyCardProps> = ({
 
         {/* Performance Metrics */}
         <div className={styles.metricsRow}>
-          <Link href="/inbox" className={styles.metricBadge} title="View Inquiries in Inbox">
+          <Link href="/rentalmanager/messages" className={styles.metricBadge} title="View Inquiries in Messages">
             <MessageSquare size={12} />
             <span>{property.inquiriesCount} Inquiries</span>
           </Link>

@@ -46,7 +46,7 @@ export function RentalManagerSidebar({
     },
     {
       label: "Messages",
-      href: "/inbox",
+      href: "/rentalmanager/messages",
       icon: MessageSquare,
       enabled: true,
     },
