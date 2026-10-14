@@ -1,38 +1,46 @@
+"use client";
+
+import React from "react";
 import { ServiceCard } from "@/components/home/ServiceCard";
+import { useLanguage } from "@/components/providers/LanguageProvider";
+import { serviceTranslations } from "./translations";
 import styles from "./Services.module.css";
 
-const SERVICE_ITEMS = [
-  {
-    imageSrc: "/buy-house.jpg",
-    imageAlt: "Buy a house illustration",
-    title: "Buy a home",
-    description:
-      "A real estate agent can provide you with a clear breakdown of costs so that you can avoid surprise expenses.",
-    buttonLabel: "Find a local agent",
-  },
-  {
-    imageSrc: "/sell-house.jpg",
-    imageAlt: "Sell a house illustration",
-    title: "Sell a home",
-    description:
-      "No matter what path you take to sell your home, we can help you navigate a successful sale.",
-    buttonLabel: "See your options",
-  },
-  {
-    imageSrc: "/rent-house.jpg",
-    imageAlt: "Rent a house illustration",
-    title: "Rent a home",
-    description:
-      "We're creating a seamless online experience – from shopping on the largest rental network, to applying, to paying rent.",
-    buttonLabel: "Find rentals",
-  },
-];
-
 export function Services() {
+  const { language } = useLanguage();
+  const t = serviceTranslations[language] || serviceTranslations.en;
+
+  const serviceItems = [
+    {
+      imageSrc: "/buy-house.jpg",
+      imageAlt: t.buy.title,
+      title: t.buy.title,
+      description: t.buy.description,
+      buttonLabel: t.buy.buttonLabel,
+      href: "/agents",
+    },
+    {
+      imageSrc: "/rent-house.jpg",
+      imageAlt: t.rent.title,
+      title: t.rent.title,
+      description: t.rent.description,
+      buttonLabel: t.rent.buttonLabel,
+      href: "/search?status=FOR_RENT",
+    },
+    {
+      imageSrc: "/sell-house.jpg",
+      imageAlt: t.sell.title,
+      title: t.sell.title,
+      description: t.sell.description,
+      buttonLabel: t.sell.buttonLabel,
+      href: "/sell",
+    },
+  ];
+
   return (
     <section className={styles.container}>
       <div className={styles.cardsWrapper}>
-        {SERVICE_ITEMS.map((item) => (
+        {serviceItems.map((item) => (
           <ServiceCard key={item.title} {...item} />
         ))}
       </div>
