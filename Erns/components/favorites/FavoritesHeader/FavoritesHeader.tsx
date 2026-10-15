@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Heart, Share2, Trash2, Check, Sparkles } from "lucide-react";
+import { Heart, Share2, Trash2, Check } from "lucide-react";
 import { useFavorites } from "@/components/providers/FavoritesProvider";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { favoritesTranslations } from "../translations";

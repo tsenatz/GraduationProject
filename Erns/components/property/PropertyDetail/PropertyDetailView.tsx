@@ -21,7 +21,6 @@ import {
   FileCheck2,
   Edit3,
   Layers,
-  Sparkles,
   Printer,
   Copy,
 } from "lucide-react";
@@ -149,7 +148,7 @@ export function PropertyDetailView({ property }: PropertyDetailViewProps) {
       {property.isOwner && (
         <div className={styles.ownerBanner}>
           <div className={styles.ownerBannerLeft}>
-            <Sparkles size={20} />
+            <FileCheck2 size={20} />
             <span>You are the verified owner of this listing</span>
           </div>
           <div className={styles.ownerBannerActions}>
@@ -350,7 +349,7 @@ export function PropertyDetailView({ property }: PropertyDetailViewProps) {
           {/* Amenities & Features Card */}
           <div className={styles.sectionCard}>
             <div className={styles.sectionHeader}>
-              <Sparkles size={20} color="var(--color-primary)" />
+              <Layers size={20} color="var(--color-primary)" />
               <h2 className={styles.sectionTitle}>Key Features & Amenities</h2>
             </div>
 

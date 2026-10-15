@@ -7,7 +7,7 @@ import {
   Building2,
   MapPin,
   DollarSign,
-  Sparkles,
+  Utensils,
   Check,
   Plus,
   Bed,
@@ -68,7 +68,7 @@ const AMENITY_OPTIONS = [
   { id: "Elevator Access", label: "Elevator Access (ሊፍት)", icon: Building2 },
   { id: "High Speed WiFi", label: "High Speed WiFi", icon: Wifi },
   { id: "Balcony City View", label: "Balcony with City View", icon: Eye },
-  { id: "Modern Fitted Kitchen", label: "Modern Fitted Kitchen", icon: Sparkles },
+  { id: "Modern Fitted Kitchen", label: "Modern Fitted Kitchen", icon: Utensils },
   { id: "Water Heater (Geyser)", label: "Water Heater / Geyser", icon: Droplets },
 ];
 

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { Search, Sparkles } from "lucide-react";
+import { Search } from "lucide-react";
 import { useSession } from "next-auth/react";
 import {
   Conversation,
@@ -705,7 +705,6 @@ export const InboxView: React.FC<InboxViewProps> = ({
       {isDemoMode && (
         <div className={styles.demoNoticeBanner}>
           <div className={styles.demoNoticeLeft}>
-            <Sparkles size={14} className={styles.demoSparkleIcon} />
             <span>{t.authGate.demoBannerText}</span>
           </div>
           <div className={styles.demoNoticeActions}>

@@ -9,7 +9,6 @@ import {
   Calendar,
   Compass,
   ArrowRight,
-  Sparkles,
 } from "lucide-react";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { inboxTranslations } from "../translations";
@@ -93,7 +92,6 @@ export const InboxAuthGate: React.FC<InboxAuthGateProps> = ({ onEnableDemo }) =>
           className={styles.demoBtn}
           onClick={onEnableDemo}
         >
-          <Sparkles size={16} />
           <span>{t.demoBtn}</span>
         </button>
       </div>

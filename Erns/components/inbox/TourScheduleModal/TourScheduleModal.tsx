@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { X, Calendar, Clock, MapPin, Send, Sparkles } from "lucide-react";
+import { X, Calendar, Clock, MapPin, Send } from "lucide-react";
 import { PropertySnapshot } from "../types";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { inboxTranslations } from "../translations";

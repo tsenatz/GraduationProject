@@ -11,7 +11,6 @@ import {
   ArrowLeft,
   ShieldCheck,
   Star,
-  Sparkles,
   Home,
   Check,
   Loader2,
@@ -724,7 +723,6 @@ export const ApplyFormWizard: React.FC = () => {
                   <>
                     <div className={styles.previewSection}>
                       <div className={styles.previewHeaderTitle}>
-                        <Sparkles size={16} />
                         <span>{t.step4.previewHeader}</span>
                       </div>
 

@@ -6,7 +6,6 @@ import {
   Search,
   MapPin,
   X,
-  Sparkles,
 } from "lucide-react";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { heroTranslations } from "./translations";
@@ -143,7 +142,6 @@ export function Hero() {
             <div className={styles.suggestionsPopover}>
               <div className={styles.suggestionsHeader}>
                 <span>Popular in Addis Ababa</span>
-                <Sparkles size={13} color="#D97706" />
               </div>
               <div className={styles.suggestionsList}>
                 {filteredSuggestions.length > 0 ? (

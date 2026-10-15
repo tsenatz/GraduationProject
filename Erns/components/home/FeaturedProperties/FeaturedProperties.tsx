@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Sparkles, ArrowRight, Compass, Heart } from "lucide-react";
+import { ArrowRight, Compass, Heart } from "lucide-react";
 import { Property } from "@/components/favorites/types";
 import { PropertyCard } from "@/components/favorites/PropertyCard";
 import { PropertyDetailModal } from "@/components/favorites/PropertyDetailModal";
@@ -50,7 +50,6 @@ export function FeaturedProperties() {
         <div className={styles.headerRow}>
           <div className={styles.headerLeft}>
             <div className={styles.eyebrowBadge}>
-              <Sparkles size={14} aria-hidden="true" />
               <span>{t.eyebrow}</span>
             </div>
             <h2 className={styles.title}>{t.title}</h2>

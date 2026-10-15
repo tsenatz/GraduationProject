@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  Sparkles,
   MapPin,
   Building,
   ArrowRight,
@@ -69,7 +68,6 @@ export function SellHero() {
 
       <div className={styles.heroContent}>
         <div className={styles.badge}>
-          <Sparkles size={16} aria-hidden="true" />
           <span>{t.hero.badge}</span>
         </div>
 
