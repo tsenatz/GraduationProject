@@ -5,7 +5,7 @@
   height: clamp(580px, 75vh, 760px);
   min-height: 580px;
   max-height: 760px;
-  background-image: url('/hero_bg.png');
+  background-image: url('/hero_bg_addis.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -24,7 +24,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(10, 25, 49, 0.65) 0%, rgba(10, 25, 49, 0.82) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(10, 25, 49, 0.45) 0%,
+    rgba(10, 25, 49, 0.65) 100%
+  );
   z-index: 1;
 }
 
