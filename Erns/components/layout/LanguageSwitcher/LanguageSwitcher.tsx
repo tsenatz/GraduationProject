@@ -24,7 +24,6 @@ export function LanguageSwitcher({ isMobileDrawer = false }: LanguageSwitcherPro
     return (
       <div className={styles.mobileWrapper}>
         <span className={styles.mobileLabel}>
-          <Globe size={18} aria-hidden="true" />
           <span>{language === "en" ? "Language" : "ቋንቋ"}</span>
         </span>
         <button
@@ -34,7 +33,6 @@ export function LanguageSwitcher({ isMobileDrawer = false }: LanguageSwitcherPro
           title={targetTitle}
           aria-label={targetTitle}
         >
-          <Globe size={15} className={styles.globeIcon} aria-hidden="true" />
           <span className={styles.singleLangText}>{displayLabel}</span>
         </button>
       </div>
@@ -50,7 +48,6 @@ export function LanguageSwitcher({ isMobileDrawer = false }: LanguageSwitcherPro
         title={targetTitle}
         aria-label={targetTitle}
       >
-        <Globe size={15} className={styles.globeIcon} aria-hidden="true" />
         <span className={styles.singleLangText}>{displayLabel}</span>
       </button>
     </div>

@@ -76,10 +76,10 @@ export function Hero() {
   // Filter suggestions based on typed text
   const filteredSuggestions = locationQuery.trim()
     ? POPULAR_LOCATIONS.filter(
-        (loc) =>
-          loc.name.toLowerCase().includes(locationQuery.toLowerCase()) ||
-          loc.subCity.toLowerCase().includes(locationQuery.toLowerCase())
-      )
+      (loc) =>
+        loc.name.toLowerCase().includes(locationQuery.toLowerCase()) ||
+        loc.subCity.toLowerCase().includes(locationQuery.toLowerCase())
+    )
     : POPULAR_LOCATIONS;
 
   return (
@@ -143,7 +143,6 @@ export function Hero() {
             <div className={styles.suggestionsPopover}>
               <div className={styles.suggestionsHeader}>
                 <span>Popular in Addis Ababa</span>
-                <Sparkles size={13} color="#D97706" />
               </div>
               <div className={styles.suggestionsList}>
                 {filteredSuggestions.length > 0 ? (
