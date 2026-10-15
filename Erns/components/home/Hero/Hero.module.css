@@ -1,9 +1,9 @@
 .heroContainer {
   position: relative;
   width: 100%;
-  min-height: 640px;
-  max-height: 840px;
-  height: 84vh;
+  height: clamp(580px, 75vh, 760px);
+  min-height: 580px;
+  max-height: 760px;
   background-image: url('/hero_bg.png');
   background-size: cover;
   background-position: center;

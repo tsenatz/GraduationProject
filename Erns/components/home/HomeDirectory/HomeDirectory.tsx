@@ -2,9 +2,8 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ChevronDown, X, Check, ShieldCheck } from "lucide-react";
+import { ChevronDown, X, ShieldCheck } from "lucide-react";
 import { useLanguage } from "@/components/providers/LanguageProvider";
-import { FacebookIcon, TwitterIcon, InstagramIcon, LinkedinIcon } from "@/components/icons/SocialIcons";
 import { homeDirectoryTranslations, HomeDirectoryTranslations } from "./translations";
 import styles from "./HomeDirectory.module.css";
 
@@ -211,51 +210,6 @@ export const HomeDirectory: React.FC = () => {
                 <line x1="8" y1="16" x2="16" y2="16" />
               </svg>
               <span>{t.legal.equalHousing}</span>
-            </div>
-
-            {/* Social Icons */}
-            <div className={styles.socialRow} aria-label="ERNS Social Media">
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.socialIconLink}
-                aria-label="Facebook"
-              >
-                <FacebookIcon className={styles.socialSvg} />
-              </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.socialIconLink}
-                aria-label="Twitter"
-              >
-                <TwitterIcon className={styles.socialSvg} />
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.socialIconLink}
-                aria-label="Instagram"
-              >
-                <InstagramIcon className={styles.socialSvg} />
-              </a>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.socialIconLink}
-                aria-label="LinkedIn"
-              >
-                <LinkedinIcon className={styles.socialSvg} />
-              </a>
-            </div>
-
-            {/* Copyright */}
-            <div className={styles.copyright}>
-              &copy; {new Date().getFullYear()} {t.legal.copyright}
             </div>
           </div>
         </div>

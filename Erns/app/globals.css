@@ -74,6 +74,7 @@ body {
   margin-left: 0 !important;
   width: 100% !important;
   max-width: 100% !important;
+  min-height: auto !important;
 }
 
 @media (max-width: 960px) {

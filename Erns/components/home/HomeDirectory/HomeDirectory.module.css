@@ -2,7 +2,7 @@
   width: 100%;
   background-color: #FFFFFF;
   color: #2A2A33;
-  padding: 3.5rem 1.5rem 3rem;
+  padding: 3.5rem 1.5rem 2.5rem;
   border-top: 1px solid #ECECEC;
   position: relative;
 }
@@ -307,14 +307,12 @@
   margin-bottom: 1.75rem;
 }
 
-/* Bottom Bar: Equal Housing, Socials, Copyright */
+/* Bottom Bar: Equal Housing Badge */
 .bottomBar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1.25rem;
-  padding-top: 1.25rem;
+  justify-content: center;
+  padding-top: 1rem;
   border-top: 1px solid #F1F5F9;
 }
 
@@ -328,43 +326,9 @@
 }
 
 .equalHousingIcon {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   stroke: currentColor;
-}
-
-.socialRow {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.socialIconLink {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  color: #64748B;
-  background-color: #F1F5F9;
-  transition: all 0.2s ease;
-}
-
-.socialIconLink:hover {
-  background-color: #006AFF;
-  color: #FFFFFF;
-  transform: translateY(-2px);
-}
-
-.socialSvg {
-  width: 15px;
-  height: 15px;
-}
-
-.copyright {
-  color: #94A3B8;
-  font-size: 0.75rem;
 }
 
 /* Privacy Modal Styles */

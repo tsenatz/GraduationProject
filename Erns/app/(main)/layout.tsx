@@ -23,7 +23,7 @@ export default function MainLayout({
           {children}
         </main>
       </div>
-      {!isHomePage && <Footer />}
+      <Footer />
       {!isHomePage && <BottomNav />}
     </div>
   );
