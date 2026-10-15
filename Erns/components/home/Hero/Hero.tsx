@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import {
   Search,
   MapPin,
-  ChevronDown,
   X,
   Sparkles,
 } from "lucide-react";
@@ -29,44 +28,15 @@ const POPULAR_LOCATIONS: LocationSuggestion[] = [
   { name: "Ayat Zone 3", subCity: "Yeka" },
 ];
 
-const QUICK_TAGS = [
-  { label: "📍 Bole Atlas", query: "Bole Atlas" },
-  { label: "📍 Kazanchis", query: "Kazanchis" },
-  { label: "📍 CMC", query: "CMC" },
-  { label: "📍 Sarbet", query: "Sarbet" },
-  { label: "🏢 Condos", propertyType: "Condominium" },
-  { label: "🏡 Villas", propertyType: "Villa" },
-];
-
 export function Hero() {
   const router = useRouter();
   const { language } = useLanguage();
   const t = heroTranslations[language] || heroTranslations.en;
 
   const [locationQuery, setLocationQuery] = useState("");
-  const [propertyType, setPropertyType] = useState("");
-  const [bedrooms, setBedrooms] = useState("");
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
 
   const searchCardRef = useRef<HTMLFormElement>(null);
-
-  const propertyTypesList = [
-    { label: t.propertyTypes.all, value: "" },
-    { label: t.propertyTypes.apartment, value: "Apartment" },
-    { label: t.propertyTypes.condo, value: "Condominium" },
-    { label: t.propertyTypes.villa, value: "Villa" },
-    { label: t.propertyTypes.townhouse, value: "Townhouse" },
-    { label: t.propertyTypes.penthouse, value: "Penthouse" },
-    { label: t.propertyTypes.commercial, value: "Commercial" },
-  ];
-
-  const bedroomOptionsList = [
-    { label: t.beds.any, value: "" },
-    { label: t.beds.studio, value: "1" },
-    { label: t.beds.bed2, value: "2" },
-    { label: t.beds.bed3, value: "3" },
-    { label: t.beds.bed4, value: "4" },
-  ];
 
   // Close suggestions popover when clicking outside
   useEffect(() => {
@@ -93,12 +63,6 @@ export function Hero() {
     if (locationQuery.trim()) {
       params.set("query", locationQuery.trim());
     }
-    if (propertyType) {
-      params.set("propertyType", propertyType);
-    }
-    if (bedrooms) {
-      params.set("beds", bedrooms);
-    }
 
     const queryString = params.toString();
     router.push(`/search${queryString ? `?${queryString}` : ""}`);
@@ -107,18 +71,6 @@ export function Hero() {
   const handleSelectLocation = (locationName: string) => {
     setLocationQuery(locationName);
     setIsSuggestionsOpen(false);
-  };
-
-  const handleQuickTagClick = (tag: {
-    query?: string;
-    propertyType?: string;
-  }) => {
-    const params = new URLSearchParams();
-    if (tag.query) params.set("query", tag.query);
-    if (tag.propertyType) params.set("propertyType", tag.propertyType);
-
-    const queryString = params.toString();
-    router.push(`/search${queryString ? `?${queryString}` : ""}`);
   };
 
   // Filter suggestions based on typed text
@@ -227,61 +179,6 @@ export function Hero() {
             </div>
           )}
         </form>
-
-        {/* Secondary Row: Clean Filter Pills & Popular Destinations */}
-        <div className={styles.secondaryRow}>
-          {/* Property Type Filter Pill */}
-          <div className={styles.filterPillWrapper}>
-            <select
-              className={styles.filterSelect}
-              value={propertyType}
-              onChange={(e) => setPropertyType(e.target.value)}
-              aria-label="Filter by property type"
-            >
-              {propertyTypesList.map((type) => (
-                <option key={type.label} value={type.value}>
-                  {type.label}
-                </option>
-              ))}
-            </select>
-            <ChevronDown size={14} className={styles.filterChevron} />
-          </div>
-
-          {/* Bedrooms Filter Pill */}
-          <div className={styles.filterPillWrapper}>
-            <select
-              className={styles.filterSelect}
-              value={bedrooms}
-              onChange={(e) => setBedrooms(e.target.value)}
-              aria-label="Filter by bedrooms"
-            >
-              {bedroomOptionsList.map((opt) => (
-                <option key={opt.label} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
-            <ChevronDown size={14} className={styles.filterChevron} />
-          </div>
-
-          <span className={styles.filterDividerDot} aria-hidden="true">•</span>
-
-          <span className={styles.quickTagsLabel}>
-            <Sparkles size={14} color="#FBBF24" />
-            <span>{t.popularLabel}</span>
-          </span>
-
-          {QUICK_TAGS.map((tag) => (
-            <button
-              key={tag.label}
-              type="button"
-              className={styles.quickTagBtn}
-              onClick={() => handleQuickTagClick(tag)}
-            >
-              {tag.label}
-            </button>
-          ))}
-        </div>
       </div>
     </div>
   );
