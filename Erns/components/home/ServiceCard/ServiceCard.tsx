@@ -1,4 +1,6 @@
+import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import styles from "./ServiceCard.module.css";
 
 interface ServiceCardProps {
@@ -7,11 +9,12 @@ interface ServiceCardProps {
   title: string;
   description: string;
   buttonLabel: string;
+  href?: string;
   onButtonClick?: () => void;
 }
 
 /**
- * A single service offering card used on the home page (Buy / Sell / Rent).
+ * A single service offering card used on the home page (Buy / Rent / Sell).
  */
 export function ServiceCard({
   imageSrc,
@@ -19,10 +22,11 @@ export function ServiceCard({
   title,
   description,
   buttonLabel,
+  href,
   onButtonClick,
 }: ServiceCardProps) {
-  return (
-    <div className={styles.card}>
+  const CardInner = (
+    <>
       <Image
         className={styles.cardImage}
         src={imageSrc}
@@ -33,10 +37,22 @@ export function ServiceCard({
       <div className={styles.cardContent}>
         <h3 className={styles.cardTitle}>{title}</h3>
         <p className={styles.cardDescription}>{description}</p>
-        <button className={styles.cardButton} onClick={onButtonClick}>
-          {buttonLabel}
-        </button>
+        <span className={styles.cardButton}>{buttonLabel}</span>
       </div>
+    </>
+  );
+
+  if (href) {
+    return (
+      <Link href={href} className={`${styles.card} ${styles.cardLink}`}>
+        {CardInner}
+      </Link>
+    );
+  }
+
+  return (
+    <div className={styles.card} onClick={onButtonClick}>
+      {CardInner}
     </div>
   );
 }

@@ -6,7 +6,7 @@
 
 .searchInput {
   width: 100%;
-  padding: 16px 52px 16px 20px;
+  padding: 16px 54px 16px 20px;
   border-radius: 50px;
   border: none;
   font-size: 1rem;
@@ -20,11 +20,29 @@
   color: var(--color-accent);
 }
 
-.searchIcon {
+.searchBtn {
   position: absolute;
-  right: 18px;
+  right: 8px;
   top: 50%;
   transform: translateY(-50%);
+  background: transparent;
+  border: none;
   color: var(--color-primary);
-  pointer-events: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.searchBtn:hover {
+  background-color: rgba(10, 25, 49, 0.08);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.searchBtn:active {
+  transform: translateY(-50%) scale(0.95);
 }

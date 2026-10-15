@@ -168,17 +168,33 @@ function SearchPageContent() {
           <option value="FOR_RENT">For Rent</option>
         </select>
 
-        <select 
-          className={styles.filterPill}
-          value={minPrice}
-          onChange={(e) => updateQueryString("minPrice", e.target.value)}
-        >
-          <option value="">Price</option>
-          <option value="100000">$100k+</option>
-          <option value="200000">$200k+</option>
-          <option value="300000">$300k+</option>
-          <option value="500000">$500k+</option>
-        </select>
+        {status === "FOR_RENT" ? (
+          <select 
+            className={styles.filterPill}
+            value={minPrice}
+            onChange={(e) => updateQueryString("minPrice", e.target.value)}
+          >
+            <option value="">Rent (Monthly)</option>
+            <option value="15000">15,000+ ETB/mo</option>
+            <option value="30000">30,000+ ETB/mo</option>
+            <option value="50000">50,000+ ETB/mo</option>
+            <option value="80000">80,000+ ETB/mo</option>
+            <option value="120000">120,000+ ETB/mo</option>
+          </select>
+        ) : (
+          <select 
+            className={styles.filterPill}
+            value={minPrice}
+            onChange={(e) => updateQueryString("minPrice", e.target.value)}
+          >
+            <option value="">Price (ETB)</option>
+            <option value="3000000">3M+ ETB</option>
+            <option value="5000000">5M+ ETB</option>
+            <option value="10000000">10M+ ETB</option>
+            <option value="20000000">20M+ ETB</option>
+            <option value="35000000">35M+ ETB</option>
+          </select>
+        )}
         
         <BedsBathsFilter 
           initialBeds={beds}
@@ -292,13 +308,18 @@ function SearchPageContent() {
                 <div className={styles.cardContent}>
                   <div className={styles.cardPrice}>
                     ETB {property.price.toLocaleString()}
+                    {property.status === "FOR_RENT" && (
+                      <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-muted, #64748B)", marginLeft: "4px" }}>
+                        / mo
+                      </span>
+                    )}
                   </div>
                   <div className={styles.cardSpecs}>
                     <strong>{property.beds}</strong> bds <span className="mx-1">|</span> 
                     <strong>{property.baths}</strong> ba <span className="mx-1">|</span> 
                     <strong>{property.sqft.toLocaleString()}</strong> sqft 
                     <span className="mx-1">-</span> 
-                    {property.propertyType || "House for sale"}
+                    {property.propertyType || (property.status === "FOR_RENT" ? "Rental unit" : "House for sale")}
                   </div>
                   <div className={styles.cardAddress}>
                     {property.address}, {property.city}, {property.state} {property.zipCode}

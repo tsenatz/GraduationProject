@@ -1,10 +1,17 @@
+"use client";
+
 import React from 'react';
 import Link from 'next/link';
 import { Home, Mail, Phone, MapPin } from 'lucide-react';
 import { FacebookIcon, TwitterIcon, InstagramIcon, LinkedinIcon } from '@/components/icons/SocialIcons';
+import { useLanguage } from '@/components/providers/LanguageProvider';
+import { footerTranslations } from './translations';
 import styles from './Footer.module.css';
 
-const Footer = () => {
+export const Footer = () => {
+  const { language } = useLanguage();
+  const t = footerTranslations[language] || footerTranslations.en;
+
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
@@ -14,9 +21,7 @@ const Footer = () => {
             <h2 className={styles.brandName}>
               <Home className={styles.brandIcon} size={24} /> ERNS
             </h2>
-            <p className={styles.description}>
-              Find your perfect home with ERNS. We make real estate simple, transparent, and accessible for everyone.
-            </p>
+            <p className={styles.description}>{t.brandDesc}</p>
             <div className={styles.socials}>
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Facebook">
                 <FacebookIcon className={styles.socialIcon} />
@@ -35,48 +40,63 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className={styles.section}>
-            <h3 className={styles.title}>Quick Links</h3>
+            <h3 className={styles.title}>{t.quickLinksTitle}</h3>
             <ul className={styles.links}>
-              <li><Link href="/">Home</Link></li>
-              <li><Link href="/about">About Us</Link></li>
-              <li><Link href="/properties">Properties</Link></li>
-              <li><Link href="/agents">Our Agents</Link></li>
+              <li><Link href="/">{t.links.home}</Link></li>
+              <li><Link href="/search?status=FOR_SALE">{t.links.buy}</Link></li>
+              <li><Link href="/search?status=FOR_RENT">{t.links.rent}</Link></li>
+              <li><Link href="/sell">{t.links.sell}</Link></li>
+              <li><Link href="/agents">{t.links.agents}</Link></li>
+              <li><Link href="/rentalmanager">{t.links.rentalManager}</Link></li>
             </ul>
           </div>
 
-          {/* Support */}
+          {/* Platform & Support */}
           <div className={styles.section}>
-            <h3 className={styles.title}>Support</h3>
+            <h3 className={styles.title}>{t.platformTitle}</h3>
             <ul className={styles.links}>
-              <li><Link href="/faq">FAQ</Link></li>
-              <li><Link href="/help">Help Center</Link></li>
-              <li><Link href="/terms">Terms of Service</Link></li>
-              <li><Link href="/privacy">Privacy Policy</Link></li>
+              <li><Link href="/favorites">{t.support.favorites}</Link></li>
+              <li><Link href="/inbox">{t.support.inbox}</Link></li>
+              <li><Link href="/agents/apply">{t.support.agentApply}</Link></li>
+              <li><Link href="/sell/dashboard">{t.links.sell}</Link></li>
             </ul>
           </div>
 
           {/* Contact */}
           <div className={styles.section}>
-            <h3 className={styles.title}>Contact Us</h3>
+            <h3 className={styles.title}>{t.contactTitle}</h3>
             <ul className={styles.contactInfo}>
               <li>
-                <MapPin size={18} className={styles.contactIcon} />
-                <span>123 Real Estate Ave, Suite 100<br/>New York, NY 10001</span>
+                <MapPin size={18} className={styles.contactIcon} aria-hidden="true" />
+                <span>
+                  {t.addressLine1}
+                  <br />
+                  {t.addressLine2}
+                </span>
               </li>
               <li>
-                <Phone size={18} className={styles.contactIcon} />
-                <span>+1 (555) 123-4567</span>
+                <Phone size={18} className={styles.contactIcon} aria-hidden="true" />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                  <a href={`tel:${t.phone}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                    {t.phone}
+                  </a>
+                  <a href={`tel:${t.phoneMobile}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                    {t.phoneMobile}
+                  </a>
+                </div>
               </li>
               <li>
-                <Mail size={18} className={styles.contactIcon} />
-                <span>support@erns.com</span>
+                <Mail size={18} className={styles.contactIcon} aria-hidden="true" />
+                <a href={`mailto:${t.email}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                  {t.email}
+                </a>
               </li>
             </ul>
           </div>
         </div>
         
         <div className={styles.bottom}>
-          <p>&copy; {new Date().getFullYear()} ERNS Real Estate. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} {t.copyright}</p>
         </div>
       </div>
     </footer>

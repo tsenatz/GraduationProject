@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { Search } from "lucide-react";
 import styles from "./SearchBar.module.css";
 
@@ -12,17 +13,17 @@ interface SearchBarProps {
   wrapperClassName?: string;
   /** Optional class override for the input element */
   inputClassName?: string;
-  /** Optional class override for the search icon */
+  /** Optional class override for the search icon / button */
   iconClassName?: string;
 }
 
 /**
- * A pill-shaped search input with a magnifier icon.
- * Used in the Hero section and any future search-enabled surface.
+ * A pill-shaped search input with a clickable magnifier submit button.
+ * Used in the Hero section and any search-enabled surface.
  */
 export function SearchBar({
   placeholder = "Enter an address",
-  value,
+  value = "",
   onChange,
   onSubmit,
   wrapperClassName = "",
@@ -31,7 +32,14 @@ export function SearchBar({
 }: SearchBarProps) {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && onSubmit) {
-      onSubmit((e.target as HTMLInputElement).value);
+      e.preventDefault();
+      onSubmit(value);
+    }
+  };
+
+  const handleClickSubmit = () => {
+    if (onSubmit) {
+      onSubmit(value);
     }
   };
 
@@ -46,7 +54,15 @@ export function SearchBar({
         onKeyDown={handleKeyDown}
         aria-label="Search properties"
       />
-      <Search size={24} className={`${styles.searchIcon} ${iconClassName}`} strokeWidth={2.5} aria-hidden="true" />
+      <button
+        type="button"
+        onClick={handleClickSubmit}
+        className={`${styles.searchBtn} ${iconClassName}`}
+        aria-label="Submit search"
+        title="Search"
+      >
+        <Search size={22} strokeWidth={2.5} aria-hidden="true" />
+      </button>
     </div>
   );
 }
