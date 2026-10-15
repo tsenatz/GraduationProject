@@ -126,46 +126,52 @@ export const HomeDirectory: React.FC = () => {
           </div>
         )}
 
-        {/* 4. Secondary & Tertiary Directory Links */}
-        <div className={styles.linksContainer}>
-          <div className={styles.secondaryLinksRow}>
-            {t.secondaryLinks.map((item, idx) => (
-              <Link key={idx} href={item.href} className={styles.secondaryLink}>
-                {item.label}
-              </Link>
-            ))}
-          </div>
-
-          <div className={styles.tertiaryLinksRow}>
-            {t.tertiaryLinks.map((item, idx) => {
-              if (item.href === "#cookies") {
-                return (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={handleOpenPrivacy}
-                    className={styles.tertiaryLink}
-                  >
-                    {item.label}
-                  </button>
-                );
-              }
-              return (
+        {/* 4. Directory Quick Links */}
+        {t.secondaryLinks && t.secondaryLinks.length > 0 && (
+          <div className={styles.linksContainer}>
+            <div className={styles.secondaryLinksRow}>
+              {t.secondaryLinks.map((item, idx) => (
                 <Link key={idx} href={item.href} className={styles.secondaryLink}>
                   {item.label}
                 </Link>
-              );
-            })}
-          </div>
+              ))}
+            </div>
 
-          <div className={styles.networkLinksRow}>
-            {t.networkLinks.map((item, idx) => (
-              <Link key={idx} href={item.href} className={styles.networkLink}>
-                {item.label}
-              </Link>
-            ))}
+            {t.tertiaryLinks && t.tertiaryLinks.length > 0 && (
+              <div className={styles.tertiaryLinksRow}>
+                {t.tertiaryLinks.map((item, idx) => {
+                  if (item.href === "#cookies") {
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={handleOpenPrivacy}
+                        className={styles.tertiaryLink}
+                      >
+                        {item.label}
+                      </button>
+                    );
+                  }
+                  return (
+                    <Link key={idx} href={item.href} className={styles.secondaryLink}>
+                      {item.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+
+            {t.networkLinks && t.networkLinks.length > 0 && (
+              <div className={styles.networkLinksRow}>
+                {t.networkLinks.map((item, idx) => (
+                  <Link key={idx} href={item.href} className={styles.networkLink}>
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
-        </div>
+        )}
 
         {/* 5. "Do Not Sell or Share My Personal Information →" */}
         <div className={styles.privacyActionWrapper}>
