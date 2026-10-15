@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, Heart, Key, Tag, Users } from "lucide-react";
+import { Search, Heart, Bell, Inbox, Tag } from "lucide-react";
 import { useFavorites } from "@/components/providers/FavoritesProvider";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { favoritesTranslations } from "@/components/favorites/translations";
@@ -17,16 +17,16 @@ export function BottomNav() {
 
   const navItems = [
     {
-      href: "/",
+      href: "/search",
       label: t.search,
       icon: Search,
-      isActive: pathname === "/" || pathname === "/buy",
+      isActive: pathname === "/search" || pathname === "/" || pathname === "/buy",
     },
     {
-      href: "/rent",
-      label: t.rent,
-      icon: Key,
-      isActive: pathname === "/rent",
+      href: "/updates",
+      label: isAmharic ? "ዝማኔዎች" : "Updates",
+      icon: Bell,
+      isActive: pathname.startsWith("/updates"),
     },
     {
       href: "/favorites",
@@ -36,16 +36,16 @@ export function BottomNav() {
       isActive: pathname === "/favorites",
     },
     {
+      href: "/inbox",
+      label: isAmharic ? "መልዕክት" : "Inbox",
+      icon: Inbox,
+      isActive: pathname.startsWith("/inbox"),
+    },
+    {
       href: "/sell",
       label: t.sell,
       icon: Tag,
       isActive: pathname.startsWith("/sell"),
-    },
-    {
-      href: "/agents",
-      label: t.agents,
-      icon: Users,
-      isActive: pathname.startsWith("/agents"),
     },
   ];
 

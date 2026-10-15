@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import type { Metadata } from "next";
 import { UpdatesView } from "@/components/updates";
 
@@ -9,9 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function UpdatesPage() {
-  return (
-    <Suspense fallback={<div style={{ minHeight: "60vh" }} />}>
-      <UpdatesView />
-    </Suspense>
-  );
+  return <UpdatesView />;
 }

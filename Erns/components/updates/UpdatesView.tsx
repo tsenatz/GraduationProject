@@ -23,13 +23,9 @@ const STORAGE_KEY = "erns_saved_searches";
 
 export function UpdatesView() {
   const { isAmharic } = useLanguage();
-  const searchParams = useSearchParams();
-  const tabParam = searchParams.get("tab") as UpdatesTab | null;
   const t = isAmharic ? updatesTranslations.am : updatesTranslations.en;
 
-  const [activeTab, setActiveTab] = useState<UpdatesTab>(
-    tabParam === "feed" || tabParam === "price_drops" ? tabParam : "searches"
-  );
+  const [activeTab, setActiveTab] = useState<UpdatesTab>("searches");
   const [savedSearches, setSavedSearches] = useState<SavedSearch[]>(
     INITIAL_SAVED_SEARCHES
   );
@@ -38,6 +34,19 @@ export function UpdatesView() {
   );
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Read tab parameter from URL on client mount
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const tab = params.get("tab") as UpdatesTab | null;
+      if (tab === "feed" || tab === "price_drops" || tab === "searches") {
+        setActiveTab(tab);
+      }
+    } catch {
+      // Ignore
+    }
+  }, []);
 
   // Initialize from localStorage or fallback
   useEffect(() => {

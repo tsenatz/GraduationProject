@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Menu, X, ChevronRight, Bookmark } from "lucide-react";
+import { Home, Menu, X, ChevronRight, Bell, Bookmark, Inbox, ClipboardCheck } from "lucide-react";
 import SignInButton from "@/components/auth/SignInButton";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { useFavorites } from "@/components/providers/FavoritesProvider";
@@ -15,18 +15,18 @@ import { NAV_LINKS_LEFT, NAV_LINKS_RIGHT } from "./navLinks";
 export default function Navbar() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { count } = useFavorites();
-  const { language } = useLanguage();
+  const { count: favoritesCount } = useFavorites();
+  const { language, isAmharic } = useLanguage();
 
   const isFavoritesActive = pathname === "/favorites";
 
   const checkIsActive = (href: string) => {
     if (href === "/") return pathname === "/";
-    // Check if the current pathname starts with the link href
-    // and correctly handle query params if any in the nav link
     const linkPathname = href.split("?")[0];
     return pathname.startsWith(linkPathname);
   };
+
+  const savedLabel = isAmharic ? "የተቀመጡ ቤቶች" : "Saved Homes";
 
   // Helper for dynamic breadcrumbs on mobile
   const getBreadcrumbLabel = () => {
@@ -34,7 +34,10 @@ export default function Navbar() {
     const allLinks = [
       ...NAV_LINKS_LEFT,
       ...NAV_LINKS_RIGHT,
-      { href: "/favorites", label: language === "am" ? "የተቀመጡ ቤቶች" : "Saved Homes" },
+      { href: "/updates", label: isAmharic ? "ዝማኔዎች" : "Updates" },
+      { href: "/favorites", label: savedLabel },
+      { href: "/inbox", label: isAmharic ? "መልዕክቶች" : "Inbox" },
+      { href: "/plan", label: isAmharic ? "የጉብኝት እቅድ" : "Tour Plan" },
       { href: "/login", label: "Login" },
     ];
     const match = allLinks.find((link) => checkIsActive(link.href));
@@ -45,7 +48,6 @@ export default function Navbar() {
   };
 
   const currentBreadcrumb = getBreadcrumbLabel();
-  const savedLabel = language === "am" ? "የተቀመጡ ቤቶች" : "Saved Homes";
 
   return (
     <header className={styles.navbar}>
@@ -94,7 +96,7 @@ export default function Navbar() {
           </nav>
         </div>
 
-        {/* Desktop Right Navigation Items & Mobile Right Profile */}
+        {/* Desktop Right Navigation Items & Utility Icons */}
         <nav className={styles.navSectionRight} aria-label="Main secondary navigation">
           {NAV_LINKS_RIGHT.map((link) => {
             const isActive = checkIsActive(link.href);
@@ -113,26 +115,54 @@ export default function Navbar() {
           {/* Thin Vertical Divider between navigation links and tools */}
           <div className={styles.navDivider} aria-hidden="true" />
 
-          {/* Bookmark / Saved Properties Link (Adapts to environment) */}
-          <Link
-            href="/favorites"
-            className={`${styles.bookmarkNavLink} ${isFavoritesActive ? styles.bookmarkActive : ""}`}
-            aria-label={`${savedLabel} (${count})`}
-            title={savedLabel}
-            aria-current={isFavoritesActive ? "page" : undefined}
-          >
-            <Bookmark
-              size={20}
-              className={styles.bookmarkIcon}
-              fill={isFavoritesActive ? "currentColor" : "none"}
-              strokeWidth={2}
-            />
-            {count > 0 && (
-              <span className={styles.bookmarkBadge} aria-hidden="true">
-                {count > 99 ? "99+" : count}
-              </span>
-            )}
-          </Link>
+          {/* User Activity Utility Icons (Zillow/Airbnb Style) */}
+          <div className={styles.utilityActionsGroup}>
+            {/* Updates (Saved Searches & Alerts) */}
+            <Link
+              href="/updates"
+              className={`${styles.utilityIconBtn} ${
+                pathname.startsWith("/updates") ? styles.utilityIconBtnActive : ""
+              }`}
+              title={isAmharic ? "ዝማኔዎች እና የተቀመጡ ፍለጋዎች" : "Updates & Saved Searches"}
+              aria-label="Updates and saved searches"
+            >
+              <Bell className={styles.utilityIcon} />
+              <span className={styles.utilityDot} />
+            </Link>
+
+            {/* Bookmark / Saved Properties Link (Leader's integration) */}
+            <Link
+              href="/favorites"
+              className={`${styles.bookmarkNavLink} ${isFavoritesActive ? styles.bookmarkActive : ""}`}
+              aria-label={`${savedLabel} (${favoritesCount})`}
+              title={savedLabel}
+              aria-current={isFavoritesActive ? "page" : undefined}
+            >
+              <Bookmark
+                size={20}
+                className={styles.bookmarkIcon}
+                fill={isFavoritesActive ? "currentColor" : "none"}
+                strokeWidth={2}
+              />
+              {favoritesCount > 0 && (
+                <span className={styles.bookmarkBadge} aria-hidden="true">
+                  {favoritesCount > 99 ? "99+" : favoritesCount}
+                </span>
+              )}
+            </Link>
+
+            {/* Inbox (Messages) */}
+            <Link
+              href="/inbox"
+              className={`${styles.utilityIconBtn} ${
+                pathname.startsWith("/inbox") ? styles.utilityIconBtnActive : ""
+              }`}
+              title={isAmharic ? "መልዕክቶች" : "Messages"}
+              aria-label="Messages and inquiries"
+            >
+              <Inbox className={styles.utilityIcon} />
+            </Link>
+          </div>
 
           <LanguageSwitcher />
           <SignInButton />
@@ -181,7 +211,24 @@ export default function Navbar() {
                 );
               })}
 
-              {/* Mobile Drawer Saved Homes / Bookmarks Item */}
+              <li className={styles.mobileDrawerDivider} role="separator" />
+              <li className={styles.mobileDrawerSubheading}>
+                {isAmharic ? "የግል እንቅስቃሴ" : "My Activity"}
+              </li>
+
+              <li className={styles.mobileDrawerItem}>
+                <Link
+                  href="/updates"
+                  className={`${styles.mobileDrawerLink} ${
+                    pathname.startsWith("/updates") ? styles.active : ""
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Bell size={18} style={{ marginRight: 8 }} />
+                  {isAmharic ? "ዝማኔዎች" : "Updates & Saved Searches"}
+                </Link>
+              </li>
+
               <li className={styles.mobileDrawerItem}>
                 <Link
                   href="/favorites"
@@ -198,13 +245,41 @@ export default function Navbar() {
                     />
                     <span>{savedLabel}</span>
                   </span>
-                  {count > 0 && (
+                  {favoritesCount > 0 && (
                     <span className={styles.drawerBookmarkBadge}>
-                      {count > 99 ? "99+" : count}
+                      {favoritesCount > 99 ? "99+" : favoritesCount}
                     </span>
                   )}
                 </Link>
               </li>
+
+              <li className={styles.mobileDrawerItem}>
+                <Link
+                  href="/inbox"
+                  className={`${styles.mobileDrawerLink} ${
+                    pathname.startsWith("/inbox") ? styles.active : ""
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Inbox size={18} style={{ marginRight: 8 }} />
+                  {isAmharic ? "መልዕክቶች" : "Messages"}
+                </Link>
+              </li>
+
+              <li className={styles.mobileDrawerItem}>
+                <Link
+                  href="/plan"
+                  className={`${styles.mobileDrawerLink} ${
+                    pathname.startsWith("/plan") ? styles.active : ""
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <ClipboardCheck size={18} style={{ marginRight: 8 }} />
+                  {isAmharic ? "የጉብኝት እቅድ" : "Tour Plan"}
+                </Link>
+              </li>
+
+              <li className={styles.mobileDrawerDivider} role="separator" />
 
               <li className={styles.mobileDrawerItem}>
                 <LanguageSwitcher isMobileDrawer />

@@ -1,0 +1,126 @@
+.hubNavWrapper {
+  width: 100%;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid rgba(var(--color-accent-rgb), 0.18);
+  position: sticky;
+  top: 64px;
+  z-index: 800;
+  box-shadow: 0 1px 3px rgba(var(--color-primary-rgb), 0.03);
+}
+
+.hubNavContainer {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 52px;
+}
+
+.hubTabsList {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.hubTabsList::-webkit-scrollbar {
+  display: none;
+}
+
+.hubTabItem {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.hubTabLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 100%;
+  padding: 0 1rem;
+  color: #627A95;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.hubTabLink:hover {
+  color: var(--color-primary);
+  background-color: rgba(var(--color-accent-rgb), 0.05);
+}
+
+.hubTabLinkActive {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+  font-weight: 700;
+}
+
+.tabIcon {
+  width: 17px;
+  height: 17px;
+  stroke-width: 2.2;
+}
+
+.tabCountBadge {
+  background-color: rgba(var(--color-accent-rgb), 0.14);
+  color: var(--color-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.15rem 0.55rem;
+  border-radius: 9999px;
+  transition: all 0.2s ease;
+}
+
+.hubTabLinkActive .tabCountBadge {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.hubNavRight {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.hubBackToSearch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  text-decoration: none;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.hubBackToSearch:hover {
+  background-color: rgba(var(--color-accent-rgb), 0.08);
+  color: var(--color-primary);
+}
+
+@media (max-width: 768px) {
+  .hubNavContainer {
+    padding: 0 1rem;
+    height: 48px;
+  }
+
+  .hubTabLink {
+    padding: 0 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .hubBackToSearch {
+    display: none;
+  }
+}

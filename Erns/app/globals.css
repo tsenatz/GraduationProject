@@ -55,19 +55,22 @@ body {
 
 .body-container {
   display: flex;
+  flex-direction: column;
   flex: 1;
   margin-top: 64px;
+  width: 100%;
 }
 
 .main-content {
   flex: 1;
-  margin-left: 80px;
+  width: 100%;
+  margin-left: 0;
   min-height: calc(100vh - 64px);
   background-color: var(--bg-color);
 }
 
 .home-body-container {
-  display: block;
+  display: flex;
 }
 
 .home-main-content {
