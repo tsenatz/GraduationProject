@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Home, Mail, Phone, MapPin } from 'lucide-react';
 import { FacebookIcon, TwitterIcon, InstagramIcon, LinkedinIcon } from '@/components/icons/SocialIcons';
 import { useLanguage } from '@/components/providers/LanguageProvider';
@@ -10,10 +11,12 @@ import styles from './Footer.module.css';
 
 export const Footer = () => {
   const { language } = useLanguage();
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
   const t = footerTranslations[language] || footerTranslations.en;
 
   return (
-    <footer className={styles.footer}>
+    <footer className={`${styles.footer} ${isHomePage ? styles.homeFooter : ''}`}>
       <div className={styles.container}>
         <div className={styles.grid}>
           {/* Brand & About */}
