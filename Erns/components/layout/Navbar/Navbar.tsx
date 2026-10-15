@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
-import { Home, Menu, X, ChevronRight } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { Home, Menu, X, ChevronRight, Bookmark } from "lucide-react";
 import SignInButton from "@/components/auth/SignInButton";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
+import { useFavorites } from "@/components/providers/FavoritesProvider";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 import styles from "./Navbar.module.css";
 
 import { NAV_LINKS_LEFT, NAV_LINKS_RIGHT } from "./navLinks";
@@ -13,6 +15,10 @@ import { NAV_LINKS_LEFT, NAV_LINKS_RIGHT } from "./navLinks";
 export default function Navbar() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { count } = useFavorites();
+  const { language } = useLanguage();
+
+  const isFavoritesActive = pathname === "/favorites";
 
   const checkIsActive = (href: string) => {
     if (href === "/") return pathname === "/";
@@ -25,7 +31,12 @@ export default function Navbar() {
   // Helper for dynamic breadcrumbs on mobile
   const getBreadcrumbLabel = () => {
     if (pathname === "/") return null;
-    const allLinks = [...NAV_LINKS_LEFT, ...NAV_LINKS_RIGHT, { href: "/login", label: "Login" }];
+    const allLinks = [
+      ...NAV_LINKS_LEFT,
+      ...NAV_LINKS_RIGHT,
+      { href: "/favorites", label: language === "am" ? "የተቀመጡ ቤቶች" : "Saved Homes" },
+      { href: "/login", label: "Login" },
+    ];
     const match = allLinks.find((link) => checkIsActive(link.href));
     if (match) return match.label;
     const segments = pathname.split("/").filter(Boolean);
@@ -34,6 +45,7 @@ export default function Navbar() {
   };
 
   const currentBreadcrumb = getBreadcrumbLabel();
+  const savedLabel = language === "am" ? "የተቀመጡ ቤቶች" : "Saved Homes";
 
   return (
     <header className={styles.navbar}>
@@ -56,29 +68,30 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Desktop Left Navigation Items */}
-        <nav className={styles.navSectionLeft} aria-label="Main primary navigation">
-          {NAV_LINKS_LEFT.map((link) => {
-            const isActive = checkIsActive(link.href);
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`${styles.navLink} ${isActive ? styles.active : ""}`}
-                aria-current={isActive ? "page" : undefined}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </nav>
+        {/* Left Side: Brand Logo + Primary Nav Links */}
+        <div className={styles.leftCluster}>
+          <div className={styles.brandContainer}>
+            <Link href="/" className={styles.brand} aria-label="Erns Home">
+              <Home className={styles.brandIcon} aria-hidden="true" />
+              <span className={styles.brandText}>ERNS</span>
+            </Link>
+          </div>
 
-        {/* Center Brand */}
-        <div className={styles.brandContainer}>
-          <Link href="/" className={styles.brand} aria-label="Erns Home">
-            <Home className={styles.brandIcon} aria-hidden="true" />
-            <span className={styles.brandText}>ERNS</span>
-          </Link>
+          <nav className={styles.navSectionLeft} aria-label="Main primary navigation">
+            {NAV_LINKS_LEFT.map((link) => {
+              const isActive = checkIsActive(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`${styles.navLink} ${isActive ? styles.active : ""}`}
+                  aria-current={isActive ? "page" : undefined}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </nav>
         </div>
 
         {/* Desktop Right Navigation Items & Mobile Right Profile */}
@@ -96,6 +109,31 @@ export default function Navbar() {
               </Link>
             );
           })}
+
+          {/* Thin Vertical Divider between navigation links and tools */}
+          <div className={styles.navDivider} aria-hidden="true" />
+
+          {/* Bookmark / Saved Properties Link (Adapts to environment) */}
+          <Link
+            href="/favorites"
+            className={`${styles.bookmarkNavLink} ${isFavoritesActive ? styles.bookmarkActive : ""}`}
+            aria-label={`${savedLabel} (${count})`}
+            title={savedLabel}
+            aria-current={isFavoritesActive ? "page" : undefined}
+          >
+            <Bookmark
+              size={20}
+              className={styles.bookmarkIcon}
+              fill={isFavoritesActive ? "currentColor" : "none"}
+              strokeWidth={2}
+            />
+            {count > 0 && (
+              <span className={styles.bookmarkBadge} aria-hidden="true">
+                {count > 99 ? "99+" : count}
+              </span>
+            )}
+          </Link>
+
           <LanguageSwitcher />
           <SignInButton />
         </nav>
@@ -142,6 +180,32 @@ export default function Navbar() {
                   </li>
                 );
               })}
+
+              {/* Mobile Drawer Saved Homes / Bookmarks Item */}
+              <li className={styles.mobileDrawerItem}>
+                <Link
+                  href="/favorites"
+                  className={`${styles.mobileDrawerLink} ${isFavoritesActive ? styles.active : ""}`}
+                  aria-current={isFavoritesActive ? "page" : undefined}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <span className={styles.drawerBookmarkContent}>
+                    <Bookmark
+                      size={20}
+                      strokeWidth={2.2}
+                      className={styles.drawerBookmarkIcon}
+                      fill={isFavoritesActive ? "currentColor" : "none"}
+                    />
+                    <span>{savedLabel}</span>
+                  </span>
+                  {count > 0 && (
+                    <span className={styles.drawerBookmarkBadge}>
+                      {count > 99 ? "99+" : count}
+                    </span>
+                  )}
+                </Link>
+              </li>
+
               <li className={styles.mobileDrawerItem}>
                 <LanguageSwitcher isMobileDrawer />
               </li>
