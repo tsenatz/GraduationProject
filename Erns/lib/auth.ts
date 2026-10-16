@@ -68,15 +68,32 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
+        token.id = user.id || token.sub;
         token.role = (user as { role?: string }).role || "USER";
+      }
+      if (!token.id && token.sub) {
+        token.id = token.sub;
+      }
+      if (token.email && (!token.id || /^\d+$/.test(String(token.id)))) {
+        try {
+          const dbUser = await db.user.findUnique({
+            where: { email: token.email },
+            select: { id: true, role: true },
+          });
+          if (dbUser) {
+            token.id = dbUser.id;
+            token.role = dbUser.role || token.role || "USER";
+          }
+        } catch {
+          // Ignore fallback error
+        }
       }
       return token;
     },
     async session({ session, token }) {
       if (token && session.user) {
-        session.user.id = token.id as string;
-        (session.user as { role?: string }).role = token.role as string;
+        session.user.id = (token.id as string) || (token.sub as string);
+        (session.user as { role?: string }).role = (token.role as string) || "USER";
       }
       return session;
     },

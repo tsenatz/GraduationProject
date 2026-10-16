@@ -384,28 +384,27 @@ export const translations = {
       },
       howItWorks: {
         title: "How For Sale By Owner Works",
-        subtitle:
-          "A proven, transparent step-by-step roadmap to successfully selling your home on your own in Ethiopia.",
+        subtitle: "Sell directly to qualified buyers in four simple steps.",
         steps: [
           {
             step: "01",
-            title: "Set a Realistic Market Price",
-            desc: "Compare recent closed sales across your sub-city (Bole, CMC, Kazanchis, Summit). Accurate pricing attracts serious, pre-screened buyers right away.",
+            title: "Price It Right",
+            desc: "Benchmark against recent local sales to attract serious cash buyers.",
           },
           {
             step: "02",
-            title: "Prepare Clean, Bright Photos",
-            desc: "Showcase living rooms, modern kitchens, bedrooms, and key infrastructure like water backup tanks, standby generators, and secure parking.",
+            title: "Add Prime Photos",
+            desc: "Spotlight key living areas, backup power, water reserves, and parking.",
           },
           {
             step: "03",
-            title: "Publish for Free on ERNS",
-            desc: "Fill in your property specs, title deed (Libre) status, and verified phone number. Your listing goes live immediately to qualified buyers.",
+            title: "Publish for Free",
+            desc: "Put your home in front of thousands of active diaspora and local buyers.",
           },
           {
             step: "04",
-            title: "Manage Calls & Finalize the Deed",
-            desc: "Receive calls directly from serious buyers, schedule daytime showings, negotiate your terms, and legally transfer the title deed at DARA.",
+            title: "Close Direct & Keep 100%",
+            desc: "Field direct offers, negotiate terms, and transfer the deed at DARA.",
           },
         ],
       },
@@ -987,29 +986,28 @@ export const translations = {
         ],
       },
       howItWorks: {
-        title: "የራስን ቤት በራስ የመሸጥ ሂደት እንዴት ይሰራል?",
-        subtitle:
-          "በኢትዮጵያ ውስጥ ያለ ደላላ ቤትዎን በተሳካ ሁኔታ እና በህጋዊ መንገድ ለመሸጥ የሚረዳ ግልጽ መመሪያ።",
+        title: "የራስን ቤት በራስ የመሸጥ ሂደት",
+        subtitle: "ቤትዎን በቀጥታ ለገዢዎች ለመሸጥ 4 ቀላል ደረጃዎች።",
         steps: [
           {
             step: "01",
-            title: "ትክክለኛ የገበያ ዋጋ ይወስኑ",
-            desc: "በአካባቢዎ (ቦሌ፣ ሲኤምሲ፣ ካዛንቺስ፣ ሰሚት) በቅርቡ የተሸጡ ቤቶችን ዋጋ በማነጻጸር ተወዳዳሪ ዋጋ ያስቀምጡ። ትክክለኛ ዋጋ እውነተኛ ገዢዎችን ወዲያውኑ ይስባል።",
+            title: "ተወዳዳሪ ዋጋ ይወስኑ",
+            desc: "ከአካባቢው የቅርብ ሽያጮች ጋር በማነጻጸር እውነተኛ ገዢዎችን ይሳቡ።",
           },
           {
             step: "02",
-            title: "ጥራት ያላቸው ፎቶዎችን ያንሱ",
-            desc: "ሳሎን፣ መኝታ ቤት፣ ዘመናዊ ኩሽና እንዲሁም እንደ ውሃ ታንከር፣ ጀነሬተር እና የመኪና ማቆሚያ ያሉ ጠቃሚ ነገሮችን የሚያሳዩ ንጹህ ፎቶዎችን ያዘጋጁ።",
+            title: "ጥራት ያላቸው ፎቶዎች",
+            desc: "ሳሎን፣ ኩሽና፣ የውሃ ታንከር፣ ጀነሬተርና የመኪና ማቆሚያውን ያሳዩ።",
           },
           {
             step: "03",
-            title: "በERNS ላይ በነፃ ይለጥፉ",
-            desc: "የቤቱን ዝርዝር፣ የይዞታ ማረጋገጫ (ካርታ/ሊብሬ) ሁኔታ እና ስልክዎን ያስገቡ። ማስታወቂያዎ ወዲያውኑ ለሀገር ውስጥና ለዲያስፖራ ገዢዎች ይታያል።",
+            title: "በነፃ ይለጥፉ",
+            desc: "ለሺዎች ለሚቆጠሩ ሀገር ውስጥና ዲያስፖራ ገዢዎች ወዲያውኑ ይድረሱ።",
           },
           {
             step: "04",
-            title: "ቀጥተኛ ጥሪዎችን ያስተናግዱ እና በህግ ያጠናቁ",
-            desc: "ከገዢዎች የሚመጡ ጥሪዎችን ይመልሱ፣ ቤቱን ያስጎብኙ፣ በዋጋው ላይ ይደራደሩ እንዲሁም ውልና ማስረጃ (DARA) ላይ የባለቤትነት ዝውውሩን ያጠናቁ።",
+            title: "በቀጥታ ይሽጡ",
+            desc: "ቀጥተኛ ጥሪዎችን ተቀብለው ውልና ማስረጃ (DARA) ላይ ዝውውሩን ያጠናቁ።",
           },
         ],
       },

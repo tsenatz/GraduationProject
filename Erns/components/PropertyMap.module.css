@@ -20,20 +20,36 @@
   transform-origin: center bottom;
   transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), z-index 0.2s ease;
   user-select: none;
+  padding-bottom: 6px;
 }
 
 .marker {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 5px 12px;
+  gap: 6px;
+  padding: 3px 10px 3px 4px;
   border-radius: 9999px;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  box-shadow: 0 3px 8px rgba(10, 25, 49, 0.28), 0 1px 3px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 3px 10px rgba(10, 25, 49, 0.28), 0 1px 3px rgba(0, 0, 0, 0.12);
   transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
   white-space: nowrap;
+  position: relative;
+}
+
+.marker::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid var(--color-primary, #0A1931);
+  transition: border-top-color 0.2s ease;
 }
 
 .markerNormal {
@@ -42,32 +58,56 @@
   border: 1.5px solid #ffffff;
 }
 
+.markerNormal::after {
+  border-top-color: var(--color-primary, #0A1931);
+}
+
 .markerHovered {
   background-color: #ffffff;
   color: var(--color-primary, #0A1931);
   border: 2px solid var(--color-primary, #0A1931);
-  box-shadow: 0 6px 16px rgba(10, 25, 49, 0.35);
+  box-shadow: 0 6px 18px rgba(10, 25, 49, 0.35);
   transform: scale(1.12);
+}
+
+.markerHovered::after {
+  border-top-color: var(--color-primary, #0A1931);
 }
 
 .markerSelected {
   background-color: var(--color-accent, #4A7FA7);
   color: #ffffff;
   border: 2px solid #ffffff;
-  box-shadow: 0 0 0 3px rgba(74, 127, 167, 0.45), 0 8px 20px rgba(10, 25, 49, 0.4);
+  box-shadow: 0 0 0 3px rgba(74, 127, 167, 0.45), 0 8px 22px rgba(10, 25, 49, 0.4);
   transform: scale(1.18);
 }
 
-.markerDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: #10b981;
-  display: inline-block;
+.markerSelected::after {
+  border-top-color: var(--color-accent, #4A7FA7);
 }
 
-.markerDotRent {
-  background-color: #3b82f6;
+/* Marker Icon Badge */
+.markerIconWrapper {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #ffffff;
+}
+
+.markerIconRent {
+  background-color: #2563eb;
+}
+
+.markerIconSale {
+  background-color: #059669;
+}
+
+.markerPrice {
+  line-height: 1;
 }
 
 /* Map Top Floating Controls Bar */
@@ -277,26 +317,71 @@
 }
 
 :global(.maplibregl-popup-close-button) {
-  top: 8px !important;
-  right: 8px !important;
-  width: 26px !important;
-  height: 26px !important;
-  background-color: rgba(255, 255, 255, 0.9) !important;
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+  width: 34px !important;
+  height: 34px !important;
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
   border-radius: 50% !important;
-  color: #0A1931 !important;
-  font-size: 18px !important;
+  border: 1px solid rgba(10, 25, 49, 0.12) !important;
+  box-shadow: 0 2px 8px rgba(10, 25, 49, 0.18) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  z-index: 10 !important;
-  transition: background-color 0.2s !important;
-  border: none !important;
+  z-index: 20 !important;
   cursor: pointer !important;
-  line-height: 1 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  outline: none !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  color: transparent !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+:global(.maplibregl-popup-close-button)::before,
+:global(.maplibregl-popup-close-button)::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  width: 14px !important;
+  height: 2px !important;
+  background-color: var(--color-primary, #0A1931) !important;
+  border-radius: 2px !important;
+  pointer-events: none !important;
+  transition: background-color 0.18s ease !important;
+}
+
+:global(.maplibregl-popup-close-button)::before {
+  transform: translate(-50%, -50%) rotate(45deg) !important;
+}
+
+:global(.maplibregl-popup-close-button)::after {
+  transform: translate(-50%, -50%) rotate(-45deg) !important;
 }
 
 :global(.maplibregl-popup-close-button:hover) {
   background-color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(10, 25, 49, 0.28) !important;
+  transform: scale(1.08) !important;
+}
+
+:global(.maplibregl-popup-close-button:hover)::before,
+:global(.maplibregl-popup-close-button:hover)::after {
+  background-color: #e11d48 !important;
+}
+
+:global(.maplibregl-popup-close-button:active) {
+  transform: scale(0.94) !important;
+}
+
+:global(.maplibregl-popup-close-button:focus-visible) {
+  outline: 2px solid var(--color-primary, #0A1931) !important;
+  outline-offset: 2px !important;
 }
 
 :global(.maplibregl-popup-tip) {
@@ -327,12 +412,12 @@
 
 .popupBadge {
   position: absolute;
-  top: 8px;
-  left: 8px;
+  top: 10px;
+  left: 10px;
   background-color: rgba(10, 25, 49, 0.88);
   backdrop-filter: blur(4px);
   color: #ffffff;
-  padding: 3px 8px;
+  padding: 4px 9px;
   border-radius: 4px;
   font-size: 11px;
   font-weight: 700;

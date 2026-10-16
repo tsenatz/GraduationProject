@@ -3,7 +3,6 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import {
-  FsboHero,
   FsboListingBuilder,
   FsboHowItWorks,
   FsboCTA,
@@ -26,11 +25,6 @@ function ForSaleByOwnerContent() {
     }
   }, [searchParams]);
 
-  const handleLocationSelect = (subCity: string, address: string) => {
-    if (subCity) setSelectedSubCity(subCity);
-    if (address) setSelectedAddress(address);
-  };
-
   return (
     <main
       style={{
@@ -41,7 +35,6 @@ function ForSaleByOwnerContent() {
         flexDirection: "column",
       }}
     >
-      <FsboHero onLocationSelect={handleLocationSelect} />
       <FsboListingBuilder
         initialSubCity={selectedSubCity}
         initialAddress={selectedAddress}
