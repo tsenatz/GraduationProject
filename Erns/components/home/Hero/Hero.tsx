@@ -75,10 +75,10 @@ export function Hero() {
   // Filter suggestions based on typed text
   const filteredSuggestions = locationQuery.trim()
     ? POPULAR_LOCATIONS.filter(
-        (loc) =>
-          loc.name.toLowerCase().includes(locationQuery.toLowerCase()) ||
-          loc.subCity.toLowerCase().includes(locationQuery.toLowerCase())
-      )
+      (loc) =>
+        loc.name.toLowerCase().includes(locationQuery.toLowerCase()) ||
+        loc.subCity.toLowerCase().includes(locationQuery.toLowerCase())
+    )
     : POPULAR_LOCATIONS;
 
   return (

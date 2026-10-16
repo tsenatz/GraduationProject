@@ -1,9 +1,11 @@
 .container {
+  position: relative;
+  z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 5rem 10%;
-  background-color: var(--color-bg-warm);
+  background-color: var(--color-off-white, #F6FAFD);
   min-height: 500px;
 }
 
@@ -34,7 +36,7 @@
   align-items: center;
 }
 
-/* Stacked cards effect - White cards on Clay Beige background */
+/* Stacked cards effect - White cards on Off-White canvas background */
 .cardStack {
   position: relative;
   width: 500px;
@@ -51,6 +53,7 @@
   border: 1px solid rgba(var(--color-accent-rgb), 0.25);
   overflow: hidden;
   transition: transform 0.3s ease;
+  z-index: 1;
 }
 
 .card1 {
@@ -94,7 +97,7 @@
   color: var(--color-accent);
 }
 
-/* White badge card on Beige section */
+/* White badge card on Off-White section */
 .badge {
   position: absolute;
   background: var(--color-surface);
