@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Sparkles, MapPin, Building, ArrowRight } from "lucide-react";
+import { ShieldCheck, MapPin, Building, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { translations } from "@/components/sell/translations";
 import styles from "./FsboHero.module.css";
@@ -36,7 +36,7 @@ export const FsboHero: React.FC<FsboHeroProps> = ({ onLocationSelect }) => {
 
       <div className={styles.heroContent}>
         <div className={styles.badge}>
-          <Sparkles size={16} />
+          <ShieldCheck size={16} />
           <span>{t.badge}</span>
         </div>
 

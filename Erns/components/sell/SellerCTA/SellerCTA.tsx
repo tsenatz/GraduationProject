@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Sparkles, Home, UserCheck, ArrowRight } from "lucide-react";
+import { Compass, Home, UserCheck, ArrowRight } from "lucide-react";
 import { useSellLanguage } from "../LanguageContext";
 import { SellingPathQuizModal } from "./SellingPathQuizModal";
 import styles from "./SellerCTA.module.css";
@@ -17,7 +17,7 @@ export function SellerCTA() {
         <div className={styles.ctaContainer}>
           <div className={styles.badgeWrapper}>
             <span className={styles.ctaBadge}>
-              <Sparkles size={15} aria-hidden="true" />
+              <Compass size={15} aria-hidden="true" />
               <span>ERNS Decision Tool</span>
             </span>
           </div>
@@ -31,7 +31,6 @@ export function SellerCTA() {
               className={styles.exploreBtn}
               onClick={() => setIsQuizOpen(true)}
             >
-              <Sparkles size={18} aria-hidden="true" />
               <span>{t.cta.btnQuiz}</span>
               <ArrowRight size={18} aria-hidden="true" />
             </button>
