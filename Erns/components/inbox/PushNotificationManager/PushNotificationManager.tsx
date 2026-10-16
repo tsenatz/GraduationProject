@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Bell, BellRing, Check, Send, Sparkles, Volume2 } from "lucide-react";
+import { Bell, BellRing, Check, Send, Volume2 } from "lucide-react";
 import {
   savePushSubscriptionAction,
   sendTestPushNotificationAction,

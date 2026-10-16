@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Heart, Search, Key, Sparkles, CheckCircle2 } from "lucide-react";
+import { Heart, Search, Key, CheckCircle2 } from "lucide-react";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { favoritesTranslations } from "../translations";
 import styles from "./FavoritesEmptyState.module.css";
@@ -37,7 +37,6 @@ export function FavoritesEmptyState() {
 
       <div className={styles.tipsCard}>
         <div className={styles.tipsHeader}>
-          <Sparkles size={16} className={styles.tipsIcon} aria-hidden="true" />
           <h3 className={styles.tipsTitle}>{t.tipsTitle}</h3>
         </div>
 

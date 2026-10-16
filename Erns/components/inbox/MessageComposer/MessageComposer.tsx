@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { Send, Calendar, Paperclip, Sparkles, Building2 } from "lucide-react";
+import { Send, Calendar, Paperclip, Building2 } from "lucide-react";
 import { UserPerspective } from "../types";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { inboxTranslations } from "../translations";
@@ -86,7 +86,6 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
       {/* Quick Prompts Pills tailored per role */}
       <div className={styles.quickPromptsBar}>
         <div className={styles.promptsHeader}>
-          <Sparkles size={13} className={styles.promptsIcon} />
           <span>{t.quickPromptsTitle}</span>
         </div>
         <div className={styles.promptsList}>

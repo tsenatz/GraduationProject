@@ -23,7 +23,6 @@ import {
   Home,
   Landmark,
   Warehouse,
-  Sparkles,
   Loader2,
   ArrowRight,
   Plus,
@@ -684,7 +683,6 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
                         className={styles.sampleGalleryBtn}
                         onClick={loadSamplePhotos}
                       >
-                        <Sparkles size={14} style={{ display: "inline", marginRight: "4px" }} />
                         Use High-Res Demo Photos
                       </button>
                     </div>
