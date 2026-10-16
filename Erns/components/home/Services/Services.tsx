@@ -12,7 +12,7 @@ export function Services() {
 
   const serviceItems = [
     {
-      imageSrc: "/buy-house.jpg",
+      imageSrc: "/buy-home-professional.jpg",
       imageAlt: t.buy.title,
       title: t.buy.title,
       description: t.buy.description,
@@ -20,7 +20,7 @@ export function Services() {
       href: "/agents",
     },
     {
-      imageSrc: "/rent-house.jpg",
+      imageSrc: "/rent-home-professional.jpg",
       imageAlt: t.rent.title,
       title: t.rent.title,
       description: t.rent.description,
@@ -28,7 +28,7 @@ export function Services() {
       href: "/search?status=FOR_RENT",
     },
     {
-      imageSrc: "/sell-house.jpg",
+      imageSrc: "/sell-home-professional.jpg",
       imageAlt: t.sell.title,
       title: t.sell.title,
       description: t.sell.description,

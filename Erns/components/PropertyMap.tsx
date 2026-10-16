@@ -56,11 +56,14 @@ export default function PropertyMap({
   const popupRef = useRef<maplibregl.Popup | null>(null);
   const boundsDebounceTimer = useRef<NodeJS.Timeout | null>(null);
   const isProgrammaticMove = useRef<boolean>(false);
+  const mapLoadedRef = useRef<boolean>(false);
+  const propertiesRef = useRef<Property[]>(properties);
 
   const [currentStyle, setCurrentStyle] = useState<string>("liberty");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [activeProperty, setActiveProperty] = useState<Property | null>(null);
+  const [markerUpdateCount, forceMarkerUpdate] = useState(0);
 
   // Determine initial style URL (supports custom ENV if set, otherwise OpenFreeMap)
   const getStyleUrl = (styleId: string): string | maplibregl.StyleSpecification => {
@@ -228,25 +231,22 @@ export default function PropertyMap({
     onBoundsChangeRef.current = onBoundsChange;
   }, [onBoundsChange]);
 
+  // Keep propertiesRef in sync so the map init closure always sees the latest properties
+  useEffect(() => {
+    propertiesRef.current = properties;
+  }, [properties]);
+
   const handleStyleChange = (newStyle: string) => {
     setIsLoading(true);
     setLoadError(null);
     setCurrentStyle(newStyle);
   };
 
-  // Initialize MapLibre GL instance
+  // Initialize MapLibre GL instance — only re-run when the style changes, NOT when properties change
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Initial center detection: if properties are present, center around first or average
-    let initialLng = DEFAULT_CENTER[0];
-    let initialLat = DEFAULT_CENTER[1];
-
-    if (properties.length > 0) {
-      initialLng = properties[0].longitude;
-      initialLat = properties[0].latitude;
-    }
-
+    mapLoadedRef.current = false;
     let mapInstance: maplibregl.Map | null = null;
     const currentMarkers = markersRef.current;
 
@@ -261,7 +261,7 @@ export default function PropertyMap({
       mapInstance = new maplibregl.Map({
         container: containerRef.current,
         style: getStyleUrl(currentStyle),
-        center: [initialLng, initialLat],
+        center: DEFAULT_CENTER,
         zoom: DEFAULT_ZOOM,
         attributionControl: { compact: false },
       });
@@ -278,15 +278,27 @@ export default function PropertyMap({
 
       // Map loaded successfully
       mapInstance.on("load", () => {
+        mapLoadedRef.current = true;
         setIsLoading(false);
 
-        // Fit to properties bounds if multiple exist
-        if (properties.length > 1) {
+        // Fit to properties bounds if properties are already loaded
+        const currentProps = propertiesRef.current;
+        if (currentProps.length > 1) {
           isProgrammaticMove.current = true;
           const bounds = new maplibregl.LngLatBounds();
-          properties.forEach((p) => bounds.extend([p.longitude, p.latitude]));
+          currentProps.forEach((p) => bounds.extend([p.longitude, p.latitude]));
           mapInstance?.fitBounds(bounds, { padding: 60, maxZoom: 15, duration: 800 });
+        } else if (currentProps.length === 1) {
+          isProgrammaticMove.current = true;
+          mapInstance?.flyTo({
+            center: [currentProps[0].longitude, currentProps[0].latitude],
+            zoom: DEFAULT_ZOOM,
+            duration: 800,
+          });
         }
+
+        // Trigger marker sync now that the map is ready
+        forceMarkerUpdate((n) => n + 1);
       });
 
       // Handle user-initiated map pan/zoom to report bounds to parent search
@@ -341,6 +353,7 @@ export default function PropertyMap({
     window.addEventListener("resize", handleResize);
 
     return () => {
+      mapLoadedRef.current = false;
       window.removeEventListener("resize", handleResize);
       if (boundsDebounceTimer.current) {
         clearTimeout(boundsDebounceTimer.current);
@@ -355,12 +368,31 @@ export default function PropertyMap({
       }
       mapRef.current = null;
     };
-  }, [currentStyle, properties]);
+  }, [currentStyle]);
+
+  // Fit bounds when properties arrive/change after map is already loaded
+  useEffect(() => {
+    if (!mapLoadedRef.current || !mapRef.current) return;
+    if (properties.length > 1) {
+      isProgrammaticMove.current = true;
+      const bounds = new maplibregl.LngLatBounds();
+      properties.forEach((p) => bounds.extend([p.longitude, p.latitude]));
+      mapRef.current.fitBounds(bounds, { padding: 60, maxZoom: 15, duration: 800 });
+    } else if (properties.length === 1) {
+      isProgrammaticMove.current = true;
+      mapRef.current.flyTo({
+        center: [properties[0].longitude, properties[0].latitude],
+        zoom: DEFAULT_ZOOM,
+        duration: 800,
+      });
+    }
+  }, [properties]);
 
   // Synchronize Markers with current properties
   useEffect(() => {
     const map = mapRef.current;
-    if (!map) return;
+    // Wait for the map to be fully loaded before adding markers
+    if (!map || !mapLoadedRef.current) return;
 
     const currentMarkers = markersRef.current;
     const nextPropIds = new Set(properties.map((p) => p.id));
@@ -437,7 +469,7 @@ export default function PropertyMap({
 
       currentMarkers.set(property.id, { marker, el: badge });
     });
-  }, [properties, hoveredPropertyId, selectedPropertyId, activeProperty, openPropertyPopup, onSelectProperty]);
+  }, [properties, hoveredPropertyId, selectedPropertyId, activeProperty, openPropertyPopup, onSelectProperty, markerUpdateCount]);
 
   // Synchronize external selection (e.g. from parent list click)
   useEffect(() => {
