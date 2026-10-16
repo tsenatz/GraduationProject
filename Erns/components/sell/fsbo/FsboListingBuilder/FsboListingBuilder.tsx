@@ -76,7 +76,7 @@ const PROPERTY_TYPE_SAMPLE_PHOTOS: Record<string, string[]> = {
     "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=800&q=80",
   ],
   commercial: [
-    "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
+    "/property_commercial.jpg",
     "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80",
     "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=800&q=80",
   ],
@@ -143,6 +143,12 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
       setFormData((prev) => ({ ...prev, ownerName: userName }));
     }
   }, [session, formData.ownerName]);
+
+  useEffect(() => {
+    if (initialPropertyType && !initialData && !hasUserCustomPhotos) {
+      handlePropertyTypeSelect(initialPropertyType);
+    }
+  }, [initialPropertyType]);
 
   const handlePropertyTypeSelect = (typeId: string) => {
     setFormData((prev) => ({
