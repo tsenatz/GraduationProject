@@ -22,7 +22,7 @@ export const featuredTranslations: Record<"en" | "am", FeaturedTranslations> = {
     eyebrow: "VERIFIED HOMES IN ADDIS ABABA",
     title: "Featured & Trending Properties",
     subtitle: "Explore vetted luxury apartments, executive villas, and furnished rentals across prime sub-cities.",
-    viewAllBtn: "View All 2,500+ Listings",
+    viewAllBtn: "View All {count} Listings",
     tabs: {
       all: "All Properties",
       sale: "For Sale",
@@ -40,7 +40,7 @@ export const featuredTranslations: Record<"en" | "am", FeaturedTranslations> = {
     eyebrow: "በአዲስ አበባ የተረጋገጡ ቤቶች",
     title: "ተወዳጅ እና ተመራጭ ቤቶች",
     subtitle: "በዋና ዋና ክፍለ ከተሞች የሚገኙ የተረጋገጡ የቅንጦት አፓርታማዎችን፣ ቪላዎችን እና የኪራይ ቤቶችን ይመልከቱ።",
-    viewAllBtn: "ሁሉንም 2,500+ ቤቶች ይመልከቱ",
+    viewAllBtn: "ሁሉንም {count} ቤቶች ይመልከቱ",
     tabs: {
       all: "ሁሉም ቤቶች",
       sale: "የሚሸጡ",

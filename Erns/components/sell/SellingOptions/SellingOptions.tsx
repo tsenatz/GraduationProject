@@ -36,10 +36,7 @@ export function SellingOptions() {
               {t.sellingOptions.card1.features.map((feat, idx) => (
                 <li key={idx} className={styles.featureItem}>
                   <Check size={18} className={styles.featureIcon} aria-hidden="true" />
-                  <div>
-                    <strong>{feat.title}</strong>
-                    <span className={styles.featureDesc}>{feat.desc}</span>
-                  </div>
+                  <span className={styles.featureText}>{feat.title}</span>
                 </li>
               ))}
             </ul>
@@ -71,10 +68,7 @@ export function SellingOptions() {
               {t.sellingOptions.card2.features.map((feat, idx) => (
                 <li key={idx} className={styles.featureItem}>
                   <Check size={18} className={styles.featureIcon} aria-hidden="true" />
-                  <div>
-                    <strong>{feat.title}</strong>
-                    <span className={styles.featureDesc}>{feat.desc}</span>
-                  </div>
+                  <span className={styles.featureText}>{feat.title}</span>
                 </li>
               ))}
             </ul>

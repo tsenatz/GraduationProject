@@ -10,7 +10,7 @@ export const FsboHowItWorks: React.FC = () => {
   const t = translations[isAmharic ? "am" : "en"].fsbo.howItWorks;
 
   return (
-    <section className={styles.section}>
+    <section id="how-it-works" className={styles.section}>
       <div className={styles.container}>
         <div className={styles.header}>
           <h2 className={styles.title}>{t.title}</h2>

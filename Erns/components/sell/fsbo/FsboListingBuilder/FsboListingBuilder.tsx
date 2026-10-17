@@ -28,6 +28,7 @@ import {
   ArrowRight,
   Plus,
   Minus,
+  Info,
 } from "lucide-react";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { translations } from "@/components/sell/translations";
@@ -82,6 +83,8 @@ const PROPERTY_TYPE_SAMPLE_PHOTOS: Record<string, string[]> = {
   ],
 };
 
+const SAMPLE_PHOTOS = PROPERTY_TYPE_SAMPLE_PHOTOS.apartment;
+
 export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
   initialSubCity = "Bole",
   initialAddress = "",
@@ -126,6 +129,19 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
   const [photos, setPhotos] = useState<string[]>(
     initialData?.photos && initialData.photos.length > 0 ? initialData.photos : []
   );
+  const [hasUserCustomPhotos, setHasUserCustomPhotos] = useState<boolean>(
+    Boolean(initialData?.photos && initialData.photos.length > 0)
+  );
+
+  const handlePropertyTypeSelect = (typeId: string) => {
+    setFormData((prev) => ({ ...prev, propertyType: typeId }));
+    if (!hasUserCustomPhotos) {
+      const typePhotos =
+        PROPERTY_TYPE_SAMPLE_PHOTOS[typeId] ||
+        PROPERTY_TYPE_SAMPLE_PHOTOS.apartment;
+      setPhotos(typePhotos);
+    }
+  };
 
   // Restore draft if user signed in after filling form
   useEffect(() => {
@@ -507,6 +523,29 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
         <div className={styles.wizardLayout}>
           {/* Form Wizard Side */}
           <div className={styles.formCard}>
+            <div className={styles.formCardHeader}>
+              <a
+                href="#how-it-works"
+                className={styles.howItWorksLink}
+                title={isAmharic ? "እንዴት እንደሚሰራ ይመልከቱ" : "How For Sale By Owner Works (Click to see guide)"}
+                aria-label="How For Sale By Owner Works"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const target = document.getElementById("how-it-works");
+                  if (target) {
+                    target.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+              >
+                <span className={styles.infoIconWrapper}>
+                  <Info size={14} aria-hidden="true" />
+                </span>
+                <span className={styles.howItWorksLabel}>
+                  {isAmharic ? "እንዴት እንደሚሰራ" : "How it works"}
+                </span>
+              </a>
+            </div>
+
             <div className={styles.stepper}>
               <button
                 type="button"
@@ -1029,7 +1068,12 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
 
               <div className={styles.previewImageContainer}>
                 <img
-                  src={photos[0] || SAMPLE_PHOTOS[0]}
+                  src={
+                    photos[0] ||
+                    (PROPERTY_TYPE_SAMPLE_PHOTOS[formData.propertyType] ||
+                      PROPERTY_TYPE_SAMPLE_PHOTOS.apartment)[0] ||
+                    SAMPLE_PHOTOS[0]
+                  }
                   alt="Preview"
                   className={styles.previewImage}
                 />

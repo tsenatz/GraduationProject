@@ -105,7 +105,7 @@
 
 .description {
   font-size: 0.95rem;
-  line-height: 1.6;
+  line-height: 1.55;
   color: #475569;
   margin: 0 0 24px;
 }
@@ -116,30 +116,26 @@
   margin: 0 0 32px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 13px;
 }
 
 .featureItem {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
-  font-size: 0.92rem;
+  font-size: 0.95rem;
+  font-weight: 500;
   color: #1e293b;
-  line-height: 1.45;
+  line-height: 1.4;
 }
 
 .featureIcon {
   color: var(--color-accent, #4a7fa7);
   flex-shrink: 0;
-  margin-top: 2px;
 }
 
-.featureDesc {
-  display: block;
-  font-size: 0.85rem;
-  color: #64748b;
-  margin-top: 2px;
-  line-height: 1.4;
+.featureText {
+  color: #1e293b;
 }
 
 /* Zillow Standard Button */

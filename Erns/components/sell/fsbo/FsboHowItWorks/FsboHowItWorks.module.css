@@ -3,6 +3,7 @@
   padding: 64px 24px;
   background-color: var(--bg-color, #f6fafd);
   box-sizing: border-box;
+  scroll-margin-top: 80px;
 }
 
 .container {

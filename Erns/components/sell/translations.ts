@@ -18,7 +18,7 @@ export const translations = {
         modalDefaultLocation: "Addis Ababa",
         optionAgentBadge: "Full-Service",
         optionAgentTitle: "Connect with a Local Verified Agent",
-        optionAgentDesc: "Partner with an accredited agent specialized in your sub-city for pricing, showings, vetting, and title transfer.",
+        optionAgentDesc: "Partner with an accredited agent to manage and sell your property on your behalf.",
         optionAgentBtn: "Find Agents",
         optionFsboBadge: "Zero Commission",
         optionFsboTitle: "List Directly for Free (FSBO)",
@@ -29,45 +29,28 @@ export const translations = {
     },
     sellingOptions: {
       title: "Choose your selling path",
-      subtitle:
-        "Whether you want full-service guidance or prefer listing directly, ERNS gives you complete flexibility.",
+      subtitle: "Select the option that best fits your goals.",
       card1: {
         tag: "Full-Service Guidance",
         title: "Find a verified agent",
-        desc: "Partner with an accredited local agent who knows market valuations in Addis Ababa. They manage professional photography, showings, buyer vetting, negotiation, and title deed paperwork.",
+        desc: "Partner with an accredited local agent to manage and sell your home on your behalf.",
         features: [
-          {
-            title: "Local market pricing strategy",
-            desc: "Expert pricing based on actual closed transactions in your sub-city.",
-          },
-          {
-            title: "Pre-screened & verified buyers",
-            desc: "We screen incoming inquiries so you only meet serious buyers.",
-          },
-          {
-            title: "Deed & legal closing assistance",
-            desc: "Full support through title search, bank escrow, and title deed transfer.",
-          },
+          { title: "Sells your property on your behalf" },
+          { title: "Handles photos, marketing & buyer showings" },
+          { title: "Negotiates the highest price with buyers" },
+          { title: "Manages contracts, paperwork & deed transfer" },
         ],
         buttonText: "Find an agent",
       },
       card2: {
         tag: "100% Free to List",
         title: "List it myself",
-        desc: "Take full control of your sale. Post your property directly on ERNS without paying agent commissions. Connect directly with serious buyers from Ethiopia and the diaspora.",
+        desc: "Post directly on ERNS with zero commission and direct buyer communication.",
         features: [
-          {
-            title: "Zero agent commission",
-            desc: "Keep 100% of your sale proceeds with no hidden fees or charges.",
-          },
-          {
-            title: "Direct buyer communication",
-            desc: "Receive inquiries directly to your verified phone and message buyers.",
-          },
-          {
-            title: "Local & diaspora buyer reach",
-            desc: "Instant exposure to thousands of verified domestic and overseas home seekers.",
-          },
+          { title: "Zero agent commission (0% fees)" },
+          { title: "Direct buyer calls & messaging" },
+          { title: "Broad local & diaspora buyer reach" },
+          { title: "Full control over pricing & showings" },
         ],
         buttonText: "List it myself",
       },
@@ -633,44 +616,28 @@ export const translations = {
     },
     sellingOptions: {
       title: "የሽያጭ መንገድዎን ይምረጡ",
-      subtitle: "ሙሉ ሙያዊ ድጋፍ ይፈልጉ ወይም ራስዎ በቀጥታ መዘርዘር ይመርጡ፣ ERNS የተሟላ ነፃነት ይሰጥዎታል።",
+      subtitle: "ለእርስዎ ተስማሚ የሆነውን የሽያጭ አማራጭ ይምረጡ።",
       card1: {
         tag: "ሙሉ ሙያዊ ድጋፍ",
-        title: "የተረጋገጠ ወኪል ወይም ደላላ ያግኙ",
-        desc: "በአዲስ አበባ ያለውን የገበያ ዋጋ ጠንቅቆ ከሚያውቅ ህጋዊ ወኪል ጋር ይስሩ። ፎቶዎችን ማዘጋጀት፣ ገዢዎችን ማነጋገር፣ ድርድር እና የካርታ ሰነዶችን ማጠናቀቅ ያከናውኑልዎታል።",
+        title: "የተረጋገጠ ወኪል ያግኙ",
+        desc: "ቤትዎን ወክለው ከሽያጭ እስከ ይዞታ ዝውውር የሚያከናውኑ ህጋዊ ወኪል ያግኙ።",
         features: [
-          {
-            title: "ትክክለኛ የገበያ ዋጋ ስትራቴጂ",
-            desc: "በአካባቢዎ በተከናወኑ ትክክለኛ የሽያጭ ዋጋዎች ላይ የተመሰረተ ሙያዊ ግምት።",
-          },
-          {
-            title: "የተረጋገጡና ዝግጁ ገዢዎች",
-            desc: "ከማይረቡ ጥሪዎች ነፃ ሆነው ትክክለኛና ዝግጁ ገዢዎችን ብቻ ያስተናግዳሉ።",
-          },
-          {
-            title: "የውል እና የካርታ ዝውውር ድጋፍ",
-            desc: "የባንክ ክፍያ፣ የውል ስምምነት እና የይዞታ ማረጋገጫ ዝውውር ሙሉ የህግ ድጋፍ።",
-          },
+          { title: "ቤትዎን ወክለው ሙሉ በሙሉ ይሸጣሉ" },
+          { title: "ፎቶዎችን በማዘጋጀት ለገዢዎች ያስጎበኛሉ" },
+          { title: "የተሻለ ዋጋ እንዲያገኙ ከገዢዎች ጋር ይደራደራሉ" },
+          { title: "የውል እና የካርታ ዝውውር ሰነዶችን ያጠናቅቃሉ" },
         ],
         buttonText: "ወኪል ያግኙ",
       },
       card2: {
         tag: "ሙሉ በሙሉ ነፃ ምዝገባ",
-        title: "ራሴ እዘረዝራለሁ (ያለ ኮሚሽን)",
-        desc: "የሽያጭ ሂደቱን በሙሉ ቁጥጥር ስር ያድርጉ። ያለምንም ኮሚሽን ቤትዎን በቀጥታ በERNS ላይ ይለጥፉ። ከሀገር ውስጥና ከውጭ ገዢዎች ጋር በቀጥታ ይገናኙ።",
+        title: "ራሴ እዘረዝራለሁ",
+        desc: "ያለምንም ኮሚሽን ቤትዎን በቀጥታ በERNS ላይ ይለጥፉ እና ከገዢዎች ጋር ይገናኙ።",
         features: [
-          {
-            title: "ዜሮ ኮሚሽን — ሙሉ በሙሉ ነፃ",
-            desc: "ያለምንም ክፍያ ወይም የኮሚሽን ቅናሽ የሽያጩን ሙሉ ገቢ ለራስዎ ያስቀሩ።",
-          },
-          {
-            title: "ከገዢዎች ጋር ቀጥተኛ ግንኙነት",
-            desc: "ጥሪዎችንና መልዕክቶችን በተረጋገጠ ስልክዎ በቀጥታ ይቀበሉ።",
-          },
-          {
-            title: "ለሀገር ውስጥና ለዲያስፖራ ገዢዎች ተደራሽነት",
-            desc: "በሺዎች ለሚቆጠሩ የሀገር ውስጥና የውጭ ሀገር ገዢዎች በቀላሉ ይታያሉ።",
-          },
+          { title: "ዜሮ ኮሚሽን — ሙሉ ገቢው የራስዎ ነው" },
+          { title: "ከገዢዎች ጋር ቀጥተኛ የስልክና መልዕክት ግንኙነት" },
+          { title: "ለሀገር ውስጥና ለዲያስፖራ ገዢዎች ሰፊ ተደራሽነት" },
+          { title: "በዋጋና በጉብኝት ላይ ሙሉ ቁጥጥር" },
         ],
         buttonText: "ቤትዎን ይመዝግቡ",
       },

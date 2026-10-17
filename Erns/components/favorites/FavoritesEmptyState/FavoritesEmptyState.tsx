@@ -24,12 +24,12 @@ export function FavoritesEmptyState() {
       <p className={styles.subtitle}>{t.subtitle}</p>
 
       <div className={styles.buttonGroup}>
-        <Link href="/" className={styles.primaryBtn}>
+        <Link href="/search?status=FOR_SALE" className={styles.primaryBtn}>
           <Search size={18} aria-hidden="true" />
           <span>{t.btnBrowseSale}</span>
         </Link>
 
-        <Link href="/rent" className={styles.secondaryBtn}>
+        <Link href="/search?status=FOR_RENT" className={styles.secondaryBtn}>
           <Key size={18} aria-hidden="true" />
           <span>{t.btnBrowseRent}</span>
         </Link>
