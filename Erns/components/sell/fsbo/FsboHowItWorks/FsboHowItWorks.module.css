@@ -3,6 +3,7 @@
   padding: 64px 24px;
   background-color: var(--bg-color, #f6fafd);
   box-sizing: border-box;
+  scroll-margin-top: 80px;
 }
 
 .container {
@@ -41,19 +42,20 @@
 /* Zillow Standard Box */
 .card {
   background-color: #ffffff;
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 24px 20px;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
   position: relative;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
+  transform: translateY(-2px);
   border-color: #cbd5e1;
-  box-shadow: 0 4px 12px rgba(10, 25, 49, 0.08);
+  box-shadow: 0 8px 20px rgba(10, 25, 49, 0.08);
 }
 
 .stepNumber {
@@ -71,16 +73,16 @@
 }
 
 .cardTitle {
-  font-size: 1.12rem;
+  font-size: 1.08rem;
   font-weight: 700;
   color: var(--color-primary, #0a1931);
-  margin: 0 0 8px;
+  margin: 0 0 6px;
   line-height: 1.35;
 }
 
 .cardDesc {
-  font-size: 0.92rem;
-  line-height: 1.6;
+  font-size: 0.9rem;
+  line-height: 1.5;
   color: #64748b;
   margin: 0;
 }

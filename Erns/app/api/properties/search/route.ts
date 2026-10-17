@@ -16,6 +16,7 @@ export async function GET(request: Request) {
     const minPrice = searchParams.get("minPrice") ? parseFloat(searchParams.get("minPrice")!) : undefined;
     const maxPrice = searchParams.get("maxPrice") ? parseFloat(searchParams.get("maxPrice")!) : undefined;
     const status = searchParams.get("status"); // "FOR_SALE" or "FOR_RENT"
+    const propertyType = searchParams.get("propertyType")?.trim(); // e.g. "Apartment", "Villa"
     const beds = searchParams.get("beds") && searchParams.get("beds") !== "Any" ? parseInt(searchParams.get("beds")!) : undefined;
     const baths = searchParams.get("baths") && searchParams.get("baths") !== "Any" ? parseFloat(searchParams.get("baths")!) : undefined;
     const exactMatchBeds = searchParams.get("exactMatchBeds") === "true";
@@ -31,6 +32,8 @@ export async function GET(request: Request) {
               { address: { contains: query, mode: "insensitive" } },
               { city: { contains: query, mode: "insensitive" } },
               { state: { contains: query, mode: "insensitive" } },
+              { title: { contains: query, mode: "insensitive" } },
+              { subCity: { contains: query, mode: "insensitive" } },
             ],
           }
           : {}),
@@ -43,15 +46,21 @@ export async function GET(request: Request) {
           }
           : {}),
         ...(status && status !== "Any" ? { status } : {}),
+        ...(propertyType ? { propertyType: { equals: propertyType, mode: "insensitive" } } : {}),
         ...(beds ? { beds: exactMatchBeds ? beds : { gte: beds } } : {}),
         ...(baths ? { baths: { gte: baths } } : {}),
       },
-      take: 100, // Reasonable limit for rendering on map
+      orderBy: { createdAt: "desc" },
+      take: 100,
     });
 
     return NextResponse.json(properties);
   } catch (error) {
-    console.error("Search API Error:", error);
-    return NextResponse.json({ error: "Failed to fetch properties" }, { status: 500 });
+    console.error("[Search API] Error fetching properties:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch properties", detail: error instanceof Error ? error.message : String(error) },
+      { status: 500 }
+    );
   }
 }
+

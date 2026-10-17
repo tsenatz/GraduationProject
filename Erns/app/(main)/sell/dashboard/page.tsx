@@ -45,11 +45,33 @@ export default function SellerDashboardPage() {
     setLoading(true);
     try {
       const res = await getSellerPropertiesAction();
-      if (res.success && res.properties) {
-        setProperties(res.properties);
+      let serverProps: any[] = res.success && res.properties ? res.properties : [];
+
+      // Merge with any client-side cached listings in localStorage
+      if (typeof window !== "undefined") {
+        try {
+          const cached = JSON.parse(localStorage.getItem("erns_seller_listings") || "[]");
+          if (Array.isArray(cached) && cached.length > 0) {
+            const serverIds = new Set(serverProps.map((p) => p.id));
+            const missing = cached.filter((p: any) => p && p.id && !serverIds.has(p.id));
+            if (missing.length > 0) {
+              serverProps = [...missing, ...serverProps];
+            }
+          }
+        } catch {}
       }
+
+      setProperties(serverProps);
     } catch (err) {
       console.error("Failed to load seller properties:", err);
+      if (typeof window !== "undefined") {
+        try {
+          const cached = JSON.parse(localStorage.getItem("erns_seller_listings") || "[]");
+          if (Array.isArray(cached) && cached.length > 0) {
+            setProperties(cached);
+          }
+        } catch {}
+      }
     } finally {
       setLoading(false);
     }
@@ -65,6 +87,15 @@ export default function SellerDashboardPage() {
       setProperties((prev) =>
         prev.map((p) => (p.id === propertyId ? { ...p, status: newStatus } : p))
       );
+      if (typeof window !== "undefined") {
+        try {
+          const cached = JSON.parse(localStorage.getItem("erns_seller_listings") || "[]");
+          const updated = cached.map((p: any) =>
+            p.id === propertyId ? { ...p, status: newStatus } : p
+          );
+          localStorage.setItem("erns_seller_listings", JSON.stringify(updated));
+        } catch {}
+      }
       await updatePropertyStatusAction(propertyId, newStatus);
     } catch (err) {
       console.error("Status update error:", err);
@@ -81,6 +112,13 @@ export default function SellerDashboardPage() {
     setActionLoadingId(propertyId);
     try {
       setProperties((prev) => prev.filter((p) => p.id !== propertyId));
+      if (typeof window !== "undefined") {
+        try {
+          const cached = JSON.parse(localStorage.getItem("erns_seller_listings") || "[]");
+          const updated = cached.filter((p: any) => p.id !== propertyId);
+          localStorage.setItem("erns_seller_listings", JSON.stringify(updated));
+        } catch {}
+      }
       await deletePropertyAction(propertyId);
     } catch (err) {
       console.error("Delete error:", err);
@@ -271,7 +309,7 @@ export default function SellerDashboardPage() {
       ) : filteredProperties.length === 0 ? (
         <div className={styles.emptyCard}>
           <div className={styles.emptyIcon}>
-            <Home size={34} />
+            <Home size={26} />
           </div>
           <h2 className={styles.emptyTitle}>
             {activeFilter === "ALL"
@@ -281,8 +319,8 @@ export default function SellerDashboardPage() {
           <p className={styles.emptyDesc}>
             List your Ethiopian property directly on ERNS with 0% commission. Upload photos and reach thousands of verified buyers in minutes.
           </p>
-          <Link href="/sell/list" className={styles.primaryCtaBtn}>
-            <PlusCircle size={20} />
+          <Link href="/sell/list" className={styles.emptyCta}>
+            <PlusCircle size={22} />
             <span>List Your Home on ERNS</span>
           </Link>
         </div>

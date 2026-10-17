@@ -41,9 +41,62 @@
 .formCard {
   background-color: #ffffff;
   border-radius: 8px;
-  padding: 32px 28px;
+  padding: 24px 28px 32px;
   border: 1px solid #e2e8f0;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+.formCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 18px;
+}
+
+.howItWorksLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 12px 4px 6px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  color: #475569;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.howItWorksLink:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+  color: var(--color-primary, #0a1931);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
+}
+
+.infoIconWrapper {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: rgba(10, 25, 49, 0.08);
+  color: var(--color-primary, #0a1931);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.howItWorksLink:hover .infoIconWrapper {
+  background-color: var(--color-primary, #0a1931);
+  color: #ffffff;
+}
+
+.howItWorksLabel {
+  line-height: 1;
 }
 
 .stepper {
@@ -135,6 +188,12 @@
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--color-primary);
+}
+
+.requiredStar {
+  color: #ef4444;
+  margin-left: 2px;
+  font-weight: 700;
 }
 
 .input {

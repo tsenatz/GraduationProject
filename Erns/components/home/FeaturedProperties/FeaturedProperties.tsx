@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight, Compass, Heart } from "lucide-react";
 import { Property } from "@/components/favorites/types";
@@ -14,6 +14,25 @@ import styles from "./FeaturedProperties.module.css";
 
 type TabType = "all" | "sale" | "rent" | "villas";
 
+function getRoundedUpCount(count: number): string {
+  if (count <= 0) return "10+";
+  if (count < 10) return "10+";
+  if (count < 50) {
+    const nextStep = Math.ceil((count + 1) / 5) * 5;
+    return `${nextStep}+`;
+  }
+  if (count < 100) {
+    const nextStep = Math.ceil((count + 1) / 10) * 10;
+    return `${nextStep}+`;
+  }
+  if (count < 1000) {
+    const nextStep = Math.ceil((count + 1) / 50) * 50;
+    return `${nextStep}+`;
+  }
+  const nextStep = Math.ceil((count + 1) / 100) * 100;
+  return `${nextStep.toLocaleString()}+`;
+}
+
 export function FeaturedProperties() {
   const { isAmharic } = useLanguage();
   const { favorites } = useFavorites();
@@ -21,6 +40,30 @@ export function FeaturedProperties() {
 
   const [activeTab, setActiveTab] = useState<TabType>("all");
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+  const [totalCount, setTotalCount] = useState<number>(FEATURED_PROPERTIES.length);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetch("/api/properties/count")
+      .then((res) => res.json())
+      .then((data) => {
+        if (isMounted && typeof data?.count === "number" && data.count > 0) {
+          setTotalCount(data.count);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to fetch property count:", err);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const displayCount = getRoundedUpCount(totalCount);
+  const viewAllText = t.viewAllBtn.includes("{count}")
+    ? t.viewAllBtn.replace("{count}", displayCount)
+    : t.viewAllBtn.replace(/[\d,]+\+?/, displayCount);
 
   // Filter properties based on active tab
   const filteredProperties = FEATURED_PROPERTIES.filter((prop) => {
@@ -57,7 +100,7 @@ export function FeaturedProperties() {
           </div>
 
           <Link href="/search" className={styles.viewAllTopBtn}>
-            <span>{t.viewAllBtn}</span>
+            <span>{viewAllText}</span>
             <ArrowRight size={16} aria-hidden="true" />
           </Link>
         </div>

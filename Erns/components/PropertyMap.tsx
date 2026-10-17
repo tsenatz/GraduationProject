@@ -42,6 +42,34 @@ function formatFullPrice(price: number): string {
   return `ETB ${price.toLocaleString()}`;
 }
 
+function getPropertyIconSvg(property: Property): string {
+  const type = (property.propertyType || "").toLowerCase();
+  const isRent = property.status === "FOR_RENT" || property.listingType === "RENT" || property.listingType === "rent";
+
+  // Commercial / Shop / Office
+  if (type.includes("commercial") || type.includes("office") || type.includes("shop")) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/></svg>`;
+  }
+
+  // Land / Plot
+  if (type.includes("land") || type.includes("plot")) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="m8 14 4-7 4 7H8z"/><path d="m5 21 7-9 7 9H5z"/></svg>`;
+  }
+
+  // Apartment, Condominium, Studio
+  if (type.includes("apartment") || type.includes("condo") || type.includes("studio")) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>`;
+  }
+
+  // For Rent general fallback
+  if (isRent && !type.includes("villa") && !type.includes("house")) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3"/></svg>`;
+  }
+
+  // House, Villa, or Default Home
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`;
+}
+
 export default function PropertyMap({
   properties,
   onBoundsChange,
@@ -56,11 +84,14 @@ export default function PropertyMap({
   const popupRef = useRef<maplibregl.Popup | null>(null);
   const boundsDebounceTimer = useRef<NodeJS.Timeout | null>(null);
   const isProgrammaticMove = useRef<boolean>(false);
+  const mapLoadedRef = useRef<boolean>(false);
+  const propertiesRef = useRef<Property[]>(properties);
 
   const [currentStyle, setCurrentStyle] = useState<string>("liberty");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [activeProperty, setActiveProperty] = useState<Property | null>(null);
+  const [markerUpdateCount, forceMarkerUpdate] = useState(0);
 
   // Determine initial style URL (supports custom ENV if set, otherwise OpenFreeMap)
   const getStyleUrl = (styleId: string): string | maplibregl.StyleSpecification => {
@@ -202,7 +233,7 @@ export default function PropertyMap({
       const popupNode = createPopupContent(property);
 
       const popup = new maplibregl.Popup({
-        offset: [0, -18],
+        offset: [0, -28],
         closeButton: true,
         closeOnClick: false,
         maxWidth: "320px",
@@ -228,25 +259,22 @@ export default function PropertyMap({
     onBoundsChangeRef.current = onBoundsChange;
   }, [onBoundsChange]);
 
+  // Keep propertiesRef in sync so the map init closure always sees the latest properties
+  useEffect(() => {
+    propertiesRef.current = properties;
+  }, [properties]);
+
   const handleStyleChange = (newStyle: string) => {
     setIsLoading(true);
     setLoadError(null);
     setCurrentStyle(newStyle);
   };
 
-  // Initialize MapLibre GL instance
+  // Initialize MapLibre GL instance — only re-run when the style changes, NOT when properties change
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Initial center detection: if properties are present, center around first or average
-    let initialLng = DEFAULT_CENTER[0];
-    let initialLat = DEFAULT_CENTER[1];
-
-    if (properties.length > 0) {
-      initialLng = properties[0].longitude;
-      initialLat = properties[0].latitude;
-    }
-
+    mapLoadedRef.current = false;
     let mapInstance: maplibregl.Map | null = null;
     const currentMarkers = markersRef.current;
 
@@ -261,7 +289,7 @@ export default function PropertyMap({
       mapInstance = new maplibregl.Map({
         container: containerRef.current,
         style: getStyleUrl(currentStyle),
-        center: [initialLng, initialLat],
+        center: DEFAULT_CENTER,
         zoom: DEFAULT_ZOOM,
         attributionControl: { compact: false },
       });
@@ -278,15 +306,27 @@ export default function PropertyMap({
 
       // Map loaded successfully
       mapInstance.on("load", () => {
+        mapLoadedRef.current = true;
         setIsLoading(false);
 
-        // Fit to properties bounds if multiple exist
-        if (properties.length > 1) {
+        // Fit to properties bounds if properties are already loaded
+        const currentProps = propertiesRef.current;
+        if (currentProps.length > 1) {
           isProgrammaticMove.current = true;
           const bounds = new maplibregl.LngLatBounds();
-          properties.forEach((p) => bounds.extend([p.longitude, p.latitude]));
+          currentProps.forEach((p) => bounds.extend([p.longitude, p.latitude]));
           mapInstance?.fitBounds(bounds, { padding: 60, maxZoom: 15, duration: 800 });
+        } else if (currentProps.length === 1) {
+          isProgrammaticMove.current = true;
+          mapInstance?.flyTo({
+            center: [currentProps[0].longitude, currentProps[0].latitude],
+            zoom: DEFAULT_ZOOM,
+            duration: 800,
+          });
         }
+
+        // Trigger marker sync now that the map is ready
+        forceMarkerUpdate((n) => n + 1);
       });
 
       // Handle user-initiated map pan/zoom to report bounds to parent search
@@ -341,6 +381,7 @@ export default function PropertyMap({
     window.addEventListener("resize", handleResize);
 
     return () => {
+      mapLoadedRef.current = false;
       window.removeEventListener("resize", handleResize);
       if (boundsDebounceTimer.current) {
         clearTimeout(boundsDebounceTimer.current);
@@ -355,12 +396,31 @@ export default function PropertyMap({
       }
       mapRef.current = null;
     };
-  }, [currentStyle, properties]);
+  }, [currentStyle]);
+
+  // Fit bounds when properties arrive/change after map is already loaded
+  useEffect(() => {
+    if (!mapLoadedRef.current || !mapRef.current) return;
+    if (properties.length > 1) {
+      isProgrammaticMove.current = true;
+      const bounds = new maplibregl.LngLatBounds();
+      properties.forEach((p) => bounds.extend([p.longitude, p.latitude]));
+      mapRef.current.fitBounds(bounds, { padding: 60, maxZoom: 15, duration: 800 });
+    } else if (properties.length === 1) {
+      isProgrammaticMove.current = true;
+      mapRef.current.flyTo({
+        center: [properties[0].longitude, properties[0].latitude],
+        zoom: DEFAULT_ZOOM,
+        duration: 800,
+      });
+    }
+  }, [properties]);
 
   // Synchronize Markers with current properties
   useEffect(() => {
     const map = mapRef.current;
-    if (!map) return;
+    // Wait for the map to be fully loaded before adding markers
+    if (!map || !mapLoadedRef.current) return;
 
     const currentMarkers = markersRef.current;
     const nextPropIds = new Set(properties.map((p) => p.id));
@@ -398,14 +458,18 @@ export default function PropertyMap({
       badge.className = `${styles.marker} ${
         isSelected ? styles.markerSelected : isHovered ? styles.markerHovered : styles.markerNormal
       }`;
+      badge.title = `${property.title} - ${property.status === "FOR_RENT" ? "For Rent" : "For Sale"}: ${formatFullPrice(property.price)}`;
 
-      // Status dot
-      const dot = document.createElement("span");
-      dot.className = `${styles.markerDot} ${property.status === "FOR_RENT" ? styles.markerDotRent : ""}`;
-      badge.appendChild(dot);
+      // Property Icon Badge
+      const isRent = property.status === "FOR_RENT" || property.listingType === "RENT" || property.listingType === "rent";
+      const iconWrapper = document.createElement("span");
+      iconWrapper.className = `${styles.markerIconWrapper} ${isRent ? styles.markerIconRent : styles.markerIconSale}`;
+      iconWrapper.innerHTML = getPropertyIconSvg(property);
+      badge.appendChild(iconWrapper);
 
       // Price text
       const text = document.createElement("span");
+      text.className = styles.markerPrice;
       text.textContent = formatBadgePrice(property.price);
       badge.appendChild(text);
 
@@ -437,7 +501,7 @@ export default function PropertyMap({
 
       currentMarkers.set(property.id, { marker, el: badge });
     });
-  }, [properties, hoveredPropertyId, selectedPropertyId, activeProperty, openPropertyPopup, onSelectProperty]);
+  }, [properties, hoveredPropertyId, selectedPropertyId, activeProperty, openPropertyPopup, onSelectProperty, markerUpdateCount]);
 
   // Synchronize external selection (e.g. from parent list click)
   useEffect(() => {

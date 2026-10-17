@@ -28,6 +28,7 @@ import {
   ArrowRight,
   Plus,
   Minus,
+  Info,
 } from "lucide-react";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { translations } from "@/components/sell/translations";
@@ -82,6 +83,8 @@ const PROPERTY_TYPE_SAMPLE_PHOTOS: Record<string, string[]> = {
   ],
 };
 
+const SAMPLE_PHOTOS = PROPERTY_TYPE_SAMPLE_PHOTOS.apartment;
+
 export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
   initialSubCity = "Bole",
   initialAddress = "",
@@ -103,23 +106,19 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
   const [isUploading, setIsUploading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Form State initialized with initialData (if in edit mode) or defaults
+  // Form State initialized with initialData (if in edit mode) or clean empty defaults
   const [formData, setFormData] = useState({
     subCity: initialData?.subCity || initialSubCity || "Bole",
-    woreda: initialData?.woreda || "Woreda 03",
-    specificArea: initialData?.specificArea || initialAddress || "Atlas, near Edna Mall",
-    propertyType: initialData?.propertyType || initialPropertyType || "apartment",
-    bedrooms: initialData?.bedrooms || 3,
-    bathrooms: initialData?.bathrooms || 2,
-    areaSqM: initialData?.areaSqM || 145,
-    priceETB: initialData?.priceETB || 12500000,
+    woreda: initialData?.woreda || "",
+    specificArea: initialData?.specificArea || initialAddress || "",
+    propertyType: initialData?.propertyType || "apartment",
+    bedrooms: initialData?.bedrooms || 2,
+    bathrooms: initialData?.bathrooms || 1,
+    areaSqM: initialData?.areaSqM || ("" as any),
+    priceETB: initialData?.priceETB || ("" as any),
     isNegotiable: initialData?.isNegotiable !== undefined ? initialData.isNegotiable : true,
     titleDeedStatus: initialData?.titleDeedStatus || "digital",
-    selectedAmenities: initialData?.amenities || [
-      "Water Tank / Reserve (የውሃ ታንከር)",
-      "Standby Generator (ጀነሬተር)",
-      "Dedicated Parking (የመኪና ማቆሚያ)",
-    ],
+    selectedAmenities: initialData?.amenities || [],
     description: initialData?.description || "",
     ownerName: initialData?.ownerName || "",
     phone: initialData?.phone || "",
@@ -128,37 +127,14 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
 
   const initialType = initialData?.propertyType || initialPropertyType || "apartment";
   const [photos, setPhotos] = useState<string[]>(
-    initialData?.photos && initialData.photos.length > 0
-      ? initialData.photos
-      : PROPERTY_TYPE_SAMPLE_PHOTOS[initialType] || PROPERTY_TYPE_SAMPLE_PHOTOS.apartment
+    initialData?.photos && initialData.photos.length > 0 ? initialData.photos : []
   );
   const [hasUserCustomPhotos, setHasUserCustomPhotos] = useState<boolean>(
     Boolean(initialData?.photos && initialData.photos.length > 0)
   );
 
-  // Prepopulate contact info if user is authenticated
-  useEffect(() => {
-    const userName = session?.user?.name;
-    if (userName && !formData.ownerName) {
-      setFormData((prev) => ({ ...prev, ownerName: userName }));
-    }
-  }, [session, formData.ownerName]);
-
-  useEffect(() => {
-    if (initialPropertyType && !initialData && !hasUserCustomPhotos) {
-      handlePropertyTypeSelect(initialPropertyType);
-    }
-  }, [initialPropertyType]);
-
   const handlePropertyTypeSelect = (typeId: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      propertyType: typeId,
-      ...(typeId === "villa" && prev.bedrooms === 3 ? { bedrooms: 4, bathrooms: 4, areaSqM: 350 } : {}),
-      ...(typeId === "commercial" ? { bedrooms: 0, bathrooms: 2, areaSqM: 200 } : {}),
-    }));
-
-    // If user hasn't uploaded their own custom photos, switch sample photos to match the selected property type
+    setFormData((prev) => ({ ...prev, propertyType: typeId }));
     if (!hasUserCustomPhotos) {
       const typePhotos =
         PROPERTY_TYPE_SAMPLE_PHOTOS[typeId] ||
@@ -166,6 +142,28 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
       setPhotos(typePhotos);
     }
   };
+
+  // Restore draft if user signed in after filling form
+  useEffect(() => {
+    if (mode === "create" && typeof window !== "undefined") {
+      try {
+        const savedDraft = localStorage.getItem("erns_fsbo_draft");
+        if (savedDraft) {
+          const parsed = JSON.parse(savedDraft);
+          if (parsed.formData) {
+            setFormData((prev) => ({ ...prev, ...parsed.formData }));
+          }
+          if (parsed.photos && parsed.photos.length > 0) {
+            setPhotos(parsed.photos);
+          }
+          if (parsed.currentStep) {
+            setCurrentStep(parsed.currentStep);
+          }
+          localStorage.removeItem("erns_fsbo_draft");
+        }
+      } catch { }
+    }
+  }, [mode]);
 
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -239,24 +237,153 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
     });
   };
 
+  // Step validation
+  const validateStep = (stepNumber: number): boolean => {
+    setErrorMessage("");
+    if (stepNumber === 1) {
+      if (!formData.specificArea || !formData.specificArea.trim()) {
+        setErrorMessage(
+          isAmharic
+            ? "እባክዎ የቤቱን ሰፈር ወይም ልዩ አካባቢ ያስገቡ (ለምሳሌ፡ አትላስ፣ ኤድና ሞል)"
+            : "Please enter the street or specific area (e.g. Atlas, near Edna Mall)."
+        );
+        return false;
+      }
+    }
+    if (stepNumber === 2) {
+      const area = Number(formData.areaSqM);
+      if (!formData.areaSqM || isNaN(area) || area <= 0) {
+        setErrorMessage(
+          isAmharic
+            ? "እባክዎ ትክክለኛ የቤት ስፋት በካሬ ሜትር ያስገቡ"
+            : "Please enter a valid total area in m²."
+        );
+        return false;
+      }
+      const price = Number(formData.priceETB);
+      if (!formData.priceETB || isNaN(price) || price <= 0) {
+        setErrorMessage(
+          isAmharic
+            ? "እባክዎ የመሸጫ ዋጋ በብር ያስገቡ"
+            : "Please enter the asking price in ETB."
+        );
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const handleNextFromStep1 = () => {
+    if (validateStep(1)) {
+      setErrorMessage("");
+      setCurrentStep(2);
+    }
+  };
+
+  const handleNextFromStep2 = () => {
+    if (validateStep(2)) {
+      setErrorMessage("");
+      setCurrentStep(3);
+    }
+  };
+
+  const handleStepClick = (targetStep: number) => {
+    if (targetStep <= currentStep) {
+      setErrorMessage("");
+      setCurrentStep(targetStep);
+      return;
+    }
+    if (currentStep === 1 && !validateStep(1)) {
+      return;
+    }
+    if ((currentStep === 2 || targetStep > 2) && !validateStep(2)) {
+      if (currentStep !== 2) setCurrentStep(2);
+      return;
+    }
+    setErrorMessage("");
+    setCurrentStep(targetStep);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
 
+    if (!formData.specificArea || !formData.specificArea.trim()) {
+      setCurrentStep(1);
+      setErrorMessage(
+        isAmharic
+          ? "እባክዎ የቤቱን ሰፈር ወይም ልዩ አካባቢ ያስገቡ (ለምሳሌ፡ አትላስ፣ ኤድና ሞል)"
+          : "Please enter the street or specific area before publishing."
+      );
+      return;
+    }
+
+    const area = Number(formData.areaSqM);
+    if (!formData.areaSqM || isNaN(area) || area <= 0) {
+      setCurrentStep(2);
+      setErrorMessage(
+        isAmharic
+          ? "እባክዎ ትክክለኛ የቤት ስፋት በካሬ ሜትር ያስገቡ"
+          : "Please enter a valid total area in m²."
+      );
+      return;
+    }
+
+    const price = Number(formData.priceETB);
+    if (!formData.priceETB || isNaN(price) || price <= 0) {
+      setCurrentStep(2);
+      setErrorMessage(
+        isAmharic
+          ? "እባክዎ የመሸጫ ዋጋ በብር ያስገቡ"
+          : "Please enter the asking price in ETB."
+      );
+      return;
+    }
+
+    const trimmedOwner = formData.ownerName ? formData.ownerName.trim() : "";
+    if (!trimmedOwner && !session?.user?.name) {
+      setErrorMessage(
+        isAmharic ? "እባክዎ የባለቤቱን ሙሉ ስም ያስገቡ" : "Please enter your full name."
+      );
+      return;
+    }
+
+    const cleanedPhone = formData.phone ? formData.phone.trim().replace(/\s+/g, "") : "";
+    if (!cleanedPhone || cleanedPhone.length < 8) {
+      setErrorMessage(
+        isAmharic
+          ? "እባክዎ ትክክለኛ የስልክ ቁጥር ያስገቡ (ለምሳሌ፡ 0911234567)"
+          : "Please enter a valid contact phone number (e.g. 0911234567)."
+      );
+      return;
+    }
+
     // Auth gate: ensure user is signed in to save to database and manage in dashboard
     if (!session?.user) {
+      if (typeof window !== "undefined") {
+        try {
+          localStorage.setItem(
+            "erns_fsbo_draft",
+            JSON.stringify({ formData, photos, currentStep })
+          );
+        } catch { }
+      }
       setShowAuthModal(true);
       return;
     }
 
     setIsSubmitting(true);
 
+    const safeSpecificArea = formData.specificArea.trim();
+    const safeOwnerName = trimmedOwner || session.user.name || "Owner";
+    const safePhone = cleanedPhone;
+
     try {
       if (mode === "edit" && propertyId) {
         const result = await updatePropertyListingAction(propertyId, {
           subCity: formData.subCity,
           woreda: formData.woreda,
-          specificArea: formData.specificArea,
+          specificArea: safeSpecificArea,
           propertyType: formData.propertyType,
           bedrooms: formData.bedrooms,
           bathrooms: formData.bathrooms,
@@ -266,8 +393,8 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
           titleDeedStatus: formData.titleDeedStatus,
           amenities: formData.selectedAmenities,
           description: formData.description,
-          ownerName: formData.ownerName || session.user.name || "Owner",
-          phone: formData.phone,
+          ownerName: safeOwnerName,
+          phone: safePhone,
           preferredTime: formData.preferredTime,
           photos,
         });
@@ -276,6 +403,20 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
           setSubmissionRef(initialData?.referenceNo || result.referenceNo || "");
           setCreatedPropertyId(propertyId);
           setIsSubmitted(true);
+
+          if (typeof window !== "undefined" && result.property) {
+            try {
+              const localListings = JSON.parse(
+                localStorage.getItem("erns_seller_listings") || "[]"
+              );
+              const updatedListings = localListings.map((p: any) =>
+                p.id === propertyId ? result.property : p
+              );
+              localStorage.setItem("erns_seller_listings", JSON.stringify(updatedListings));
+            } catch (err) {
+              console.warn("Could not cache to localStorage:", err);
+            }
+          }
         } else {
           if (result.error === "AUTH_REQUIRED") {
             setShowAuthModal(true);
@@ -287,7 +428,7 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
         const result = await createPropertyListingAction({
           subCity: formData.subCity,
           woreda: formData.woreda,
-          specificArea: formData.specificArea,
+          specificArea: safeSpecificArea,
           propertyType: formData.propertyType,
           bedrooms: formData.bedrooms,
           bathrooms: formData.bathrooms,
@@ -297,8 +438,8 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
           titleDeedStatus: formData.titleDeedStatus,
           amenities: formData.selectedAmenities,
           description: formData.description,
-          ownerName: formData.ownerName || session.user.name || "Owner",
-          phone: formData.phone,
+          ownerName: safeOwnerName,
+          phone: safePhone,
           preferredTime: formData.preferredTime,
           photos,
         });
@@ -307,6 +448,22 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
           setSubmissionRef(result.referenceNo || `ERN-${Math.floor(10000 + Math.random() * 90000)}`);
           setCreatedPropertyId(result.propertyId || "");
           setIsSubmitted(true);
+
+          // Save to localStorage so seller dashboard immediately reflects it
+          if (typeof window !== "undefined" && result.property) {
+            try {
+              const localListings = JSON.parse(
+                localStorage.getItem("erns_seller_listings") || "[]"
+              );
+              const updatedListings = [
+                result.property,
+                ...localListings.filter((p: any) => p.id !== result.property.id),
+              ];
+              localStorage.setItem("erns_seller_listings", JSON.stringify(updatedListings));
+            } catch (err) {
+              console.warn("Could not cache to localStorage:", err);
+            }
+          }
         } else {
           if (result.error === "AUTH_REQUIRED") {
             setShowAuthModal(true);
@@ -332,8 +489,9 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
     setCurrentStep(1);
   };
 
-  const formatPrice = (val: number) => {
-    return new Intl.NumberFormat(isAmharic ? "am-ET" : "en-US").format(val);
+  const formatPrice = (val: number | string) => {
+    if (!val || isNaN(Number(val))) return "";
+    return new Intl.NumberFormat(isAmharic ? "am-ET" : "en-US").format(Number(val));
   };
 
   const getStepButtonClass = (stepIndex: number) => {
@@ -365,11 +523,34 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
         <div className={styles.wizardLayout}>
           {/* Form Wizard Side */}
           <div className={styles.formCard}>
+            <div className={styles.formCardHeader}>
+              <a
+                href="#how-it-works"
+                className={styles.howItWorksLink}
+                title={isAmharic ? "እንዴት እንደሚሰራ ይመልከቱ" : "How For Sale By Owner Works (Click to see guide)"}
+                aria-label="How For Sale By Owner Works"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const target = document.getElementById("how-it-works");
+                  if (target) {
+                    target.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+              >
+                <span className={styles.infoIconWrapper}>
+                  <Info size={14} aria-hidden="true" />
+                </span>
+                <span className={styles.howItWorksLabel}>
+                  {isAmharic ? "እንዴት እንደሚሰራ" : "How it works"}
+                </span>
+              </a>
+            </div>
+
             <div className={styles.stepper}>
               <button
                 type="button"
                 className={getStepButtonClass(1)}
-                onClick={() => setCurrentStep(1)}
+                onClick={() => handleStepClick(1)}
               >
                 <div className={styles.stepIndicator}>
                   {currentStep > 1 ? <Check size={16} /> : "1"}
@@ -380,7 +561,7 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
               <button
                 type="button"
                 className={getStepButtonClass(2)}
-                onClick={() => setCurrentStep(2)}
+                onClick={() => handleStepClick(2)}
               >
                 <div className={styles.stepIndicator}>
                   {currentStep > 2 ? <Check size={16} /> : "2"}
@@ -391,7 +572,7 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
               <button
                 type="button"
                 className={getStepButtonClass(3)}
-                onClick={() => setCurrentStep(3)}
+                onClick={() => handleStepClick(3)}
               >
                 <div className={styles.stepIndicator}>
                   {currentStep > 3 ? <Check size={16} /> : "3"}
@@ -402,7 +583,7 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
               <button
                 type="button"
                 className={getStepButtonClass(4)}
-                onClick={() => setCurrentStep(4)}
+                onClick={() => handleStepClick(4)}
               >
                 <div className={styles.stepIndicator}>4</div>
                 <span className={styles.stepTitle}>{t.step4}</span>
@@ -477,18 +658,24 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
                         className={styles.input}
                         value={formData.woreda}
                         onChange={(e) => handleInputChange("woreda", e.target.value)}
-                        placeholder="e.g. Woreda 03"
+                        placeholder={isAmharic ? "ለምሳሌ፡ ወረዳ 03" : "e.g. Woreda 03"}
                       />
                     </div>
 
                     <div className={styles.formGroup}>
-                      <label className={styles.label}>{t.specificAreaLabel}</label>
+                      <label className={styles.label}>
+                        {t.specificAreaLabel} <span className={styles.requiredStar}>*</span>
+                      </label>
                       <input
                         type="text"
                         className={styles.input}
                         value={formData.specificArea}
-                        onChange={(e) => handleInputChange("specificArea", e.target.value)}
-                        placeholder="e.g. Atlas, near Edna Mall"
+                        onChange={(e) => {
+                          handleInputChange("specificArea", e.target.value);
+                          if (errorMessage) setErrorMessage("");
+                        }}
+                        placeholder={isAmharic ? "ለምሳሌ፡ አትላስ፣ ኤድና ሞል አካባቢ" : "e.g. Atlas, near Edna Mall"}
+                        required
                       />
                     </div>
                   </div>
@@ -497,7 +684,7 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
                     <button
                       type="button"
                       className={styles.nextBtn}
-                      onClick={() => setCurrentStep(2)}
+                      onClick={handleNextFromStep1}
                     >
                       <span>{t.btnNext}</span>
                       <ChevronRight size={16} />
@@ -564,26 +751,41 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
 
                     {/* Area in m² */}
                     <div className={styles.formGroup}>
-                      <label className={styles.label}>{t.areaLabel} (m²)</label>
+                      <label className={styles.label}>
+                        {t.areaLabel} (m²) <span className={styles.requiredStar}>*</span>
+                      </label>
                       <input
                         type="number"
-                        min="20"
-                        max="5000"
+                        min="1"
+                        max="50000"
                         className={styles.input}
-                        value={formData.areaSqM}
-                        onChange={(e) => handleInputChange("areaSqM", Number(e.target.value))}
+                        value={formData.areaSqM || ""}
+                        onChange={(e) => {
+                          handleInputChange("areaSqM", e.target.value ? Number(e.target.value) : "");
+                          if (errorMessage) setErrorMessage("");
+                        }}
+                        placeholder={isAmharic ? "ለምሳሌ፡ 145" : "e.g. 145"}
+                        required
                       />
                     </div>
 
                     {/* Price in ETB with preset buttons */}
                     <div className={styles.formGroup}>
-                      <label className={styles.label}>{t.priceLabel} (ETB)</label>
+                      <label className={styles.label}>
+                        {t.priceLabel} (ETB) <span className={styles.requiredStar}>*</span>
+                      </label>
                       <input
                         type="number"
+                        min="1"
                         step="50000"
                         className={styles.input}
-                        value={formData.priceETB}
-                        onChange={(e) => handleInputChange("priceETB", Number(e.target.value))}
+                        value={formData.priceETB || ""}
+                        onChange={(e) => {
+                          handleInputChange("priceETB", e.target.value ? Number(e.target.value) : "");
+                          if (errorMessage) setErrorMessage("");
+                        }}
+                        placeholder={isAmharic ? "ለምሳሌ፡ 12,500,000" : "e.g. 12,500,000"}
+                        required
                       />
                       {/* Quick preset chips */}
                       <div className={styles.priceChipsRow}>
@@ -592,7 +794,10 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
                             key={preset}
                             type="button"
                             className={styles.priceChipBtn}
-                            onClick={() => handleInputChange("priceETB", preset)}
+                            onClick={() => {
+                              handleInputChange("priceETB", preset);
+                              if (errorMessage) setErrorMessage("");
+                            }}
                           >
                             {(preset / 1000000).toFixed(1).replace(".0", "")}M ETB
                           </button>
@@ -625,7 +830,7 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
                     <button
                       type="button"
                       className={styles.nextBtn}
-                      onClick={() => setCurrentStep(3)}
+                      onClick={handleNextFromStep2}
                     >
                       <span>{t.btnNext}</span>
                       <ChevronRight size={16} />
@@ -772,25 +977,35 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
 
                   <div className={styles.formGrid}>
                     <div className={styles.formGroup}>
-                      <label className={styles.label}>{t.ownerNameLabel}</label>
+                      <label className={styles.label}>
+                        {t.ownerNameLabel} <span className={styles.requiredStar}>*</span>
+                      </label>
                       <input
                         type="text"
                         className={styles.input}
                         value={formData.ownerName}
-                        onChange={(e) => handleInputChange("ownerName", e.target.value)}
-                        placeholder="Full Name"
+                        onChange={(e) => {
+                          handleInputChange("ownerName", e.target.value);
+                          if (errorMessage) setErrorMessage("");
+                        }}
+                        placeholder={session?.user?.name || (isAmharic ? "ሙሉ ስም (ለምሳሌ፡ ይትባረክ የማነ)" : "e.g. Yitayal Yalelet")}
                         required
                       />
                     </div>
 
                     <div className={styles.formGroup}>
-                      <label className={styles.label}>{t.phoneLabel}</label>
+                      <label className={styles.label}>
+                        {t.phoneLabel} <span className={styles.requiredStar}>*</span>
+                      </label>
                       <input
                         type="tel"
                         className={styles.input}
                         value={formData.phone}
-                        onChange={(e) => handleInputChange("phone", e.target.value)}
-                        placeholder="911234567"
+                        onChange={(e) => {
+                          handleInputChange("phone", e.target.value);
+                          if (errorMessage) setErrorMessage("");
+                        }}
+                        placeholder={isAmharic ? "ለምሳሌ፡ 0911234567" : "e.g. 0911234567"}
                         required
                       />
                     </div>
@@ -852,14 +1067,16 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
               </div>
 
               <div className={styles.previewImageContainer}>
-                {photos[0] && (
-                  <img
-                    key={photos[0]}
-                    src={photos[0]}
-                    alt="Preview"
-                    className={styles.previewImage}
-                  />
-                )}
+                <img
+                  src={
+                    photos[0] ||
+                    (PROPERTY_TYPE_SAMPLE_PHOTOS[formData.propertyType] ||
+                      PROPERTY_TYPE_SAMPLE_PHOTOS.apartment)[0] ||
+                    SAMPLE_PHOTOS[0]
+                  }
+                  alt="Preview"
+                  className={styles.previewImage}
+                />
                 <div className={styles.previewImageBadge}>
                   {t.propertyTypes[formData.propertyType as keyof typeof t.propertyTypes] ||
                     formData.propertyType}
@@ -870,7 +1087,7 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
               <div className={styles.previewBody}>
                 <div>
                   <h3 className={styles.previewPrice}>
-                    {formatPrice(formData.priceETB)} ETB
+                    {formData.priceETB ? `${formatPrice(formData.priceETB)} ETB` : (isAmharic ? "ዋጋ በጥያቄ" : "Price on Request")}
                     {formData.isNegotiable && (
                       <span className={styles.negotiableTag}>
                         ({isAmharic ? "ድርድር" : "Neg."})
@@ -880,7 +1097,7 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
                   <p className={styles.previewLocation}>
                     <MapPin size={16} color="var(--color-accent)" />
                     <span>
-                      {formData.subCity}, {formData.specificArea || "Addis Ababa"}
+                      {formData.subCity}{formData.specificArea ? `, ${formData.specificArea}` : ""}
                     </span>
                   </p>
                 </div>
@@ -896,7 +1113,7 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
                   </div>
                   <div className={styles.specItem}>
                     <Maximize2 size={16} color="var(--color-accent)" />
-                    <span>{formData.areaSqM} m²</span>
+                    <span>{formData.areaSqM ? `${formData.areaSqM} m²` : (isAmharic ? "— ካሬ" : "— m²")}</span>
                   </div>
                 </div>
 
@@ -914,11 +1131,11 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
                 <div className={styles.previewOwnerInfo}>
                   <span className={styles.ownerName}>
                     {isAmharic ? "ባለቤት፡ " : "Owner: "}
-                    {formData.ownerName || session?.user?.name || "Homeowner"}
+                    {formData.ownerName || (isAmharic ? "የቤቱ ባለቤት" : "Homeowner")}
                   </span>
                   <span className={styles.ownerPhone}>
                     <Phone size={14} />
-                    <span>+251 {formData.phone || "9..."}</span>
+                    <span>{formData.phone ? `+251 ${formData.phone.replace(/^\+?251|^0/, "")}` : "+251 9..."}</span>
                   </span>
                 </div>
               </div>
