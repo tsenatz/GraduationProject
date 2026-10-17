@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Home, UserCheck, ArrowRight } from "lucide-react";
+import { Compass, Home, UserCheck, ArrowRight } from "lucide-react";
 import { useSellLanguage } from "../LanguageContext";
 import { SellingPathQuizModal } from "./SellingPathQuizModal";
 import styles from "./SellerCTA.module.css";
@@ -17,6 +17,7 @@ export function SellerCTA() {
         <div className={styles.ctaContainer}>
           <div className={styles.badgeWrapper}>
             <span className={styles.ctaBadge}>
+              <Compass size={15} aria-hidden="true" />
               <span>ERNS Decision Tool</span>
             </span>
           </div>
