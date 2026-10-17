@@ -432,9 +432,8 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
                           <button
                             key={pt.id}
                             type="button"
-                            className={`${styles.propertyTypeCard} ${
-                              isSelected ? styles.propertyTypeCardActive : ""
-                            }`}
+                            className={`${styles.propertyTypeCard} ${isSelected ? styles.propertyTypeCardActive : ""
+                              }`}
                             onClick={() => handlePropertyTypeSelect(pt.id)}
                           >
                             <Icon size={24} />
@@ -660,9 +659,8 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
                         return (
                           <div
                             key={idx}
-                            className={`${styles.amenityItem} ${
-                              isChecked ? styles.amenityItemSelected : ""
-                            }`}
+                            className={`${styles.amenityItem} ${isChecked ? styles.amenityItemSelected : ""
+                              }`}
                             onClick={() => toggleAmenity(amenity)}
                           >
                             <input
@@ -822,8 +820,8 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
                                 ? "እየተሻሻለ ነው..."
                                 : "Saving Changes..."
                               : isAmharic
-                              ? "ወደ ዳታቤዝ እየገባ ነው..."
-                              : "Publishing to Database..."}
+                                ? "ወደ ዳታቤዝ እየገባ ነው..."
+                                : "Publishing to Database..."}
                           </span>
                         </>
                       ) : (
@@ -907,7 +905,7 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
                   <span>
                     {
                       t.titleDeedOptions[
-                        formData.titleDeedStatus as keyof typeof t.titleDeedOptions
+                      formData.titleDeedStatus as keyof typeof t.titleDeedOptions
                       ]
                     }
                   </span>
@@ -979,8 +977,8 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
                   ? "ሁሉም ለውጦች በዳታቤዝ ውስጥ ተመዝግበው ገበያ ላይ ወዲያውኑ ታይተዋል።"
                   : "All changes have been saved to the PostgreSQL database and updated in the marketplace."
                 : isAmharic
-                ? "ቤትዎ በዳታቤዝ ውስጥ ተመዝግቦ በ ERNS ገበያ ላይ ወዲያውኑ ታይቷል።"
-                : "Your listing has been saved to the PostgreSQL database and published to the ERNS marketplace."}
+                  ? "ቤትዎ በዳታቤዝ ውስጥ ተመዝግቦ በ ERNS ገበያ ላይ ወዲያውኑ ታይቷል።"
+                  : "Your listing has been saved to the PostgreSQL database and published to the ERNS marketplace."}
             </p>
             <div className={styles.referenceBadge}>
               {t.successRef} {submissionRef}

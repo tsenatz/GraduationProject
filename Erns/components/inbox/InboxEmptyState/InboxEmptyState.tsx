@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { MessageSquare, Home, Sparkles } from "lucide-react";
+import { MessageSquare, Home } from "lucide-react";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { inboxTranslations } from "../translations";
 import styles from "./InboxEmptyState.module.css";
@@ -15,9 +15,6 @@ export const InboxEmptyState: React.FC = () => {
     <div className={styles.emptyContainer}>
       <div className={styles.iconCircle}>
         <MessageSquare size={38} className={styles.mainIcon} />
-        <span className={styles.sparkleDot}>
-          <Sparkles size={14} />
-        </span>
       </div>
 
       <h3 className={styles.title}>{t.emptyThreadSelect}</h3>

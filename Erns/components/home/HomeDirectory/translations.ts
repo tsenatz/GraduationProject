@@ -84,7 +84,7 @@ export const homeDirectoryTranslations: Record<'en' | 'am', HomeDirectoryTransla
           {
             title: "Special Search Options",
             links: [
-              { label: "For Sale By Owner (FSBO)", href: "/sell/fsbo" },
+              { label: "For Sale By Owner (FSBO)", href: "/sell" },
               { label: "Price Reduced Homes", href: "/search?status=FOR_SALE&priceDrop=true" },
               { label: "Upcoming Open Houses", href: "/search?status=FOR_SALE&openHouse=true" },
               { label: "Recently Sold Listings", href: "/search?status=SOLD" },
@@ -211,24 +211,12 @@ export const homeDirectoryTranslations: Record<'en' | 'am', HomeDirectoryTransla
     },
     secondaryLinks: [
       { label: "ERNS Valuations", href: "/sell" },
-      { label: "Market Research & Trends", href: "/research" },
-      { label: "Fair Housing Guide", href: "/fair-housing" },
-      { label: "AI Valuation Engine", href: "/ai" },
-      { label: "Diaspora Investment Guide", href: "/mortgage/diaspora" },
-      { label: "Applicant Privacy Notice", href: "/privacy#applicant" },
-      { label: "Ad Choices", href: "/privacy#ad-choices" },
-    ],
-    tertiaryLinks: [
-      { label: "Cookie Preference", href: "#cookies" },
-      { label: "Real Estate Learning Center", href: "/learn" },
-      { label: "Mobile Apps (iOS & Android)", href: "/mobile" },
-    ],
-    networkLinks: [
       { label: "ERNS Rentals Network", href: "/search?status=FOR_RENT" },
       { label: "ERNS Commercial & Office", href: "/search?propertyType=COMMERCIAL" },
-      { label: "ERNS Diaspora Desk", href: "/mortgage/diaspora" },
       { label: "Verified Agents Directory", href: "/agents" },
     ],
+    tertiaryLinks: [],
+    networkLinks: [],
     privacyChoice: {
       button: "Do Not Sell or Share My Personal Information →",
       modalTitle: "Your Privacy Choices & Data Preferences",
@@ -292,7 +280,7 @@ export const homeDirectoryTranslations: Record<'en' | 'am', HomeDirectoryTransla
           {
             title: "ልዩ ፍለጋዎች",
             links: [
-              { label: "በባለቤቱ የሚሸጡ ቤቶች (FSBO)", href: "/sell/fsbo" },
+              { label: "በባለቤቱ የሚሸጡ ቤቶች (FSBO)", href: "/sell" },
               { label: "ዋጋቸው የቀነሱ ቤቶች", href: "/search?status=FOR_SALE&priceDrop=true" },
               { label: "ክፍት የጉብኝት ቤቶች (Open Houses)", href: "/search?status=FOR_SALE&openHouse=true" },
               { label: "በቅርቡ የተሸጡ ቤቶች", href: "/search?status=SOLD" },
@@ -419,24 +407,12 @@ export const homeDirectoryTranslations: Record<'en' | 'am', HomeDirectoryTransla
     },
     secondaryLinks: [
       { label: "የቤት ዋጋ ግምት", href: "/sell" },
-      { label: "የገበያ ጥናት እና አዝማሚያዎች", href: "/research" },
-      { label: "ፍትሃዊ የቤት መመሪያ", href: "/fair-housing" },
-      { label: "የኤአይ የዋጋ መገመቻ", href: "/ai" },
-      { label: "የዳያስፖራ ኢንቨስትመንት መመሪያ", href: "/mortgage/diaspora" },
-      { label: "የአመልካቾች ግላዊነት", href: "/privacy#applicant" },
-      { label: "የማስታወቂያ ምርጫዎች", href: "/privacy#ad-choices" },
-    ],
-    tertiaryLinks: [
-      { label: "የኩኪ ምርጫዎች", href: "#cookies" },
-      { label: "የሪል እስቴት ትምህርት ማዕከል", href: "/learn" },
-      { label: "የሞባይል መተግበሪያ (iOS እና Android)", href: "/mobile" },
-    ],
-    networkLinks: [
       { label: "ERNS ኪራዮች", href: "/search?status=FOR_RENT" },
       { label: "ERNS የንግድ እና ቢሮ ቤቶች", href: "/search?propertyType=COMMERCIAL" },
-      { label: "ERNS የዳያስፖራ አገልግሎት", href: "/mortgage/diaspora" },
       { label: "የተረጋገጡ ወኪሎች ማውጫ", href: "/agents" },
     ],
+    tertiaryLinks: [],
+    networkLinks: [],
     privacyChoice: {
       button: "የግል መረጃዬ አይሸጥ ወይም አይጋራ →",
       modalTitle: "የግላዊነት ምርጫዎችዎ እና የመረጃ አጠቃቀም",

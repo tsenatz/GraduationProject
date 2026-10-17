@@ -8,14 +8,17 @@
   /* Light Ice Blue — Warm section backgrounds, hero backdrops, alternating bands */
   --color-surface: #FFFFFF;
   /* White — Property cards, content cards, inputs, modals, clean surfaces */
+  --color-off-white: #F6FAFD;
+  /* Off-White / Soft Canvas — Page canvas background, recommendation section, soft neutral bands */
 
   /* DERIVED SYSTEM TOKENS */
   --primary-color: var(--color-primary);
   --accent-color: var(--color-accent);
   --bg-warm: var(--color-bg-warm);
-  --bg-color: #F6FAFD;
+  --bg-color: var(--color-off-white);
   /* Soft ultra-light cool neutral page canvas */
   --surface-white: var(--color-surface);
+  --off-white: var(--color-off-white);
 
   --text-main: var(--color-primary);
   --text-muted: var(--color-accent);
