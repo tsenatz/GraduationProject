@@ -23,6 +23,7 @@ import {
   Home,
   Landmark,
   Warehouse,
+  Camera,
   Loader2,
   ArrowRight,
   Plus,
@@ -39,6 +40,7 @@ import styles from "./FsboListingBuilder.module.css";
 interface FsboListingBuilderProps {
   initialSubCity?: string;
   initialAddress?: string;
+  initialPropertyType?: string;
   initialData?: any;
   mode?: "create" | "edit";
   propertyId?: string;
@@ -52,16 +54,38 @@ const PROPERTY_TYPES = [
   { id: "commercial", labelEn: "Commercial", labelAm: "የንግድ ቦታ", icon: Warehouse },
 ];
 
-const SAMPLE_PHOTOS = [
-  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
-  "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?auto=format&fit=crop&w=800&q=80",
-];
+const PROPERTY_TYPE_SAMPLE_PHOTOS: Record<string, string[]> = {
+  apartment: [
+    "/property_apartment.jpg",
+    "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+  ],
+  villa: [
+    "/property_villa.jpg",
+    "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
+  ],
+  condo: [
+    "/property_condo.jpg",
+    "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1502005229762-ee1b2b3ba30f?auto=format&fit=crop&w=800&q=80",
+  ],
+  townhouse: [
+    "/property_townhouse.jpg",
+    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=800&q=80",
+  ],
+  commercial: [
+    "/property_commercial.jpg",
+    "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=800&q=80",
+  ],
+};
 
 export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
   initialSubCity = "Bole",
   initialAddress = "",
+  initialPropertyType = "apartment",
   initialData,
   mode = "create",
   propertyId,
@@ -98,6 +122,7 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
     preferredTime: initialData?.preferredTime || "anytime",
   });
 
+  const initialType = initialData?.propertyType || initialPropertyType || "apartment";
   const [photos, setPhotos] = useState<string[]>(
     initialData?.photos && initialData.photos.length > 0 ? initialData.photos : []
   );
@@ -120,7 +145,7 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
           }
           localStorage.removeItem("erns_fsbo_draft");
         }
-      } catch {}
+      } catch { }
     }
   }, [mode]);
 
@@ -161,6 +186,7 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
 
       if (data.success && data.url) {
         setPhotos((prev) => [data.url, ...prev]);
+        setHasUserCustomPhotos(true);
       } else {
         setErrorMessage(data.error || "Failed to upload photo");
       }
@@ -179,7 +205,11 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
   };
 
   const loadSamplePhotos = () => {
-    setPhotos(SAMPLE_PHOTOS);
+    const typePhotos =
+      PROPERTY_TYPE_SAMPLE_PHOTOS[formData.propertyType] ||
+      PROPERTY_TYPE_SAMPLE_PHOTOS.apartment;
+    setPhotos(typePhotos);
+    setHasUserCustomPhotos(false);
   };
 
   // Stepper helper
@@ -320,7 +350,7 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
             "erns_fsbo_draft",
             JSON.stringify({ formData, photos, currentStep })
           );
-        } catch {}
+        } catch { }
       }
       setShowAuthModal(true);
       return;
@@ -544,10 +574,9 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
                           <button
                             key={pt.id}
                             type="button"
-                            className={`${styles.propertyTypeCard} ${
-                              isSelected ? styles.propertyTypeCardActive : ""
-                            }`}
-                            onClick={() => handleInputChange("propertyType", pt.id)}
+                            className={`${styles.propertyTypeCard} ${isSelected ? styles.propertyTypeCardActive : ""
+                              }`}
+                            onClick={() => handlePropertyTypeSelect(pt.id)}
                           >
                             <Icon size={24} />
                             <span>{isAmharic ? pt.labelAm : pt.labelEn}</span>
@@ -796,9 +825,8 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
                         return (
                           <div
                             key={idx}
-                            className={`${styles.amenityItem} ${
-                              isChecked ? styles.amenityItemSelected : ""
-                            }`}
+                            className={`${styles.amenityItem} ${isChecked ? styles.amenityItemSelected : ""
+                              }`}
                             onClick={() => toggleAmenity(amenity)}
                           >
                             <input
@@ -875,6 +903,7 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
                         className={styles.sampleGalleryBtn}
                         onClick={loadSamplePhotos}
                       >
+                        <Camera size={14} style={{ display: "inline", marginRight: "4px" }} />
                         Use High-Res Demo Photos
                       </button>
                     </div>
@@ -967,8 +996,8 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
                                 ? "እየተሻሻለ ነው..."
                                 : "Saving Changes..."
                               : isAmharic
-                              ? "ወደ ዳታቤዝ እየገባ ነው..."
-                              : "Publishing to Database..."}
+                                ? "ወደ ዳታቤዝ እየገባ ነው..."
+                                : "Publishing to Database..."}
                           </span>
                         </>
                       ) : (
@@ -1049,7 +1078,7 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
                   <span>
                     {
                       t.titleDeedOptions[
-                        formData.titleDeedStatus as keyof typeof t.titleDeedOptions
+                      formData.titleDeedStatus as keyof typeof t.titleDeedOptions
                       ]
                     }
                   </span>
@@ -1121,8 +1150,8 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
                   ? "ሁሉም ለውጦች በዳታቤዝ ውስጥ ተመዝግበው ገበያ ላይ ወዲያውኑ ታይተዋል።"
                   : "All changes have been saved to the PostgreSQL database and updated in the marketplace."
                 : isAmharic
-                ? "ቤትዎ በዳታቤዝ ውስጥ ተመዝግቦ በ ERNS ገበያ ላይ ወዲያውኑ ታይቷል።"
-                : "Your listing has been saved to the PostgreSQL database and published to the ERNS marketplace."}
+                  ? "ቤትዎ በዳታቤዝ ውስጥ ተመዝግቦ በ ERNS ገበያ ላይ ወዲያውኑ ታይቷል።"
+                  : "Your listing has been saved to the PostgreSQL database and published to the ERNS marketplace."}
             </p>
             <div className={styles.referenceBadge}>
               {t.successRef} {submissionRef}

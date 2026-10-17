@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
+  ShieldCheck,
+  Building2,
   MapPin,
   Building,
   ArrowRight,
@@ -58,8 +60,8 @@ export function SellHero() {
   return (
     <section className={styles.heroContainer} aria-label="Sell your home banner">
       <Image
-        src="/sell-house.jpg"
-        alt="Real estate in Ethiopia"
+        src="/sell_hero_bg.jpg"
+        alt="Luxury residential real estate in Addis Ababa"
         fill
         priority
         className={styles.heroImage}
@@ -68,23 +70,12 @@ export function SellHero() {
 
       <div className={styles.heroContent}>
         <div className={styles.badge}>
+          <ShieldCheck size={16} aria-hidden="true" />
           <span>{t.hero.badge}</span>
         </div>
 
         <h1 className={styles.title}>{t.hero.title}</h1>
         <p className={styles.subtitle}>{t.hero.subtitle}</p>
-
-        {/* Direct Action Buttons: "List your home on ERNS" */}
-        <div className={styles.heroButtonRow}>
-          <Link href="/sell/list" className={styles.heroDirectListBtn}>
-            <Home size={18} aria-hidden="true" />
-            <span>List your home on ERNS</span>
-            <ArrowRight size={16} aria-hidden="true" />
-          </Link>
-          <Link href="/sell/dashboard" className={styles.heroDashboardBtn}>
-            <span>Seller Dashboard</span>
-          </Link>
-        </div>
 
         {/* Zillow-Style Address Search Bar */}
         <form className={styles.searchCard} onSubmit={handleSearchSubmit}>
@@ -105,8 +96,6 @@ export function SellHero() {
             </select>
           </div>
 
-          <div className={styles.inputDivider} />
-
           <div className={`${styles.inputGroup} ${styles.addressInputGroup}`}>
             <MapPin size={18} className={styles.inputIcon} aria-hidden="true" />
             <input
@@ -125,15 +114,23 @@ export function SellHero() {
           </button>
         </form>
 
-        {/* Sub link to browse all options */}
-        <a
-          href="#selling-options"
-          onClick={handleScrollToOptions}
-          className={styles.browseLink}
-        >
-          <span>{t.hero.search.browseBelow}</span>
-          <ArrowDown size={15} aria-hidden="true" />
-        </a>
+        {/* Streamlined Direct Sub-Actions (Eliminates Redundant Giant Pill Buttons) */}
+        <div className={styles.heroSubActions}>
+          <span className={styles.heroSubPrompt}>{t.cta.orBrowse}</span>
+          <Link href="/sell/list" className={styles.heroSubLink}>
+            <Home size={15} aria-hidden="true" />
+            <span>{t.sellingOptions.card2.title}</span>
+          </Link>
+          <span className={styles.heroSubDot}>•</span>
+          <Link href="/sell/agent" className={styles.heroSubLink}>
+            <UserCheck size={15} aria-hidden="true" />
+            <span>{t.sellingOptions.card1.title}</span>
+          </Link>
+          <span className={styles.heroSubDot}>•</span>
+          <Link href="/sell/dashboard" className={styles.heroSubLink}>
+            <span>Seller Dashboard →</span>
+          </Link>
+        </div>
       </div>
 
       {/* Location-Tailored Selling Options Modal */}

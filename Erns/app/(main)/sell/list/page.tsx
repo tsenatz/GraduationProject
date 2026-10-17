@@ -12,9 +12,11 @@ function ForSaleByOwnerContent() {
   const searchParams = useSearchParams();
   const urlSubCity = searchParams.get("subCity") || "Bole";
   const urlAddress = searchParams.get("address") || "";
+  const urlType = searchParams.get("type") || searchParams.get("propertyType") || "apartment";
 
   const [selectedSubCity, setSelectedSubCity] = useState(urlSubCity);
   const [selectedAddress, setSelectedAddress] = useState(urlAddress);
+  const [selectedType, setSelectedType] = useState(urlType);
 
   useEffect(() => {
     if (searchParams.get("subCity")) {
@@ -22,6 +24,9 @@ function ForSaleByOwnerContent() {
     }
     if (searchParams.get("address")) {
       setSelectedAddress(searchParams.get("address")!);
+    }
+    if (searchParams.get("type") || searchParams.get("propertyType")) {
+      setSelectedType(searchParams.get("type") || searchParams.get("propertyType")!);
     }
   }, [searchParams]);
 
@@ -38,6 +43,7 @@ function ForSaleByOwnerContent() {
       <FsboListingBuilder
         initialSubCity={selectedSubCity}
         initialAddress={selectedAddress}
+        initialPropertyType={selectedType}
       />
       <FsboHowItWorks />
       <FsboCTA />
