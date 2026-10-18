@@ -101,7 +101,7 @@ export function AlertsDashboardView({
         return <CheckCircle2 size={20} color="#059669" />;
       case "info":
       default:
-        return <Info size={20} color="#2563EB" />;
+        return <Info size={20} color="#4A7FA7" />;
     }
   };
 

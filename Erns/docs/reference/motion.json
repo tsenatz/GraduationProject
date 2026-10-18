@@ -1,0 +1,510 @@
+{
+ "note": "CSS animations are in styles.css (their @keyframes are listed here too). `animations` says which element runs which; `scripted` are element.animate() calls with real keyframes; `players` are videos and Lottie/Rive players with the file they load; `recorded` are what the page's scripts wrote frame by frame while it loaded and was scrolled (one track per element and property, samples are [ms, value, scrollY]: replay them with the same timing); `classChanges` are classes scripts added or removed, with when and at what scroll; `films` are pictures of each moving thing over one cycle (look at them); `states` picture controls at rest, on hover and on focus; `scrollReveals` are elements the page's scripts watch as they scroll into view (their classes are as they ended up: write a small IntersectionObserver that adds the class the stylesheet keys on).",
+ "keyframes": [
+  {
+   "name": "shimmer",
+   "css": "@-webkit-keyframes shimmer { \n  0% { background-position: -600px 0px; }\n  100% { background-position: 600px 0px; }\n}"
+  },
+  {
+   "name": "hzEhKP",
+   "css": "@-webkit-keyframes hzEhKP { \n  0% { background-position-x: -386px; }\n  100% { background-position-x: 386px; }\n}"
+  },
+  {
+   "name": "fade",
+   "css": "@keyframes fade{0%{opacity:0}to{opacity:1}}"
+  },
+  {
+   "name": "spin",
+   "css": "@keyframes spin{0%{rotate:none}to{rotate:360deg}}"
+  },
+  {
+   "name": "zoom-in",
+   "css": "@keyframes zoom-in{0%{opacity:0;scale:.975}to{opacity:1;scale:1}}"
+  }
+ ],
+ "animations": [],
+ "scripted": [],
+ "players": [],
+ "scrollReveals": [
+  {
+   "path": "div > div.hucMLN:nth-of-type(1) > div.Flex-c11n-8-111-2__sc-n94bjd-0.esjBDO > div:nth-of-type(2) > div.Flex-c11n-8-111-2__sc-n94bjd-0.eARWJt",
+   "classes": "Flex-c11n-8-111-2__sc-n94bjd-0 eARWJt StyledBox-c11n-8-111-2__sc-ocjv7k-0 icsmaq",
+   "transition": "all",
+   "section": 2
+  },
+  {
+   "path": "div > div > div > form.c11n.c11n_form > div.c11n.c11n_combobox__trigger:nth-of-type(1)",
+   "classes": "c11n c11n_combobox__trigger sbsa-fPSBzf sbsa-bYPztT sbsa-kOgoVd sbsa-gcdmnq sbsa-bLSEuG sbsa-OrJCH sbsa-ePNKdY sbsa-RaOYz sbsa-duqYvw sbsa-heQunj sbsa-gxJDHq sbsa-fZZJCn sbsa-icLBcR sbsa-BdQjy sbsa-fNCZiA sbsa-duQcOz sbsa-esypMX sbsa-fzpofe sbsa-gxXXFF! sbsa-gdAiUy sbsa-bvEOrX sbsa-LBEKy! sbsa-cdlFCC",
+   "transition": "box-shadow 0.2s",
+   "section": 1
+  }
+ ],
+ "recorded": [
+  {
+   "path": "div > div > form.c11n.c11n_form > div:nth-of-type(2) > div.c11n.sbsa-eDVSkX",
+   "tag": "div",
+   "property": "transform",
+   "samples": [
+    [
+     0,
+     "translate(0px, 0px)",
+     0
+    ],
+    [
+     10,
+     "translate(97px, 337px)",
+     0
+    ],
+    [
+     741,
+     "translate(386px, 98px)",
+     1811
+    ],
+    [
+     749,
+     "translate(386px, 74px)",
+     1811
+    ]
+   ],
+   "changes": 4,
+   "startMs": 15157,
+   "durationMs": 749,
+   "trigger": "load",
+   "section": 1
+  }
+ ],
+ "classChanges": [
+  {
+   "path": "aside.dg-consent-banner.dg-blue",
+   "added": [
+    "dg-blue",
+    "dg-bottom"
+   ],
+   "removed": [],
+   "atMs": 477,
+   "scrollY": 0,
+   "section": 5
+  },
+  {
+   "path": "div.Grid-c11n-8-111-2__sc-18zzowe-0.fcUiNz > div:nth-of-type(1) > div.cXGGCH.bmqbVI > div.kClhBz:nth-of-type(2) > button.bzMtgl",
+   "added": [
+    "bzMtgl"
+   ],
+   "removed": [
+    "gdYscD"
+   ],
+   "atMs": 2965,
+   "scrollY": 0,
+   "section": 2
+  },
+  {
+   "path": "div > div.kZhQmx:nth-of-type(2) > div.Grid-c11n-8-111-2__sc-18zzowe-0.fcUiNz > div:nth-of-type(1) > div.cXGGCH.bmqbVI",
+   "added": [
+    "bmqbVI"
+   ],
+   "removed": [
+    "lpmtDh"
+   ],
+   "atMs": 2965,
+   "scrollY": 0,
+   "section": 2
+  },
+  {
+   "path": "div.Grid-c11n-8-111-2__sc-18zzowe-0.fcUiNz > div:nth-of-type(2) > div.cXGGCH.bmqbVI > div.kClhBz:nth-of-type(2) > button.bzMtgl",
+   "added": [
+    "bzMtgl"
+   ],
+   "removed": [
+    "gdYscD"
+   ],
+   "atMs": 3149,
+   "scrollY": 0,
+   "section": 2
+  },
+  {
+   "path": "div > div.kZhQmx:nth-of-type(2) > div.Grid-c11n-8-111-2__sc-18zzowe-0.fcUiNz > div:nth-of-type(2) > div.cXGGCH.bmqbVI",
+   "added": [
+    "bmqbVI"
+   ],
+   "removed": [
+    "lpmtDh"
+   ],
+   "atMs": 3149,
+   "scrollY": 0,
+   "section": 2
+  },
+  {
+   "path": "div.Grid-c11n-8-111-2__sc-18zzowe-0.fcUiNz > div:nth-of-type(3) > div.cXGGCH.bmqbVI > div.kClhBz:nth-of-type(2) > button.bzMtgl",
+   "added": [
+    "bzMtgl"
+   ],
+   "removed": [
+    "gdYscD"
+   ],
+   "atMs": 3573,
+   "scrollY": 0,
+   "section": 2
+  },
+  {
+   "path": "div > div.kZhQmx:nth-of-type(2) > div.Grid-c11n-8-111-2__sc-18zzowe-0.fcUiNz > div:nth-of-type(3) > div.cXGGCH.bmqbVI",
+   "added": [
+    "bmqbVI"
+   ],
+   "removed": [
+    "lpmtDh"
+   ],
+   "atMs": 3573,
+   "scrollY": 0,
+   "section": 2
+  },
+  {
+   "path": "div.dUHUfY:nth-of-type(1) > div.yLqXB > div.QzZPU > div.iOhzkD:nth-of-type(2) > div.lgkJlM",
+   "added": [
+    "wtybt"
+   ],
+   "removed": [
+    "lgkJlM"
+   ],
+   "atMs": 10937,
+   "scrollY": 0,
+   "section": 1
+  },
+  {
+   "path": "div.jQUlFV:nth-of-type(1) > div.dUHUfY:nth-of-type(1) > div.yLqXB > div.QzZPU > div.iOhzkD:nth-of-type(2)",
+   "added": [],
+   "removed": [
+    "iOhzkD"
+   ],
+   "atMs": 10937,
+   "scrollY": 0,
+   "section": 1
+  },
+  {
+   "path": "form.c11n.c11n_form > div.c11n.c11n_combobox__trigger:nth-of-type(1) > div.c11n.c11n_combobox__input-group > div.c11n.c11n_adorned-input__root > input.c11n.c11n_combobox__input",
+   "added": [
+    "sbsa-cOHBIX",
+    "sbsa-eMkodn",
+    "sbsa-eMkogt"
+   ],
+   "removed": [],
+   "atMs": 10953,
+   "scrollY": 0,
+   "section": 1
+  },
+  {
+   "path": "div.c11n.c11n_combobox__trigger:nth-of-type(1) > div.c11n.c11n_combobox__input-group > div.c11n.c11n_adorned-input__root > span.c11n.c11n_adorned-input__adornment:nth-of-type(2) > button.c11n.c11n_icon-button:nth-of-type(1)",
+   "added": [
+    "sbsa-cRxwBT",
+    "sbsa-cRxwCg",
+    "sbsa-eTCxPS",
+    "sbsa-cUOXSY",
+    "sbsa-cUOXPS"
+   ],
+   "removed": [
+    "sbsa-ifZmBV",
+    "sbsa-ifZmCe"
+   ],
+   "atMs": 10953,
+   "scrollY": 0,
+   "section": 1
+  },
+  {
+   "path": "div.c11n.c11n_combobox__trigger:nth-of-type(1) > div.c11n.c11n_combobox__input-group > div.c11n.c11n_adorned-input__root > span.c11n.c11n_adorned-input__adornment:nth-of-type(2) > button.c11n.c11n_icon-button:nth-of-type(2)",
+   "added": [
+    "sbsa-cRxwBT",
+    "sbsa-cRxwCg",
+    "sbsa-eTCxPS",
+    "sbsa-cUOXSY",
+    "sbsa-cUOXPS"
+   ],
+   "removed": [
+    "sbsa-ifZmBV",
+    "sbsa-ifZmCe"
+   ],
+   "atMs": 10953,
+   "scrollY": 0,
+   "section": 1
+  },
+  {
+   "path": "div.dUHUfY:nth-of-type(1) > div.yLqXB > div.QzZPU > div.iOhzkD:nth-of-type(2) > div.lgkJlM",
+   "added": [
+    "lgkJlM"
+   ],
+   "removed": [
+    "wtybt"
+   ],
+   "atMs": 13210,
+   "scrollY": 1723,
+   "section": 1
+  },
+  {
+   "path": "div.jQUlFV:nth-of-type(1) > div.dUHUfY:nth-of-type(1) > div.yLqXB > div.QzZPU > div.iOhzkD:nth-of-type(2)",
+   "added": [
+    "iOhzkD"
+   ],
+   "removed": [],
+   "atMs": 13210,
+   "scrollY": 1723,
+   "section": 1
+  },
+  {
+   "path": "form.c11n.c11n_form > div.c11n.c11n_combobox__trigger:nth-of-type(1) > div.c11n.c11n_combobox__input-group > div.c11n.c11n_adorned-input__root > input.c11n.c11n_combobox__input",
+   "added": [],
+   "removed": [
+    "sbsa-cOHBIX",
+    "sbsa-eMkodn",
+    "sbsa-eMkogt"
+   ],
+   "atMs": 13220,
+   "scrollY": 1723,
+   "section": 1
+  },
+  {
+   "path": "div.c11n.c11n_combobox__trigger:nth-of-type(1) > div.c11n.c11n_combobox__input-group > div.c11n.c11n_adorned-input__root > span.c11n.c11n_adorned-input__adornment:nth-of-type(2) > button.c11n.c11n_icon-button:nth-of-type(1)",
+   "added": [
+    "sbsa-ifZmBV",
+    "sbsa-ifZmCe"
+   ],
+   "removed": [
+    "sbsa-cRxwBT",
+    "sbsa-cRxwCg",
+    "sbsa-eTCxPS",
+    "sbsa-cUOXSY",
+    "sbsa-cUOXPS"
+   ],
+   "atMs": 13220,
+   "scrollY": 1723,
+   "section": 1
+  },
+  {
+   "path": "div.c11n.c11n_combobox__trigger:nth-of-type(1) > div.c11n.c11n_combobox__input-group > div.c11n.c11n_adorned-input__root > span.c11n.c11n_adorned-input__adornment:nth-of-type(2) > button.c11n.c11n_icon-button:nth-of-type(2)",
+   "added": [
+    "sbsa-ifZmBV",
+    "sbsa-ifZmCe"
+   ],
+   "removed": [
+    "sbsa-cRxwBT",
+    "sbsa-cRxwCg",
+    "sbsa-eTCxPS",
+    "sbsa-cUOXSY",
+    "sbsa-cUOXPS"
+   ],
+   "atMs": 13220,
+   "scrollY": 1723,
+   "section": 1
+  },
+  {
+   "path": "div.dUHUfY:nth-of-type(1) > div.yLqXB > div.QzZPU > div.iOhzkD:nth-of-type(2) > div.lgkJlM",
+   "added": [
+    "wtybt"
+   ],
+   "removed": [
+    "lgkJlM"
+   ],
+   "atMs": 13729,
+   "scrollY": 0,
+   "section": 1
+  },
+  {
+   "path": "div.jQUlFV:nth-of-type(1) > div.dUHUfY:nth-of-type(1) > div.yLqXB > div.QzZPU > div.iOhzkD:nth-of-type(2)",
+   "added": [],
+   "removed": [
+    "iOhzkD"
+   ],
+   "atMs": 13729,
+   "scrollY": 0,
+   "section": 1
+  },
+  {
+   "path": "form.c11n.c11n_form > div.c11n.c11n_combobox__trigger:nth-of-type(1) > div.c11n.c11n_combobox__input-group > div.c11n.c11n_adorned-input__root > input.c11n.c11n_combobox__input",
+   "added": [
+    "sbsa-cOHBIX",
+    "sbsa-eMkodn",
+    "sbsa-eMkogt"
+   ],
+   "removed": [],
+   "atMs": 13729,
+   "scrollY": 0,
+   "section": 1
+  },
+  {
+   "path": "div.c11n.c11n_combobox__trigger:nth-of-type(1) > div.c11n.c11n_combobox__input-group > div.c11n.c11n_adorned-input__root > span.c11n.c11n_adorned-input__adornment:nth-of-type(2) > button.c11n.c11n_icon-button:nth-of-type(1)",
+   "added": [
+    "sbsa-cRxwBT",
+    "sbsa-cRxwCg",
+    "sbsa-eTCxPS",
+    "sbsa-cUOXSY",
+    "sbsa-cUOXPS"
+   ],
+   "removed": [
+    "sbsa-ifZmBV",
+    "sbsa-ifZmCe"
+   ],
+   "atMs": 13729,
+   "scrollY": 0,
+   "section": 1
+  },
+  {
+   "path": "div.c11n.c11n_combobox__trigger:nth-of-type(1) > div.c11n.c11n_combobox__input-group > div.c11n.c11n_adorned-input__root > span.c11n.c11n_adorned-input__adornment:nth-of-type(2) > button.c11n.c11n_icon-button:nth-of-type(2)",
+   "added": [
+    "sbsa-cRxwBT",
+    "sbsa-cRxwCg",
+    "sbsa-eTCxPS",
+    "sbsa-cUOXSY",
+    "sbsa-cUOXPS"
+   ],
+   "removed": [
+    "sbsa-ifZmBV",
+    "sbsa-ifZmCe"
+   ],
+   "atMs": 13729,
+   "scrollY": 0,
+   "section": 1
+  },
+  {
+   "path": "div.dUHUfY:nth-of-type(1) > div.yLqXB > div.QzZPU > div.iOhzkD:nth-of-type(2) > div.lgkJlM",
+   "added": [
+    "lgkJlM"
+   ],
+   "removed": [
+    "wtybt"
+   ],
+   "atMs": 15894,
+   "scrollY": 1811,
+   "section": 1
+  },
+  {
+   "path": "div.jQUlFV:nth-of-type(1) > div.dUHUfY:nth-of-type(1) > div.yLqXB > div.QzZPU > div.iOhzkD:nth-of-type(2)",
+   "added": [
+    "iOhzkD"
+   ],
+   "removed": [],
+   "atMs": 15894,
+   "scrollY": 1811,
+   "section": 1
+  },
+  {
+   "path": "form.c11n.c11n_form > div.c11n.c11n_combobox__trigger:nth-of-type(1) > div.c11n.c11n_combobox__input-group > div.c11n.c11n_adorned-input__root > input.c11n.c11n_combobox__input",
+   "added": [],
+   "removed": [
+    "sbsa-cOHBIX",
+    "sbsa-eMkodn",
+    "sbsa-eMkogt"
+   ],
+   "atMs": 15901,
+   "scrollY": 1811,
+   "section": 1
+  },
+  {
+   "path": "div.c11n.c11n_combobox__trigger:nth-of-type(1) > div.c11n.c11n_combobox__input-group > div.c11n.c11n_adorned-input__root > span.c11n.c11n_adorned-input__adornment:nth-of-type(2) > button.c11n.c11n_icon-button:nth-of-type(1)",
+   "added": [
+    "sbsa-ifZmBV",
+    "sbsa-ifZmCe"
+   ],
+   "removed": [
+    "sbsa-cRxwBT",
+    "sbsa-cRxwCg",
+    "sbsa-eTCxPS",
+    "sbsa-cUOXSY",
+    "sbsa-cUOXPS"
+   ],
+   "atMs": 15901,
+   "scrollY": 1811,
+   "section": 1
+  },
+  {
+   "path": "div.c11n.c11n_combobox__trigger:nth-of-type(1) > div.c11n.c11n_combobox__input-group > div.c11n.c11n_adorned-input__root > span.c11n.c11n_adorned-input__adornment:nth-of-type(2) > button.c11n.c11n_icon-button:nth-of-type(2)",
+   "added": [
+    "sbsa-ifZmBV",
+    "sbsa-ifZmCe"
+   ],
+   "removed": [
+    "sbsa-cRxwBT",
+    "sbsa-cRxwCg",
+    "sbsa-eTCxPS",
+    "sbsa-cUOXSY",
+    "sbsa-cUOXPS"
+   ],
+   "atMs": 15901,
+   "scrollY": 1811,
+   "section": 1
+  }
+ ],
+ "films": [
+  {
+   "file": "reference/motion/films/01-scripted-div.jpg",
+   "kind": "scripted",
+   "label": "Scripted div: 1 moving part (transform)",
+   "section": "02-div",
+   "element": "div.dUHUfY:nth-of-type(1) > div.yLqXB > div.QzZPU > div.iOhzkD:nth-of-type(2) > div.lgkJlM",
+   "frameTimesMs": [
+    0,
+    320,
+    640,
+    961,
+    1280,
+    1600
+   ]
+  },
+  {
+   "file": "reference/motion/films/02-reveal-div.jpg",
+   "kind": "reveal",
+   "label": "Reveal: +bzMtgl",
+   "section": "03-div",
+   "element": "div.Grid-c11n-8-111-2__sc-18zzowe-0.fcUiNz > div:nth-of-type(1) > div.cXGGCH.bmqbVI > div.kClhBz:nth-of-type(2) > button.bzMtgl",
+   "frameTimesMs": [
+    0,
+    87,
+    207,
+    296,
+    366,
+    433
+   ]
+  }
+ ],
+ "states": [
+  {
+   "file": "reference/components/01-nav-link.jpg",
+   "kind": "nav-link",
+   "label": "nav-link a.pfs__sc-1dpbk03-0.ivHafp",
+   "section": "01-div"
+  },
+  {
+   "file": "reference/components/02-nav-link.jpg",
+   "kind": "nav-link",
+   "label": "nav-link a.pfs__sc-1dpbk03-0.ivHafp",
+   "section": "01-div"
+  },
+  {
+   "file": "reference/components/03-button.jpg",
+   "kind": "button",
+   "label": "button button.jWVnYy.pfs__sc-16wg7wj-0:nth-of-type(1)",
+   "section": "01-div"
+  },
+  {
+   "file": "reference/components/04-input.jpg",
+   "kind": "input",
+   "label": "input input.c11n.c11n_combobox__input",
+   "section": "02-div"
+  },
+  {
+   "file": "reference/components/05-button.jpg",
+   "kind": "button",
+   "label": "button button.c11n.c11n_icon-button:nth-of-type(2)",
+   "section": "02-div"
+  },
+  {
+   "file": "reference/components/06-card.jpg",
+   "kind": "card",
+   "label": "card div.cXGGCH.bmqbVI",
+   "section": "03-div"
+  },
+  {
+   "file": "reference/components/07-card.jpg",
+   "kind": "card",
+   "label": "card div.cXGGCH.bmqbVI",
+   "section": "03-div"
+  }
+ ],
+ "lottie": []
+}

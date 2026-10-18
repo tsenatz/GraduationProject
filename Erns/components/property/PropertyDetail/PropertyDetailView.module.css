@@ -39,8 +39,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
+  background: rgba(var(--color-bg-warm-rgb, 179, 207, 229), 0.28);
+  border: 1px solid rgba(var(--color-accent-rgb, 74, 127, 167), 0.35);
   border-radius: 14px;
   padding: 14px 20px;
   margin-bottom: 24px;
@@ -52,7 +52,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  color: #1e40af;
+  color: var(--color-primary, #0A1931);
   font-weight: 700;
   font-size: 0.95rem;
 }
@@ -64,7 +64,7 @@
 }
 
 .ownerEditBtn {
-  background: var(--color-primary);
+  background: var(--color-primary, #0A1931);
   color: white;
   padding: 8px 16px;
   border-radius: 8px;
@@ -83,8 +83,8 @@
 
 .ownerDashboardBtn {
   background: white;
-  color: var(--color-primary);
-  border: 1px solid #bfdbfe;
+  color: var(--color-primary, #0A1931);
+  border: 1px solid rgba(var(--color-accent-rgb, 74, 127, 167), 0.35);
   padding: 8px 16px;
   border-radius: 8px;
   font-size: 0.88rem;
@@ -180,7 +180,7 @@
 }
 
 .statusForRent {
-  background: #2563eb;
+  background: var(--color-accent, #4A7FA7);
   color: white;
 }
 

@@ -218,7 +218,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background-color: #006666;
+  background-color: var(--color-primary, #0A1931);
   color: #FFFFFF;
   font-weight: 800;
   font-size: 1rem;

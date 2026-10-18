@@ -547,8 +547,9 @@
   gap: 6px;
   font-size: 0.82rem;
   font-weight: 600;
-  color: #0369a1;
-  background: #e0f2fe;
+  color: var(--color-primary, #0A1931);
+  background: rgba(var(--color-bg-warm-rgb, 179, 207, 229), 0.35);
+  border: 1px solid rgba(var(--color-accent-rgb, 74, 127, 167), 0.3);
   padding: 6px 12px;
   border-radius: 6px;
   width: fit-content;
@@ -725,10 +726,10 @@
 }
 
 .propertyTypeCardActive {
-  background: #eff6ff;
-  border-color: #2563eb;
-  color: #2563eb;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+  background: rgba(var(--color-bg-warm-rgb, 179, 207, 229), 0.3);
+  border-color: var(--color-primary, #0A1931);
+  color: var(--color-primary, #0A1931);
+  box-shadow: 0 4px 12px rgba(10, 25, 49, 0.12);
 }
 
 /* Stepper Controls ([-] 3 [+]) */
@@ -798,9 +799,9 @@
 }
 
 .priceChipBtn:hover {
-  background: #eff6ff;
-  border-color: #2563eb;
-  color: #2563eb;
+  background: rgba(var(--color-bg-warm-rgb, 179, 207, 229), 0.3);
+  border-color: var(--color-primary, #0A1931);
+  color: var(--color-primary, #0A1931);
 }
 
 /* Photo Upload Thumbnails */
@@ -869,9 +870,9 @@
 }
 
 .sampleGalleryBtn:hover {
-  background: #eff6ff;
-  color: #2563eb;
-  border-color: #2563eb;
+  background: rgba(var(--color-bg-warm-rgb, 179, 207, 229), 0.3);
+  color: var(--color-primary, #0A1931);
+  border-color: var(--color-primary, #0A1931);
 }
 
 .uploadingBadge {
@@ -879,8 +880,8 @@
   align-items: center;
   gap: 6px;
   font-size: 0.85rem;
-  font-weight: 600;
-  color: #2563eb;
+  font-weight: 700;
+  color: var(--color-primary, #0A1931);
 }
 
 @media (max-width: 990px) {

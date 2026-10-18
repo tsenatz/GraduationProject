@@ -1148,7 +1148,7 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
       {showAuthModal && (
         <div className={styles.modalOverlay} onClick={() => setShowAuthModal(false)}>
           <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
-            <div className={styles.modalIcon} style={{ background: "#eff6ff", color: "#2563eb" }}>
+            <div className={styles.modalIcon} style={{ background: "rgba(179, 207, 229, 0.35)", color: "var(--color-primary, #0A1931)" }}>
               <Lock size={34} />
             </div>
             <h3 className={styles.modalTitle}>Sign In to Publish</h3>

@@ -186,7 +186,7 @@ export default function SellerDashboardPage() {
         <div className={styles.statCard}>
           <div
             className={styles.statIconWrapper}
-            style={{ background: "#eff6ff", color: "#2563eb" }}
+            style={{ background: "rgba(179, 207, 229, 0.35)", color: "#0A1931" }}
           >
             <Layers size={24} />
           </div>
