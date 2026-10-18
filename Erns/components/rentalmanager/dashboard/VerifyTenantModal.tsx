@@ -49,9 +49,27 @@ export function VerifyTenantModal({
       <div
         className={styles.modalContainer}
         onClick={(e) => e.stopPropagation()}
-        style={{ maxWidth: "620px", padding: "2.25rem", maxHeight: "90vh", overflowY: "auto" }}
+        style={{
+          maxWidth: "620px",
+          backgroundColor: "#FFFFFF",
+          borderRadius: "20px",
+          padding: "2rem",
+          maxHeight: "90vh",
+          overflowY: "auto",
+          boxShadow: "0 25px 60px -12px rgba(10, 25, 49, 0.35), 0 0 0 1px rgba(15, 23, 42, 0.08)",
+          color: "#0A1931",
+        }}
       >
-        <div className={styles.modalHeader} style={{ marginBottom: "1.25rem" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            marginBottom: "1.25rem",
+            paddingBottom: "1rem",
+            borderBottom: "1px solid rgba(15, 23, 42, 0.08)",
+          }}
+        >
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
             <div
               style={{
@@ -63,21 +81,39 @@ export function VerifyTenantModal({
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                flexShrink: 0,
               }}
             >
               <ShieldCheck size={24} />
             </div>
             <div>
-              <h2 className={styles.modalTitle} style={{ fontSize: "1.35rem" }}>
+              <h2 style={{ fontSize: "1.3rem", fontWeight: 800, margin: 0, color: "#0A1931" }}>
                 Tenant Verification & Screening
               </h2>
-              <p style={{ fontSize: "0.85rem", color: "#64748B", margin: 0 }}>
+              <p style={{ fontSize: "0.85rem", color: "#64748B", margin: "0.25rem 0 0" }}>
                 Ethiopian National ID (Fayda / Kebele) and Guarantor (ዋስ) verification check
               </p>
             </div>
           </div>
-          <button type="button" onClick={onClose} className={styles.closeBtn} aria-label="Close">
-            <X size={20} />
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            style={{
+              backgroundColor: "#F1F5F9",
+              border: "none",
+              borderRadius: "8px",
+              width: "34px",
+              height: "34px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              color: "#64748B",
+              flexShrink: 0,
+            }}
+          >
+            <X size={18} />
           </button>
         </div>
 
@@ -116,7 +152,14 @@ export function VerifyTenantModal({
 
         <form onSubmit={handleSave} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
           {/* Section 1: ID Verification */}
-          <div style={{ border: "1px solid rgba(15, 23, 42, 0.1)", borderRadius: "10px", padding: "1rem" }}>
+          <div
+            style={{
+              backgroundColor: "#F8FAFC",
+              border: "1px solid rgba(15, 23, 42, 0.08)",
+              borderRadius: "12px",
+              padding: "1rem 1.15rem",
+            }}
+          >
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                 <FileCheck size={18} color="#059669" />
@@ -124,7 +167,7 @@ export function VerifyTenantModal({
                   1. Ethiopian ID Verification
                 </span>
               </div>
-              <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.82rem", fontWeight: 700, color: "#059669" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.82rem", fontWeight: 700, color: "#059669", cursor: "pointer" }}>
                 <input
                   type="checkbox"
                   checked={isIdVerified}
@@ -136,7 +179,7 @@ export function VerifyTenantModal({
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1.5fr", gap: "0.75rem" }}>
               <div>
-                <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 700, marginBottom: "0.3rem" }}>
+                <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 700, color: "#475569", marginBottom: "0.35rem" }}>
                   ID Document Type
                 </label>
                 <select
@@ -147,7 +190,9 @@ export function VerifyTenantModal({
                     padding: "0.6rem 0.75rem",
                     borderRadius: "8px",
                     border: "1px solid rgba(15, 23, 42, 0.15)",
+                    backgroundColor: "#FFFFFF",
                     fontSize: "0.85rem",
+                    color: "#0A1931",
                   }}
                 >
                   <option value="Fayda / National ID">Fayda / National ID (ፋይዳ)</option>
@@ -156,7 +201,7 @@ export function VerifyTenantModal({
                 </select>
               </div>
               <div>
-                <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 700, marginBottom: "0.3rem" }}>
+                <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 700, color: "#475569", marginBottom: "0.35rem" }}>
                   Official ID / Serial #
                 </label>
                 <input
@@ -169,7 +214,9 @@ export function VerifyTenantModal({
                     padding: "0.6rem 0.75rem",
                     borderRadius: "8px",
                     border: "1px solid rgba(15, 23, 42, 0.15)",
+                    backgroundColor: "#FFFFFF",
                     fontSize: "0.85rem",
+                    color: "#0A1931",
                   }}
                 />
               </div>
@@ -177,7 +224,14 @@ export function VerifyTenantModal({
           </div>
 
           {/* Section 2: Guarantor (ዋስ) */}
-          <div style={{ border: "1px solid rgba(15, 23, 42, 0.1)", borderRadius: "10px", padding: "1rem" }}>
+          <div
+            style={{
+              backgroundColor: "#F8FAFC",
+              border: "1px solid rgba(15, 23, 42, 0.08)",
+              borderRadius: "12px",
+              padding: "1rem 1.15rem",
+            }}
+          >
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                 <UserCheck size={18} color="#059669" />
@@ -185,7 +239,7 @@ export function VerifyTenantModal({
                   2. Guarantor (ዋስ) Verification
                 </span>
               </div>
-              <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.82rem", fontWeight: 700, color: "#059669" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.82rem", fontWeight: 700, color: "#059669", cursor: "pointer" }}>
                 <input
                   type="checkbox"
                   checked={isGuarantorConfirmed}
@@ -197,7 +251,7 @@ export function VerifyTenantModal({
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", marginBottom: "0.75rem" }}>
               <div>
-                <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 700, marginBottom: "0.3rem" }}>
+                <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 700, color: "#475569", marginBottom: "0.35rem" }}>
                   Guarantor Full Name
                 </label>
                 <input
@@ -209,12 +263,14 @@ export function VerifyTenantModal({
                     padding: "0.6rem 0.75rem",
                     borderRadius: "8px",
                     border: "1px solid rgba(15, 23, 42, 0.15)",
+                    backgroundColor: "#FFFFFF",
                     fontSize: "0.85rem",
+                    color: "#0A1931",
                   }}
                 />
               </div>
               <div>
-                <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 700, marginBottom: "0.3rem" }}>
+                <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 700, color: "#475569", marginBottom: "0.35rem" }}>
                   Guarantor Phone
                 </label>
                 <input
@@ -226,14 +282,16 @@ export function VerifyTenantModal({
                     padding: "0.6rem 0.75rem",
                     borderRadius: "8px",
                     border: "1px solid rgba(15, 23, 42, 0.15)",
+                    backgroundColor: "#FFFFFF",
                     fontSize: "0.85rem",
+                    color: "#0A1931",
                   }}
                 />
               </div>
             </div>
 
             <div>
-              <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 700, marginBottom: "0.3rem" }}>
+              <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 700, color: "#475569", marginBottom: "0.35rem" }}>
                 Guarantor Employer / Workplace
               </label>
               <input
@@ -246,15 +304,24 @@ export function VerifyTenantModal({
                   padding: "0.6rem 0.75rem",
                   borderRadius: "8px",
                   border: "1px solid rgba(15, 23, 42, 0.15)",
+                  backgroundColor: "#FFFFFF",
                   fontSize: "0.85rem",
+                  color: "#0A1931",
                 }}
               />
             </div>
           </div>
 
           {/* Verification Notes */}
-          <div>
-            <label style={{ display: "block", fontSize: "0.85rem", fontWeight: 700, marginBottom: "0.4rem" }}>
+          <div
+            style={{
+              backgroundColor: "#F8FAFC",
+              border: "1px solid rgba(15, 23, 42, 0.08)",
+              borderRadius: "12px",
+              padding: "1rem 1.15rem",
+            }}
+          >
+            <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 700, color: "#475569", marginBottom: "0.4rem" }}>
               Screening Clearance Notes
             </label>
             <input
@@ -266,7 +333,9 @@ export function VerifyTenantModal({
                 padding: "0.65rem 0.85rem",
                 borderRadius: "8px",
                 border: "1px solid rgba(15, 23, 42, 0.15)",
+                backgroundColor: "#FFFFFF",
                 fontSize: "0.85rem",
+                color: "#0A1931",
               }}
             />
           </div>
@@ -280,10 +349,11 @@ export function VerifyTenantModal({
                 padding: "0.7rem 1.25rem",
                 borderRadius: "8px",
                 border: "1px solid rgba(15, 23, 42, 0.15)",
-                background: "transparent",
+                background: "#FFFFFF",
                 fontWeight: 700,
                 fontSize: "0.9rem",
                 cursor: "pointer",
+                color: "#475569",
               }}
             >
               Cancel
@@ -303,6 +373,7 @@ export function VerifyTenantModal({
                 display: "flex",
                 alignItems: "center",
                 gap: "0.5rem",
+                boxShadow: "0 2px 8px rgba(5, 150, 105, 0.25)",
               }}
             >
               <Check size={18} />

@@ -310,73 +310,76 @@ export function ApplicationsDashboardView({
                   </div>
                 )}
 
-                <div className={styles.applicantActionsRow}>
-                  {/* Direct Contact Icons */}
-                  <div className={styles.contactDirectBtns}>
-                    <a
-                      href={`tel:${app.applicantPhone}`}
-                      className={styles.iconCircleBtn}
-                      title={`Call ${app.applicantPhone}`}
-                    >
-                      <Phone size={16} />
-                    </a>
-                    <a
-                      href={`mailto:${app.applicantEmail}`}
-                      className={styles.iconCircleBtn}
-                      title={`Email ${app.applicantEmail}`}
-                    >
-                      <Mail size={16} />
-                    </a>
-                    <Link
-                      href={`/rentalmanager/messages?recipient=${encodeURIComponent(app.applicantName)}`}
-                      className={styles.iconCircleBtn}
-                      title="Open chat in Rental Manager Messages"
-                    >
-                      <MessageSquare size={16} />
-                    </Link>
-                  </div>
+                <div className={styles.applicantCardFooter}>
+                  {/* Row 1: Direct Contact Channels & Verification Screening */}
+                  <div className={styles.applicantActionsRow}>
+                    <div className={styles.contactDirectBtns}>
+                      <a
+                        href={`tel:${app.applicantPhone}`}
+                        className={styles.iconCircleBtn}
+                        title={`Call ${app.applicantPhone}`}
+                      >
+                        <Phone size={16} />
+                      </a>
+                      <a
+                        href={`mailto:${app.applicantEmail}`}
+                        className={styles.iconCircleBtn}
+                        title={`Email ${app.applicantEmail}`}
+                      >
+                        <Mail size={16} />
+                      </a>
+                      <Link
+                        href={`/rentalmanager/messages?recipient=${encodeURIComponent(app.applicantName)}`}
+                        className={styles.iconCircleBtn}
+                        title="Open chat in Rental Manager Messages"
+                      >
+                        <MessageSquare size={16} />
+                      </Link>
+                    </div>
 
-                  {/* Approve / Decline & Verify Buttons */}
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                    {/* Tenant Verification Screening Button */}
                     <button
                       type="button"
-                      className={styles.actionBtnOutline}
-                      style={{
-                        fontSize: "0.78rem",
-                        padding: "0.4rem 0.65rem",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.3rem",
-                      }}
+                      className={`${styles.verifyBtn} ${
+                        verifiedAppIds.includes(app.id) ? styles.verifyBtnActive : ""
+                      }`}
                       onClick={() => {
                         setVerifyingApp(app);
                         setIsVerifyModalOpen(true);
                       }}
                       title="Screen tenant ID and guarantor details"
                     >
-                      <ShieldCheck size={14} color="#059669" />
-                      <span>{verifiedAppIds.includes(app.id) ? "Verified (ዋስ)" : "Verify (ዋስ)"}</span>
+                      <ShieldCheck
+                        size={14}
+                        color={verifiedAppIds.includes(app.id) ? "#059669" : "#4A7FA7"}
+                      />
+                      <span>
+                        {verifiedAppIds.includes(app.id) ? "Verified (ዋስ)" : "Verify (ዋስ)"}
+                      </span>
                     </button>
+                  </div>
 
+                  {/* Row 2: Status Decision & Action Buttons */}
+                  <div className={styles.applicantDecisionRow}>
                     {isPendingState && (
                       <>
                         <button
                           type="button"
-                          className={styles.actionBtnOutline}
-                          style={{ color: "#DC2626", borderColor: "rgba(220, 38, 38, 0.25)" }}
+                          className={styles.declineBtn}
                           onClick={() => handleUpdateStatus(app.id, "DECLINED")}
                           disabled={isPending}
                         >
-                          Decline
+                          <X size={15} />
+                          <span>Decline</span>
                         </button>
                         <button
                           type="button"
-                          className={styles.actionBtnSmall}
-                          style={{ backgroundColor: "#059669" }}
+                          className={styles.approveBtn}
                           onClick={() => handleUpdateStatus(app.id, "APPROVED")}
                           disabled={isPending}
                         >
-                          Approve
+                          <Check size={15} />
+                          <span>Approve</span>
                         </button>
                       </>
                     )}
@@ -384,22 +387,26 @@ export function ApplicationsDashboardView({
                     {isApproved && (
                       <button
                         type="button"
-                        className={styles.actionBtnOutline}
+                        className={styles.secondaryActionBtn}
                         onClick={() => handleUpdateStatus(app.id, "PENDING")}
-                        title="Revert to pending"
+                        disabled={isPending}
+                        title="Revert application to Under Review"
                       >
-                        Reset Status
+                        <RefreshCw size={13} />
+                        <span>Reset Status</span>
                       </button>
                     )}
 
                     {isDeclined && (
                       <button
                         type="button"
-                        className={styles.actionBtnOutline}
+                        className={styles.secondaryActionBtn}
                         onClick={() => handleUpdateStatus(app.id, "PENDING")}
-                        title="Re-open review"
+                        disabled={isPending}
+                        title="Re-open review for this application"
                       >
-                        Reconsider
+                        <RefreshCw size={13} />
+                        <span>Reconsider</span>
                       </button>
                     )}
                   </div>
