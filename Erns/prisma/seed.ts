@@ -6,16 +6,26 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-neonConfig.webSocketConstructor = ws;
-
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) {
   console.error("DATABASE_URL is required to seed database");
   process.exit(1);
 }
 
-const adapter = new PrismaNeon({ connectionString });
-const db = new PrismaClient({ adapter });
+let db: PrismaClient;
+if (connectionString.includes("neon.tech")) {
+  neonConfig.webSocketConstructor = ws;
+  const adapter = new PrismaNeon({ connectionString });
+  db = new PrismaClient({ adapter });
+} else {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { Pool } = require("pg");
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { PrismaPg } = require("@prisma/adapter-pg");
+  const pool = new Pool({ connectionString });
+  const adapter = new PrismaPg(pool);
+  db = new PrismaClient({ adapter });
+}
 
 const INITIAL_PROPERTIES = [
   {
