@@ -3,6 +3,7 @@
 import db from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export interface RentalPropertyInput {
   title: string;
@@ -374,6 +375,20 @@ export async function createRentalPropertyAction(
     const session = await auth();
     const currentUserId = session?.user?.id || session?.user?.email || "demo-landlord";
     const currentUserName = session?.user?.name || "Landlord";
+
+    // Rate Limiting Gate: max 5 rentals created per minute per user/landlord
+    const rateLimit = checkRateLimit(`rental-create:${currentUserId}`, {
+      limit: 5,
+      windowMs: 60 * 1000,
+    });
+
+    if (!rateLimit.success) {
+      const waitSeconds = Math.max(1, Math.ceil(rateLimit.resetMs / 1000));
+      return {
+        success: false,
+        error: `You are posting rentals too quickly. Please wait ${waitSeconds} seconds before publishing another rental.`,
+      };
+    }
 
     const refNumber = `ERN-RNT-${Math.floor(10000 + Math.random() * 90000)}`;
     const address = `${data.specificArea || data.subCity}, Addis Ababa`;

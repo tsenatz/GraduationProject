@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { checkRateLimit } from "@/lib/rate-limit";
 import fs from "fs/promises";
 import path from "path";
 import crypto from "crypto";
@@ -60,6 +61,32 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { success: false, error: "Unauthorized. Please sign in to upload files." },
         { status: 401 }
+      );
+    }
+
+    // Rate Limiting: max 20 photo uploads per minute per user
+    const rateLimitKey = `upload:${session.user.id}`;
+    const rateLimit = checkRateLimit(rateLimitKey, {
+      limit: 20,
+      windowMs: 60 * 1000,
+    });
+
+    if (!rateLimit.success) {
+      const retryAfterSeconds = Math.max(1, Math.ceil(rateLimit.resetMs / 1000));
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Upload rate limit reached. Please wait ${retryAfterSeconds} seconds before uploading more photos.`,
+        },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": retryAfterSeconds.toString(),
+            "X-RateLimit-Limit": rateLimit.limit.toString(),
+            "X-RateLimit-Remaining": "0",
+            "X-RateLimit-Reset": retryAfterSeconds.toString(),
+          },
+        }
       );
     }
 
