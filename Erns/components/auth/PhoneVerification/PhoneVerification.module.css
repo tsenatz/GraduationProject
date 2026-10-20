@@ -348,19 +348,43 @@
   .formSide {
     min-height: auto;
     padding: 32px 20px;
+    order: 0;
   }
 
   .heroSide {
     min-height: auto;
-    padding: 48px 24px;
-    order: -1;
+    padding: 40px 24px;
+    order: 1;
   }
 
   .heroTitle {
-    font-size: 2rem;
+    font-size: 1.85rem;
   }
 
   .illustrationImage {
-    max-height: 280px;
+    max-height: 240px;
   }
 }
+
+@media (max-width: 640px) {
+  .heroSide {
+    display: none;
+  }
+
+  .formSide {
+    padding: 28px 16px;
+    justify-content: flex-start;
+  }
+
+  .otpContainer {
+    gap: 6px;
+    margin: 20px 0;
+  }
+
+  .otpDigit {
+    max-width: 46px;
+    height: 50px;
+    font-size: 1.3rem;
+  }
+}
+

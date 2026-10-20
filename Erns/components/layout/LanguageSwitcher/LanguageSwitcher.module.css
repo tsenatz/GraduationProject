@@ -71,3 +71,22 @@
   align-items: center;
   gap: 8px;
 }
+
+@media (max-width: 480px) {
+  .toggleBtn {
+    padding: 0.32rem 0.65rem;
+    min-height: 30px;
+    font-size: 0.8rem;
+    gap: 4px;
+  }
+
+  .globeIcon {
+    width: 13px;
+    height: 13px;
+  }
+
+  .singleLangText {
+    font-size: 0.8rem;
+  }
+}
+

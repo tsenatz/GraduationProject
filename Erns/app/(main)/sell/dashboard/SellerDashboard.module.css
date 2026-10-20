@@ -504,3 +504,112 @@
   background: var(--color-primary-transparent-90);
   transform: translateY(-2px);
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .dashboardContainer {
+    padding: 24px 16px 80px;
+  }
+
+  .dashboardHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .headerTitle {
+    font-size: 1.6rem;
+  }
+
+  .primaryCtaBtn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .statCard {
+    padding: 16px 18px;
+    gap: 14px;
+  }
+
+  .listingsGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .propertyCard {
+    border-radius: 14px;
+  }
+
+  .cardBody {
+    padding: 16px;
+  }
+
+  .cardActions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .btnMarkSold,
+  .btnEdit {
+    flex: 1 1 calc(50% - 4px);
+    font-size: 0.82rem;
+    padding: 8px 10px;
+  }
+
+  .btnDelete {
+    flex: 0 0 38px;
+  }
+
+  .emptyState {
+    padding: 40px 16px;
+  }
+
+  .emptyTitle {
+    font-size: 1.35rem;
+  }
+
+  .emptyCta {
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 1rem;
+  }
+
+  .loginPromptCard {
+    padding: 40px 16px;
+    margin: 30px auto;
+  }
+
+  .signInBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .cardPrice {
+    font-size: 1.25rem;
+  }
+
+  .specsRow {
+    gap: 10px;
+    font-size: 0.8rem;
+  }
+
+  .btnMarkSold,
+  .btnEdit {
+    flex: 1 1 100%;
+  }
+
+  .btnDelete {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+}
+
