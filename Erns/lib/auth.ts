@@ -15,9 +15,8 @@ class LoginRateLimitError extends CredentialsSignin {
 class EmailNotVerifiedError extends CredentialsSignin {
   code = "EMAIL_NOT_VERIFIED";
 }
-
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: PrismaAdapter(db),
+  adapter: process.env.DATABASE_URL ? PrismaAdapter(db) : undefined,
   session: {
     strategy: "jwt",
   },
