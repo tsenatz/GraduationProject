@@ -47,7 +47,7 @@
 }
 
 .statusRented {
-  background-color: rgba(37, 99, 235, 0.9);
+  background-color: var(--color-primary, #0A1931);
   color: #FFFFFF;
 }
 

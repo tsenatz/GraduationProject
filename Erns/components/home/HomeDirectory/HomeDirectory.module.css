@@ -68,8 +68,8 @@
   background: transparent;
   border: none;
   font-size: 0.95rem;
-  font-weight: 500;
-  color: #006AFF;
+  font-weight: 600;
+  color: var(--color-primary, #0A1931);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -80,15 +80,15 @@
 }
 
 .accordionTab:hover {
-  background-color: #F8FAFC;
-  color: #004ECC;
+  background-color: var(--color-off-white, #F6FAFD);
+  color: var(--color-accent, #4A7FA7);
 }
 
 .accordionTabActive {
-  background-color: #F0F7FF;
-  color: #004ECC;
-  font-weight: 700;
-  box-shadow: inset 0 -2px 0 #006AFF;
+  background-color: rgba(var(--color-bg-warm-rgb, 179, 207, 229), 0.3);
+  color: var(--color-primary, #0A1931);
+  font-weight: 800;
+  box-shadow: inset 0 -3px 0 var(--color-primary, #0A1931);
 }
 
 .chevron {
@@ -165,7 +165,7 @@
 }
 
 .categoryLink:hover {
-  color: #006AFF;
+  color: var(--color-accent, #4A7FA7);
   text-decoration: underline;
   transform: translateX(2px);
 }
@@ -198,7 +198,7 @@
 }
 
 .secondaryLink:hover {
-  color: #006AFF;
+  color: var(--color-accent, #4A7FA7);
   text-decoration: underline;
 }
 
@@ -224,7 +224,7 @@
 }
 
 .tertiaryLink:hover {
-  color: #006AFF;
+  color: var(--color-accent, #4A7FA7);
   text-decoration: underline;
 }
 
@@ -246,7 +246,7 @@
 }
 
 .networkLink:hover {
-  color: #006AFF;
+  color: var(--color-accent, #4A7FA7);
   text-decoration: underline;
 }
 
@@ -259,9 +259,9 @@
 .privacyActionButton {
   background: none;
   border: none;
-  color: #006AFF;
+  color: var(--color-primary, #0A1931);
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -273,8 +273,8 @@
 }
 
 .privacyActionButton:hover {
-  background-color: #F0F7FF;
-  color: #004ECC;
+  background-color: rgba(var(--color-bg-warm-rgb, 179, 207, 229), 0.2);
+  color: var(--color-primary, #0A1931);
   text-decoration: underline;
 }
 
@@ -295,14 +295,14 @@
 }
 
 .accessibilityLink {
-  color: #006AFF;
+  color: var(--color-accent, #4A7FA7);
   text-decoration: underline;
   cursor: pointer;
   margin-left: 0.25rem;
 }
 
 .accessibilityLink:hover {
-  color: #004ECC;
+  color: var(--color-primary, #0A1931);
 }
 
 .legalDisclosure {
@@ -444,9 +444,9 @@
 
 .switchAlways {
   font-size: 0.75rem;
-  font-weight: 600;
-  color: #006AFF;
-  background-color: #EFF6FF;
+  font-weight: 700;
+  color: var(--color-primary, #0A1931);
+  background-color: rgba(var(--color-bg-warm-rgb, 179, 207, 229), 0.35);
   padding: 0.3rem 0.6rem;
   border-radius: 4px;
   white-space: nowrap;
@@ -489,7 +489,7 @@
 }
 
 .toggleSwitch input:checked + .slider {
-  background-color: #006AFF;
+  background-color: var(--color-primary, #0A1931);
 }
 
 .toggleSwitch input:checked + .slider:before {
@@ -528,17 +528,19 @@
 .btnPrimary {
   padding: 0.65rem 1.35rem;
   border: none;
-  background-color: #006AFF;
+  background-color: var(--color-primary, #0A1931);
   color: #FFFFFF;
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 700;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+  box-shadow: 0 2px 6px rgba(10, 25, 49, 0.2);
 }
 
 .btnPrimary:hover {
-  background-color: #0056B3;
+  background-color: #061122;
+  transform: translateY(-1px);
 }
 
 /* Toast Message */

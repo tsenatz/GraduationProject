@@ -16,7 +16,7 @@ interface SignInButtonProps {
 
 // Preset curated colors for the avatar circle background
 const AVATAR_COLORS = [
-  "linear-gradient(135deg, #2563eb, #1d4ed8)",
+  "linear-gradient(135deg, #0A1931, #4A7FA7)",
   "linear-gradient(135deg, #7c3aed, #6d28d9)",
   "linear-gradient(135deg, #059669, #047857)",
   "linear-gradient(135deg, #d97706, #b45309)",

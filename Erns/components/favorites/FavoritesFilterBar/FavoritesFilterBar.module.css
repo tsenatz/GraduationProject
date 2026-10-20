@@ -61,8 +61,8 @@
 }
 
 .tabBtnActive .tabBadge {
-  background: #eff6ff;
-  color: #1d4ed8;
+  background: rgba(var(--color-bg-warm-rgb, 179, 207, 229), 0.4);
+  color: var(--color-primary, #0A1931);
 }
 
 /* Sort Select */

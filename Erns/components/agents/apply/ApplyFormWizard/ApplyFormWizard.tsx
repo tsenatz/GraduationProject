@@ -902,8 +902,8 @@ export const ApplyFormWizard: React.FC = () => {
                 width: "64px",
                 height: "64px",
                 borderRadius: "16px",
-                background: "#eff6ff",
-                color: "#2563eb",
+                background: "rgba(179, 207, 229, 0.35)",
+                color: "var(--color-primary, #0A1931)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -912,17 +912,17 @@ export const ApplyFormWizard: React.FC = () => {
             >
               <Lock size={30} />
             </div>
-            <h3 style={{ fontSize: "1.3rem", fontWeight: 800, marginBottom: "8px", color: "#0f172a" }}>
+            <h3 style={{ fontSize: "1.3rem", fontWeight: 800, marginBottom: "8px", color: "var(--color-primary, #0A1931)" }}>
               Sign In to Apply as an Agent
             </h3>
-            <p style={{ color: "#64748b", fontSize: "0.92rem", lineHeight: 1.5, marginBottom: "24px" }}>
+            <p style={{ color: "var(--color-accent, #4A7FA7)", fontSize: "0.92rem", lineHeight: 1.5, marginBottom: "24px" }}>
               Please sign in to your ERNS account so your verified credentials, TIN certificate, and agent badge can be securely linked to your profile.
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               <Link
                 href="/login?callbackUrl=/sell/agent/apply"
                 style={{
-                  background: "var(--color-primary, #0a3bd9)",
+                  background: "var(--color-primary, #0A1931)",
                   color: "white",
                   padding: "12px 20px",
                   borderRadius: "10px",

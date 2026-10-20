@@ -246,12 +246,12 @@
   align-items: center;
   justify-content: space-between;
   padding: 9px 18px;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
+  background: rgba(var(--color-bg-warm-rgb, 179, 207, 229), 0.28);
+  border: 1px solid rgba(var(--color-accent-rgb, 74, 127, 167), 0.35);
   border-radius: 10px;
   margin-bottom: 12px;
   font-size: 0.82rem;
-  color: #1e40af;
+  color: var(--color-primary, #0A1931);
   gap: 12px;
   flex-wrap: wrap;
 }
@@ -260,11 +260,11 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .demoSparkleIcon {
-  color: #2563eb;
+  color: var(--color-accent, #4A7FA7);
   flex-shrink: 0;
 }
 
@@ -276,14 +276,14 @@
 
 .demoSignInLink {
   font-weight: 800;
-  color: #1d4ed8;
+  color: var(--color-primary, #0A1931);
   text-decoration: underline;
   text-underline-offset: 2px;
   transition: color 0.15s;
 }
 
 .demoSignInLink:hover {
-  color: #1e3a8a;
+  color: var(--color-accent, #4A7FA7);
 }
 
 .demoExitBtn {

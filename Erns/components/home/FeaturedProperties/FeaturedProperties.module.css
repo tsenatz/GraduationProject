@@ -32,18 +32,18 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #006aff;
-  background: rgba(0, 106, 255, 0.08);
+  color: var(--color-primary, #0A1931);
+  background: rgba(var(--color-bg-warm-rgb, 179, 207, 229), 0.35);
   padding: 0.35rem 0.85rem;
   border-radius: 9999px;
   margin-bottom: 0.85rem;
-  border: 1px solid rgba(0, 106, 255, 0.18);
+  border: 1px solid rgba(var(--color-accent-rgb, 74, 127, 167), 0.3);
 }
 
 .title {
   font-size: 2.25rem;
   font-weight: 800;
-  color: #0f172a;
+  color: var(--color-primary, #0A1931);
   letter-spacing: -0.025em;
   line-height: 1.2;
   margin: 0 0 0.65rem;
@@ -51,7 +51,7 @@
 
 .subtitle {
   font-size: 1.05rem;
-  color: #64748b;
+  color: var(--color-accent, #4A7FA7);
   line-height: 1.55;
   margin: 0;
 }
@@ -62,22 +62,22 @@
   gap: 0.5rem;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #006aff;
+  color: var(--color-primary, #0A1931);
   text-decoration: none;
   padding: 0.65rem 1.25rem;
   border-radius: 8px;
   background: #ffffff;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(var(--color-accent-rgb, 74, 127, 167), 0.3);
+  box-shadow: 0 1px 3px rgba(10, 25, 49, 0.05);
   transition: all 0.2s ease;
   white-space: nowrap;
 }
 
 .viewAllTopBtn:hover {
-  background: #006aff;
+  background: var(--color-primary, #0A1931);
   color: #ffffff;
-  border-color: #006aff;
-  box-shadow: 0 4px 12px rgba(0, 106, 255, 0.25);
+  border-color: var(--color-primary, #0A1931);
+  box-shadow: 0 4px 12px rgba(10, 25, 49, 0.25);
   transform: translateY(-1px);
 }
 
@@ -185,8 +185,8 @@
 
 /* AI Recommendation Strip */
 .aiRecommendationBanner {
-  background: linear-gradient(135deg, #eff6ff 0%, #e0f2fe 100%);
-  border: 1px solid #bfdbfe;
+  background: linear-gradient(135deg, rgba(var(--color-bg-warm-rgb, 179, 207, 229), 0.3) 0%, rgba(var(--color-bg-warm-rgb, 179, 207, 229), 0.55) 100%);
+  border: 1px solid rgba(var(--color-accent-rgb, 74, 127, 167), 0.35);
   border-radius: 16px;
   padding: 1.75rem 2.25rem;
   display: flex;
@@ -194,7 +194,7 @@
   justify-content: space-between;
   gap: 2rem;
   margin-bottom: 2.5rem;
-  box-shadow: 0 4px 16px rgba(0, 106, 255, 0.06);
+  box-shadow: 0 4px 16px rgba(10, 25, 49, 0.05);
 }
 
 .aiBannerContent {
@@ -207,25 +207,25 @@
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: #006aff;
+  background: var(--color-primary, #0A1931);
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 10px rgba(0, 106, 255, 0.3);
+  box-shadow: 0 4px 10px rgba(10, 25, 49, 0.25);
 }
 
 .aiBannerTitle {
   font-size: 1.15rem;
-  font-weight: 700;
-  color: #1e3a8a;
+  font-weight: 800;
+  color: var(--color-primary, #0A1931);
   margin: 0 0 0.3rem;
 }
 
 .aiBannerDesc {
   font-size: 0.925rem;
-  color: #3b82f6;
+  color: var(--color-accent, #4A7FA7);
   margin: 0;
   line-height: 1.5;
   max-width: 780px;
@@ -240,19 +240,20 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.4rem;
-  background: #006aff;
+  background: var(--color-primary, #0A1931);
   color: #ffffff;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 700;
   border-radius: 10px;
   text-decoration: none;
   transition: all 0.2s ease;
   white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(10, 25, 49, 0.2);
 }
 
 .aiBannerBtn:hover {
-  background: #0052cc;
-  box-shadow: 0 4px 14px rgba(0, 106, 255, 0.35);
+  background: #061122;
+  box-shadow: 0 4px 14px rgba(10, 25, 49, 0.35);
   transform: translateY(-1px);
 }
 
@@ -267,21 +268,21 @@
   gap: 0.6rem;
   font-size: 1.05rem;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--color-primary, #0A1931);
   background: #ffffff;
-  border: 2px solid #e2e8f0;
+  border: 2px solid rgba(var(--color-accent-rgb, 74, 127, 167), 0.3);
   padding: 0.95rem 2.25rem;
   border-radius: 12px;
   text-decoration: none;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 6px rgba(10, 25, 49, 0.04);
 }
 
 .exploreMoreBtn:hover {
-  border-color: #006aff;
-  color: #006aff;
-  background: #f8fafc;
-  box-shadow: 0 6px 18px rgba(0, 106, 255, 0.15);
+  border-color: var(--color-primary, #0A1931);
+  color: #ffffff;
+  background: var(--color-primary, #0A1931);
+  box-shadow: 0 6px 18px rgba(10, 25, 49, 0.2);
   transform: translateY(-2px);
 }
 

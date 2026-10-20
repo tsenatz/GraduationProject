@@ -24,6 +24,21 @@
   animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.modalContainer {
+  background-color: #FFFFFF;
+  border-radius: 18px;
+  width: 100%;
+  max-width: 640px;
+  max-height: 92vh;
+  box-shadow: 0 25px 50px -12px rgba(10, 25, 49, 0.35), 0 0 0 1px rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-y: auto;
+  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #0A1931;
+}
+
 .modalHeader {
   display: flex;
   align-items: center;

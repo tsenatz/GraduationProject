@@ -73,7 +73,7 @@
 }
 
 .badgeRent {
-  background: rgba(37, 99, 235, 0.9);
+  background: rgba(74, 127, 167, 0.95);
 }
 
 .verifiedBadge {
@@ -342,9 +342,9 @@
 }
 
 .contactBtn:hover {
-  background: #eff6ff;
+  background: rgba(179, 207, 229, 0.25);
   border-color: #4a7fa7;
-  color: #1e40af;
+  color: var(--color-primary, #0a1931);
 }
 
 .phoneRevealedBtn {

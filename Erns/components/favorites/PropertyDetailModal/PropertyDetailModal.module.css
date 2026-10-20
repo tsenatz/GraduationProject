@@ -66,7 +66,7 @@
 }
 
 .badgeRent {
-  background: #0284c7;
+  background: var(--color-accent, #4A7FA7);
   color: #ffffff;
 }
 

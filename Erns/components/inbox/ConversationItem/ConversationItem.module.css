@@ -123,9 +123,9 @@
 }
 
 .catBadgeLandlord {
-  background: rgba(14, 165, 233, 0.08);
-  color: #0284c7;
-  border: 1px solid rgba(14, 165, 233, 0.2);
+  background: rgba(var(--color-accent-rgb, 74, 127, 167), 0.12);
+  color: var(--color-primary, #0A1931);
+  border: 1px solid rgba(var(--color-accent-rgb, 74, 127, 167), 0.25);
 }
 
 .rightMeta {

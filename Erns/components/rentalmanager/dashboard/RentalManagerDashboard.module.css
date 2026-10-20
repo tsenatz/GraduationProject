@@ -218,7 +218,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background-color: #006666;
+  background-color: var(--color-primary, #0A1931);
   color: #FFFFFF;
   font-weight: 800;
   font-size: 1rem;
@@ -891,14 +891,20 @@
   border-radius: 4px 8px 8px 4px;
 }
 
+.applicantCardFooter {
+  margin-top: auto;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(15, 23, 42, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
 .applicantActionsRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
-  margin-top: auto;
-  padding-top: 0.75rem;
-  border-top: 1px solid rgba(15, 23, 42, 0.06);
+  gap: 0.5rem;
 }
 
 .contactDirectBtns {
@@ -927,6 +933,198 @@
   border-color: var(--color-primary, #0A1931);
   transform: translateY(-1px);
 }
+
+.verifyBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.45rem 0.75rem;
+  border-radius: 8px;
+  background-color: #F8FAFC;
+  color: #334155;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.verifyBtn:hover {
+  background-color: #F1F5F9;
+  border-color: #4A7FA7;
+  color: #0A1931;
+}
+
+.verifyBtnActive {
+  background-color: rgba(5, 150, 105, 0.08);
+  border-color: rgba(5, 150, 105, 0.25);
+  color: #059669;
+}
+
+.verifyBtnActive:hover {
+  background-color: rgba(5, 150, 105, 0.14);
+  border-color: #059669;
+}
+
+.applicantDecisionRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.declineBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: #FFFFFF;
+  color: #DC2626;
+  border: 1.5px solid rgba(220, 38, 38, 0.3);
+  font-size: 0.84rem;
+  font-weight: 700;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.declineBtn:hover:not(:disabled) {
+  background-color: rgba(220, 38, 38, 0.06);
+  border-color: #DC2626;
+  transform: translateY(-1px);
+}
+
+.declineBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.approveBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: #059669;
+  color: #FFFFFF;
+  border: 1.5px solid #059669;
+  font-size: 0.84rem;
+  font-weight: 700;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.2);
+}
+
+.approveBtn:hover:not(:disabled) {
+  background-color: #047857;
+  border-color: #047857;
+  box-shadow: 0 4px 10px rgba(5, 150, 105, 0.3);
+  transform: translateY(-1px);
+}
+
+.approveBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.secondaryActionBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: #F8FAFC;
+  color: #475569;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.52rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.secondaryActionBtn:hover:not(:disabled) {
+  background-color: #F1F5F9;
+  border-color: rgba(10, 25, 49, 0.25);
+  color: #0A1931;
+  transform: translateY(-1px);
+}
+
+.secondaryActionBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Modal Overlays & Containers */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(10, 25, 49, 0.72);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modalContainer {
+  background-color: #FFFFFF;
+  border-radius: 18px;
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  box-shadow: 0 25px 50px -12px rgba(10, 25, 49, 0.35), 0 0 0 1px rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-y: auto;
+  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #0A1931;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modalTitle {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0A1931;
+  margin: 0;
+}
+
+.closeBtn {
+  background: transparent;
+  border: none;
+  color: #64748B;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.closeBtn:hover {
+  background-color: #F1F5F9;
+  color: #0A1931;
+}
+
+
 
 
 

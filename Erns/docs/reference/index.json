@@ -1,0 +1,480 @@
+{
+ "note": "Everything here is the source page as rendered at 1440px, minus its words (filler of the same length). Copy from these files rather than redrawing.",
+ "viewport": 1440,
+ "lang": "en",
+ "sections": [
+  {
+   "file": "sections/01-div.html",
+   "name": "01-div",
+   "tag": "div",
+   "bytes": 26883
+  },
+  {
+   "file": "sections/02-div.html",
+   "name": "02-div",
+   "tag": "div",
+   "bytes": 9569
+  },
+  {
+   "file": "sections/03-div.html",
+   "name": "03-div",
+   "tag": "div",
+   "bytes": 16798
+  },
+  {
+   "file": "sections/04-div.html",
+   "name": "04-div",
+   "tag": "div",
+   "bytes": 68182
+  },
+  {
+   "file": "sections/05-div.html",
+   "name": "05-div",
+   "tag": "div",
+   "bytes": 17857
+  },
+  {
+   "file": "sections/06-div.html",
+   "name": "06-div",
+   "tag": "div",
+   "bytes": 36092
+  },
+  {
+   "file": "sections/07-px-captcha-modal.html",
+   "name": "07-px-captcha-modal",
+   "tag": "iframe",
+   "bytes": 315
+  }
+ ],
+ "svgs": [
+  {
+   "file": "reference/assets/svg/001-icon-div.svg",
+   "role": "icon",
+   "width": 24,
+   "height": 24,
+   "label": null,
+   "section": "02-div",
+   "animated": false,
+   "copies": 1,
+   "colors": [
+    "rgb(17, 17, 22)"
+   ]
+  },
+  {
+   "file": "reference/assets/svg/002-icon-div.svg",
+   "role": "icon",
+   "width": 24,
+   "height": 24,
+   "label": null,
+   "section": "02-div",
+   "animated": false,
+   "copies": 1,
+   "colors": [
+    "rgb(17, 17, 22)"
+   ]
+  },
+  {
+   "file": "reference/assets/svg/003-icon-div.svg",
+   "role": "icon",
+   "width": 16,
+   "height": 16,
+   "label": null,
+   "section": "04-div",
+   "animated": false,
+   "copies": 4,
+   "colors": [
+    "rgb(0, 65, 217)"
+   ]
+  },
+  {
+   "file": "reference/assets/svg/004-icon-div.svg",
+   "role": "icon",
+   "width": 32,
+   "height": 32,
+   "label": null,
+   "section": "05-div",
+   "animated": false,
+   "copies": 1,
+   "colors": [
+    "rgb(24, 119, 242)"
+   ]
+  },
+  {
+   "file": "reference/assets/svg/005-icon-div.svg",
+   "role": "icon",
+   "width": 32,
+   "height": 32,
+   "label": null,
+   "section": "05-div",
+   "animated": false,
+   "copies": 1,
+   "colors": [
+    "rgb(0, 65, 217)"
+   ]
+  },
+  {
+   "file": "reference/assets/svg/006-icon-div.svg",
+   "role": "icon",
+   "width": 32,
+   "height": 32,
+   "label": null,
+   "section": "05-div",
+   "animated": false,
+   "copies": 1,
+   "colors": [
+    "rgb(0, 65, 217)"
+   ]
+  },
+  {
+   "file": "reference/assets/svg/007-icon-div.svg",
+   "role": "icon",
+   "width": 32,
+   "height": 32,
+   "label": null,
+   "section": "05-div",
+   "animated": false,
+   "copies": 1,
+   "colors": [
+    "rgb(0, 0, 0)"
+   ]
+  },
+  {
+   "file": "reference/assets/svg/008-icon-div.svg",
+   "role": "icon",
+   "width": 24,
+   "height": 24,
+   "label": null,
+   "section": "06-div",
+   "animated": false,
+   "copies": 1,
+   "colors": [
+    "rgb(83, 83, 100)"
+   ]
+  },
+  {
+   "file": "reference/assets/svg/009-icon-div.svg",
+   "role": "icon",
+   "width": 24,
+   "height": 24,
+   "label": null,
+   "section": "06-div",
+   "animated": false,
+   "copies": 1,
+   "colors": [
+    "rgb(83, 83, 100)"
+   ]
+  },
+  {
+   "file": "reference/assets/svg/010-icon-div.svg",
+   "role": "icon",
+   "width": 24,
+   "height": 24,
+   "label": null,
+   "section": "06-div",
+   "animated": false,
+   "copies": 1,
+   "colors": [
+    "rgb(83, 83, 100)"
+   ]
+  },
+  {
+   "file": "reference/assets/svg/011-icon-div.svg",
+   "role": "icon",
+   "width": 24,
+   "height": 24,
+   "label": null,
+   "section": "06-div",
+   "animated": false,
+   "copies": 1,
+   "colors": [
+    "rgb(83, 83, 100)"
+   ]
+  },
+  {
+   "file": "reference/assets/svg/012-icon-div.svg",
+   "role": "icon",
+   "width": 24,
+   "height": 24,
+   "label": null,
+   "section": "06-div",
+   "animated": false,
+   "copies": 1,
+   "colors": [
+    "rgb(83, 83, 100)"
+   ]
+  }
+ ],
+ "images": [
+  {
+   "file": "reference/assets/images/003-z-logo-default-visual-refresh.svg",
+   "from": "https://www.zillowstatic.com/s3/pfs/static/z-logo-default-visual-refresh.svg",
+   "bytes": 2369,
+   "width": null,
+   "height": null
+  },
+  {
+   "file": "reference/assets/images/004-z-logo-white-visual-refresh.svg",
+   "from": "https://www.zillowstatic.com/s3/pfs/static/z-logo-white-visual-refresh.svg",
+   "bytes": 2357,
+   "width": null,
+   "height": null
+  },
+  {
+   "file": "reference/assets/images/005-4af10a9d5d4ea7de5a33fba1eb5faca7.svg",
+   "from": "https://www.zillow.com/s3/web-platform/sub-apps/zillow/hops-homepage/hops-homepage.prod.master.17668426.ca0f4835/web/4af10a9d5d4ea7de5a33fba1eb5faca7.svg",
+   "bytes": 2369,
+   "width": null,
+   "height": null
+  },
+  {
+   "file": "reference/assets/images/006-image2-sm-2x.jpg",
+   "from": "https://www.zillowstatic.com/bedrock/app/uploads/sites/5/2024/07/image2-sm%402x.jpg",
+   "bytes": 686780,
+   "width": 750,
+   "height": 616
+  },
+  {
+   "file": "reference/assets/images/007-image2-m-2x.jpg",
+   "from": "https://www.zillowstatic.com/bedrock/app/uploads/sites/5/2024/07/image2-m%402x.jpg",
+   "bytes": 2278612,
+   "width": 1536,
+   "height": 976
+  },
+  {
+   "file": "reference/assets/images/008-image2-lg-2x.jpg",
+   "from": "https://www.zillowstatic.com/bedrock/app/uploads/sites/5/2024/07/image2-lg%402x.jpg",
+   "bytes": 3090817,
+   "width": 2048,
+   "height": 976
+  },
+  {
+   "file": "reference/assets/images/009-image2-xl-2x.webp",
+   "from": "https://www.zillowstatic.com/bedrock/app/uploads/sites/5/2024/07/image2-xl%402x.jpg",
+   "bytes": 580228,
+   "width": 3840,
+   "height": 976
+  },
+  {
+   "file": "reference/assets/images/010-image2-xl-1x.webp",
+   "from": "https://www.zillowstatic.com/bedrock/app/uploads/sites/5/2024/07/image2-xl%401x.jpg",
+   "bytes": 191054,
+   "width": 1920,
+   "height": 488
+  },
+  {
+   "file": "reference/assets/images/011-1d9d5bce566c85fa242cb21ad3292cb8.webp",
+   "from": "https://www.zillow.com/s3/web-platform/sub-apps/zillow/hops-homepage/hops-homepage.prod.master.17668426.ca0f4835/web/1d9d5bce566c85fa242cb21ad3292cb8.webp",
+   "bytes": 19976,
+   "width": 513,
+   "height": 416
+  },
+  {
+   "file": "reference/assets/images/012-f102736268b1de55ce81ea6e5219e15d.webp",
+   "from": "https://www.zillow.com/s3/web-platform/sub-apps/zillow/hops-homepage/hops-homepage.prod.master.17668426.ca0f4835/web/f102736268b1de55ce81ea6e5219e15d.jpg",
+   "bytes": 20160,
+   "width": 513,
+   "height": 416
+  },
+  {
+   "file": "reference/assets/images/013-0b326d5cfd5d9622edb6b1e7c5b6f8d2.webp",
+   "from": "https://www.zillow.com/s3/web-platform/sub-apps/zillow/hops-homepage/hops-homepage.prod.master.17668426.ca0f4835/web/0b326d5cfd5d9622edb6b1e7c5b6f8d2.webp",
+   "bytes": 11182,
+   "width": 355,
+   "height": 275
+  },
+  {
+   "file": "reference/assets/images/014-c45ff4889526375d32314844d0b67d8a.webp",
+   "from": "https://www.zillow.com/s3/web-platform/sub-apps/zillow/hops-homepage/hops-homepage.prod.master.17668426.ca0f4835/web/c45ff4889526375d32314844d0b67d8a.png",
+   "bytes": 6770,
+   "width": 320,
+   "height": 320
+  },
+  {
+   "file": "reference/assets/images/015-e9737a930518048728251f1671effc95.webp",
+   "from": "https://www.zillow.com/s3/web-platform/sub-apps/zillow/hops-homepage/hops-homepage.prod.master.17668426.ca0f4835/web/e9737a930518048728251f1671effc95.png",
+   "bytes": 4592,
+   "width": 320,
+   "height": 320
+  },
+  {
+   "file": "reference/assets/images/016-5d69598eba004b778f74b62a86a30695.webp",
+   "from": "https://www.zillow.com/s3/web-platform/sub-apps/zillow/hops-homepage/hops-homepage.prod.master.17668426.ca0f4835/web/5d69598eba004b778f74b62a86a30695.png",
+   "bytes": 3934,
+   "width": 320,
+   "height": 320
+  },
+  {
+   "file": "reference/assets/images/017-app-store-badge.svg",
+   "from": "https://www.zillowstatic.com/s3/pfs/static/app-store-badge.svg",
+   "bytes": 6974,
+   "width": null,
+   "height": null
+  },
+  {
+   "file": "reference/assets/images/018-google-play-badge.svg",
+   "from": "https://www.zillowstatic.com/s3/pfs/static/google-play-badge.svg",
+   "bytes": 4133,
+   "width": null,
+   "height": null
+  },
+  {
+   "file": "reference/assets/images/019-apple-touch-icon.png",
+   "from": "https://www.zillow.com/apple-touch-icon.png",
+   "bytes": 1039,
+   "width": 180,
+   "height": 180
+  }
+ ],
+ "fonts": [
+  {
+   "family": "Inter",
+   "weight": "400 800",
+   "style": "normal",
+   "files": [
+    "assets/fonts/001-inter-variable.woff2"
+   ]
+  },
+  {
+   "family": "Object Sans",
+   "weight": "800",
+   "style": "normal",
+   "files": [
+    "assets/fonts/002-object-sans-heavy.woff2"
+   ]
+  }
+ ],
+ "media": [],
+ "icons": [
+  {
+   "rel": "apple-touch-icon",
+   "sizes": null,
+   "file": "reference/assets/images/019-apple-touch-icon.png",
+   "from": "https://www.zillow.com/apple-touch-icon.png"
+  }
+ ],
+ "cssVars": {
+  "--made-with-panda": "\"🐼\""
+ },
+ "scripts": [
+  {
+   "file": "reference/scripts/01-gtm.js",
+   "from": "https://www.googletagmanager.com/gtm.js?id=GTM-P6HT97",
+   "bytes": 872372
+  },
+  {
+   "file": "reference/scripts/02-inline.js",
+   "from": "inline",
+   "bytes": 255
+  },
+  {
+   "file": "reference/scripts/03-inline.js",
+   "from": "inline",
+   "bytes": 342
+  },
+  {
+   "file": "reference/scripts/04-inline.js",
+   "from": "inline",
+   "bytes": 276
+  },
+  {
+   "file": "reference/scripts/05-inline.js",
+   "from": "inline",
+   "bytes": 2476
+  },
+  {
+   "file": "reference/scripts/06-inline.js",
+   "from": "inline",
+   "bytes": 70
+  },
+  {
+   "file": "reference/scripts/07-inline.js",
+   "from": "inline",
+   "bytes": 1570
+  },
+  {
+   "file": "reference/scripts/08-inline.js",
+   "from": "inline",
+   "bytes": 190
+  },
+  {
+   "file": "reference/scripts/09-inline.js",
+   "from": "inline",
+   "bytes": 2147
+  },
+  {
+   "file": "reference/scripts/10-inline.js",
+   "from": "inline",
+   "bytes": 1055
+  },
+  {
+   "file": "reference/scripts/11-pubnub-7-5-0-min.js",
+   "from": "https://cdn.pubnub.com/sdk/javascript/pubnub.7.5.0.min.js",
+   "bytes": 245230
+  },
+  {
+   "file": "reference/scripts/12-consent.js",
+   "from": "https://api.consentjs.datagrail.io/consent/7e84c9ce-057e-4c91-87ef-56e6d4914637/a84e7f07-b7d6-4b7a-af51-89d7fb6d34f4/consent.js",
+   "bytes": 114585
+  },
+  {
+   "file": "reference/scripts/13-inline.js",
+   "from": "inline",
+   "bytes": 725
+  },
+  {
+   "file": "reference/scripts/14-inline.js",
+   "from": "inline",
+   "bytes": 5649
+  },
+  {
+   "file": "reference/scripts/15-inline.js",
+   "from": "inline",
+   "bytes": 1854
+  },
+  {
+   "file": "reference/scripts/16-inline.js",
+   "from": "inline",
+   "bytes": 1419
+  },
+  {
+   "file": "reference/scripts/17-inline.js",
+   "from": "inline",
+   "bytes": 100
+  },
+  {
+   "file": "reference/scripts/18-inline.js",
+   "from": "inline",
+   "bytes": 523
+  },
+  {
+   "file": "reference/scripts/19-polyfills-42372ed130431b0a.js",
+   "from": "https://www.zillow.com/s3/shopper-platform/_next/static/chunks/polyfills-42372ed130431b0a.js",
+   "bytes": 112541
+  },
+  {
+   "file": "reference/scripts/20-webpack-9fefde6674a981cc.js",
+   "from": "https://www.zillow.com/s3/shopper-platform/_next/static/chunks/webpack-9fefde6674a981cc.js",
+   "bytes": 10673
+  }
+ ],
+ "libraries": [],
+ "skipped": [
+  {
+   "url": "https://www.zillowstatic.com/bedrock/app/uploads/sites/5/2024/10/2017_ZillowExteriors_218-1.jpg",
+   "reason": "The reference folder was full (7 MB)."
+  },
+  {
+   "url": "https://www.zillowstatic.com/bedrock/app/uploads/sites/5/2024/10/GettyImages-472069091-Edit.jpg",
+   "reason": "The reference folder was full (7 MB)."
+  },
+  {
+   "url": "https://www.zillowstatic.com/bedrock/app/uploads/sites/5/2024/10/shutterstock_529108441.jpg",
+   "reason": "The reference folder was full (7 MB)."
+  },
+  {
+   "url": "https://accounts.google.com/gsi/client",
+   "reason": "Couldn't be downloaded."
+  }
+ ],
+ "notes": []
+}

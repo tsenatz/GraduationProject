@@ -1,0 +1,97 @@
+{
+ "url": "https://www.zillow.com/",
+ "idle": [],
+ "scroll": {
+  "movers": [
+   {
+    "path": "div.dUHUfY:nth-of-type(1) > div.yLqXB > div.QzZPU > div.iOhzkD:nth-of-type(2) > div.lgkJlM",
+    "property": "class",
+    "changes": 1,
+    "from": "+lgkJlM -wtybt",
+    "to": "+lgkJlM -wtybt",
+    "settleMs": 36,
+    "lerp": null,
+    "range": 0
+   },
+   {
+    "path": "div.jQUlFV:nth-of-type(1) > div.dUHUfY:nth-of-type(1) > div.yLqXB > div.QzZPU > div.iOhzkD:nth-of-type(2)",
+    "property": "class",
+    "changes": 1,
+    "from": "+iOhzkD",
+    "to": "+iOhzkD",
+    "settleMs": 36,
+    "lerp": null,
+    "range": 0
+   },
+   {
+    "path": "form.c11n.c11n_form > div.c11n.c11n_combobox__trigger > div.c11n.c11n_combobox__input-group > div.c11n.c11n_adorned-input__root > input.c11n.c11n_combobox__input",
+    "property": "class",
+    "changes": 1,
+    "from": "-sbsa-cOHBIX -sbsa-eMkodn -sbsa-eMkogt",
+    "to": "-sbsa-cOHBIX -sbsa-eMkodn -sbsa-eMkogt",
+    "settleMs": 36,
+    "lerp": null,
+    "range": 0
+   },
+   {
+    "path": "div.c11n.c11n_combobox__trigger > div.c11n.c11n_combobox__input-group > div.c11n.c11n_adorned-input__root > span.c11n.c11n_adorned-input__adornment > button.c11n.c11n_icon-button:nth-of-type(1)",
+    "property": "class",
+    "changes": 1,
+    "from": "+sbsa-ifZmBV +sbsa-ifZmCe -sbsa-cRxwBT -sbsa-cRxwCg -sbsa-eTCxPS -sbsa-cUOXSY -sbsa-cUOXPS",
+    "to": "+sbsa-ifZmBV +sbsa-ifZmCe -sbsa-cRxwBT -sbsa-cRxwCg -sbsa-eTCxPS -sbsa-cUOXSY -sbsa-cUOXPS",
+    "settleMs": 36,
+    "lerp": null,
+    "range": 0
+   },
+   {
+    "path": "div.c11n.c11n_combobox__trigger > div.c11n.c11n_combobox__input-group > div.c11n.c11n_adorned-input__root > span.c11n.c11n_adorned-input__adornment > button.c11n.c11n_icon-button:nth-of-type(2)",
+    "property": "class",
+    "changes": 1,
+    "from": "+sbsa-ifZmBV +sbsa-ifZmCe -sbsa-cRxwBT -sbsa-cRxwCg -sbsa-eTCxPS -sbsa-cUOXSY -sbsa-cUOXPS",
+    "to": "+sbsa-ifZmBV +sbsa-ifZmCe -sbsa-cRxwBT -sbsa-cRxwCg -sbsa-eTCxPS -sbsa-cUOXSY -sbsa-cUOXPS",
+    "settleMs": 36,
+    "lerp": null,
+    "range": 0
+   }
+  ],
+  "settleMs": 36,
+  "lerp": null
+ },
+ "pointer": [],
+ "header": null,
+ "navigation": [],
+ "menu": null,
+ "hovers": [
+  {
+   "path": "div:nth-of-type(3) > span:nth-of-type(2)",
+   "label": "button.styledtextbutton-c11n-8-111-2__sc-1nwmfqo-0.gsxcju",
+   "changes": [
+    {
+     "path": "div:nth-of-type(3) > span:nth-of-type(2)",
+     "property": "font-family",
+     "from": "",
+     "to": "\"Aurora Cn BT\"",
+     "atMs": 533,
+     "count": 91
+    }
+   ],
+   "text": [],
+   "animations": [],
+   "film": {
+    "frames": [
+     0,
+     237,
+     435,
+     519,
+     714,
+     837
+    ]
+   }
+  }
+ ],
+ "canvases": [],
+ "text": [],
+ "notes": [
+  "navigation: cdpSession.send: Protocol error (Page.captureScreenshot): Not attached to an active page"
+ ]
+}

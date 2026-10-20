@@ -99,7 +99,7 @@
 }
 
 .markerIconRent {
-  background-color: #2563eb;
+  background-color: var(--color-primary, #0A1931);
 }
 
 .markerIconSale {

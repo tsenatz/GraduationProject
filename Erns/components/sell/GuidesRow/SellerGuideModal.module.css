@@ -172,8 +172,8 @@
 
 /* Key Takeaways Box */
 .takeawaysBox {
-  background: #f0f7ff;
-  border: 1px solid #bae6fd;
+  background: rgba(var(--color-bg-warm-rgb, 179, 207, 229), 0.2);
+  border: 1px solid rgba(var(--color-accent-rgb, 74, 127, 167), 0.3);
   border-radius: 14px;
   padding: 1.25rem 1.5rem;
   display: flex;
@@ -187,7 +187,7 @@
   gap: 0.5rem;
   font-size: 1rem;
   font-weight: 700;
-  color: #0369a1;
+  color: var(--color-primary, #0A1931);
   margin: 0;
 }
 
@@ -210,7 +210,7 @@
 }
 
 .checkIcon {
-  color: #0284c7;
+  color: var(--color-accent, #4A7FA7);
   flex-shrink: 0;
   margin-top: 3px;
 }

@@ -324,7 +324,7 @@
 
 .typePill:hover {
   border-color: #4a7fa7;
-  background: #eff6ff;
+  background: rgba(var(--color-bg-warm-rgb, 179, 207, 229), 0.2);
 }
 
 .typePillActive {
@@ -356,22 +356,22 @@
 }
 
 .choiceCard:hover {
-  border-color: #93c5fd;
+  border-color: var(--color-accent, #4A7FA7);
   background: #f8fafc;
   transform: translateY(-1px);
 }
 
 .choiceCardActive {
-  border-color: #4a7fa7;
-  background: #f0f7ff;
+  border-color: var(--color-accent, #4A7FA7);
+  background: rgba(var(--color-bg-warm-rgb, 179, 207, 229), 0.25);
 }
 
 .choiceIconWrapper {
   width: 42px;
   height: 42px;
   border-radius: 10px;
-  background: #eff6ff;
-  color: #1d4ed8;
+  background: rgba(var(--color-bg-warm-rgb, 179, 207, 229), 0.35);
+  color: var(--color-primary, #0A1931);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -478,8 +478,8 @@
 .recommendationCard {
   width: 100%;
   border-radius: 12px;
-  border: 2px solid #bfdbfe;
-  background: #f0f7ff;
+  border: 2px solid rgba(var(--color-accent-rgb, 74, 127, 167), 0.35);
+  background: rgba(var(--color-bg-warm-rgb, 179, 207, 229), 0.2);
   padding: 24px;
   box-sizing: border-box;
   display: flex;
@@ -516,8 +516,8 @@
 }
 
 .recIconAgent {
-  background: #dbeafe;
-  color: #1e40af;
+  background: rgba(var(--color-bg-warm-rgb, 179, 207, 229), 0.35);
+  color: var(--color-primary, #0A1931);
 }
 
 .recIconFsbo {

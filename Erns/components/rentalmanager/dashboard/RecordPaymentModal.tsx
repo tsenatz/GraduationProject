@@ -62,7 +62,7 @@ export function RecordPaymentModal({
       <div
         className={styles.modalContainer}
         onClick={(e) => e.stopPropagation()}
-        style={{ maxWidth: "560px", padding: "2rem" }}
+        style={{ maxWidth: "560px", padding: "2rem", backgroundColor: "#FFFFFF", borderRadius: "18px" }}
       >
         <div className={styles.modalHeader} style={{ marginBottom: "1.5rem" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>

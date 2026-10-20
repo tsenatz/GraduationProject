@@ -48,8 +48,8 @@
   align-items: center;
   padding: 4px 10px;
   border-radius: 9999px;
-  background: #eff6ff;
-  color: #1d4ed8;
+  background: rgba(var(--color-bg-warm-rgb, 179, 207, 229), 0.35);
+  color: var(--color-primary, #0A1931);
   font-size: 0.78rem;
   font-weight: 700;
 }

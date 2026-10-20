@@ -119,7 +119,7 @@ export function CreateLeaseModal({
       <div
         className={styles.modalContainer}
         onClick={(e) => e.stopPropagation()}
-        style={{ maxWidth: "680px", padding: "2.25rem", maxHeight: "90vh", overflowY: "auto" }}
+        style={{ maxWidth: "680px", padding: "2.25rem", maxHeight: "90vh", overflowY: "auto", backgroundColor: "#FFFFFF", borderRadius: "18px" }}
       >
         <div className={styles.modalHeader} style={{ marginBottom: "1.5rem" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
