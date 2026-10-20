@@ -493,7 +493,7 @@ export const AddRentalPropertyModal: React.FC<AddRentalPropertyModalProps> = ({
                 </div>
               </div>
 
-              {/* Zillow Rent Guidance Insight Banner */}
+              {/* Rent Guidance Insight Banner */}
               {marketInsight && (
                 <div className={styles.insightBox}>
                   <div className={styles.insightIcon}>

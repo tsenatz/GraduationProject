@@ -77,7 +77,7 @@ export function SellHero() {
         <h1 className={styles.title}>{t.hero.title}</h1>
         <p className={styles.subtitle}>{t.hero.subtitle}</p>
 
-        {/* Zillow-Style Address Search Bar */}
+        {/* Address Search Bar */}
         <form className={styles.searchCard} onSubmit={handleSearchSubmit}>
           <div className={styles.inputGroup}>
             <Building size={18} className={styles.inputIcon} aria-hidden="true" />

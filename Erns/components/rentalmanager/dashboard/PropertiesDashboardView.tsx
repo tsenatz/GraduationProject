@@ -64,7 +64,7 @@ export function PropertiesDashboardView({
   const [searchQuery, setSearchQuery] = useState("");
   const [isPending, startTransition] = useTransition();
 
-  // Auto-open modal if navigated from topnav button like Zillow
+  // Auto-open modal if navigated with action parameter
   useEffect(() => {
     if (
       searchParams.get("source") === "topnav" ||
@@ -215,7 +215,7 @@ export function PropertiesDashboardView({
           <p style={{ fontWeight: 600 }}>Loading rental properties...</p>
         </div>
       ) : properties.length === 0 ? (
-        /* Empty Portfolio State (Zillow Welcome Hero) */
+        /* Empty Portfolio State */
         <>
           <div className={styles.pageHeaderRow}>
             <h1 className={styles.pageTitle}>Properties</h1>

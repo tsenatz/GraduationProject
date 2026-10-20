@@ -5,6 +5,7 @@ import db from "@/lib/db";
 import { signupSchema } from "@/lib/schema";
 import { generateVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/lib/mail";
+import { checkRateLimit, resetRateLimit } from "@/lib/rate-limit";
 
 export type ActionResponse = {
   success?: boolean;
@@ -26,11 +27,21 @@ export async function registerUser(data: unknown): Promise<ActionResponse> {
   }
 
   const { firstName, lastName, email, password } = parsed.data;
+  const normalizedEmail = email.toLowerCase().trim();
+
+  // CIA Triad - Availability: Prevent account registration flooding
+  const regRateLimit = checkRateLimit(`register:${normalizedEmail}`, {
+    limit: 3,
+    windowMs: 5 * 60 * 1000,
+  });
+  if (!regRateLimit.success) {
+    return { error: "Too many registration attempts. Please wait a few minutes before trying again." };
+  }
 
   try {
     // 2. Check if user already exists
     const existingUser = await db.user.findUnique({
-      where: { email },
+      where: { email: normalizedEmail },
     });
 
     if (existingUser) {
@@ -42,7 +53,7 @@ export async function registerUser(data: unknown): Promise<ActionResponse> {
       // If user exists but is unverified, update password & resend verification code
       const hashedPassword = await bcrypt.hash(password, 10);
       await db.user.update({
-        where: { email },
+        where: { email: normalizedEmail },
         data: {
           name: `${firstName} ${lastName}`,
           firstName,
@@ -51,9 +62,9 @@ export async function registerUser(data: unknown): Promise<ActionResponse> {
         },
       });
 
-      const tokenObj = await generateVerificationToken(email);
-      await sendVerificationEmail(email, tokenObj.token);
-      return { success: true, email };
+      const tokenObj = await generateVerificationToken(normalizedEmail);
+      await sendVerificationEmail(normalizedEmail, tokenObj.token);
+      return { success: true, email: normalizedEmail };
     }
 
     // 3. Securely hash password
@@ -65,7 +76,7 @@ export async function registerUser(data: unknown): Promise<ActionResponse> {
         name: `${firstName} ${lastName}`,
         firstName,
         lastName,
-        email,
+        email: normalizedEmail,
         password: hashedPassword,
         role: "USER",
         emailVerified: null,
@@ -73,10 +84,10 @@ export async function registerUser(data: unknown): Promise<ActionResponse> {
     });
 
     // 5. Generate and dispatch verification code
-    const tokenObj = await generateVerificationToken(email);
-    await sendVerificationEmail(email, tokenObj.token);
+    const tokenObj = await generateVerificationToken(normalizedEmail);
+    await sendVerificationEmail(normalizedEmail, tokenObj.token);
 
-    return { success: true, email };
+    return { success: true, email: normalizedEmail };
   } catch (error) {
     console.error("Error registering user:", error);
     return { error: "Something went wrong while creating your account. Please try again." };
@@ -85,17 +96,31 @@ export async function registerUser(data: unknown): Promise<ActionResponse> {
 
 /**
  * Server Action to verify the submitted 6-digit code.
+ * Defends against brute-force attacks on OTP codes.
  */
 export async function verifyEmailCode(email: string, code: string): Promise<ActionResponse> {
   if (!email || !code || code.trim().length !== 6) {
     return { error: "Please enter a valid 6-digit verification code." };
   }
 
+  const normalizedEmail = email.toLowerCase().trim();
+
+  // CIA Triad - Confidentiality: Protect 6-digit OTP against brute-force guessing
+  const verifyLimit = checkRateLimit(`verify-email:${normalizedEmail}`, {
+    limit: 5,
+    windowMs: 15 * 60 * 1000,
+  });
+  if (!verifyLimit.success) {
+    return {
+      error: "Too many incorrect verification attempts. Please wait 15 minutes before trying again.",
+    };
+  }
+
   try {
     // 1. Find matching token
     const existingToken = await db.verificationToken.findFirst({
       where: {
-        identifier: email,
+        identifier: normalizedEmail,
         token: code.trim(),
       },
     });
@@ -112,7 +137,7 @@ export async function verifyEmailCode(email: string, code: string): Promise<Acti
 
     // 3. Update User as verified
     await db.user.update({
-      where: { email },
+      where: { email: normalizedEmail },
       data: {
         emailVerified: new Date(),
       },
@@ -122,11 +147,14 @@ export async function verifyEmailCode(email: string, code: string): Promise<Acti
     await db.verificationToken.delete({
       where: {
         identifier_token: {
-          identifier: email,
+          identifier: normalizedEmail,
           token: code.trim(),
         },
       },
     });
+
+    // Reset attempt counter on success
+    resetRateLimit(`verify-email:${normalizedEmail}`);
 
     return { success: true };
   } catch (error) {
@@ -143,9 +171,21 @@ export async function resendVerificationCode(email: string): Promise<ActionRespo
     return { error: "Email is required." };
   }
 
+  const normalizedEmail = email.toLowerCase().trim();
+
+  // CIA Triad - Availability: Cooldown against email service flooding
+  const cooldown = checkRateLimit(`resend-email:${normalizedEmail}`, {
+    limit: 1,
+    windowMs: 60 * 1000,
+  });
+  if (!cooldown.success) {
+    const remainingSeconds = Math.max(1, Math.ceil(cooldown.resetMs / 1000));
+    return { error: `Please wait ${remainingSeconds}s before requesting another verification code.` };
+  }
+
   try {
     const user = await db.user.findUnique({
-      where: { email },
+      where: { email: normalizedEmail },
     });
 
     if (!user) {
@@ -156,8 +196,8 @@ export async function resendVerificationCode(email: string): Promise<ActionRespo
       return { error: "Your email is already verified. Please log in." };
     }
 
-    const tokenObj = await generateVerificationToken(email);
-    await sendVerificationEmail(email, tokenObj.token);
+    const tokenObj = await generateVerificationToken(normalizedEmail);
+    await sendVerificationEmail(normalizedEmail, tokenObj.token);
 
     return { success: true };
   } catch (error) {

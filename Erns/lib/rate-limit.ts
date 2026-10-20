@@ -114,3 +114,11 @@ export function checkRateLimit(
     resetMs,
   };
 }
+
+/**
+ * Resets/clears the rate limit counter for a specific key (e.g. after successful login).
+ */
+export function resetRateLimit(key: string): void {
+  globalThis.__ernsRateLimitStore?.delete(key);
+}
+

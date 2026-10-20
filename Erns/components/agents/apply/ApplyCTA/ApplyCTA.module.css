@@ -48,7 +48,7 @@
   flex-wrap: wrap;
 }
 
-/* Zillow Standard Action Buttons */
+/* Action Buttons */
 .primaryBtn {
   background-color: var(--color-accent, #4a7fa7);
   color: #ffffff;
