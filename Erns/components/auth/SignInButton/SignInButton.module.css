@@ -184,8 +184,13 @@
 
 @media (max-width: 480px) {
   .signInBtn {
-    padding: 0.45rem 1rem;
-    font-size: 0.875rem;
+    padding: 0.36rem 0.8rem;
+    font-size: 0.82rem;
+  }
+
+  .avatarBtn {
+    width: 34px;
+    height: 34px;
   }
 
   .dropdownMenu {

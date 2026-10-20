@@ -299,3 +299,79 @@
     justify-content: center;
   }
 }
+
+@media (max-width: 640px) {
+  .section {
+    padding: 3.5rem 1rem 4rem;
+  }
+
+  .headerRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+  }
+
+  .viewAllTopBtn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .tabsBar {
+    gap: 0.75rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .tabsList {
+    width: 100%;
+    padding-bottom: 6px;
+  }
+
+  .tabBtn {
+    padding: 0.5rem 0.95rem;
+    font-size: 0.85rem;
+  }
+
+  .resultsMeta {
+    width: 100%;
+    text-align: left;
+  }
+
+  .aiRecommendationBanner {
+    padding: 1.25rem 1rem;
+    gap: 1.25rem;
+  }
+
+  .aiBannerContent {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .aiIconWrapper {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+  }
+
+  .aiBannerTitle {
+    font-size: 1.05rem;
+  }
+
+  .aiBannerDesc {
+    font-size: 0.875rem;
+  }
+
+  .exploreMoreBtn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.85rem 1.5rem;
+  }
+}
+

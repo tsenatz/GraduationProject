@@ -45,3 +45,13 @@
     gap: 1.5rem;
   }
 }
+
+@media (max-width: 640px) {
+  .container {
+    padding: 3.5rem 1rem 2.5rem;
+  }
+
+  .cardsWrapper {
+    gap: 1.25rem;
+  }
+}

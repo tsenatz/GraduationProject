@@ -901,7 +901,23 @@
 
 @media (max-width: 640px) {
   .section {
-    padding: 60px 16px;
+    padding: 40px 14px;
+  }
+
+  .header {
+    margin-bottom: 28px;
+  }
+
+  .title {
+    font-size: 1.85rem;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+  }
+
+  .formCard {
+    padding: 20px 14px;
   }
 
   .formGrid {
@@ -914,10 +930,64 @@
 
   .stepper {
     gap: 4px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
   }
 
   .stepTitle {
     display: none;
   }
+
+  .stepIndicator {
+    width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+  }
+
+  .buttonRow {
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 16px;
+  }
+
+  .backBtn,
+  .nextBtn,
+  .publishBtn {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+
+  .modalCard {
+    padding: 24px 16px;
+    margin: 16px;
+    max-width: calc(100% - 32px);
+  }
+
+  .modalActions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .modalPrimaryBtn,
+  .modalSecondaryBtn {
+    width: 100%;
+    justify-content: center;
+  }
 }
+
+@media (max-width: 480px) {
+  .buttonRow {
+    flex-direction: column;
+  }
+
+  .backBtn,
+  .nextBtn,
+  .publishBtn {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0 !important;
+  }
+}
+
 

@@ -440,6 +440,8 @@
 
   .modalCard {
     padding: 24px 18px;
+    max-height: 85vh;
+    overflow-y: auto;
   }
 
   .modalOptionsGrid {
@@ -447,3 +449,27 @@
     gap: 14px;
   }
 }
+
+@media (max-width: 480px) {
+  .heroContainer {
+    padding: 36px 12px;
+  }
+
+  .title {
+    font-size: 1.85rem;
+  }
+
+  .subtitle {
+    font-size: 0.98rem;
+  }
+
+  .modalCard {
+    padding: 20px 14px;
+    border-radius: 14px;
+  }
+
+  .modalOptionCard {
+    padding: 16px 14px;
+  }
+}
+

@@ -68,6 +68,7 @@ export const favoritesTranslations = {
       tip3: "Share your curated list with family or co-buyers",
     },
     bottomNav: {
+      home: "Home",
       search: "Search",
       rent: "Rent",
       sell: "Sell",
@@ -145,6 +146,7 @@ export const favoritesTranslations = {
       tip3: "የመረጧቸውን ቤቶች ከቤተሰብ ወይም ከአጋር ጋር በቀላሉ ማጋራት",
     },
     bottomNav: {
+      home: "ዋና ገጽ",
       search: "ፈልግ",
       rent: "ኪራይ",
       sell: "ሽያጭ",
@@ -154,3 +156,4 @@ export const favoritesTranslations = {
     },
   },
 };
+

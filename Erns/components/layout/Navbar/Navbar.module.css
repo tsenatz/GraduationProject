@@ -81,6 +81,9 @@
   text-decoration: none;
   padding: 0 0.15rem;
   border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  z-index: 10;
 }
 
 .brand:focus-visible {
@@ -323,17 +326,51 @@
   font-weight: 600;
 }
 
-/* Mobile Drawer Overlay */
-.mobileDrawer {
+/* Mobile Drawer Backdrop & Menu */
+.mobileBackdrop {
   position: fixed;
-  top: 64px;
+  inset: 0;
+  background-color: rgba(10, 25, 49, 0.45);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  z-index: 998;
+  animation: fadeInBackdrop 0.2s ease-out;
+  cursor: pointer;
+}
+
+@keyframes fadeInBackdrop {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.mobileDrawer {
+  position: absolute;
+  top: 100%;
   left: 0;
   right: 0;
   background-color: var(--color-surface);
   border-bottom: 1px solid rgba(var(--color-accent-rgb), 0.2);
-  box-shadow: 0 4px 16px rgba(var(--color-primary-rgb), 0.1);
+  box-shadow: 0 10px 28px rgba(10, 25, 49, 0.16);
   z-index: 999;
   padding: 1rem 1.5rem;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  animation: slideDrawerDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideDrawerDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .mobileDrawerNav {
@@ -388,6 +425,7 @@
   .navbarContainer {
     padding: 0 1rem;
     justify-content: space-between;
+    position: relative;
   }
 
   .mobileToggleWrapper {
@@ -396,12 +434,13 @@
   }
 
   .leftCluster {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    position: static;
+    transform: none;
     margin: 0;
-    z-index: 1;
-    gap: 0;
+    gap: 8px;
+    z-index: 2;
   }
 
   .navSectionLeft {
@@ -413,7 +452,11 @@
   }
 
   .navSectionRight {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
     flex: 0 0 auto;
+    gap: 0.5rem;
     z-index: 2;
   }
 
@@ -431,3 +474,28 @@
     align-items: center;
   }
 }
+
+/* Smartphone Breakpoint (<= 640px) */
+@media (max-width: 640px) {
+  .navbarContainer {
+    padding: 0 0.75rem;
+  }
+
+  .brandText {
+    font-size: 1.25rem;
+  }
+
+  .brandIcon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .navSectionRight {
+    gap: 0.35rem;
+  }
+
+  /* Hide bookmark from top bar on small screens — already accessible in BottomNav and mobile drawer */
+  .bookmarkNavLink {
+    display: none;
+  }
+}

@@ -485,3 +485,26 @@
 .popupActionBtn:hover {
   background-color: var(--color-accent, #4A7FA7);
 }
+
+@media (max-width: 640px) {
+  .topControls {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    gap: 6px;
+  }
+
+  .controlPill {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .popupCard {
+    width: 250px;
+  }
+
+  .popupImageWrapper {
+    height: 130px;
+  }
+}
+

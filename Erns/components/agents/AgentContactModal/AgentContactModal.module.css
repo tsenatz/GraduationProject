@@ -200,3 +200,29 @@
   color: #64748b;
   margin: 0 0 20px;
 }
+
+@media (max-width: 480px) {
+  .modalOverlay {
+    padding: 12px;
+  }
+
+  .modalCard {
+    max-height: 94vh;
+    border-radius: 14px;
+  }
+
+  .modalHeader {
+    padding: 1rem 1.25rem;
+  }
+
+  .form {
+    padding: 1rem 1.25rem 1.5rem;
+    gap: 12px;
+  }
+
+  .submitBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+

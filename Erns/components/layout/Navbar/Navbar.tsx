@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, Menu, X, ChevronRight, Bookmark } from "lucide-react";
@@ -17,6 +17,42 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { count } = useFavorites();
   const { language } = useLanguage();
+
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const toggleBtnRef = useRef<HTMLButtonElement>(null);
+
+  // Close mobile drawer when clicking outside or pressing Escape
+  useEffect(() => {
+    if (!isMenuOpen) return;
+
+    function handleClickOutside(event: MouseEvent | TouchEvent) {
+      const target = event.target as Node;
+      if (
+        toggleBtnRef.current?.contains(target) ||
+        drawerRef.current?.contains(target)
+      ) {
+        return;
+      }
+      setIsMenuOpen(false);
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setIsMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isMenuOpen]);
+
 
   const isFavoritesActive = pathname === "/favorites";
 
@@ -53,6 +89,7 @@ export default function Navbar() {
         {/* Mobile Header Left Toggle Button */}
         <div className={styles.mobileToggleWrapper}>
           <button
+            ref={toggleBtnRef}
             type="button"
             className={styles.mobileMenuBtn}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -71,7 +108,12 @@ export default function Navbar() {
         {/* Left Side: Brand Logo + Primary Nav Links */}
         <div className={styles.leftCluster}>
           <div className={styles.brandContainer}>
-            <Link href="/" className={styles.brand} aria-label="Erns Home">
+            <Link
+              href="/"
+              className={styles.brand}
+              aria-label="Erns Home"
+              onClick={() => setIsMenuOpen(false)}
+            >
               <Home className={styles.brandIcon} aria-hidden="true" />
               <span className={styles.brandText}>ERNS</span>
             </Link>
@@ -160,9 +202,19 @@ export default function Navbar() {
         </div>
       )}
 
-      {/* Mobile Drawer Overlay / Navigation Menu */}
+      {/* Mobile Drawer Backdrop & Navigation Menu */}
       {isMenuOpen && (
-        <div id="mobile-navigation-drawer" className={styles.mobileDrawer}>
+        <>
+          <div
+            className={styles.mobileBackdrop}
+            onClick={() => setIsMenuOpen(false)}
+            aria-hidden="true"
+          />
+          <div
+            ref={drawerRef}
+            id="mobile-navigation-drawer"
+            className={styles.mobileDrawer}
+          >
           <nav aria-label="Mobile drawer navigation" className={styles.mobileDrawerNav}>
             <ul className={styles.mobileDrawerList}>
               {[...NAV_LINKS_LEFT, ...NAV_LINKS_RIGHT].map((link) => {
@@ -215,7 +267,8 @@ export default function Navbar() {
             </ul>
           </nav>
         </div>
-      )}
+      </>
+    )}
     </header>
   );
 }

@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, Heart, Key, Tag, Users } from "lucide-react";
+import { Home, Heart, Key, Tag, Users } from "lucide-react";
 import { useFavorites } from "@/components/providers/FavoritesProvider";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { favoritesTranslations } from "@/components/favorites/translations";
@@ -18,8 +18,8 @@ export function BottomNav() {
   const navItems = [
     {
       href: "/",
-      label: t.search,
-      icon: Search,
+      label: (t as any).home || (isAmharic ? "ዋና ገጽ" : "Home"),
+      icon: Home,
       isActive: pathname === "/" || pathname === "/buy",
     },
     {
