@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Building2, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { ErnsLogo } from "@/components/icons/ErnsLogo";
 import styles from "./Onboarding.module.css";
 
 interface OnboardingHeaderProps {
@@ -12,11 +13,8 @@ interface OnboardingHeaderProps {
 export function OnboardingHeader({ onSkipAll, showSkip = true }: OnboardingHeaderProps) {
   return (
     <header className={styles.header}>
-      <Link href="/" className={styles.brandLogo}>
-        <div className={styles.brandIcon}>
-          <Building2 size={22} />
-        </div>
-        <span>ERNS</span>
+      <Link href="/" className={styles.brandLogo} aria-label="ERNS Rentals Home">
+        <ErnsLogo height={24} className={styles.brandLogoSvg} priority />
         <span className={styles.brandBadge}>Rentals</span>
       </Link>
 

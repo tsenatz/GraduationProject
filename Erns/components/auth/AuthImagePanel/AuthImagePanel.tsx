@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Home } from "lucide-react";
+import { ErnsLogo } from "@/components/icons/ErnsLogo";
 import styles from "./AuthImagePanel.module.css";
 
 export interface CarouselItem {
@@ -48,11 +48,8 @@ export function AuthImagePanel({
       </div>
       <div className={styles.imageOverlay} />
 
-      <Link href="/" className={styles.logoArea}>
-        <div className={styles.logoIcon}>
-          <Home size={20} strokeWidth={2.5} />
-        </div>
-        <span className={styles.logoText}>ERNS</span>
+      <Link href="/" className={styles.logoArea} aria-label="ERNS Home">
+        <ErnsLogo height={28} fill="#ffffff" priority />
       </Link>
 
       <div className={styles.imageContent}>

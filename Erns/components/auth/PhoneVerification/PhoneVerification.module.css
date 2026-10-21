@@ -28,8 +28,15 @@
 .brandHeader {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 36px;
+}
+
+.brandLogoSvg {
+  height: 24px;
+  width: auto;
+  color: #0a1931;
+  display: block;
 }
 
 .brandLogoIcon {
@@ -51,10 +58,14 @@
 }
 
 .brandTag {
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: #4a7fa7;
-  margin-left: 2px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #0a1931;
+  background-color: #b3cfe5;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* FORM TITLES */
