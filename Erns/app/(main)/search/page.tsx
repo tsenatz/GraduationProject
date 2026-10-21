@@ -301,7 +301,7 @@ function SearchPageContent() {
                       toggleFavorite(mapToDetailProperty(property) as any);
                     }}
                   >
-                    <Heart size={20} fill={isFavorite(property.id) ? "#e11d48" : "rgba(0,0,0,0.4)"} color={isFavorite(property.id) ? "#e11d48" : "white"} />
+                    <Heart size={20} fill={isFavorite(property.id) ? "#4a7fa7" : "rgba(0,0,0,0.4)"} color={isFavorite(property.id) ? "#4a7fa7" : "white"} />
                   </button>
                 </div>
                 

@@ -108,8 +108,8 @@ export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
           <Heart
             size={20}
             className={styles.heartIcon}
-            fill={favorited ? "#e11d48" : "rgba(0, 0, 0, 0.4)"}
-            color={favorited ? "#e11d48" : "#ffffff"}
+            fill={favorited ? "#4a7fa7" : "rgba(0, 0, 0, 0.4)"}
+            color={favorited ? "#4a7fa7" : "#ffffff"}
           />
         </button>
 

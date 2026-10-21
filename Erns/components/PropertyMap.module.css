@@ -372,7 +372,7 @@
 
 :global(.maplibregl-popup-close-button:hover)::before,
 :global(.maplibregl-popup-close-button:hover)::after {
-  background-color: #e11d48 !important;
+  background-color: var(--color-primary, #0A1931) !important;
 }
 
 :global(.maplibregl-popup-close-button:active) {

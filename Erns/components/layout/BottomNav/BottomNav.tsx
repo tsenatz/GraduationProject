@@ -69,7 +69,7 @@ export function BottomNav() {
                   className={`${styles.navIcon} ${
                     isFav && item.isActive ? styles.heartActive : ""
                   }`}
-                  fill={isFav && item.isActive ? "#e11d48" : "none"}
+                  fill={isFav && item.isActive ? "#4a7fa7" : "none"}
                 />
                 {item.badge !== undefined && item.badge > 0 && (
                   <span className={styles.badge} aria-label={`${item.badge} favorites`}>

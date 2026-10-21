@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Heart, Share2, Trash2, Check } from "lucide-react";
+import { Bookmark, Share2, Trash2, Check } from "lucide-react";
 import { useFavorites } from "@/components/providers/FavoritesProvider";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { favoritesTranslations } from "../translations";
@@ -23,7 +23,6 @@ export function FavoritesHeader() {
         setTimeout(() => setCopied(false), 2400);
       }
     } catch {
-      // Fallback
       setCopied(true);
       setTimeout(() => setCopied(false), 2400);
     }
@@ -45,7 +44,7 @@ export function FavoritesHeader() {
         <div className={styles.titleArea}>
           <div className={styles.badgeRow}>
             <span className={styles.badge}>
-              <Heart size={14} className={styles.badgeIcon} fill="#e11d48" color="#e11d48" />
+              <Bookmark size={13} className={styles.badgeIcon} />
               <span>{t.badge}</span>
             </span>
 
@@ -66,8 +65,8 @@ export function FavoritesHeader() {
             >
               {copied ? (
                 <>
-                  <Check size={16} color="#10b981" />
-                  <span style={{ color: "#10b981" }}>{t.linkCopied}</span>
+                  <Check size={16} className={styles.checkIcon} />
+                  <span>{t.linkCopied}</span>
                 </>
               ) : (
                 <>
@@ -77,27 +76,7 @@ export function FavoritesHeader() {
               )}
             </button>
 
-            {showClearConfirm ? (
-              <div className={styles.confirmBox}>
-                <span className={styles.confirmText}>{t.clearConfirm}</span>
-                <div className={styles.confirmBtns}>
-                  <button
-                    type="button"
-                    className={styles.confirmYes}
-                    onClick={handleClear}
-                  >
-                    Yes
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.confirmNo}
-                    onClick={() => setShowClearConfirm(false)}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            ) : (
+            {!showClearConfirm ? (
               <button
                 type="button"
                 className={styles.clearBtn}
@@ -107,6 +86,26 @@ export function FavoritesHeader() {
                 <Trash2 size={15} />
                 <span>{t.clearAll}</span>
               </button>
+            ) : (
+              <div className={styles.confirmBox} role="alert">
+                <span className={styles.confirmText}>{t.clearConfirm}</span>
+                <div className={styles.confirmBtns}>
+                  <button
+                    type="button"
+                    className={styles.confirmYes}
+                    onClick={handleClear}
+                  >
+                    {isAmharic ? "አዎ፣ አስወግድ" : "Yes, Clear"}
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.confirmNo}
+                    onClick={() => setShowClearConfirm(false)}
+                  >
+                    {isAmharic ? "ይቅር" : "Cancel"}
+                  </button>
+                </div>
+              </div>
             )}
           </div>
         )}

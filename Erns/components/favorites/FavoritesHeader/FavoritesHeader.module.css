@@ -2,7 +2,7 @@
   width: 100%;
   background: #ffffff;
   border-bottom: 1px solid #e2e8f0;
-  padding: 40px 24px 28px;
+  padding: 36px 24px 28px;
   box-sizing: border-box;
 }
 
@@ -29,27 +29,32 @@
   gap: 10px;
 }
 
+/* NO RED: Soft ice blue and brand accent */
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: 9999px;
-  background: #fff1f2;
-  border: 1px solid #fecdd3;
-  color: #be123c;
+  background: rgba(74, 127, 167, 0.12);
+  border: 1px solid rgba(74, 127, 167, 0.28);
+  color: var(--color-primary, #0a1931);
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.02em;
 }
 
+.badgeIcon {
+  color: var(--color-accent, #4a7fa7);
+}
+
 .countPill {
   display: inline-flex;
   align-items: center;
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: 9999px;
-  background: rgba(var(--color-bg-warm-rgb, 179, 207, 229), 0.35);
-  color: var(--color-primary, #0A1931);
+  background: rgba(10, 25, 49, 0.06);
+  color: var(--color-primary, #0a1931);
   font-size: 0.78rem;
   font-weight: 700;
 }
@@ -64,7 +69,7 @@
 }
 
 .subtitle {
-  font-size: 1.05rem;
+  font-size: 1.02rem;
   color: #64748b;
   margin: 0;
   line-height: 1.5;
@@ -82,12 +87,12 @@
 .shareBtn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   padding: 9px 16px;
-  border-radius: 8px;
+  border-radius: 9px;
   border: 1px solid #cbd5e1;
   background: #ffffff;
-  color: #0a1931;
+  color: var(--color-primary, #0a1931);
   font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
@@ -96,18 +101,24 @@
 
 .shareBtn:hover {
   background: #f8fafc;
-  border-color: #4a7fa7;
+  border-color: var(--color-accent, #4a7fa7);
+  transform: translateY(-1px);
 }
 
+.checkIcon {
+  color: #10b981;
+}
+
+/* NO RED: Slate neutral style */
 .clearBtn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 9px 14px;
-  border-radius: 8px;
-  border: 1px solid #fee2e2;
-  background: #fff5f5;
-  color: #dc2626;
+  padding: 9px 15px;
+  border-radius: 9px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: #64748b;
   font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
@@ -115,19 +126,20 @@
 }
 
 .clearBtn:hover {
-  background: #fee2e2;
-  border-color: #fca5a5;
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #0f172a;
 }
 
-/* Inline Confirm Box */
+/* Confirm Box: Slate/Brand Navy (NO RED) */
 .confirmBox {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
   padding: 6px 12px;
-  border-radius: 8px;
+  border-radius: 9px;
   animation: fadeIn 0.2s ease-out;
 }
 
@@ -145,7 +157,7 @@
 .confirmText {
   font-size: 0.82rem;
   font-weight: 600;
-  color: #991b1b;
+  color: #1e293b;
 }
 
 .confirmBtns {
@@ -155,25 +167,36 @@
 }
 
 .confirmYes {
-  padding: 4px 10px;
-  border-radius: 4px;
+  padding: 5px 12px;
+  border-radius: 6px;
   border: none;
-  background: #dc2626;
+  background: var(--color-primary, #0a1931);
   color: #ffffff;
   font-size: 0.78rem;
   font-weight: 700;
   cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.confirmYes:hover {
+  background: #1e3a5f;
 }
 
 .confirmNo {
-  padding: 4px 10px;
-  border-radius: 4px;
+  padding: 5px 12px;
+  border-radius: 6px;
   border: 1px solid #cbd5e1;
   background: #ffffff;
   color: #475569;
   font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.confirmNo:hover {
+  background: #f8fafc;
+  color: #0f172a;
 }
 
 @media (max-width: 768px) {

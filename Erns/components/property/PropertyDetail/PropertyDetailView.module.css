@@ -373,9 +373,9 @@
 }
 
 .actionBtnActive {
-  background: #ffe4e6;
-  border-color: #f43f5e;
-  color: #e11d48;
+  background: rgba(74, 127, 167, 0.12);
+  border-color: rgba(74, 127, 167, 0.45);
+  color: var(--color-accent, #4a7fa7);
 }
 
 /* Section Box */
