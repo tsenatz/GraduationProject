@@ -20,6 +20,7 @@ import {
   ChevronRight,
   ShieldCheck,
   Building,
+  MessageSquare,
 } from "lucide-react";
 import { Property } from "../types";
 import { useFavorites } from "@/components/providers/FavoritesProvider";
@@ -354,6 +355,46 @@ export function PropertyDetailModal({
                   {property.isAgentListing ? cardT.agentBadge : cardT.ownerBadge}
                 </span>
               </div>
+            </div>
+
+            {/* Quick Contact Channels (Call, WhatsApp, Telegram) */}
+            <div className={styles.contactActionButtons}>
+              <a
+                href={`tel:${(property.ownerOrAgentPhone || "+251911234567").replace(/\s+/g, "")}`}
+                className={`${styles.channelBtn} ${styles.callNowBtn}`}
+                aria-label="Direct Phone Call"
+              >
+                <Phone size={15} />
+                <span>Call Now</span>
+              </a>
+
+              <a
+                href={`https://wa.me/${(property.ownerOrAgentPhone || "251911234567").replace(/[^\d]/g, "")}?text=${encodeURIComponent(
+                  `Hi, I saw your property "${displayTitle}" on ERNS and would like more details.`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${styles.channelBtn} ${styles.whatsappBtn}`}
+                aria-label="Chat on WhatsApp"
+              >
+                <MessageSquare size={15} />
+                <span>WhatsApp</span>
+              </a>
+
+              <a
+                href={`https://t.me/share/url?url=${encodeURIComponent(
+                  typeof window !== "undefined" ? window.location.href : ""
+                )}&text=${encodeURIComponent(
+                  `Hi, I'm inquiring about "${displayTitle}" listed on ERNS.`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${styles.channelBtn} ${styles.telegramBtn}`}
+                aria-label="Chat on Telegram"
+              >
+                <Send size={15} />
+                <span>Telegram</span>
+              </a>
             </div>
 
             {/* Viewing Request Form */}

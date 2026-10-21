@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, Suspense } from "react";
+import { useState, useCallback, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import useSWR from "swr";
 import type { Property } from "@/app/generated/prisma";
@@ -10,6 +10,25 @@ import BedsBathsFilter from "@/components/BedsBathsFilter";
 import { useFavorites } from "@/components/providers/FavoritesProvider";
 import PropertyDetailModal from "@/components/favorites/PropertyDetailModal/PropertyDetailModal";
 import styles from "./Search.module.css";
+
+const ADDIS_NEIGHBORHOODS = [
+  { name: "Bole", sub: "Sub-City" },
+  { name: "Bole Medhanialem", sub: "Bole" },
+  { name: "Bole Atlas", sub: "Bole" },
+  { name: "Bole Rwanda", sub: "Bole" },
+  { name: "Bole Bulbula", sub: "Bole" },
+  { name: "CMC", sub: "Yeka" },
+  { name: "Ayat", sub: "Yeka" },
+  { name: "Kazanchis", sub: "Kirkos" },
+  { name: "Sarbet", sub: "Kirkos" },
+  { name: "Old Airport", sub: "Nifas Silk" },
+  { name: "Piassa", sub: "Arada" },
+  { name: "Summit", sub: "Yeka" },
+  { name: "Gerji", sub: "Bole" },
+  { name: "Gurd Shola", sub: "Yeka" },
+  { name: "Lebu", sub: "Nifas Silk" },
+  { name: "Gotera", sub: "Kirkos" },
+];
 
 const PropertyMap = dynamic(() => import("@/components/PropertyMap"), {
   ssr: false,
@@ -105,8 +124,36 @@ function SearchPageContent() {
     : propertiesList;
 
   const [searchValue, setSearchValue] = useState(searchQuery);
+  const [showAutocomplete, setShowAutocomplete] = useState(false);
+  const searchWrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (searchWrapperRef.current && !searchWrapperRef.current.contains(e.target as Node)) {
+        setShowAutocomplete(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Smooth scroll to card when selected via map pin
+  useEffect(() => {
+    if (!selectedPropertyId) return;
+    const cardEl = document.getElementById(`property-${selectedPropertyId}`);
+    if (cardEl) {
+      cardEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [selectedPropertyId]);
+
+  const handleSelectNeighborhood = (name: string) => {
+    setSearchValue(name);
+    setShowAutocomplete(false);
+    updateQueryString("query", name);
+  };
 
   const handleSearchSubmit = () => {
+    setShowAutocomplete(false);
     updateQueryString("query", searchValue);
   };
 
@@ -140,7 +187,7 @@ function SearchPageContent() {
     <div className={styles.pageContainer}>
       {/* Top Filter Bar */}
       <div className={styles.filtersBar}>
-        <div className={styles.searchWrapper}>
+        <div className={styles.searchWrapper} ref={searchWrapperRef}>
           <div className={styles.searchIconWrapper}>
              <SearchIcon size={18} className={styles.searchIcon} />
           </div>
@@ -149,13 +196,37 @@ function SearchPageContent() {
             placeholder="Address, neighborhood, or zip"
             className={styles.searchInput}
             value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
+            onFocus={() => setShowAutocomplete(true)}
+            onChange={(e) => {
+              setSearchValue(e.target.value);
+              setShowAutocomplete(true);
+            }}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 handleSearchSubmit();
               }
             }}
           />
+          {showAutocomplete && (
+            <div className={styles.autocompleteDropdown}>
+              <div className={styles.autocompleteHeader}>Popular Addis Ababa Neighborhoods</div>
+              {ADDIS_NEIGHBORHOODS.filter((n) =>
+                !searchValue ||
+                n.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+                n.sub.toLowerCase().includes(searchValue.toLowerCase())
+              ).slice(0, 8).map((neighborhood) => (
+                <div
+                  key={neighborhood.name}
+                  className={styles.autocompleteItem}
+                  onMouseDown={() => handleSelectNeighborhood(neighborhood.name)}
+                >
+                  <MapPin size={15} className={styles.autocompleteIcon} />
+                  <span>{neighborhood.name}</span>
+                  <span className={styles.autocompleteSub}>{neighborhood.sub}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         
         <select 
@@ -264,69 +335,82 @@ function SearchPageContent() {
             </h1>
             <div className={styles.listSubheader}>
               <span className={styles.resultsCount}>
-                {isLoading ? "Loading..." : `${displayedProperties.length} results`}
+                {isLoading ? "Searching properties..." : `${displayedProperties.length} results`}
               </span>
               <span className={styles.sortDropdown}>Sort: Homes for You ⌄</span>
             </div>
           </div>
 
           <div className={styles.propertyGrid}>
-            {displayedProperties.map((property) => (
-              <div 
-                key={property.id} 
-                id={`property-${property.id}`}
-                className={`${styles.propertyCard} ${selectedPropertyId === property.id ? styles.propertyCardSelected : ""}`}
-                onMouseEnter={() => setHoveredPropertyId(property.id)}
-                onMouseLeave={() => setHoveredPropertyId(null)}
-                onClick={() => {
-                  setSelectedPropertyId(property.id);
-                  setHoveredPropertyId(property.id);
-                }}
-              >
-                <div className={styles.cardImageWrapper}>
-                  {property.images && property.images.length > 0 ? (
-                     <img src={property.images[0]} alt={property.title} className={styles.cardImage} />
-                  ) : (
-                    <div className={styles.cardImagePlaceholder}>No Image</div>
-                  )}
-                  {/* Badges and Icons */}
-                  <div className={styles.cardBadge}>
-                    {property.status === "FOR_RENT" ? "For Rent" : "For Sale"}
+            {isLoading ? (
+              Array.from({ length: 6 }).map((_, i) => (
+                <div key={`skeleton-${i}`} className={styles.skeletonCard} aria-hidden="true">
+                  <div className={`${styles.skeletonImage} ${styles.skeletonBase}`} />
+                  <div className={styles.skeletonContent}>
+                    <div className={`${styles.skeletonPrice} ${styles.skeletonBase}`} />
+                    <div className={`${styles.skeletonSpecs} ${styles.skeletonBase}`} />
+                    <div className={`${styles.skeletonAddress} ${styles.skeletonBase}`} />
                   </div>
-                  <button 
-                    className={styles.heartBtn} 
-                    aria-label="Save favorite"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleFavorite(mapToDetailProperty(property) as any);
-                    }}
-                  >
-                    <Heart size={20} fill={isFavorite(property.id) ? "#e11d48" : "rgba(0,0,0,0.4)"} color={isFavorite(property.id) ? "#e11d48" : "white"} />
-                  </button>
                 </div>
-                
-                <div className={styles.cardContent}>
-                  <div className={styles.cardPrice}>
-                    ETB {property.price.toLocaleString()}
-                    {property.status === "FOR_RENT" && (
-                      <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-muted, #64748B)", marginLeft: "4px" }}>
-                        / mo
-                      </span>
+              ))
+            ) : (
+              displayedProperties.map((property) => (
+                <div 
+                  key={property.id} 
+                  id={`property-${property.id}`}
+                  className={`${styles.propertyCard} ${selectedPropertyId === property.id ? styles.propertyCardSelected : ""}`}
+                  onMouseEnter={() => setHoveredPropertyId(property.id)}
+                  onMouseLeave={() => setHoveredPropertyId(null)}
+                  onClick={() => {
+                    setSelectedPropertyId(property.id);
+                    setHoveredPropertyId(property.id);
+                  }}
+                >
+                  <div className={styles.cardImageWrapper}>
+                    {property.images && property.images.length > 0 ? (
+                       <img src={property.images[0]} alt={property.title} className={styles.cardImage} />
+                    ) : (
+                      <div className={styles.cardImagePlaceholder}>No Image</div>
                     )}
+                    {/* Badges and Icons */}
+                    <div className={styles.cardBadge}>
+                      {property.status === "FOR_RENT" ? "For Rent" : "For Sale"}
+                    </div>
+                    <button 
+                      className={styles.heartBtn} 
+                      aria-label="Save favorite"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleFavorite(mapToDetailProperty(property) as any);
+                      }}
+                    >
+                      <Heart size={20} fill={isFavorite(property.id) ? "#e11d48" : "rgba(0,0,0,0.4)"} color={isFavorite(property.id) ? "#e11d48" : "white"} />
+                    </button>
                   </div>
-                  <div className={styles.cardSpecs}>
-                    <strong>{property.beds}</strong> bds <span className="mx-1">|</span> 
-                    <strong>{property.baths}</strong> ba <span className="mx-1">|</span> 
-                    <strong>{property.sqft.toLocaleString()}</strong> sqft 
-                    <span className="mx-1">-</span> 
-                    {property.propertyType || (property.status === "FOR_RENT" ? "Rental unit" : "House for sale")}
-                  </div>
-                  <div className={styles.cardAddress}>
-                    {property.address}, {property.city}, {property.state} {property.zipCode}
+                  
+                  <div className={styles.cardContent}>
+                    <div className={styles.cardPrice}>
+                      ETB {property.price.toLocaleString()}
+                      {property.status === "FOR_RENT" && (
+                        <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-muted, #64748B)", marginLeft: "4px" }}>
+                          / mo
+                        </span>
+                      )}
+                    </div>
+                    <div className={styles.cardSpecs}>
+                      <strong>{property.beds}</strong> bds <span className="mx-1">|</span> 
+                      <strong>{property.baths}</strong> ba <span className="mx-1">|</span> 
+                      <strong>{property.sqft.toLocaleString()}</strong> sqft 
+                      <span className="mx-1">-</span> 
+                      {property.propertyType || (property.status === "FOR_RENT" ? "Rental unit" : "House for sale")}
+                    </div>
+                    <div className={styles.cardAddress}>
+                      {property.address}, {property.city}, {property.state} {property.zipCode}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
 
           {!isLoading && displayedProperties.length === 0 && (
