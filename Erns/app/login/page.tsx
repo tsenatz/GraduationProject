@@ -19,8 +19,8 @@ const CAROUSEL_ITEMS = [
     title: "Find your sweet home",
     desc: (
       <>
-        Schedule visit in just a few clicks<br />
-        visits in just a few clicks
+        Schedule property visits in just a few clicks<br />
+        directly with verified owners.
       </>
     ),
   },
@@ -29,7 +29,7 @@ const CAROUSEL_ITEMS = [
     desc: (
       <>
         Explore properties in the best neighborhoods<br />
-        for a vibrant lifestyle.
+        for a vibrant lifestyle in Addis Ababa.
       </>
     ),
   },
@@ -37,8 +37,8 @@ const CAROUSEL_ITEMS = [
     title: "Your dream investment",
     desc: (
       <>
-        Secure the best deals in real estate<br />
-        with our expert guidance.
+        Secure the best deals in Ethiopian real estate<br />
+        with verified title deeds and transparent pricing.
       </>
     ),
   },
@@ -67,7 +67,17 @@ function LoginForm() {
       });
 
       if (res?.error) {
-        setError("Invalid email or password. Please try again.");
+        if (res.error === "RATE_LIMIT_EXCEEDED" || (res as any).code === "RATE_LIMIT_EXCEEDED") {
+          setError(
+            "Too many failed login attempts. Please wait 1 minute before trying again."
+          );
+        } else if (res.error === "EMAIL_NOT_VERIFIED" || (res as any).code === "EMAIL_NOT_VERIFIED") {
+          setError(
+            "Your email is not verified yet. Please check your inbox for the 6-digit verification code."
+          );
+        } else {
+          setError("Invalid email or password. Please try again.");
+        }
         setIsLoading(false);
       } else {
         window.location.href = callbackUrl;

@@ -59,7 +59,7 @@ export default function BedsBathsFilter({
             <div className={styles.label}>Bedrooms</div>
             <div className={styles.segmentControl}>
               {["Any", "1+", "2+", "3+", "4+", "5+"].map((val) => {
-                 // For Zillow style, value "1" implies "1+" when not exact match, but let's just use raw values to render the button
+                 // When not exact match, use raw value to render
                  const displayVal = val;
                  const dataVal = val.replace("+", "");
                  return (

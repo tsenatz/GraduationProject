@@ -4,6 +4,7 @@ import db from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { propertyListingSchema, type PropertyListingInput } from "@/lib/schema";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export interface ListingActionResult {
   success: boolean;
@@ -124,7 +125,21 @@ export async function createPropertyListingAction(
 
     const userId = user.id;
 
-    // 2. Strict Input Validation & Sanitization with Zod
+    const rateLimit = checkRateLimit(`listing-create:${user.id}`, {
+      limit: 5,
+      windowMs: 60 * 1000,
+    });
+
+    if (!rateLimit.success) {
+      const waitSeconds = Math.max(1, Math.ceil(rateLimit.resetMs / 1000));
+      return {
+        success: false,
+        error: `You are posting listings too quickly. Please wait ${waitSeconds} seconds before publishing another listing.`,
+        isAuthenticated: true,
+      };
+    }
+
+    // Strict Input Validation & Sanitization with Zod
     const validationResult = propertyListingSchema.safeParse(rawData);
     if (!validationResult.success) {
       const firstIssue = validationResult.error.issues[0]?.message || "Invalid input data";

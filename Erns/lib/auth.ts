@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { CredentialsSignin } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
@@ -6,7 +6,15 @@ import bcrypt from "bcryptjs";
 
 import db from "@/lib/db";
 import { loginSchema } from "@/lib/schema";
+import { checkRateLimit, resetRateLimit } from "@/lib/rate-limit";
 
+class LoginRateLimitError extends CredentialsSignin {
+  code = "RATE_LIMIT_EXCEEDED";
+}
+
+class EmailNotVerifiedError extends CredentialsSignin {
+  code = "EMAIL_NOT_VERIFIED";
+}
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(db),
   session: {
@@ -26,34 +34,42 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
-        // 1. Validate inputs with Zod
         const parsed = loginSchema.safeParse(credentials);
         if (!parsed.success) {
           return null;
         }
 
         const { email, password } = parsed.data;
+        const normalizedEmail = email.toLowerCase().trim();
 
-        // 2. Find user in database
-        const user = await db.user.findUnique({
-          where: { email },
+        const rateLimitKey = `login:${normalizedEmail}`;
+        const rateLimit = checkRateLimit(rateLimitKey, {
+          limit: 5,
+          windowMs: 60 * 1000,
         });
 
-        // If user doesn't exist or doesn't have a password (e.g. OAuth only user)
+        if (!rateLimit.success) {
+          throw new LoginRateLimitError();
+        }
+
+        const user = await db.user.findUnique({
+          where: { email: normalizedEmail },
+        });
+
         if (!user || !user.password) {
           return null;
         }
 
-        // 3. Verify password
         const passwordsMatch = await bcrypt.compare(password, user.password);
         if (!passwordsMatch) {
           return null;
         }
 
-        // 4. Ensure email is verified
         if (!user.emailVerified) {
-          return null;
+          throw new EmailNotVerifiedError();
         }
+
+        resetRateLimit(rateLimitKey);
 
         return {
           id: user.id,

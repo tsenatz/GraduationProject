@@ -600,7 +600,7 @@ export const FsboListingBuilder: React.FC<FsboListingBuilderProps> = ({
               {/* STEP 1: Property Type & Location */}
               {currentStep === 1 && (
                 <div className={styles.stepContent}>
-                  {/* Visual Property Type Grid (Per leader feedback: less words, more visual buttons) */}
+                  {/* Property Type Selection */}
                   <div style={{ marginBottom: "20px" }}>
                     <label className={styles.label} style={{ marginBottom: "8px", display: "block" }}>
                       {t.propertyTypeLabel}

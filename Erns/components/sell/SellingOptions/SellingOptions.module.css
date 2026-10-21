@@ -36,7 +36,7 @@
   align-items: stretch;
 }
 
-/* Zillow Standard Box */
+/* Standard Card Container */
 .card {
   background-color: #ffffff;
   border: 1px solid #e2e8f0;
@@ -138,7 +138,7 @@
   color: #1e293b;
 }
 
-/* Zillow Standard Button */
+/* Primary Action Button */
 .cardButton {
   display: flex;
   align-items: center;
@@ -157,7 +157,7 @@
   cursor: pointer;
 }
 
-/* Card 1: Zillow Primary Solid Navy */
+/* Card 1: Primary Solid Navy */
 .buttonAgent {
   background-color: var(--color-primary, #0a1931);
   color: #ffffff;
@@ -169,7 +169,7 @@
   border-color: #173258;
 }
 
-/* Card 2: Zillow Signature Outline */
+/* Card 2: Signature Outline */
 .buttonOwner {
   background-color: #ffffff;
   color: var(--color-primary, #0a1931);

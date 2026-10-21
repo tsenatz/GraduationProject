@@ -34,7 +34,7 @@
   gap: 20px;
 }
 
-/* Zillow Standard Box */
+/* Standard Card Container */
 .pillarCard {
   background-color: var(--bg-color, #f6fafd);
   border: 1px solid #e2e8f0;
