@@ -4,6 +4,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import fs from "fs/promises";
 import path from "path";
 import crypto from "crypto";
+import { supabaseAdmin } from "@/lib/supabase";
 
 // 10MB maximum file size limit
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -126,14 +127,46 @@ export async function POST(request: Request) {
     const uniqueId = crypto.randomBytes(16).toString("hex");
     const safeFilename = `upload-${Date.now()}-${uniqueId}${verifiedExt}`;
 
-    // 5. Save to public/uploads directory
-    const uploadsDir = path.join(process.cwd(), "public", "uploads");
-    await fs.mkdir(uploadsDir, { recursive: true });
+    let publicUrl = "";
 
-    const filePath = path.join(uploadsDir, safeFilename);
-    await fs.writeFile(filePath, buffer);
+    // 5. Upload to Supabase Storage if configured
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL && (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
+      const mimeTypes: Record<string, string> = {
+        ".jpg": "image/jpeg",
+        ".png": "image/png",
+        ".webp": "image/webp",
+        ".gif": "image/gif",
+        ".pdf": "application/pdf",
+      };
+      const contentType = file.type || mimeTypes[verifiedExt] || "application/octet-stream";
 
-    const publicUrl = `/uploads/${safeFilename}`;
+      const { error: uploadError } = await supabaseAdmin.storage
+        .from("property-images")
+        .upload(safeFilename, buffer, {
+          contentType,
+          upsert: false,
+        });
+
+      if (uploadError) {
+        console.error("Supabase storage upload error:", uploadError);
+        throw new Error(`Storage upload failed: ${uploadError.message}`);
+      }
+
+      const { data: urlData } = supabaseAdmin.storage
+        .from("property-images")
+        .getPublicUrl(safeFilename);
+
+      publicUrl = urlData.publicUrl;
+    } else {
+      // Local fallback
+      const uploadsDir = path.join(process.cwd(), "public", "uploads");
+      await fs.mkdir(uploadsDir, { recursive: true });
+
+      const filePath = path.join(uploadsDir, safeFilename);
+      await fs.writeFile(filePath, buffer);
+
+      publicUrl = `/uploads/${safeFilename}`;
+    }
 
     return NextResponse.json({
       success: true,
