@@ -64,7 +64,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Rate Limiting: max 20 photo uploads per minute per user
     const rateLimitKey = `upload:${session.user.id}`;
     const rateLimit = checkRateLimit(rateLimitKey, {
       limit: 20,

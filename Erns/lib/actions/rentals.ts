@@ -376,7 +376,6 @@ export async function createRentalPropertyAction(
     const currentUserId = session?.user?.id || session?.user?.email || "demo-landlord";
     const currentUserName = session?.user?.name || "Landlord";
 
-    // Rate Limiting Gate: max 5 rentals created per minute per user/landlord
     const rateLimit = checkRateLimit(`rental-create:${currentUserId}`, {
       limit: 5,
       windowMs: 60 * 1000,

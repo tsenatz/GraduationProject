@@ -16,14 +16,12 @@ class EmailNotVerifiedError extends CredentialsSignin {
   code = "EMAIL_NOT_VERIFIED";
 }
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: process.env.DATABASE_URL ? PrismaAdapter(db) : undefined,
+  adapter: PrismaAdapter(db),
   session: {
     strategy: "jwt",
   },
   providers: [
     Google({
-      clientId: process.env.AUTH_GOOGLE_ID || process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.AUTH_GOOGLE_SECRET || process.env.GOOGLE_CLIENT_SECRET,
       authorization: {
         params: {
           prompt: "select_account",
@@ -36,7 +34,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
-        // 1. Input Integrity: Validate inputs with Zod
         const parsed = loginSchema.safeParse(credentials);
         if (!parsed.success) {
           return null;
@@ -45,8 +42,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const { email, password } = parsed.data;
         const normalizedEmail = email.toLowerCase().trim();
 
-        // 2. CIA Triad - Availability & Confidentiality:
-        // Defend against brute-force password guessing and credential stuffing attacks
         const rateLimitKey = `login:${normalizedEmail}`;
         const rateLimit = checkRateLimit(rateLimitKey, {
           limit: 5,
@@ -57,7 +52,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           throw new LoginRateLimitError();
         }
 
-        // 3. Find user by email
         const user = await db.user.findUnique({
           where: { email: normalizedEmail },
         });
@@ -66,18 +60,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null;
         }
 
-        // 4. Confidentiality & Integrity: Constant-time bcrypt verification
         const passwordsMatch = await bcrypt.compare(password, user.password);
         if (!passwordsMatch) {
           return null;
         }
 
-        // 5. Integrity: Enforce verified email status before session issuance
         if (!user.emailVerified) {
           throw new EmailNotVerifiedError();
         }
 
-        // Successful authentication: Reset failed login count
         resetRateLimit(rateLimitKey);
 
         return {

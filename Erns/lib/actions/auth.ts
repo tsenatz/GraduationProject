@@ -29,7 +29,6 @@ export async function registerUser(data: unknown): Promise<ActionResponse> {
   const { firstName, lastName, email, password } = parsed.data;
   const normalizedEmail = email.toLowerCase().trim();
 
-  // CIA Triad - Availability: Prevent account registration flooding
   const regRateLimit = checkRateLimit(`register:${normalizedEmail}`, {
     limit: 3,
     windowMs: 5 * 60 * 1000,
@@ -96,7 +95,6 @@ export async function registerUser(data: unknown): Promise<ActionResponse> {
 
 /**
  * Server Action to verify the submitted 6-digit code.
- * Defends against brute-force attacks on OTP codes.
  */
 export async function verifyEmailCode(email: string, code: string): Promise<ActionResponse> {
   if (!email || !code || code.trim().length !== 6) {
@@ -105,7 +103,6 @@ export async function verifyEmailCode(email: string, code: string): Promise<Acti
 
   const normalizedEmail = email.toLowerCase().trim();
 
-  // CIA Triad - Confidentiality: Protect 6-digit OTP against brute-force guessing
   const verifyLimit = checkRateLimit(`verify-email:${normalizedEmail}`, {
     limit: 5,
     windowMs: 15 * 60 * 1000,
@@ -173,7 +170,6 @@ export async function resendVerificationCode(email: string): Promise<ActionRespo
 
   const normalizedEmail = email.toLowerCase().trim();
 
-  // CIA Triad - Availability: Cooldown against email service flooding
   const cooldown = checkRateLimit(`resend-email:${normalizedEmail}`, {
     limit: 1,
     windowMs: 60 * 1000,

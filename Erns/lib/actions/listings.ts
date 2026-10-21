@@ -125,7 +125,6 @@ export async function createPropertyListingAction(
 
     const userId = user.id;
 
-    // 2. Rate Limiting Gate: max 5 property listings created per minute per user
     const rateLimit = checkRateLimit(`listing-create:${user.id}`, {
       limit: 5,
       windowMs: 60 * 1000,
@@ -140,7 +139,7 @@ export async function createPropertyListingAction(
       };
     }
 
-    // 3. Strict Input Validation & Sanitization with Zod
+    // Strict Input Validation & Sanitization with Zod
     const validationResult = propertyListingSchema.safeParse(rawData);
     if (!validationResult.success) {
       const firstIssue = validationResult.error.issues[0]?.message || "Invalid input data";

@@ -69,7 +69,7 @@ function LoginForm() {
       if (res?.error) {
         if (res.error === "RATE_LIMIT_EXCEEDED" || (res as any).code === "RATE_LIMIT_EXCEEDED") {
           setError(
-            "Too many failed login attempts. Please wait 1 minute before trying again (Brute-force protection)."
+            "Too many failed login attempts. Please wait 1 minute before trying again."
           );
         } else if (res.error === "EMAIL_NOT_VERIFIED" || (res as any).code === "EMAIL_NOT_VERIFIED") {
           setError(
