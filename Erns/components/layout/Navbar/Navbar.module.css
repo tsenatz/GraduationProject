@@ -91,6 +91,19 @@
   outline-offset: 2px;
 }
 
+.brandLogoSvg {
+  height: 26px;
+  width: auto;
+  color: var(--color-primary);
+  display: block;
+  transition: opacity 0.15s ease, transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.brand:hover .brandLogoSvg {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
 .brandIcon {
   width: 25px;
   height: 25px;
@@ -479,6 +492,10 @@
 @media (max-width: 640px) {
   .navbarContainer {
     padding: 0 0.75rem;
+  }
+
+  .brandLogoSvg {
+    height: 22px;
   }
 
   .brandText {

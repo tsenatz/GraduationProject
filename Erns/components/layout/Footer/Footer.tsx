@@ -3,7 +3,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin } from 'lucide-react';
+import { ErnsLogo } from '@/components/icons/ErnsLogo';
 import { FacebookIcon, TwitterIcon, InstagramIcon, LinkedinIcon } from '@/components/icons/SocialIcons';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { footerTranslations } from './translations';
@@ -22,7 +23,7 @@ export const Footer = () => {
           {/* Brand & About */}
           <div className={styles.section}>
             <h2 className={styles.brandName}>
-              <Home className={styles.brandIcon} size={24} /> ERNS
+              <ErnsLogo height={24} />
             </h2>
             <p className={styles.description}>{t.brandDesc}</p>
             <div className={styles.socials}>
