@@ -26,15 +26,15 @@
   width: 96px;
   height: 96px;
   border-radius: 50%;
-  background: #fff1f2;
-  border: 2px dashed #fecdd3;
+  background: rgba(74, 127, 167, 0.1);
+  border: 2px dashed rgba(74, 127, 167, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .heartIcon {
-  color: #e11d48;
+  color: var(--color-accent, #4a7fa7);
   animation: pulse 2.4s ease-in-out infinite;
 }
 

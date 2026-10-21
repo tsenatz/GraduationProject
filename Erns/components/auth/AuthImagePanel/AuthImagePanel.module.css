@@ -33,10 +33,17 @@
   position: relative;
   z-index: 3;
   padding: 40px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 12px;
   color: white;
+  text-decoration: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.logoArea:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 .logoIcon {

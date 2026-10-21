@@ -3,7 +3,9 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Menu, X, ChevronRight, Bookmark } from "lucide-react";
+import { ChevronRight, Bookmark } from "lucide-react";
+import { ErnsLogo } from "@/components/icons/ErnsLogo";
+import { HamburgerButton } from "@/components/ui/HamburgerButton";
 import SignInButton from "@/components/auth/SignInButton";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { useFavorites } from "@/components/providers/FavoritesProvider";
@@ -88,21 +90,14 @@ export default function Navbar() {
       <div className={styles.navbarContainer}>
         {/* Mobile Header Left Toggle Button */}
         <div className={styles.mobileToggleWrapper}>
-          <button
+          <HamburgerButton
             ref={toggleBtnRef}
-            type="button"
-            className={styles.mobileMenuBtn}
+            isOpen={isMenuOpen}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-            aria-expanded={isMenuOpen}
             aria-controls="mobile-navigation-drawer"
-          >
-            {isMenuOpen ? (
-              <X className={styles.menuIcon} aria-hidden="true" />
-            ) : (
-              <Menu className={styles.menuIcon} aria-hidden="true" />
-            )}
-          </button>
+            variant="navy"
+            size="md"
+          />
         </div>
 
         {/* Left Side: Brand Logo + Primary Nav Links */}
@@ -111,11 +106,10 @@ export default function Navbar() {
             <Link
               href="/"
               className={styles.brand}
-              aria-label="Erns Home"
+              aria-label="ERNS Home"
               onClick={() => setIsMenuOpen(false)}
             >
-              <Home className={styles.brandIcon} aria-hidden="true" />
-              <span className={styles.brandText}>ERNS</span>
+              <ErnsLogo className={styles.brandLogoSvg} height={26} priority />
             </Link>
           </div>
 

@@ -3,7 +3,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { CheckCircle2, ArrowLeft, Building2, Lock } from "lucide-react";
+import { CheckCircle2, ArrowLeft, Lock } from "lucide-react";
+import { ErnsLogo } from "@/components/icons/ErnsLogo";
 import styles from "./PhoneVerification.module.css";
 
 export function PhoneVerificationForm() {
@@ -196,10 +197,7 @@ export function PhoneVerificationForm() {
     <div className={styles.formWrapper}>
       {/* Brand Header */}
       <div className={styles.brandHeader}>
-        <div className={styles.brandLogoIcon}>
-          <Building2 size={20} />
-        </div>
-        <span className={styles.brandName}>ERNS</span>
+        <ErnsLogo height={24} className={styles.brandLogoSvg} priority />
         <span className={styles.brandTag}>Rentals</span>
       </div>
 

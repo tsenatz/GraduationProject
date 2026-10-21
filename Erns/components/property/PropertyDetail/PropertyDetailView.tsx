@@ -326,7 +326,7 @@ export function PropertyDetailView({ property }: PropertyDetailViewProps) {
                 className={`${styles.actionBtn} ${favorited ? styles.actionBtnActive : ""}`}
                 onClick={handleFavoriteClick}
               >
-                <Heart size={16} fill={favorited ? "#e11d48" : "none"} color={favorited ? "#e11d48" : "currentColor"} />
+                <Heart size={16} fill={favorited ? "#4a7fa7" : "none"} color={favorited ? "#4a7fa7" : "currentColor"} />
                 <span>{favorited ? "Saved in Favorites" : "Save Home"}</span>
               </button>
 

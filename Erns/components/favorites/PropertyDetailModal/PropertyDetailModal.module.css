@@ -111,9 +111,9 @@
 }
 
 .heartActive {
-  background: #fff1f2;
-  border-color: #fecdd3;
-  color: #e11d48;
+  background: rgba(74, 127, 167, 0.12);
+  border-color: rgba(74, 127, 167, 0.35);
+  color: #4a7fa7;
 }
 
 .closeBtn {
@@ -132,9 +132,9 @@
 }
 
 .closeBtn:hover {
-  background: #fee2e2;
-  color: #dc2626;
-  border-color: #fca5a5;
+  background: #e2e8f0;
+  color: #0a1931;
+  border-color: #cbd5e1;
   transform: rotate(90deg);
 }
 

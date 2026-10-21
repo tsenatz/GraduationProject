@@ -63,14 +63,14 @@
 }
 
 .heartActive {
-  color: #e11d48 !important;
+  color: var(--color-accent, #4a7fa7) !important;
 }
 
 .badge {
   position: absolute;
   top: -4px;
   right: -8px;
-  background: #e11d48;
+  background: var(--color-accent, #4a7fa7);
   color: #ffffff;
   font-size: 0.65rem;
   font-weight: 700;

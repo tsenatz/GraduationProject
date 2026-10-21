@@ -1,0 +1,206 @@
+.hamburgerBtn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  border: none;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 12px;
+  transition: background-color 0.2s cubic-bezier(0.2, 0, 0, 1),
+              box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
+              transform 0.15s ease;
+  box-shadow: 0 4px 12px rgba(21, 28, 43, 0.18);
+  outline: none;
+  flex-shrink: 0;
+}
+
+.hamburgerBtn:hover {
+  transform: translateY(-1px);
+}
+
+.hamburgerBtn:active {
+  transform: scale(0.96);
+}
+
+.hamburgerBtn:focus-visible {
+  outline: 2px solid var(--color-primary, #151c2b);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Sizes
+   ========================================================================== */
+.sm {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  min-height: 34px;
+  border-radius: 9px;
+}
+
+.md {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  border-radius: 11px;
+}
+
+.lg {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 14px;
+}
+
+/* ==========================================================================
+   Variants (Matching design palette)
+   ========================================================================== */
+/* 1. Deep Navy (#151c2b) */
+.navy {
+  background-color: #151c2b;
+}
+
+.navy:hover {
+  background-color: #223b62;
+  box-shadow: 0 6px 16px rgba(21, 28, 43, 0.28);
+}
+
+.navy.open {
+  background-color: #223b62;
+}
+
+.navy .bar {
+  background-color: #ffffff;
+}
+
+/* 2. Brand Blue (#223b62) */
+.blue {
+  background-color: #223b62;
+}
+
+.blue:hover {
+  background-color: #1b2f4f;
+  box-shadow: 0 6px 16px rgba(34, 59, 98, 0.32);
+}
+
+.blue.open {
+  background-color: #151c2b;
+}
+
+.blue .bar {
+  background-color: #ffffff;
+}
+
+/* 3. Soft Tint Slate Blue (#4e7dad) */
+.light {
+  background-color: #4e7dad;
+}
+
+.light:hover {
+  background-color: #436e99;
+  box-shadow: 0 6px 16px rgba(78, 125, 173, 0.35);
+}
+
+.light.open {
+  background-color: #3b6085;
+}
+
+.light .bar {
+  background-color: #151c2b;
+}
+
+/* ==========================================================================
+   Bars & Animation
+   ========================================================================== */
+.iconWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+
+.sm .iconWrapper {
+  width: 17px;
+  height: 13px;
+}
+
+.md .iconWrapper {
+  width: 20px;
+  height: 15px;
+}
+
+.lg .iconWrapper {
+  width: 24px;
+  height: 18px;
+}
+
+.bar {
+  display: block;
+  width: 100%;
+  border-radius: 2px;
+  transform-origin: center;
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1),
+              opacity 0.2s ease,
+              background-color 0.2s ease;
+}
+
+.sm .bar {
+  height: 2.2px;
+}
+
+.md .bar {
+  height: 2.5px;
+}
+
+.lg .bar {
+  height: 3px;
+}
+
+/* ==========================================================================
+   Open (X) Transformation
+   ========================================================================== */
+.open.sm .topBar {
+  transform: translateY(5.4px) rotate(45deg);
+}
+
+.open.sm .middleBar {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.open.sm .bottomBar {
+  transform: translateY(-5.4px) rotate(-45deg);
+}
+
+.open.md .topBar {
+  transform: translateY(6.25px) rotate(45deg);
+}
+
+.open.md .middleBar {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.open.md .bottomBar {
+  transform: translateY(-6.25px) rotate(-45deg);
+}
+
+.open.lg .topBar {
+  transform: translateY(7.5px) rotate(45deg);
+}
+
+.open.lg .middleBar {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.open.lg .bottomBar {
+  transform: translateY(-7.5px) rotate(-45deg);
+}

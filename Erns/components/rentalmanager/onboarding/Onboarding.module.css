@@ -40,6 +40,18 @@
   letter-spacing: -0.02em;
 }
 
+.brandLogoSvg {
+  height: 24px;
+  width: auto;
+  color: var(--color-primary, #0A1931);
+  display: block;
+  transition: opacity 0.15s ease, transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.brandLogo:hover .brandLogoSvg {
+  opacity: 0.85;
+}
+
 .brandIcon {
   width: 38px;
   height: 38px;

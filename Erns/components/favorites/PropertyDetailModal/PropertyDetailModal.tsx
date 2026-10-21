@@ -124,8 +124,8 @@ export function PropertyDetailModal({
             >
               <Heart
                 size={18}
-                fill={favorited ? "#e11d48" : "none"}
-                color={favorited ? "#e11d48" : "currentColor"}
+                fill={favorited ? "#4a7fa7" : "none"}
+                color={favorited ? "#4a7fa7" : "currentColor"}
               />
             </button>
 
