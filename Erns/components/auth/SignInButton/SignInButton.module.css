@@ -173,6 +173,34 @@
   background-color: rgba(0, 0, 0, 0.04);
 }
 
+.adminDropdownItem {
+  color: var(--color-primary, #0a1931);
+  background-color: #f6fafd;
+  font-weight: 600;
+  border: 1px solid rgba(74, 127, 167, 0.2);
+  margin-top: 0.25rem;
+}
+
+.adminDropdownItem:hover {
+  background-color: #e8f1f8;
+}
+
+.adminIcon {
+  color: var(--color-primary, #0a1931);
+}
+
+.adminBadge {
+  margin-left: auto;
+  background-color: var(--color-primary, #0a1931);
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.15rem 0.45rem;
+  border-radius: 6px;
+}
+
 .signOutBtn {
   color: #dc2626;
 }

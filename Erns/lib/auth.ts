@@ -12,8 +12,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   session: {
     strategy: "jwt",
   },
+  pages: {
+    signIn: "/login",
+    error: "/login",
+  },
   providers: [
     Google({
+      allowDangerousEmailAccountLinking: true,
       authorization: {
         params: {
           prompt: "select_account",
@@ -74,7 +79,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (!token.id && token.sub) {
         token.id = token.sub;
       }
-      if (token.email && (!token.id || /^\d+$/.test(String(token.id)))) {
+      if (token.email) {
         try {
           const dbUser = await db.user.findUnique({
             where: { email: token.email },
@@ -82,7 +87,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           });
           if (dbUser) {
             token.id = dbUser.id;
-            token.role = dbUser.role || token.role || "USER";
+            token.role = dbUser.role || "USER";
           }
         } catch {
           // Ignore fallback error
