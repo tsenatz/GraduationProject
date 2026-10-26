@@ -16,6 +16,12 @@ enum Role {
   ADMIN
 }
 
+enum MembershipTier {
+  FREE
+  STANDARD
+  PREMIUM
+}
+
 enum VerificationStatus {
   PENDING
   VERIFIED
@@ -49,6 +55,12 @@ model User {
 
   // Web Push API subscriptions for background notifications
   pushSubscriptions     PushSubscription[]
+
+  // Membership Tier & Contact Credits
+  tier                  MembershipTier   @default(FREE)
+  contactCredits        Int              @default(0)
+  unlimitedExpiresAt    DateTime?
+  unlockedProperties    PropertyUnlock[]
 
   accounts      Account[]
   sessions      Session[]
@@ -304,4 +316,18 @@ model PushSubscription {
 
   @@index([userId])
 }
+
+// User unlocked property contact records
+model PropertyUnlock {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  propertyId String
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, propertyId])
+  @@index([userId])
+  @@index([propertyId])
+}
+
 

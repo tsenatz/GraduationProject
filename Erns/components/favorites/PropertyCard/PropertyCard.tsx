@@ -193,19 +193,13 @@ export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
         </div>
 
         {/* Title */}
-        <h3
-          className={styles.propertyTitle}
-          onClick={() => onViewDetails?.(property)}
-          style={{ cursor: onViewDetails ? "pointer" : "default" }}
-          tabIndex={onViewDetails ? 0 : undefined}
-          onKeyDown={(e) => {
-            if (onViewDetails && (e.key === "Enter" || e.key === " ")) {
-              e.preventDefault();
-              onViewDetails(property);
-            }
-          }}
-        >
-          {displayTitle}
+        <h3 className={styles.propertyTitle}>
+          <Link
+            href={`/property/${property.id}`}
+            style={{ color: "inherit", textDecoration: "none" }}
+          >
+            {displayTitle}
+          </Link>
         </h3>
 
         {/* Footer Actions */}
@@ -217,32 +211,20 @@ export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
           </div>
 
           <div className={styles.cardButtonsGroup}>
-            {showPhone ? (
-              <a
-                href={`tel:${property.ownerOrAgentPhone}`}
-                className={styles.phoneRevealedBtn}
-              >
-                <Phone size={14} />
-                <span>{property.ownerOrAgentPhone}</span>
-              </a>
-            ) : (
-              <button
-                type="button"
-                className={styles.contactBtn}
-                onClick={() => setShowPhone(true)}
-              >
-                <Phone size={14} />
-                <span>{t.contactBtn}</span>
-              </button>
-            )}
+            <Link
+              href={`/property/${property.id}`}
+              className={styles.contactBtn}
+            >
+              <Phone size={14} />
+              <span>{t.contactBtn}</span>
+            </Link>
 
-            <button
-              type="button"
+            <Link
+              href={`/property/${property.id}`}
               className={styles.detailsBtn}
-              onClick={() => onViewDetails?.(property)}
             >
               <span>{t.viewDetailsBtn}</span>
-            </button>
+            </Link>
           </div>
         </div>
       </div>

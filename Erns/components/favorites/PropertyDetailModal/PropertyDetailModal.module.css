@@ -611,3 +611,72 @@
     font-size: 1.15rem;
   }
 }
+
+/* Unlock direct call button in modal */
+.directPhoneUnlockBanner {
+  background: #f8fafc;
+  border: 1px dashed rgba(10, 25, 49, 0.2);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .directPhoneUnlockBanner {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.maskedNumberMini {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #64748b;
+  font-family: monospace;
+}
+
+.unlockDirectCallBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: #0A1931;
+  color: #ffffff;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.unlockDirectCallBtn:hover {
+  background: #1e3a8a;
+  transform: translateY(-1px);
+}
+
+.fullPageLinkBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  background: #f1f5f9;
+  color: #0A1931;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.fullPageLinkBtn:hover {
+  background: #e2e8f0;
+}
+

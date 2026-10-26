@@ -10,7 +10,6 @@ import {
   Heart,
   Share2,
   Phone,
-  Send,
   CheckCircle2,
   ShieldCheck,
   Building2,
@@ -23,10 +22,15 @@ import {
   Layers,
   Printer,
   Copy,
+  Lock,
+  Sparkles,
+  Eye,
+  Loader2,
 } from "lucide-react";
 import { PropertyDetailData } from "@/lib/actions/properties";
-import { startNewConversationAction } from "@/lib/actions/inbox";
 import { useFavorites } from "@/components/providers/FavoritesProvider";
+import { PricingModal } from "@/components/pricing/PricingModal";
+import { unlockPropertyContactAction } from "@/lib/actions/tier";
 import styles from "./PropertyDetailView.module.css";
 
 interface PropertyDetailViewProps {
@@ -38,13 +42,51 @@ export function PropertyDetailView({ property }: PropertyDetailViewProps) {
   const [activeImageIdx, setActiveImageIdx] = useState(0);
   const [copied, setCopied] = useState(false);
 
-  // Inquiry Form State
-  const [inquiryName, setInquiryName] = useState("");
-  const [inquiryPhone, setInquiryPhone] = useState("");
-  const [inquiryMessage, setInquiryMessage] = useState(
-    `Hello, I am interested in "${property.title}" (Ref #${property.referenceNo || property.id.slice(0, 6)}). Please contact me with more information.`
+  // Tier & Contact Unlock State
+  const [isContactUnlocked, setIsContactUnlocked] = useState(
+    Boolean(property.isOwner || property.isContactUnlocked)
   );
-  const [inquirySent, setInquirySent] = useState(false);
+  const [revealedPhone, setRevealedPhone] = useState<string | null>(
+    property.contactPhone || null
+  );
+  const [userCredits, setUserCredits] = useState(property.userCredits ?? 0);
+  const [userTier, setUserTier] = useState<"FREE" | "STANDARD" | "PREMIUM">(
+    property.userTier ?? "FREE"
+  );
+  const [isUnlimited, setIsUnlimited] = useState(
+    Boolean(property.isUnlimitedUser)
+  );
+  const [isPricingModalOpen, setIsPricingModalOpen] = useState(false);
+  const [isUnlocking, setIsUnlocking] = useState(false);
+  const [unlockError, setUnlockError] = useState<string | null>(null);
+
+  const handleUnlockContact = async () => {
+    try {
+      setIsUnlocking(true);
+      setUnlockError(null);
+
+      const res = await unlockPropertyContactAction(property.id);
+
+      if (res.success && res.contactPhone) {
+        setRevealedPhone(res.contactPhone);
+        setIsContactUnlocked(true);
+        if (res.remainingCredits !== undefined) {
+          setUserCredits(res.remainingCredits);
+        }
+        if (res.isUnlimited) {
+          setIsUnlimited(true);
+        }
+      } else if (res.requireUpgrade || res.error === "INSUFFICIENT_CREDITS" || res.requireSignIn) {
+        setIsPricingModalOpen(true);
+      } else {
+        setUnlockError(res.message || "Failed to unlock contact");
+      }
+    } catch {
+      setUnlockError("Failed to communicate with server");
+    } finally {
+      setIsUnlocking(false);
+    }
+  };
 
   const images =
     property.images && property.images.length > 0
@@ -98,23 +140,6 @@ export function PropertyDetailView({ property }: PropertyDetailViewProps) {
       ownerOrAgentPhone: property.contactPhone || "+251911234567",
       isAgentListing: false,
     });
-  };
-
-  const handleInquirySubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setInquirySent(true);
-
-    startNewConversationAction({
-      recipientId: "agent-dawit",
-      recipientName: property.ownerName || "Listing Agent",
-      propertyId: property.id,
-      propertyTitle: property.title,
-      propertyImage: images[0],
-      propertyPrice: property.price,
-      initialMessage: inquiryMessage,
-      category: property.listingType === "RENT" ? "rent" : "buy",
-      inquiryType: "general",
-    }).catch((err) => console.warn("Failed to create conversation:", err));
   };
 
   const formatPrice = (val: number) => {
@@ -388,81 +413,71 @@ export function PropertyDetailView({ property }: PropertyDetailViewProps) {
               </div>
             </div>
 
-            {/* Direct Phone Call Button */}
-            {property.contactPhone && (
-              <a href={`tel:${property.contactPhone}`} className={styles.callDirectBtn}>
-                <Phone size={18} />
-                <span>Call {property.contactPhone}</span>
-              </a>
-            )}
-
-            {/* Fast Inquiry / Tour Request Form */}
-            {inquirySent ? (
-              <div className={styles.inquirySuccess}>
-                <CheckCircle2 size={32} className={styles.inquirySuccessIcon} />
-                <h4 style={{ fontWeight: 800, marginBottom: "4px" }}>Inquiry Sent!</h4>
-                <p style={{ fontSize: "0.85rem" }}>
-                  The seller has received your message and will get in touch shortly.
-                </p>
-                <div style={{ marginTop: "12px" }}>
-                  <Link
-                    href="/inbox"
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: "6px",
-                      padding: "8px 16px",
-                      backgroundColor: "#0A1931",
-                      color: "#FFFFFF",
-                      borderRadius: "6px",
-                      fontSize: "0.85rem",
-                      fontWeight: 600,
-                      textDecoration: "none",
-                    }}
-                  >
-                    <span>View in Inbox</span>
-                  </Link>
+            {/* Phone Call / Contact Unlock Section */}
+            {isContactUnlocked && revealedPhone ? (
+              <div>
+                <div className={styles.unlockedSuccessBadge}>
+                  <ShieldCheck size={14} />
+                  <span>Verified Owner Contact Unlocked</span>
                 </div>
+                <a href={`tel:${revealedPhone}`} className={styles.callDirectBtn}>
+                  <Phone size={18} />
+                  <span>Call {revealedPhone}</span>
+                </a>
               </div>
             ) : (
-              <form onSubmit={handleInquirySubmit} className={styles.inquiryForm}>
-                <input
-                  type="text"
-                  placeholder="Your Full Name"
-                  className={styles.inquiryInput}
-                  value={inquiryName}
-                  onChange={(e) => setInquiryName(e.target.value)}
-                  required
-                />
-                <input
-                  type="tel"
-                  placeholder="Phone Number (+251...)"
-                  className={styles.inquiryInput}
-                  value={inquiryPhone}
-                  onChange={(e) => setInquiryPhone(e.target.value)}
-                  required
-                />
-                <textarea
-                  className={styles.inquiryTextarea}
-                  value={inquiryMessage}
-                  onChange={(e) => setInquiryMessage(e.target.value)}
-                  rows={3}
-                  required
-                />
-                <button type="submit" className={styles.inquirySubmitBtn}>
-                  <Send size={16} />
-                  <span>Send Direct Inquiry</span>
-                </button>
-              </form>
-            )}
-          </div>
+              <div className={styles.lockedContactBox}>
+                <div className={styles.maskedNumberRow}>
+                  <Lock size={15} />
+                  <span>{property.maskedContactPhone || "+251 91 ••• •••"}</span>
+                </div>
 
-          {/* Trust Guarantee Box */}
-          <div className={styles.trustCard}>
-            <ShieldCheck size={28} className={styles.trustIcon} />
-            <div className={styles.trustText}>
-              <strong>Direct & 100% Free:</strong> No broker middleman fees or hidden commissions. Direct communication with the verified lister.
-            </div>
+                {userCredits > 0 || isUnlimited ? (
+                  <button
+                    type="button"
+                    className={styles.unlockActionBtn}
+                    onClick={handleUnlockContact}
+                    disabled={isUnlocking}
+                  >
+                    {isUnlocking ? (
+                      <Loader2 size={16} className="animate-spin" />
+                    ) : (
+                      <>
+                        <Eye size={16} />
+                        <span>Reveal Owner Phone</span>
+                        <span className={styles.creditsBadge}>
+                          {isUnlimited ? "Unlimited" : `${userCredits} Left`}
+                        </span>
+                      </>
+                    )}
+                  </button>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      className={styles.unlockActionBtn}
+                      onClick={() => setIsPricingModalOpen(true)}
+                    >
+                      <Lock size={16} />
+                      <span>Unlock Owner Phone</span>
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.viewPlansLink}
+                      onClick={() => setIsPricingModalOpen(true)}
+                    >
+                      Choose a Plan (From 290 ETB)
+                    </button>
+                  </>
+                )}
+
+                {unlockError && (
+                  <p style={{ color: "#ef4444", fontSize: "0.8rem", margin: 0 }}>
+                    {unlockError}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
         </aside>
       </div>
@@ -474,6 +489,29 @@ export function PropertyDetailView({ property }: PropertyDetailViewProps) {
           <span>Listing link copied to clipboard!</span>
         </div>
       )}
+
+      {/* Pricing & Contact Unlock Modal */}
+      <PricingModal
+        isOpen={isPricingModalOpen}
+        onClose={() => setIsPricingModalOpen(false)}
+        currentTier={userTier}
+        currentCredits={userCredits}
+        isUnlimited={isUnlimited}
+        onPlanSelected={(tier) => {
+          setUserTier(tier);
+          if (tier === "STANDARD") {
+            setUserCredits(10);
+            setIsUnlimited(false);
+          } else if (tier === "PREMIUM") {
+            setIsUnlimited(true);
+            setUserCredits(999);
+          } else {
+            setUserCredits(0);
+            setIsUnlimited(false);
+          }
+          setIsPricingModalOpen(false);
+        }}
+      />
     </div>
   );
 }

@@ -36,6 +36,11 @@ export interface PropertyDetailData {
   images: string[];
   ownerName?: string;
   contactPhone?: string;
+  maskedContactPhone?: string;
+  isContactUnlocked?: boolean;
+  userCredits?: number;
+  userTier?: "FREE" | "STANDARD" | "PREMIUM";
+  isUnlimitedUser?: boolean;
   preferredTime?: string;
   createdAt: string;
   isOwner?: boolean;
@@ -152,6 +157,35 @@ export async function getPropertyDetailAction(id: string): Promise<{
     const session = await auth();
     const currentUserId = session?.user?.id;
 
+    let userTier: "FREE" | "STANDARD" | "PREMIUM" = "FREE";
+    let userCredits = 0;
+    let isUnlimitedUser = false;
+    let isUnlockedByViewer = false;
+
+    if (currentUserId) {
+      try {
+        const user = await db.user.findUnique({
+          where: { id: currentUserId },
+          include: {
+            unlockedProperties: {
+              where: { propertyId: id },
+            },
+          },
+        });
+        if (user) {
+          userTier = user.tier as "FREE" | "STANDARD" | "PREMIUM";
+          userCredits = user.contactCredits ?? 0;
+          isUnlimitedUser = Boolean(
+            user.tier === "PREMIUM" &&
+              (!user.unlimitedExpiresAt || new Date(user.unlimitedExpiresAt) > new Date())
+          );
+          isUnlockedByViewer = user.unlockedProperties.length > 0;
+        }
+      } catch (err) {
+        console.error("Error checking viewer unlock status:", err);
+      }
+    }
+
     let dbProperty: any = null;
 
     try {
@@ -164,6 +198,9 @@ export async function getPropertyDetailAction(id: string): Promise<{
 
     if (dbProperty) {
       const isOwner = Boolean(currentUserId && dbProperty.userId === currentUserId);
+      const isContactUnlocked = Boolean(isOwner || isUnlockedByViewer || isUnlimitedUser);
+      const rawPhone = dbProperty.contactPhone || "+251 91 123 4567";
+
       return {
         success: true,
         property: {
@@ -202,7 +239,12 @@ export async function getPropertyDetailAction(id: string): Promise<{
               ? dbProperty.images
               : ["https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"],
           ownerName: dbProperty.ownerName || "Property Owner",
-          contactPhone: dbProperty.contactPhone || "+251 91 123 4567",
+          contactPhone: isContactUnlocked ? rawPhone : undefined,
+          maskedContactPhone: "+251 91 ••• •••",
+          isContactUnlocked,
+          userCredits,
+          userTier,
+          isUnlimitedUser,
           preferredTime: dbProperty.preferredTime || "anytime",
           createdAt: dbProperty.createdAt ? dbProperty.createdAt.toISOString() : new Date().toISOString(),
           isOwner,
@@ -213,6 +255,9 @@ export async function getPropertyDetailAction(id: string): Promise<{
     // Check sample listings
     if (SAMPLE_PROPERTIES[id]) {
       const sample = SAMPLE_PROPERTIES[id];
+      const isContactUnlocked = Boolean(isUnlockedByViewer || isUnlimitedUser);
+      const rawPhone = sample.contactPhone || "+251911234567";
+
       return {
         success: true,
         property: {
@@ -251,7 +296,12 @@ export async function getPropertyDetailAction(id: string): Promise<{
             "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
           ],
           ownerName: sample.ownerName || "Homeowner",
-          contactPhone: sample.contactPhone || "+251911234567",
+          contactPhone: isContactUnlocked ? rawPhone : undefined,
+          maskedContactPhone: "+251 91 ••• •••",
+          isContactUnlocked,
+          userCredits,
+          userTier,
+          isUnlimitedUser,
           preferredTime: sample.preferredTime || "Anytime",
           createdAt: new Date().toISOString(),
           isOwner: false,
@@ -260,6 +310,7 @@ export async function getPropertyDetailAction(id: string): Promise<{
     }
 
     // Dynamic fallback for any arbitrary ID so it never 404s during review/demo
+    const fallbackUnlocked = Boolean(isUnlockedByViewer || isUnlimitedUser);
     return {
       success: true,
       property: {
@@ -302,7 +353,12 @@ export async function getPropertyDetailAction(id: string): Promise<{
           "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1200&q=80",
         ],
         ownerName: "Homeowner",
-        contactPhone: "+251911234567",
+        contactPhone: fallbackUnlocked ? "+251911234567" : undefined,
+        maskedContactPhone: "+251 91 ••• •••",
+        isContactUnlocked: fallbackUnlocked,
+        userCredits,
+        userTier,
+        isUnlimitedUser,
         preferredTime: "9:00 AM - 6:00 PM",
         createdAt: new Date().toISOString(),
         isOwner: false,

@@ -10,6 +10,7 @@ export const NAV_LINKS_LEFT: NavLink[] = [
 ];
 
 export const NAV_LINKS_RIGHT: NavLink[] = [
+  { href: "/pricing", label: "Pricing" },
   { href: "/rentalmanager", label: "Manage Rentals" },
 ];
 

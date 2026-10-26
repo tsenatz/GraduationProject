@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   X,
   Heart,
@@ -20,6 +21,8 @@ import {
   ChevronRight,
   ShieldCheck,
   Building,
+  ExternalLink,
+  Lock,
 } from "lucide-react";
 import { Property } from "../types";
 import { useFavorites } from "@/components/providers/FavoritesProvider";
@@ -43,10 +46,6 @@ export function PropertyDetailModal({
 
   const [activeImageIdx, setActiveImageIdx] = useState(0);
   const [copied, setCopied] = useState(false);
-  const [inquiryName, setInquiryName] = useState("");
-  const [inquiryPhone, setInquiryPhone] = useState("");
-  const [inquiryNote, setInquiryNote] = useState("");
-  const [inquirySubmitted, setInquirySubmitted] = useState(false);
 
   if (!property) return null;
 
@@ -64,11 +63,6 @@ export function PropertyDetailModal({
       setCopied(true);
       setTimeout(() => setCopied(false), 2400);
     }
-  };
-
-  const handleInquirySubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setInquirySubmitted(true);
   };
 
   const formatPrice = (val: number) => {
@@ -137,6 +131,15 @@ export function PropertyDetailModal({
             >
               {copied ? <Check size={18} color="#10b981" /> : <Share2 size={18} />}
             </button>
+
+            <Link
+              href={`/property/${property.id}`}
+              className={styles.fullPageLinkBtn}
+              title="Open full property page"
+            >
+              <span>Full Page</span>
+              <ExternalLink size={13} />
+            </Link>
 
             <button
               type="button"
@@ -356,47 +359,20 @@ export function PropertyDetailModal({
               </div>
             </div>
 
-            {/* Viewing Request Form */}
-            {inquirySubmitted ? (
-              <div className={styles.inquirySuccessBox}>
-                <CheckCircle2 size={24} color="#10b981" />
-                <p>{t.inquirySuccess}</p>
+            {/* Direct Phone Number Unlock Banner */}
+            <div className={styles.directPhoneUnlockBanner}>
+              <div className={styles.maskedNumberMini}>
+                <Lock size={14} />
+                <span>+251 91 ••• •••</span>
               </div>
-            ) : (
-              <form className={styles.inquiryForm} onSubmit={handleInquirySubmit}>
-                <div className={styles.inquiryFieldsRow}>
-                  <input
-                    type="text"
-                    required
-                    className={styles.inquiryInput}
-                    placeholder={t.inquiryName}
-                    value={inquiryName}
-                    onChange={(e) => setInquiryName(e.target.value)}
-                  />
-                  <input
-                    type="tel"
-                    required
-                    className={styles.inquiryInput}
-                    placeholder={t.inquiryPhone}
-                    value={inquiryPhone}
-                    onChange={(e) => setInquiryPhone(e.target.value)}
-                  />
-                </div>
-
-                <textarea
-                  className={styles.inquiryTextarea}
-                  rows={3}
-                  placeholder={t.inquiryPlaceholder}
-                  value={inquiryNote}
-                  onChange={(e) => setInquiryNote(e.target.value)}
-                />
-
-                <button type="submit" className={styles.inquirySubmitBtn}>
-                  <Send size={15} />
-                  <span>{t.inquirySubmit}</span>
-                </button>
-              </form>
-            )}
+              <Link
+                href={`/property/${property.id}`}
+                className={styles.unlockDirectCallBtn}
+              >
+                <Phone size={14} />
+                <span>Unlock Phone & Call Owner</span>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
