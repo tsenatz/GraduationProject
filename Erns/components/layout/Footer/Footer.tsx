@@ -27,16 +27,16 @@ export const Footer = () => {
             </h2>
             <p className={styles.description}>{t.brandDesc}</p>
             <div className={styles.socials}>
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Facebook">
+              <a href="https://web.facebook.com/profile.php?id=61595467126292&sk=directory_links" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Facebook">
                 <FacebookIcon className={styles.socialIcon} />
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Twitter">
+              <a href="https://x.com/ERNS_system" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="X (formerly Twitter)">
                 <TwitterIcon className={styles.socialIcon} />
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Instagram">
+              <a href="https://www.instagram.com/erns_web?rpxt=MWdsc2VhdzAzMWxrZw==" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Instagram">
                 <InstagramIcon className={styles.socialIcon} />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/company/145372100" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="LinkedIn">
                 <LinkedinIcon className={styles.socialIcon} />
               </a>
             </div>
