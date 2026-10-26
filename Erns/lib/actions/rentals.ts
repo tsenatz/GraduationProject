@@ -2,6 +2,7 @@
 
 import db from "@/lib/db";
 import { auth } from "@/lib/auth";
+import { getAuthenticatedUser } from "@/lib/actions/listings";
 import { revalidatePath } from "next/cache";
 
 export interface RentalPropertyInput {
@@ -283,21 +284,36 @@ function getRentalMemoryStore(): RentalPropertyRecord[] {
 
 /**
  * 1. Fetch landlord's rental properties
+ * Strictly scoped to the authenticated user.
  */
 export async function getLandlordRentalPropertiesAction(): Promise<RentalActionResult> {
   try {
     const session = await auth();
-    const currentUserId = session?.user?.id || session?.user?.email || "demo-landlord";
+    if (!session?.user) {
+      return {
+        success: false,
+        error: "AUTH_REQUIRED",
+        isAuthenticated: false,
+        properties: [],
+      };
+    }
 
-    let properties: RentalPropertyRecord[] = [];
+    const user = await getAuthenticatedUser(session);
+    const currentUserId = user?.id || session.user.id;
+    const currentUserEmail = user?.email || session.user.email;
+    const possibleUserIds = Array.from(
+      new Set([currentUserId, session.user.id].filter(Boolean) as string[])
+    );
+
+    let dbProperties: RentalPropertyRecord[] = [];
 
     if (process.env.DATABASE_URL) {
       try {
         const records = await (db as any).property.findMany({
           where: {
             OR: [
-              { userId: currentUserId },
-              ...(session?.user?.email ? [{ ownerEmail: session.user.email }] : []),
+              ...possibleUserIds.map((id) => ({ userId: id })),
+              ...(currentUserEmail ? [{ user: { email: currentUserEmail } }] : []),
             ],
             listingType: "RENT",
           },
@@ -305,9 +321,9 @@ export async function getLandlordRentalPropertiesAction(): Promise<RentalActionR
         });
 
         if (records && records.length > 0) {
-          properties = records.map((r: any) => ({
+          dbProperties = records.map((r: any) => ({
             id: r.id,
-            userId: r.userId,
+            userId: r.userId || currentUserId,
             referenceNo: r.referenceNo || `ERN-RNT-${r.id.slice(0, 4)}`,
             title: r.title,
             titleAm: r.titleAm || undefined,
@@ -326,40 +342,49 @@ export async function getLandlordRentalPropertiesAction(): Promise<RentalActionR
             leaseTerm: r.leaseTerm || "12_months",
             furnishedStatus: r.furnishedStatus || "semi_furnished",
             amenities: r.amenities || [],
-            images: r.images && r.images.length > 0
-              ? r.images
-              : ["https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&auto=format&fit=crop&q=80"],
+            images:
+              r.images && r.images.length > 0
+                ? r.images
+                : [
+                    "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&auto=format&fit=crop&q=80",
+                  ],
             status: r.status === "SOLD" ? "RENTED" : (r.status || "FOR_RENT"),
             listingType: "RENT",
-            createdAt: r.createdAt ? new Date(r.createdAt).toISOString() : new Date().toISOString(),
-            inquiriesCount: r.inquiriesCount || 3,
-            applicationsCount: r.applicationsCount || 1,
+            createdAt: r.createdAt
+              ? new Date(r.createdAt).toISOString()
+              : new Date().toISOString(),
+            inquiriesCount: r.inquiriesCount || 0,
+            applicationsCount: r.applicationsCount || 0,
           }));
-
-          return {
-            success: true,
-            isAuthenticated: !!session?.user,
-            properties,
-          };
         }
       } catch (dbErr) {
         console.warn("DB query skipped for rentals, using fallback:", dbErr);
       }
     }
 
-    // In-memory fallback
+    // Merge in-memory properties strictly belonging to this user
     const store = getRentalMemoryStore();
+    const existingDbIds = new Set(dbProperties.map((p) => p.id));
+    const userMemoryProps = store.filter(
+      (p) =>
+        (possibleUserIds.includes(p.userId) ||
+          (currentUserEmail && p.userId === currentUserEmail)) &&
+        !existingDbIds.has(p.id)
+    );
+
+    const properties = [...dbProperties, ...userMemoryProps];
+
     return {
       success: true,
-      isAuthenticated: !!session?.user,
-      properties: store,
+      isAuthenticated: true,
+      properties,
     };
   } catch (error: any) {
     console.error("Failed to fetch landlord rental properties:", error);
     return {
       success: false,
       error: error.message || "Failed to load properties",
-      properties: getRentalMemoryStore(),
+      properties: [],
     };
   }
 }
@@ -372,8 +397,17 @@ export async function createRentalPropertyAction(
 ): Promise<RentalActionResult> {
   try {
     const session = await auth();
-    const currentUserId = session?.user?.id || session?.user?.email || "demo-landlord";
-    const currentUserName = session?.user?.name || "Landlord";
+    if (!session?.user) {
+      return {
+        success: false,
+        error: "AUTH_REQUIRED",
+        isAuthenticated: false,
+      };
+    }
+
+    const user = await getAuthenticatedUser(session);
+    const currentUserId = user?.id || session.user.id || "user-landlord";
+    const currentUserName = session.user.name || user?.name || "Landlord";
 
     const refNumber = `ERN-RNT-${Math.floor(10000 + Math.random() * 90000)}`;
     const address = `${data.specificArea || data.subCity}, Addis Ababa`;
@@ -485,6 +519,11 @@ export async function updateRentalStatusAction(
   newStatus: "FOR_RENT" | "RENTED" | "OFF_MARKET"
 ): Promise<RentalActionResult> {
   try {
+    const session = await auth();
+    if (!session?.user) {
+      return { success: false, error: "AUTH_REQUIRED", isAuthenticated: false };
+    }
+
     if (process.env.DATABASE_URL) {
       try {
         await (db as any).property.update({
@@ -522,6 +561,11 @@ export async function updateRentalPropertyAction(
   data: Partial<RentalPropertyInput>
 ): Promise<RentalActionResult> {
   try {
+    const session = await auth();
+    if (!session?.user) {
+      return { success: false, error: "AUTH_REQUIRED", isAuthenticated: false };
+    }
+
     const store = getRentalMemoryStore();
     const existing = store.find((p) => p.id === propertyId);
 
@@ -590,10 +634,21 @@ export async function deleteRentalPropertyAction(
   propertyId: string
 ): Promise<RentalActionResult> {
   try {
+    const session = await auth();
+    if (!session?.user) {
+      return { success: false, error: "AUTH_REQUIRED", isAuthenticated: false };
+    }
+
+    const user = await getAuthenticatedUser(session);
+    const currentUserId = user?.id || session.user.id;
+
     if (process.env.DATABASE_URL) {
       try {
-        await (db as any).property.delete({
-          where: { id: propertyId },
+        await (db as any).property.deleteMany({
+          where: {
+            id: propertyId,
+            ...(currentUserId ? { userId: currentUserId } : {}),
+          },
         });
       } catch (err) {
         console.warn("DB delete skipped:", err);
@@ -691,20 +746,42 @@ function getPaymentsMemoryStore(): RentPaymentRecord[] {
 
 export async function getLandlordRentalPaymentsAction(): Promise<RentalPaymentsResult> {
   try {
+    const session = await auth();
+    if (!session?.user) {
+      return {
+        success: false,
+        error: "AUTH_REQUIRED",
+        payments: [],
+      };
+    }
+
+    // Resolve current landlord's properties
+    const propsRes = await getLandlordRentalPropertiesAction();
+    const userProperties = propsRes.properties || [];
+    const userPropertyIds = new Set(userProperties.map((p) => p.id));
+    const userPropertyTitles = new Set(userProperties.map((p) => p.title.toLowerCase().trim()));
+
     const store = getPaymentsMemoryStore();
-    const totalExpectedETB = store.reduce((acc, p) => acc + p.amountETB, 0);
-    const totalCollectedETB = store
+    // Only payments for properties belonging to this landlord
+    const payments = store.filter(
+      (p) =>
+        userPropertyIds.has(p.propertyId) ||
+        userPropertyTitles.has(p.propertyTitle.toLowerCase().trim())
+    );
+
+    const totalExpectedETB = payments.reduce((acc, p) => acc + p.amountETB, 0);
+    const totalCollectedETB = payments
       .filter((p) => p.status === "PAID")
       .reduce((acc, p) => acc + p.amountETB, 0);
-    const totalPendingETB = store
+    const totalPendingETB = payments
       .filter((p) => p.status === "PENDING")
       .reduce((acc, p) => acc + p.amountETB, 0);
-    const totalOverdueETB = store
+    const totalOverdueETB = payments
       .filter((p) => p.status === "OVERDUE")
       .reduce((acc, p) => acc + p.amountETB, 0);
 
-    const totalTenants = store.length;
-    const paidTenants = store.filter((p) => p.status === "PAID").length;
+    const totalTenants = payments.length;
+    const paidTenants = payments.filter((p) => p.status === "PAID").length;
     const collectionRatePct =
       totalExpectedETB > 0
         ? Math.round((totalCollectedETB / totalExpectedETB) * 100)
@@ -712,7 +789,7 @@ export async function getLandlordRentalPaymentsAction(): Promise<RentalPaymentsR
 
     return {
       success: true,
-      payments: [...store],
+      payments,
       summary: {
         totalExpectedETB,
         totalCollectedETB,
@@ -724,7 +801,7 @@ export async function getLandlordRentalPaymentsAction(): Promise<RentalPaymentsR
       },
     };
   } catch (error: any) {
-    return { success: false, error: error.message };
+    return { success: false, error: error.message, payments: [] };
   }
 }
 
@@ -738,6 +815,11 @@ export async function recordRentPaymentAction(
   }
 ): Promise<RentalActionResult> {
   try {
+    const session = await auth();
+    if (!session?.user) {
+      return { success: false, error: "AUTH_REQUIRED", isAuthenticated: false };
+    }
+
     const store = getPaymentsMemoryStore();
     const item = store.find((p) => p.id === paymentId);
     if (!item) {
@@ -825,19 +907,39 @@ function getApplicationsMemoryStore(): RentalApplicationRecord[] {
 
 export async function getLandlordRentalApplicationsAction(): Promise<RentalApplicationsResult> {
   try {
+    const session = await auth();
+    if (!session?.user) {
+      return {
+        success: false,
+        error: "AUTH_REQUIRED",
+        applications: [],
+      };
+    }
+
+    const propsRes = await getLandlordRentalPropertiesAction();
+    const userProperties = propsRes.properties || [];
+    const userPropertyIds = new Set(userProperties.map((p) => p.id));
+    const userPropertyTitles = new Set(userProperties.map((p) => p.title.toLowerCase().trim()));
+
     const store = getApplicationsMemoryStore();
-    const total = store.length;
-    const pending = store.filter((a) => a.status === "PENDING").length;
-    const approved = store.filter((a) => a.status === "APPROVED").length;
-    const declined = store.filter((a) => a.status === "DECLINED").length;
+    const applications = store.filter(
+      (a) =>
+        userPropertyIds.has(a.propertyId) ||
+        userPropertyTitles.has(a.propertyTitle.toLowerCase().trim())
+    );
+
+    const total = applications.length;
+    const pending = applications.filter((a) => a.status === "PENDING").length;
+    const approved = applications.filter((a) => a.status === "APPROVED").length;
+    const declined = applications.filter((a) => a.status === "DECLINED").length;
 
     return {
       success: true,
-      applications: [...store],
+      applications,
       stats: { total, pending, approved, declined },
     };
   } catch (error: any) {
-    return { success: false, error: error.message };
+    return { success: false, error: error.message, applications: [] };
   }
 }
 
@@ -846,6 +948,11 @@ export async function updateRentalApplicationStatusAction(
   status: "PENDING" | "APPROVED" | "DECLINED"
 ): Promise<RentalActionResult> {
   try {
+    const session = await auth();
+    if (!session?.user) {
+      return { success: false, error: "AUTH_REQUIRED", isAuthenticated: false };
+    }
+
     const store = getApplicationsMemoryStore();
     const item = store.find((a) => a.id === applicationId);
     if (!item) {
@@ -959,19 +1066,39 @@ function getLeasesMemoryStore(): LeaseRecord[] {
 
 export async function getLandlordLeasesAction(): Promise<LeasesResult> {
   try {
+    const session = await auth();
+    if (!session?.user) {
+      return {
+        success: false,
+        error: "AUTH_REQUIRED",
+        leases: [],
+      };
+    }
+
+    const propsRes = await getLandlordRentalPropertiesAction();
+    const userProperties = propsRes.properties || [];
+    const userPropertyIds = new Set(userProperties.map((p) => p.id));
+    const userPropertyTitles = new Set(userProperties.map((p) => p.title.toLowerCase().trim()));
+
     const store = getLeasesMemoryStore();
-    const totalActive = store.filter(
+    const leases = store.filter(
+      (l) =>
+        userPropertyIds.has(l.propertyId) ||
+        userPropertyTitles.has(l.propertyTitle.toLowerCase().trim())
+    );
+
+    const totalActive = leases.filter(
       (l) => l.status === "ACTIVE" || l.status === "EXPIRING_SOON"
     ).length;
-    const expiringSoon = store.filter((l) => l.status === "EXPIRING_SOON").length;
-    const expired = store.filter((l) => l.status === "EXPIRED" || l.status === "TERMINATED").length;
-    const monthlyContractedETB = store
+    const expiringSoon = leases.filter((l) => l.status === "EXPIRING_SOON").length;
+    const expired = leases.filter((l) => l.status === "EXPIRED" || l.status === "TERMINATED").length;
+    const monthlyContractedETB = leases
       .filter((l) => l.status === "ACTIVE" || l.status === "EXPIRING_SOON")
       .reduce((sum, l) => sum + l.monthlyRentETB, 0);
 
     return {
       success: true,
-      leases: [...store],
+      leases,
       stats: {
         totalActive,
         expiringSoon,
@@ -980,7 +1107,7 @@ export async function getLandlordLeasesAction(): Promise<LeasesResult> {
       },
     };
   } catch (error: any) {
-    return { success: false, error: error.message };
+    return { success: false, error: error.message, leases: [] };
   }
 }
 
@@ -999,6 +1126,11 @@ export async function createLeaseAgreementAction(input: {
   rules?: string[];
 }): Promise<RentalActionResult> {
   try {
+    const session = await auth();
+    if (!session?.user) {
+      return { success: false, error: "AUTH_REQUIRED", isAuthenticated: false };
+    }
+
     const store = getLeasesMemoryStore();
     const newLease: LeaseRecord = {
       id: `lease-${Date.now()}`,
@@ -1026,7 +1158,28 @@ export async function createLeaseAgreementAction(input: {
     };
 
     store.unshift(newLease);
+
+    // Also mark property as RENTED
+    await updateRentalStatusAction(input.propertyId, "RENTED");
+
+    // Also create initial scheduled payment in payments ledger for this tenant
+    const paymentsStore = getPaymentsMemoryStore();
+    paymentsStore.unshift({
+      id: `pay-${Date.now()}`,
+      propertyId: input.propertyId,
+      propertyTitle: input.propertyTitle,
+      unitName: input.unitName,
+      tenantName: input.tenantName,
+      tenantPhone: input.tenantPhone,
+      amountETB: input.monthlyRentETB,
+      periodMonth: new Date().toLocaleString("en-US", { month: "long", year: "numeric" }),
+      dueDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 5).toISOString().split("T")[0],
+      status: "PENDING",
+    });
+
     revalidatePath("/rentalmanager/leases");
+    revalidatePath("/rentalmanager/payments");
+    revalidatePath("/rentalmanager/properties");
     revalidatePath("/rentalmanager/dashboard");
     revalidatePath("/rentalmanager/alerts");
 
@@ -1040,6 +1193,11 @@ export async function terminateLeaseAction(
   leaseId: string
 ): Promise<RentalActionResult> {
   try {
+    const session = await auth();
+    if (!session?.user) {
+      return { success: false, error: "AUTH_REQUIRED", isAuthenticated: false };
+    }
+
     const store = getLeasesMemoryStore();
     const item = store.find((l) => l.id === leaseId);
     if (!item) return { success: false, error: "Lease not found" };
@@ -1064,11 +1222,12 @@ function getReadAlertIdsStore(): string[] {
   return globalThis.__ernsReadAlertIds;
 }
 
-function computeDynamicLandlordAlerts(): LandlordAlertRecord[] {
-  const payments = getPaymentsMemoryStore();
-  const applications = getApplicationsMemoryStore();
-  const leases = getLeasesMemoryStore();
-  const rentals = getRentalMemoryStore();
+function computeDynamicLandlordAlerts(
+  payments: RentPaymentRecord[],
+  applications: RentalApplicationRecord[],
+  leases: LeaseRecord[],
+  rentals: RentalPropertyRecord[]
+): LandlordAlertRecord[] {
   const readIds = getReadAlertIdsStore();
 
   const alerts: LandlordAlertRecord[] = [];
@@ -1217,7 +1376,22 @@ function computeDynamicLandlordAlerts(): LandlordAlertRecord[] {
 
 export async function getLandlordAlertsAction(): Promise<AlertsResult> {
   try {
-    const alerts = computeDynamicLandlordAlerts();
+    const session = await auth();
+    if (!session?.user) {
+      return { success: false, error: "AUTH_REQUIRED", alerts: [], unreadCount: 0 };
+    }
+
+    const propsRes = await getLandlordRentalPropertiesAction();
+    const paymentsRes = await getLandlordRentalPaymentsAction();
+    const appsRes = await getLandlordRentalApplicationsAction();
+    const leasesRes = await getLandlordLeasesAction();
+
+    const alerts = computeDynamicLandlordAlerts(
+      paymentsRes.payments || [],
+      appsRes.applications || [],
+      leasesRes.leases || [],
+      propsRes.properties || []
+    );
     const unreadCount = alerts.filter((a) => !a.isRead).length;
     return {
       success: true,
@@ -1225,7 +1399,7 @@ export async function getLandlordAlertsAction(): Promise<AlertsResult> {
       unreadCount,
     };
   } catch (error: any) {
-    return { success: false, error: error.message };
+    return { success: false, error: error.message, alerts: [], unreadCount: 0 };
   }
 }
 
@@ -1233,6 +1407,11 @@ export async function markAlertAsReadAction(
   alertId: string
 ): Promise<RentalActionResult> {
   try {
+    const session = await auth();
+    if (!session?.user) {
+      return { success: false, error: "AUTH_REQUIRED", isAuthenticated: false };
+    }
+
     const readIds = getReadAlertIdsStore();
     if (!readIds.includes(alertId)) {
       readIds.push(alertId);
@@ -1247,7 +1426,13 @@ export async function markAlertAsReadAction(
 
 export async function markAllAlertsAsReadAction(): Promise<RentalActionResult> {
   try {
-    const alerts = computeDynamicLandlordAlerts();
+    const session = await auth();
+    if (!session?.user) {
+      return { success: false, error: "AUTH_REQUIRED", isAuthenticated: false };
+    }
+
+    const alertsRes = await getLandlordAlertsAction();
+    const alerts = alertsRes.alerts || [];
     const readIds = getReadAlertIdsStore();
     alerts.forEach((a) => {
       if (!readIds.includes(a.id)) {

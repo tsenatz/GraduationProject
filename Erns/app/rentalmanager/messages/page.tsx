@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { RentalManagerDashboardLayout } from "@/components/rentalmanager/dashboard";
 import { InboxView } from "@/components/inbox";
@@ -11,7 +12,11 @@ export const metadata = {
 
 export default async function RentalManagerMessagesPage() {
   const session = await auth();
-  const displayName = session?.user?.name || session?.user?.email || "Manager";
+  if (!session?.user) {
+    redirect("/login?callbackUrl=/rentalmanager/messages");
+  }
+
+  const displayName = session.user.name || session.user.email || "Landlord";
 
   return (
     <RentalManagerDashboardLayout userName={displayName}>

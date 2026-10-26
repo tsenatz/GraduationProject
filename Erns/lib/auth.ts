@@ -1,3 +1,8 @@
+import net from "net";
+if (typeof (net as any).setDefaultAutoSelectFamily === "function") {
+  (net as any).setDefaultAutoSelectFamily(false);
+}
+
 import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import Credentials from "next-auth/providers/credentials";

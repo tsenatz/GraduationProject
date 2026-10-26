@@ -13,6 +13,11 @@ export default async function RentalManagerSetupPage({
 }: {
   searchParams?: Promise<{ onboarding?: string }>;
 }) {
+  const session = await auth();
+  if (!session?.user) {
+    redirect("/login?callbackUrl=/rentalmanager");
+  }
+
   const resolvedParams = searchParams ? await searchParams : undefined;
   
   // Allow explicit onboarding if ?onboarding=true

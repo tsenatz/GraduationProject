@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import {
   RentalManagerDashboardLayout,
@@ -11,8 +12,11 @@ export const metadata = {
 
 export default async function RentalManagerDashboardPage() {
   const session = await auth();
+  if (!session?.user) {
+    redirect("/login?callbackUrl=/rentalmanager/dashboard");
+  }
 
-  const displayName = session?.user?.name || session?.user?.email || "Manager";
+  const displayName = session.user.name || session.user.email || "Landlord";
 
   return (
     <RentalManagerDashboardLayout userName={displayName}>
