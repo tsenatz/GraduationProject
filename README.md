@@ -2,7 +2,7 @@
 
 A verified direct-contact real estate platform built for the Ethiopian market. Browse, list, and deal directly with property owners and agents in Addis Ababa — no middleman, no broker fees.
 
-**Live →** [graduation-project.vercel.app](https://graduation-project.vercel.app)
+**Live →** [erns.vercel.app](https://erns.vercel.app/)
 
 **Demo video →** [Add your Google Drive / YouTube link here]
 
