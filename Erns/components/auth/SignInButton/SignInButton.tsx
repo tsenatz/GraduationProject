@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
-import { LogOut, LayoutDashboard, Home, Inbox, Heart } from "lucide-react";
+import { LogOut, LayoutDashboard, Home, Inbox, Heart, ShieldCheck } from "lucide-react";
 import styles from "./SignInButton.module.css";
 
 interface SignInButtonProps {
@@ -156,6 +156,21 @@ export default function SignInButton({
               <Home size={16} />
               <span>Seller Dashboard</span>
             </Link>
+
+            {(user as { role?: string }).role === "ADMIN" && (
+              <Link
+                href="/admin"
+                className={`${styles.dropdownItem} ${styles.adminDropdownItem}`}
+                onClick={() => {
+                  setIsOpen(false);
+                  if (onClick) onClick();
+                }}
+              >
+                <ShieldCheck size={16} className={styles.adminIcon} />
+                <span>Admin Portal</span>
+                <span className={styles.adminBadge}>Admin</span>
+              </Link>
+            )}
 
             <div className={styles.dropdownDivider} />
 
