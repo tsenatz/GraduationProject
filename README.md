@@ -4,7 +4,7 @@ A verified direct-contact real estate platform built for the Ethiopian market. B
 
 **Live →** [erns.vercel.app](https://erns.vercel.app/)
 
-**Demo video →** [Add your Google Drive / YouTube link here]
+**Demo video →** []
 
 ---
 
