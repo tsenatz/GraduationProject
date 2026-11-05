@@ -6,6 +6,15 @@ A verified direct-contact real estate platform built for the Ethiopian market. B
 
 **Demo video →** [https://drive.google.com/file/d/1m1s7KiIO47WqdnP2LoQqCKiDDKXntmq9/view?usp=sharing]
 
+
+## Team
+
+| Name | Role | Responsibilities | GitHub |
+|------|------|------------------|--------|
+| [Tsenat Zeru](https://github.com/tsenatz) | Team Lead | Architecture, code review, integration | [@tsenatz](https://github.com/tsenatz) |
+| [Yitayal Yalelet](https://github.com/mightypen23) | Developer | Frontend, Map interation and search feature |  [@mightypen23](https://github.com/mightypen23) |
+| [Ruhama Alemu](https://github.com/swee-124) | Developer | Database, Frontend, Agents page | [@swee-124](https://github.com/swee-124) |
+
 ---
 
 ## What it does
