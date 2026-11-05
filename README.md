@@ -11,9 +11,9 @@ A verified direct-contact real estate platform built for the Ethiopian market. B
 
 | Name | Role | Responsibilities | GitHub |
 |------|------|------------------|--------|
-| [Tsenat Zeru](https://github.com/tsenatz) | Team Lead | Architecture, code review, integration | [@tsenatz](https://github.com/tsenatz) |
-| [Yitayal Yalelet](https://github.com/mightypen23) | Developer | Frontend, Map interation and search feature |  [@mightypen23](https://github.com/mightypen23) |
-| [Ruhama Alemu](https://github.com/swee-124) | Developer | Database, Frontend, Agents page | [@swee-124](https://github.com/swee-124) |
+| [Tsenat Zeru ID-CTC-869-26](https://github.com/tsenatz) | Team Lead | Architecture, code review, integration | [@tsenatz](https://github.com/tsenatz) |
+| [Yitayal Yalelet ID-CTC-668-26](https://github.com/mightypen23) | Developer | Frontend, Map interation and search feature |  [@mightypen23](https://github.com/mightypen23) |
+| [Ruhama Alemu ID-CTC-2667-26](https://github.com/swee-124) | Developer | Database, Frontend, Agents page | [@swee-124](https://github.com/swee-124) |
 
 ---
 
